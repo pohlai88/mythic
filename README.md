@@ -1,16 +1,27 @@
-# Nextra Docs Template 
+# AI-BOS Mythic
 
-This is a template for creating documentation with [Nextra](https://nextra.site).
+A Next.js monorepo with comprehensive documentation, governance, and AI-assisted development tooling.
 
-[**Live Demo →**](https://nextra-docs-template.vercel.app)
+---
 
-[![](.github/screenshot.png)](https://nextra-docs-template.vercel.app)
+## 📚 Documentation
 
-## Quick Start
+### Quick Start
 
-Click the button to clone this repository and deploy it on Vercel:
+- **[QUICK_START.md](./QUICK_START.md)** - Get started in 5 minutes
+- **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** - Quick reference guide
+- **[CURSOR_SYSTEM_ARCHITECTURE.md](./CURSOR_SYSTEM_ARCHITECTURE.md)** - System architecture overview
 
-[![](https://vercel.com/button)](https://vercel.com/new/clone?s=https%3A%2F%2Fgithub.com%2Fshuding%2Fnextra-docs-template&showOptionalTeamCreation=false)
+### Complete Documentation
+
+- **[docs/](./docs/)** - Full internal documentation
+  - Architecture, API, Guides, Reference, Governance
+  - See [docs/README.md](./docs/README.md) for complete index
+- **[content/](./content/)** - Public documentation (Nextra)
+  - User-facing guides, governance documents
+  - Rendered via Nextra at runtime
+
+---
 
 ## Local Development
 
