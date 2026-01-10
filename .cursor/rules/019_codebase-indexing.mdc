@@ -1,0 +1,49 @@
+---
+description: Codebase indexing strategy and configuration
+globs: "*"
+alwaysApply: false
+---
+
+# Codebase Indexing
+
+**Indexing Configuration:**
+- Enable codebase indexing for large projects
+- Configure index refresh frequency
+- Set up incremental indexing
+- Optimize index size
+
+**Indexing Best Practices:**
+- Index source code directories
+- Exclude node_modules, .next, build
+- Include documentation in index
+- Update index on significant changes
+
+**Index Configuration:**
+See `.cursor/index-config.json` for detailed configuration.
+
+**Include Patterns:**
+- `app/**` - Next.js app directory
+- `components/**` - React components
+- `lib/**` - Utility libraries
+- `docs/**` - Documentation
+
+**Exclude Patterns:**
+- `node_modules/**` - Dependencies
+- `.next/**` - Build output
+- `build/**` - Build artifacts
+- `dist/**` - Distribution files
+
+**Refresh Strategy:**
+- `on-change` - Update index when files change
+- Incremental updates for performance
+- Full refresh on major changes
+
+**Large Codebase Optimization:**
+- Use incremental indexing
+- Focus on frequently accessed files
+- Optimize index size
+- Use targeted searches with @Codebase
+
+**Reference Documentation:**
+- @rules/090_large-repo-performance.mdc - Performance optimization
+- @rules/016_reference-system.mdc - Reference system

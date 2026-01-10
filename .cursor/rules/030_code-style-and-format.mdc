@@ -1,0 +1,33 @@
+---
+description: "Keep diffs small; avoid formatting churn; align with Prettier/ESLint."
+alwaysApply: true
+---
+
+# Code Style & Formatting
+
+- Do not reformat unrelated files.
+- Keep changes minimal and scoped to the request.
+- Prefer ESLint for correctness and Prettier for formatting (don't fight the formatter).
+- If adding config, keep it standard and minimal (avoid niche rule sets unless needed).
+
+**Formatting Rules:**
+- Don't reformat unrelated code
+- Keep diffs minimal
+- Align with Prettier/ESLint
+- Don't fight the formatter
+
+**Code Style:**
+- Preserve existing naming conventions
+- Follow project patterns
+- Keep changes scoped
+- Avoid formatting churn
+
+**Configuration:**
+- Keep config standard and minimal
+- Avoid niche rule sets unless needed
+- Use project's existing formatter
+- Don't introduce new formatting rules
+
+**Reference Documentation:**
+- @rules/030_editing-discipline.mdc - Editing standards
+- @rules/operational-rules.mdc - Core standards

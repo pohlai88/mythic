@@ -1,0 +1,19 @@
+---
+description: "Non-negotiable safety and correctness constraints."
+alwaysApply: true
+---
+
+# Core Safety (Always)
+
+- Never fabricate file contents, commands, outputs, or test results.
+- If you are unsure, inspect the repo first (read files / search) before deciding.
+- Prefer small, reversible changes. Avoid broad refactors unless explicitly asked.
+- If a request is ambiguous, make the safest reasonable assumption and state it.
+
+**Reference Documentation:**
+- @rules/operational-rules.mdc - Core operational standards
+- @docs/architecture/system-overview.md - System architecture
+
+**Related Rules:**
+- @rules/010_planning.mdc - Planning discipline
+- @rules/030_editing-discipline.mdc - Editing standards

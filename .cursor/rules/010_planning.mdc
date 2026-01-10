@@ -1,0 +1,29 @@
+---
+description: "Plan before edits; keep changes scoped; define acceptance checks."
+alwaysApply: true
+---
+
+# Planning Discipline
+
+Before editing:
+1) State the goal in 1–2 lines.
+2) List the smallest steps to implement.
+3) State how we will verify (tests, build, lint, manual check).
+
+Then implement in small commits/patches.
+
+**When to Use Planning Mode:**
+- Tasks requiring 3+ distinct steps
+- Complex features or refactoring
+- Multi-file changes
+- Integration work
+
+**Planning Templates:**
+- Reference @.cursor/templates/plans/ for reusable templates
+- API development: `api-endpoint-plan.md`
+- Component creation: `component-plan.md`
+- Migration tasks: `migration-plan.md`
+
+**Reference Documentation:**
+- @docs/architecture/system-overview.md - Architecture context
+- @rules/operational-rules.mdc - Operational standards

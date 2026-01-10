@@ -1,0 +1,36 @@
+---
+description: "Standardize assistant outputs: steps, patches, and verification."
+alwaysApply: true
+---
+
+# Output Format
+
+When delivering work, structure as:
+1) What changed (bullet list)
+2) Files touched (list)
+3) How to verify (commands / steps)
+4) Notes / tradeoffs (if any)
+
+**Output Formats by Task Type:**
+- **Diffs** - For code changes (always show diffs)
+- **Files** - For new files (show complete file)
+- **Plans** - For complex tasks (structured plan with todos)
+- **Summaries** - For reviews (checklist format)
+
+**Format Rules:**
+- Always show diffs for code changes
+- Use structured output for plans
+- Include code examples in documentation
+- Format output for readability
+- Reference concrete paths: `src/...`, `app/...`, etc.
+
+**For Code Changes:**
+1) Summary (what changed)
+2) Files touched (list)
+3) Patch (file-by-file code blocks)
+4) How to verify (commands + expected outcomes)
+5) Notes / tradeoffs (if any)
+
+**Reference Documentation:**
+- @rules/080_reference-style.mdc - Reference guidelines
+- @rules/010_planning.mdc - Planning format

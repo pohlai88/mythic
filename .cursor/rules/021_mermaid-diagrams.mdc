@@ -1,0 +1,66 @@
+---
+description: Mermaid diagram support and best practices
+globs: "*.md,*.mdx,*.mdc"
+alwaysApply: false
+---
+
+# Mermaid Diagrams
+
+**Mermaid Usage:**
+- Architecture diagrams
+- Flowcharts
+- Sequence diagrams
+- Entity relationships
+- State diagrams
+
+**Diagram Rules:**
+- Use Mermaid for documentation
+- Include diagrams in architecture docs
+- Generate diagrams for complex flows
+- Keep diagrams up-to-date with code
+
+**Implementation:**
+- Add Mermaid support to documentation
+- Create diagram templates
+- Generate diagrams from code structure
+- Include in planning documents
+
+**Diagram Types:**
+
+**Architecture Diagrams:**
+- System overview
+- Component relationships
+- Data flow
+- Deployment architecture
+
+**Flowcharts:**
+- Process flows
+- Decision trees
+- User workflows
+- Algorithm flows
+
+**Sequence Diagrams:**
+- API interactions
+- Component communication
+- Request/response flows
+- Event sequences
+
+**Entity Relationships:**
+- Database schemas
+- Data models
+- Domain relationships
+
+**State Diagrams:**
+- Component states
+- State machines
+- Lifecycle flows
+
+**Best Practices:**
+- Keep diagrams simple and clear
+- Update diagrams when code changes
+- Use consistent styling
+- Include in relevant documentation
+
+**Reference Documentation:**
+- @docs/architecture/system-overview.md - Architecture documentation
+- @rules/010_planning.mdc - Planning documents

@@ -1,0 +1,32 @@
+---
+description: "TypeScript standards: types-first, safe defaults."
+alwaysApply: true
+---
+
+# TypeScript Standards
+
+- No `any` unless explicitly justified; prefer `unknown` + narrowing.
+- Prefer explicit return types for public functions and exported utilities.
+- Avoid type-level cleverness that reduces readability.
+- Keep types close to usage; shared types go in `types/` or `lib/types/`.
+
+**If adding new API shapes, define:**
+- Request/response types
+- Error shape
+- Validation strategy (runtime validation if external input)
+
+**Type Safety Rules:**
+- No implicit `any`
+- Explicit return types for public functions
+- Use `unknown` + narrowing instead of `any`
+- Keep types readable and maintainable
+
+**Type Organization:**
+- Keep types close to usage
+- Shared types in `types/` or `lib/types/`
+- Define API shapes explicitly
+- Use runtime validation for external input
+
+**Reference Documentation:**
+- @rules/operational-rules.mdc - Core standards
+- @rules/040_code-review.mdc - Review checklist

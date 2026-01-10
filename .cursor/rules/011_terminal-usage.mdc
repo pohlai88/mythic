@@ -1,0 +1,47 @@
+---
+description: Terminal command safety and best practices
+globs: "*.sh,*.bash,*.zsh"
+alwaysApply: false
+---
+
+# Terminal Safety
+
+**Terminal Best Practices:**
+- Use terminal for: package installs, builds, tests, migrations
+- Avoid terminal for: file edits, code generation (use file operations)
+- Always verify commands before execution
+- Use project-specific scripts from `package.json`
+
+**Safe Commands:**
+```bash
+# Package management
+pnpm install
+pnpm add <package>
+pnpm remove <package>
+
+# Development
+pnpm dev
+pnpm build
+pnpm test
+
+# Validation
+pnpm check
+pnpm lint
+pnpm type-check
+```
+
+**Blocked Commands:**
+- `rm -rf` (use file operations instead)
+- `git` commands (use Git tools instead)
+- Direct file edits (use file operations instead)
+- Commands that exfiltrate secrets or run untrusted scripts
+
+**Command Safety Rules:**
+- If suggesting a command: explain what it does in one line
+- Avoid destructive commands by default (rm -rf, reset --hard, drop db)
+- Prefer dry-run options when available
+- If a destructive command is truly required, label it clearly as destructive
+
+**Reference Documentation:**
+- @rules/050_terminal-safety.mdc - Core terminal safety
+- @rules/020_tools-and-context.mdc - Tool usage guidelines

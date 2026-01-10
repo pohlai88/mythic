@@ -1,0 +1,41 @@
+---
+description: CLI and shell mode configuration
+globs: "*.sh,*.bash,*.ts"
+alwaysApply: false
+---
+
+# CLI & Shell Mode
+
+**CLI Usage:**
+- Use CLI for headless operations
+- Batch processing tasks
+- CI/CD integration
+- Automated workflows
+
+**Shell Mode:**
+- Enable for interactive terminal sessions
+- Use for debugging and exploration
+- Configure shell preferences
+- Set up shell aliases
+
+**CLI Scripts:**
+Create CLI utilities in `scripts/cli/`:
+- `cursor-plan.ts` - Generate plans via CLI
+- `cursor-review.ts` - Review code via CLI
+- `cursor-docs.ts` - Generate docs via CLI
+
+**CLI Best Practices:**
+- Use CLI for headless operations
+- Batch process multiple files
+- Integrate with CI/CD pipelines
+- Enable logging and error handling
+
+**Shell Mode Configuration:**
+- Enable for interactive debugging
+- Configure shell preferences
+- Set up useful aliases
+- Use for exploration and testing
+
+**Reference Documentation:**
+- @rules/015_headless-mode.mdc - Headless configuration
+- @rules/011_terminal-usage.mdc - Terminal safety

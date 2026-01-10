@@ -1,0 +1,27 @@
+---
+description: "Editing style: minimal diffs, consistent formatting, avoid churn."
+alwaysApply: true
+---
+
+# Editing Discipline
+
+- Do not reformat unrelated code.
+- Keep diffs minimal: change only what is needed for the requirement.
+- Preserve existing naming conventions and project patterns.
+- If you introduce a new pattern, apply it consistently or not at all.
+
+**Next.js/React Specific:**
+- Follow App Router conventions (`app/` directory structure)
+- Prefer Server Components by default; use `"use client"` only when required
+- Keep data-fetching/server-only code out of Client Components
+- Use Next.js project structure guidance for file organization
+
+**Code Style:**
+- Align with Prettier/ESLint configuration
+- Don't fight the formatter
+- Keep config standard and minimal
+- Preserve existing code style
+
+**Reference Documentation:**
+- @rules/018_web-development.mdc - Next.js/React patterns
+- @rules/operational-rules.mdc - Core standards

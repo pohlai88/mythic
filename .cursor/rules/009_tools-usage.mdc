@@ -1,0 +1,41 @@
+---
+description: Tool usage guidelines and best practices
+globs: "*.ts,*.tsx,*.js,*.jsx"
+alwaysApply: false
+---
+
+# Tools Integration
+
+**Tool Categories:**
+
+1. **File Operations** - Read, write, search files
+   - Preferred for code changes
+   - Use for: editing files, creating files, searching codebase
+
+2. **Terminal** - Shell commands, package management
+   - Use for: package installs, builds, tests, migrations
+   - Avoid for: file edits, code generation
+
+3. **Browser** - Web testing, scraping
+   - Use for: E2E testing, verifying pages, testing API endpoints
+   - Use for: documentation preview, Nextra rendering
+
+4. **MCP Tools** - External integrations
+   - Use for: GitHub operations, Supabase queries, external APIs
+   - Prefer MCP tools over direct API calls
+
+5. **Git** - Version control operations
+   - Use Git tools, not raw git commands
+   - Use for: commits, branches, status checks
+
+**Tool Usage Rules:**
+- Always use file operations for code changes (not terminal)
+- Use terminal only for package installs, builds, tests
+- Use browser for testing web functionality
+- Use Git tools for version control (not raw git commands)
+- Log tool usage for audit trail
+
+**Reference Documentation:**
+- @rules/020_tools-and-context.mdc - Core tool usage
+- @rules/011_terminal-usage.mdc - Terminal safety
+- @rules/012_browser-automation.mdc - Browser testing

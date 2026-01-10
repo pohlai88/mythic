@@ -1,0 +1,29 @@
+---
+description: "Use tools effectively: read/search before writing; cite paths."
+alwaysApply: true
+---
+
+# Tools & Context Use
+
+- If the task involves existing code: read relevant files first (don't guess).
+- When you change behavior, point to the exact file(s) and key lines/sections.
+- Prefer "surgical edits" over rewriting whole files.
+- If you need new files, propose names/paths before creating them.
+
+**Tool Categories:**
+1. **File Operations** - Read, write, search files (preferred for code changes)
+2. **Terminal** - Shell commands, package management (use for installs, builds, tests)
+3. **Browser** - Web testing, scraping (use for E2E testing)
+4. **MCP Tools** - External integrations (use for GitHub, Supabase, etc.)
+5. **Git** - Version control operations (use Git tools, not raw git commands)
+
+**Tool Usage Rules:**
+- Always use file operations for code changes (not terminal)
+- Use terminal only for: package installs, builds, tests, migrations
+- Use browser for testing web functionality
+- Use Git tools for version control (not raw git commands)
+- Log tool usage for audit trail
+
+**Reference Documentation:**
+- @rules/011_terminal-usage.mdc - Terminal safety guidelines
+- @rules/012_browser-automation.mdc - Browser testing patterns

@@ -1,0 +1,41 @@
+---
+description: Headless mode configuration for CI/CD and automation
+globs: "*.yml,*.yaml,*.sh"
+alwaysApply: false
+---
+
+# Headless Mode
+
+**Headless Use Cases:**
+- CI/CD pipelines
+- Automated testing
+- Batch processing
+- Scheduled tasks
+
+**Configuration:**
+- Set up headless mode for CI/CD
+- Configure output formats
+- Enable logging and monitoring
+- Set up error handling
+
+**Headless Mode Setup:**
+- Configure for CI/CD environments
+- Set output format (JSON, text, structured)
+- Enable comprehensive logging
+- Set up error handling and reporting
+
+**Best Practices:**
+- Use headless mode for automation
+- Configure appropriate output formats
+- Enable logging for debugging
+- Set up error handling and recovery
+
+**CI/CD Integration:**
+- Use headless mode in GitHub Actions
+- Configure for automated testing
+- Enable batch processing
+- Set up scheduled tasks
+
+**Reference Documentation:**
+- @rules/014_cli-shell-mode.mdc - CLI configuration
+- @rules/operational-rules.mdc - Core standards

@@ -1,0 +1,39 @@
+---
+description: "Make answers navigable: always include file paths and anchors."
+alwaysApply: true
+---
+
+# Reference Style
+
+- Always reference concrete paths: `src/...`, `apps/...`, etc.
+- For configs, include the filename and the exact block to paste.
+- For multi-step tasks, number steps and keep them short.
+
+**@ Mention System:**
+
+**@ Mentions Available:**
+- `@Docs` - External documentation (framework knowledge)
+- `@Codebase` - Search codebase (project patterns)
+- `@Rules` - Cursor rules (project standards)
+- `@Files` - Specific files (implementations)
+- `@Memories` - Saved context (persistent context)
+- `@Terminal` - Terminal commands
+- `@Browser` - Browser automation
+- `@MCP` - MCP tools
+
+**Best Practices:**
+- Use @Docs for framework questions
+- Use @Codebase for pattern discovery
+- Use @Rules for project standards
+- Use @Files for specific implementations
+- Use @Memories for persistent context
+
+**Reference Format:**
+- Always include file paths: `app/api/users/route.ts`
+- Include line numbers when relevant: `app/components/UserCard.tsx:15-20`
+- Reference config blocks with filenames: `tsconfig.json` → `compilerOptions`
+- Use relative paths from project root
+
+**Reference Documentation:**
+- @rules/016_reference-system.mdc - Comprehensive reference guide
+- @rules/005_documentation-indexing-strategy.mdc - Documentation strategy

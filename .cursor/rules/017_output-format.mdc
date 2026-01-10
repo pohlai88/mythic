@@ -1,0 +1,55 @@
+---
+description: Output format standards and structure
+globs: "*"
+alwaysApply: true
+---
+
+# Output Format
+
+**Standard Output Structure:**
+
+When delivering work, structure as:
+1) What changed (bullet list)
+2) Files touched (list)
+3) How to verify (commands / steps)
+4) Notes / tradeoffs (if any)
+
+**Output Formats by Task Type:**
+
+- **Diffs** - For code changes
+  - Always show diffs for code changes
+  - Use file-by-file format
+  - Include context lines
+
+- **Files** - For new files
+  - Show complete file content
+  - Include file path
+  - Add appropriate comments
+
+- **Plans** - For complex tasks
+  - Structured plan with todos
+  - Break down into steps
+  - Include verification criteria
+
+- **Summaries** - For reviews
+  - Checklist format
+  - Include findings
+  - Provide recommendations
+
+**Format Rules:**
+- Always show diffs for code changes
+- Use structured output for plans
+- Include code examples in documentation
+- Format output for readability
+- Reference concrete paths: `src/...`, `app/...`, etc.
+
+**For Code Changes:**
+1) Summary (what changed)
+2) Files touched (list)
+3) Patch (file-by-file code blocks)
+4) How to verify (commands + expected outcomes)
+5) Notes / tradeoffs (if any)
+
+**Reference Documentation:**
+- @rules/070_output-format.mdc - Core output format
+- @rules/080_reference-style.mdc - Reference guidelines

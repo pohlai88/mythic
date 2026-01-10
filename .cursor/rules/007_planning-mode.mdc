@@ -1,0 +1,30 @@
+---
+description: Planning mode best practices and templates
+globs: "*.ts,*.tsx,*.md"
+alwaysApply: false
+---
+
+# Planning Mode Guidelines
+
+**When to Use Planning Mode:**
+- Tasks with 3+ distinct steps
+- Complex features requiring multiple files
+- Integration work across modules
+- Refactoring that affects multiple components
+
+**Planning Process:**
+1. Reference @docs/architecture/system-overview.md in plans
+2. Break down complex features into actionable todos
+3. Validate plans against existing patterns before execution
+4. State the goal in 1–2 lines
+5. List the smallest steps to implement
+6. State how we will verify (tests, build, lint, manual check)
+
+**Plan Templates:**
+- API development: `@.cursor/templates/plans/api-endpoint-plan.md`
+- Component creation: `@.cursor/templates/plans/component-plan.md`
+- Migration tasks: `@.cursor/templates/plans/migration-plan.md`
+
+**Reference Documentation:**
+- @rules/010_planning.mdc - Core planning discipline
+- @docs/architecture/system-overview.md - Architecture context

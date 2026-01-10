@@ -1,0 +1,53 @@
+---
+description: Next.js/React web development patterns and conventions
+globs: "*.tsx,*.ts,app/**/*,components/**/*"
+alwaysApply: false
+---
+
+# Web Development Optimization
+
+**Next.js/React Patterns:**
+
+**App Router Conventions:**
+- Default to App Router (`app/` directory)
+- Use colocated routes/layouts
+- Follow Next.js project structure guidance
+
+**Server vs Client Components:**
+- Prefer Server Components by default
+- Only use `"use client"` when required (interactivity, hooks, browser APIs)
+- Keep data-fetching/server-only code out of Client Components
+
+**API Route Patterns:**
+- Use `app/api/...` for route handlers
+- Follow RESTful conventions
+- Implement proper error handling
+- Use TypeScript for type safety
+
+**Component Structure:**
+- Keep components focused and reusable
+- Use proper TypeScript types
+- Follow naming conventions
+- Organize in `components/` directory
+
+**Styling:**
+- Use Tailwind CSS for styling
+- Follow design system patterns
+- Maintain consistent spacing and colors
+
+**Web Dev Workflows:**
+- Component creation workflow
+- API endpoint development
+- Page creation process
+- Testing strategies
+- Performance optimization
+
+**Next.js Specific:**
+- Use `next lint` for lint workflow
+- Follow Next.js best practices
+- Optimize images and assets
+- Use proper metadata and SEO
+
+**Reference Documentation:**
+- @rules/010_nextjs-architecture.mdc - Next.js architecture rules
+- @rules/030_code-style-and-format.mdc - Code style guidelines

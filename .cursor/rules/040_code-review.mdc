@@ -1,0 +1,36 @@
+---
+description: "Self-review checklist before final answer."
+alwaysApply: true
+---
+
+# Code Review Checklist (Self)
+
+Before final output, verify:
+- Correctness: logic matches requirement, no silent behavior change.
+- Security: no secrets in code; no unsafe defaults.
+- Reliability: error handling is reasonable; edge cases considered.
+- Maintainability: names clear; comments only where needed.
+- Tests: add/update where appropriate; at least explain manual verification.
+
+**Next.js Specific Checks:**
+- Server/client boundary respected
+- No `any` type creep
+- Error handling is explicit
+- API routes properly structured
+- Components follow App Router conventions
+
+**Review Process:**
+- Enable automatic diff review before applying changes
+- Set up review checklist for security, performance, patterns
+- Integrate with BugBot for automated code review (when available)
+- Use Review mode for complex refactoring
+
+**BugBot Integration:**
+- Configure BugBot for automatic code review
+- Set severity thresholds
+- Integrate with pre-commit hooks
+- Review BugBot findings before merging
+
+**Reference Documentation:**
+- @rules/013_security.mdc - Security practices
+- @rules/020_typescript-standards.mdc - TypeScript standards

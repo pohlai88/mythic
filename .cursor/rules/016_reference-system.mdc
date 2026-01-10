@@ -1,0 +1,51 @@
+---
+description: Reference system and @ mention best practices
+globs: "*.md,*.mdc,*.mdx"
+alwaysApply: false
+---
+
+# Reference System
+
+**Reference Types:**
+
+1. **@Docs** - External documentation
+   - Use for: Framework knowledge (Next.js, React, Supabase)
+   - Indexed in Cursor Settings > Features > Docs
+
+2. **@Codebase** - Codebase search
+   - Use for: Project patterns, existing implementations
+   - Searches entire codebase
+
+3. **@Rules** - Cursor rules
+   - Use for: Project standards, conventions
+   - References `.cursor/rules/*.mdc` files
+
+4. **@Files** - Specific files
+   - Use for: Specific implementations, configs
+   - References exact file paths
+
+5. **@Memories** - Saved memories
+   - Use for: Persistent context, project decisions
+   - Saved in Cursor Memories
+
+**Additional @ Mentions:**
+- `@Terminal` - Terminal commands
+- `@Browser` - Browser automation
+- `@MCP` - MCP tools
+
+**Reference Best Practices:**
+- Use @Docs for framework questions
+- Use @Codebase for pattern discovery
+- Use @Rules for project standards
+- Use @Files for specific implementations
+- Use @Memories for persistent context
+
+**Reference Format:**
+- Always include file paths: `app/api/users/route.ts`
+- Include line numbers when relevant: `app/components/UserCard.tsx:15-20`
+- Reference config blocks with filenames: `tsconfig.json` → `compilerOptions`
+- Use relative paths from project root
+
+**Reference Documentation:**
+- @rules/080_reference-style.mdc - Reference style guidelines
+- @rules/005_documentation-indexing-strategy.mdc - Documentation strategy

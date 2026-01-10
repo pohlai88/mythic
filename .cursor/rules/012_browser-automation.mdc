@@ -1,0 +1,44 @@
+---
+description: Browser automation and testing patterns
+globs: "*.ts,*.tsx,*.test.ts,*.spec.ts"
+alwaysApply: false
+---
+
+# Browser Automation
+
+**Browser Use Cases:**
+- Test Next.js pages and components
+- Verify API endpoints
+- Check documentation rendering
+- Validate user flows
+
+**Configuration:**
+- Use browser for E2E testing scenarios
+- Screenshot on errors for debugging
+- Test responsive design
+- Verify accessibility
+
+**Implementation:**
+- Create browser test scripts in `scripts/browser-tests/`
+- Use browser automation for documentation preview
+- Test Nextra documentation rendering
+- Validate API responses
+
+**Browser Testing Patterns:**
+- Navigate to pages and verify content
+- Test form submissions
+- Verify API endpoint responses
+- Check documentation rendering
+- Validate responsive design
+- Test accessibility features
+
+**Best Practices:**
+- Use browser for testing web functionality
+- Screenshot on errors for debugging
+- Test both desktop and mobile views
+- Verify accessibility compliance
+- Test documentation rendering
+
+**Reference Documentation:**
+- @rules/009_tools-usage.mdc - Tool usage guidelines
+- @rules/018_web-development.mdc - Web development patterns

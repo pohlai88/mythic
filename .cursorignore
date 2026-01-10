@@ -1,0 +1,39 @@
+﻿# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+
+# Environment
+.env
+.env*.local
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary
+*.tmp
+*.temp
+.cache/
+.turbo
+
+# Documentation drafts
+docs/drafts/
+docs/temp/
+*.draft.md
+
+# OS / editor
+.DS_Store
+Thumbs.db

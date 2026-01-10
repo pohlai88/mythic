@@ -1,0 +1,22 @@
+---
+description: "Next.js App Router conventions and component boundaries."
+alwaysApply: true
+---
+
+# Next.js Architecture Rules
+
+- Default to App Router conventions (`app/`), with colocated routes/layouts.
+- Prefer Server Components by default; only use `"use client"` when required.
+- Keep data-fetching/server-only code out of Client Components.
+- For route structure and file conventions, follow Next.js project structure guidance.
+- Use `next lint` for lint workflow when present.
+
+**When proposing files, use a clear Next.js layout:**
+- `app/(group)/...` for route groups
+- `app/api/...` for route handlers (when needed)
+- `components/` for reusable UI
+- `lib/` for pure utilities and server/client helpers
+
+**Reference Documentation:**
+- @rules/018_web-development.mdc - Web development patterns
+- @docs/architecture/system-overview.md - System architecture

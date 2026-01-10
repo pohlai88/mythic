@@ -1,0 +1,44 @@
+---
+description: Agent mode selection guidelines and best practices
+globs: "*.ts,*.tsx,*.js,*.jsx"
+alwaysApply: false
+---
+
+# Agent Modes Configuration
+
+**Mode Selection Strategy:**
+
+| Mode | When to Use | Configuration |
+|------|-------------|--------------|
+| **Ask** | Quick questions, code explanations | Default for simple queries |
+| **Manual** | Precise control over tool usage | For risky operations |
+| **Custom** | Project-specific workflows | Configured per task type |
+
+**Mode Selection Criteria:**
+
+**Use Ask Mode For:**
+- Quick questions about code
+- Code explanations
+- Simple queries
+- Information requests
+
+**Use Manual Mode For:**
+- Database changes
+- File deletions
+- Risky operations
+- When you need precise control
+
+**Use Custom Mode For:**
+- Documentation generation workflows
+- Testing workflows
+- Project-specific automation
+- Repeated task patterns
+
+**Implementation:**
+- Set default mode based on task complexity
+- Document mode selection criteria in this rule
+- Reference mode usage in other rules
+
+**Reference Documentation:**
+- @rules/operational-rules.mdc - Core operational standards
+- @rules/010_planning.mdc - Planning mode usage

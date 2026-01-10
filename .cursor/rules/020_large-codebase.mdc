@@ -1,0 +1,51 @@
+---
+description: Large codebase optimization strategies
+globs: "*"
+alwaysApply: false
+---
+
+# Large Codebase Optimization
+
+**Optimization Strategies:**
+- Incremental codebase indexing
+- Focused context windows
+- Module-based development
+- Lazy loading patterns
+- Code splitting strategies
+
+**Large Codebase Best Practices:**
+- Use @Codebase for targeted searches
+- Break down large tasks into modules
+- Use Planning mode for complex features
+- Optimize rule scope with globs
+- Use incremental indexing
+
+**Performance Considerations:**
+- Avoid changes that increase build time unless required
+- Prefer lazy-loading and targeted imports
+- Narrow dependency additions
+- Justify new dependencies and consider minimal alternatives
+- Use code splitting for large bundles
+
+**Module-Based Development:**
+- Break down large features into modules
+- Use clear module boundaries
+- Minimize cross-module dependencies
+- Use lazy loading for large modules
+
+**Indexing Optimization:**
+- Use incremental indexing
+- Focus on frequently accessed files
+- Exclude unnecessary files from index
+- Optimize index refresh frequency
+
+**Context Management:**
+- Use focused context windows
+- Reference specific files when possible
+- Use @Codebase for targeted searches
+- Break down large tasks into smaller ones
+
+**Reference Documentation:**
+- @rules/019_codebase-indexing.mdc - Indexing configuration
+- @rules/090_large-repo-performance.mdc - Performance discipline
+- @rules/010_planning.mdc - Planning for complex tasks
