@@ -1,3 +1,13 @@
+---
+doc_type: REFERENCE
+status: active
+owner: documentation-governance
+source_of_truth: true
+created: 2025-01-01
+modified: 2026-01-10
+tags: [reference, file-system, best-practices, erp, enterprise]
+---
+
 # File System Management Best Practices for Large ERP Systems
 
 **Research Date:** January 2025

@@ -1,3 +1,14 @@
+---
+doc_type: GUIDE
+status: active
+owner: documentation-governance
+source_of_truth: true
+created: 2026-01-10
+modified: 2026-01-10
+tags: [documentation, organization, quick-start]
+migrated_from: DOCUMENTATION_ORGANIZATION_QUICK_START.md
+---
+
 # Documentation Organization - Quick Start Guide
 
 **Status**: Ready to Execute

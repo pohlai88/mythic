@@ -1,7 +1,14 @@
-# TurboRepo Workspace Optimization
+---
+doc_type: REFERENCE
+status: active
+owner: documentation-governance
+source_of_truth: true
+created: 2024-12-19
+modified: 2026-01-10
+tags: [reference, turborepo, monorepo, optimization]
+---
 
-**Date:** 2024-12-19
-**Status:** ✅ TurboRepo Optimized
+# TurboRepo Workspace Optimization
 
 ---
 

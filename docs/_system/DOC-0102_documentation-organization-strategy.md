@@ -1,3 +1,14 @@
+---
+doc_type: STANDARD
+status: active
+owner: documentation-governance
+source_of_truth: true
+created: 2026-01-10
+modified: 2026-01-10
+tags: [documentation, organization, strategy]
+migrated_from: DOCUMENTATION_ORGANIZATION_STRATEGY.md
+---
+
 # Documentation Organization Strategy
 
 **Status**: Implementation Plan

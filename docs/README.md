@@ -12,19 +12,19 @@ This directory contains all canonical internal documentation. For public-facing 
 
 - **Getting Started**: See root [`QUICK_START.md`](../QUICK_START.md)
 - **Quick Reference**: See root [`QUICK_REFERENCE.md`](../QUICK_REFERENCE.md)
-- **System Architecture**: See root [`CURSOR_SYSTEM_ARCHITECTURE.md`](../CURSOR_SYSTEM_ARCHITECTURE.md)
+- **System Architecture**: [`docs/architecture/DOC-0100_system-architecture.md`](./architecture/DOC-0100_system-architecture.md)
 
 ### Main Documentation Categories
 
-| Category | Description | Path |
-|----------|-------------|------|
-| **🏛️ Architecture** | System design, architecture decisions | [`architecture/`](./architecture/) |
-| **📡 API** | API documentation (GraphQL, REST, tRPC) | [`api/`](./api/) |
-| **🏛️ Governance** | Internal governance & system control | [`governance/`](./governance/) |
-| **📚 Guides** | How-to guides & setup instructions | [`guides/`](./guides/) |
-| **📖 Reference** | Reference documentation & best practices | [`reference/`](./reference/) |
-| **🗄️ Migrations** | Historical migration documentation | [`migrations/`](./migrations/) ⚠️ |
-| **📅 Changelog** | Implementation summaries & history | [`changelog/`](./changelog/) ⚠️ |
+| Category           | Description                              | Path                               |
+| ------------------ | ---------------------------------------- | ---------------------------------- |
+| **🏛️ Architecture** | System design, architecture decisions    | [`architecture/`](./architecture/) |
+| **📡 API**          | API documentation (GraphQL, REST, tRPC)  | [`api/`](./api/)                   |
+| **🏛️ Governance**   | Internal governance & system control     | [`governance/`](./governance/)     |
+| **📚 Guides**       | How-to guides & setup instructions       | [`guides/`](./guides/)             |
+| **📖 Reference**    | Reference documentation & best practices | [`reference/`](./reference/)       |
+| **🗄️ Migrations**   | Historical migration documentation       | [`migrations/`](./migrations/) ⚠️   |
+| **📅 Changelog**    | Implementation summaries & history       | [`changelog/`](./changelog/) ⚠️     |
 
 ⚠️ = Excluded from AI context (historical reference only)
 
@@ -33,8 +33,8 @@ This directory contains all canonical internal documentation. For public-facing 
 ## 🏗️ Architecture
 
 **Current Documentation**:
-- [RFL Doctrine v1.0](./architecture/RFL_DOCTRINE_v1.0.md) - Request-First Logic doctrine
-- [Consistency & Sustainability Audit](./architecture/CONSISTENCY_SUSTAINABILITY_AUDIT.md)
+- [RFL Doctrine v1.0](./architecture/DOC-0114_rfl-doctrine-v1.0.md) - Request-First Logic doctrine
+- [Consistency & Sustainability Audit](./architecture/DOC-0118_consistency-sustainability-audit.md)
 
 **Purpose**: System architecture, design patterns, ADRs (Architecture Decision Records)
 
@@ -43,9 +43,9 @@ This directory contains all canonical internal documentation. For public-facing 
 ## 📡 API Documentation
 
 **Current Documentation**:
-- [API Autogeneration Strategy](./api/API_AUTOGENERATION_STRATEGY.md)
-- [API Autogeneration Implementation](./api/API_AUTOGENERATION_IMPLEMENTATION.md)
-- [API Autogeneration Quick Reference](./api/API_AUTOGENERATION_QUICK_REFERENCE.md)
+- [API Autogeneration Strategy](./api/DOC-0115_api-autogeneration-strategy.md)
+- [API Autogeneration Implementation](./api/DOC-0116_api-autogeneration-implementation.md)
+- [API Autogeneration Quick Reference](./api/DOC-0117_api-autogeneration-quick-reference.md)
 
 **Purpose**: API specifications for GraphQL, REST, and tRPC endpoints
 
@@ -79,8 +79,8 @@ This directory contains all canonical internal documentation. For public-facing 
 **Current Documentation**:
 - [Cursor Best Practices (Evidence-Based)](./reference/CURSOR_BEST_PRACTICES_EVIDENCE_BASED.md)
 - [KPI Reference](./reference/KPI_REFERENCE.md)
-- [Turbopack Support](./reference/TURBOPACK_SUPPORT.md)
-- [Turborepo Quick Start](./reference/TURBOREPO_QUICK_START.md)
+- [Turbopack Support](./reference/DOC-0120_turbopack-support.md)
+- [Turborepo Quick Start](./reference/DOC-0121_turborepo-quick-start.md)
 - [Turborepo Optimization](./reference/TURBOREPO_OPTIMIZATION.md)
 - [Node Version Management](./reference/NODE_VERSION_MANAGEMENT.md)
 - [VS Code Nextra Integration](./reference/VSCODE_NEXTRA_INTEGRATION.md)
@@ -119,14 +119,14 @@ Past implementation summaries. **For audit trail only**, not current state.
 
 **Documentation Governance & Control**:
 
-| File | Purpose |
-|------|---------|
-| [INVENTORY.md](./_system/INVENTORY.md) | Complete file census (259 files) |
-| [TAXONOMY.md](./_system/TAXONOMY.md) | Canonical directory structure |
-| [DECISIONS.md](./_system/DECISIONS.md) | Append-only decision ledger |
-| [CONTRADICTIONS.md](./_system/CONTRADICTIONS.md) | Conflict tracking & resolution |
-| [MIGRATION_PLAN.md](./_system/MIGRATION_PLAN.md) | Cleanup execution plan |
-| [STATUS_REPORT.md](./_system/STATUS_REPORT.md) | Cleanup status summary |
+| File                                             | Purpose                          |
+| ------------------------------------------------ | -------------------------------- |
+| [INVENTORY.md](./_system/INVENTORY.md)           | Complete file census (259 files) |
+| [TAXONOMY.md](./_system/TAXONOMY.md)             | Canonical directory structure    |
+| [DECISIONS.md](./_system/DECISIONS.md)           | Append-only decision ledger      |
+| [CONTRADICTIONS.md](./_system/CONTRADICTIONS.md) | Conflict tracking & resolution   |
+| [MIGRATION_PLAN.md](./_system/MIGRATION_PLAN.md) | Cleanup execution plan           |
+| [STATUS_REPORT.md](./_system/STATUS_REPORT.md)   | Cleanup status summary           |
 
 **Purpose**: Track documentation cleanup, decisions, and governance
 
@@ -137,7 +137,7 @@ Past implementation summaries. **For audit trail only**, not current state.
 ### For Developers
 
 1. **Getting Started**: [`QUICK_START.md`](../QUICK_START.md) in root
-2. **Architecture Overview**: [`CURSOR_SYSTEM_ARCHITECTURE.md`](../CURSOR_SYSTEM_ARCHITECTURE.md)
+2. **Architecture Overview**: [`docs/architecture/DOC-0100_system-architecture.md`](./architecture/DOC-0100_system-architecture.md)
 3. **API Docs**: [`docs/api/`](./api/)
 4. **Setup Guides**: [`docs/guides/`](./guides/)
 

@@ -16,8 +16,8 @@
 ### Performance & Optimization
 | Document | Description |
 |----------|-------------|
-| [Turbopack Support](./TURBOPACK_SUPPORT.md) | Turbopack bundler reference |
-| [Turborepo Quick Start](./TURBOREPO_QUICK_START.md) | Turborepo monorepo quick start |
+| [Turbopack Support](./DOC-0120_turbopack-support.md) | Turbopack bundler reference |
+| [Turborepo Quick Start](./DOC-0121_turborepo-quick-start.md) | Turborepo monorepo quick start |
 | [Turborepo Optimization](./TURBOREPO_OPTIMIZATION.md) | Turborepo optimization strategies |
 
 ### Configuration
@@ -41,7 +41,7 @@
 - [KPI Reference](./KPI_REFERENCE.md) - Project metrics and targets
 
 ### Performance
-- [Turbopack Support](./TURBOPACK_SUPPORT.md) - Fast bundling
+- [Turbopack Support](./DOC-0120_turbopack-support.md) - Fast bundling
 - [Turborepo Optimization](./TURBOREPO_OPTIMIZATION.md) - Monorepo optimization
 
 ### Setup

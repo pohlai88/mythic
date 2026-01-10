@@ -1,7 +1,7 @@
 ---
 description: Strict documentation storage and naming enforcement with hash/version requirements
 globs: "*.md,*.mdx"
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Documentation Storage & Naming Governance (RFC-2119 MANDATORY)

@@ -1,3 +1,14 @@
+---
+doc_type: GUIDE
+status: active
+owner: documentation-governance
+source_of_truth: true
+created: 2026-01-10
+modified: 2026-01-10
+tags: [cursor, optimization, quick-reference]
+migrated_from: CURSOR_OPTIMIZATION_QUICK_REF.md
+---
+
 # 🎯 Cursor Optimization: Quick Reference Card
 
 ## 📦 What You Got

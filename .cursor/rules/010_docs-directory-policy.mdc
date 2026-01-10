@@ -1,6 +1,7 @@
 ---
 description: "Documentation directory policy: designated locations and doc types enforcement."
-alwaysApply: true
+globs: "*.md,*.mdx"
+alwaysApply: false
 ---
 
 # Directory Policy (Always)
@@ -9,11 +10,11 @@ alwaysApply: true
 
 ### ALLOWED Locations
 
-✅ **Root Directory** (essential only, max 11 files)
+✅ **Root Directory** (essential only, STRICT 3 files)
 - README.md (required)
 - QUICK_START.md (required)
 - QUICK_REFERENCE.md (recommended)
-- Essential system docs (max 8 additional)
+- **NO OTHER DOCUMENTATION ALLOWED** - All other docs must be in designated directories
 
 ✅ **docs/** (canonical internal documentation)
 - docs/_system/ (governance tracking)
@@ -44,8 +45,10 @@ alwaysApply: true
 
 ### FORBIDDEN Locations
 
-❌ **Root Directory** (except 11 essential files)
-- No new documentation without governance exception
+❌ **Root Directory** (except 3 essential files)
+- Only README.md, QUICK_START.md, QUICK_REFERENCE.md allowed
+- All other documentation MUST be in designated directories
+- No exceptions for system docs, reference docs, or strategy docs
 
 ❌ **.vscode/** (config only)
 - Only README.md allowed (exception granted)

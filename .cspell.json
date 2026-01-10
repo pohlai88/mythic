@@ -26,7 +26,14 @@
     "turborepo",
     "turbopack",
     "biomejs",
-    "shuding"
+    "shuding",
+    "Autogeneration",
+    "LBOS",
+    "Frontmatter",
+    "frontmatter",
+    "RUNBOOK",
+    "cursorignore",
+    "Cutover"
   ],
   "ignorePaths": [
     "node_modules/**",

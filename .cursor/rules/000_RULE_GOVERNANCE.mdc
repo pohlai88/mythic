@@ -1,0 +1,470 @@
+---
+description: "Rule Configuration Governance - Prevents conflicts and ensures proper rule hierarchy"
+alwaysApply: true
+priority: 0
+---
+
+# Rule Configuration Governance (MANDATORY)
+
+**Purpose**: Prevent rule conflicts, performance degradation, and configuration errors.
+**Authority**: Overrides all other rule configuration patterns.
+**Status**: MANDATORY - Enforced via validation script
+
+---
+
+## 1. Rule Priority Hierarchy (STRICT)
+
+### Priority Levels (0-100)
+
+```
+Priority 0: Rule Governance (this file) - Configuration control
+Priority 1: Master defaults (000_master-cursor-defaults.mdc) - Core behavior
+Priority 2: Core safety (001_core-safety.mdc) - Safety guardrails
+Priority 3-9: Framework rules (conditional loading only)
+Priority 10+: Feature-specific rules (conditional loading only)
+```
+
+**CRITICAL**: Only priorities 0-2 can have `alwaysApply: true`
+
+---
+
+## 2. alwaysApply Configuration Rules (STRICT)
+
+### ✅ ALLOWED: alwaysApply: true
+
+**ONLY these 3 rules:**
+
+```
+1. c:\AI-BOS\mythic\.cursor\rules\000_RULE_GOVERNANCE.mdc
+   - alwaysApply: true
+   - priority: 0
+   - Purpose: Configuration control
+
+2. c:\AI-BOS\mythic\.cursor\rules\000_master-cursor-defaults.mdc
+   - alwaysApply: true
+   - priority: 1
+   - Purpose: Core behavior
+
+3. c:\AI-BOS\mythic\.cursor\rules\001_core-safety.mdc
+   - alwaysApply: true
+   - priority: 2
+   - Purpose: Safety guardrails
+```
+
+### ❌ FORBIDDEN: alwaysApply: true
+
+**ALL other rules MUST use:**
+
+```yaml
+---
+description: "Rule description"
+globs: "*.ext"
+alwaysApply: false  # ← MANDATORY for all rules except the 3 above
+priority: X         # ← OPTIONAL: defaults to 50
+---
+```
+
+**Violations**: Any rule with `alwaysApply: true` (except the 3 allowed) will:
+- ✅ Be auto-fixed to `alwaysApply: false` by validation script
+- ⚠️ Trigger warning in pre-commit hook
+- ❌ Block commit if validation fails
+
+---
+
+## 3. Rule File Naming Convention (MANDATORY)
+
+### Format
+
+```
+[NNN]_descriptive-name.mdc
+
+NNN = 3-digit priority (000-999)
+descriptive-name = kebab-case description
+.mdc = Cursor rule extension
+```
+
+### Examples
+
+```
+✅ CORRECT:
+000_RULE_GOVERNANCE.mdc           (Priority 0)
+000_master-cursor-defaults.mdc    (Priority 1)
+001_core-safety.mdc               (Priority 2)
+010_docs-directory-policy.mdc     (Priority 10)
+020_typescript-standards.mdc      (Priority 20)
+022_documentation-governance.mdc  (Priority 22)
+
+❌ INCORRECT:
+rule-governance.mdc               (No priority prefix)
+000-rule-governance.mdc           (Dashes instead of underscore)
+RULE_GOVERNANCE.mdc               (No priority prefix)
+```
+
+---
+
+## 4. Glob Pattern Requirements (MANDATORY)
+
+### All Conditional Rules MUST Have Globs
+
+```yaml
+---
+description: "Rule description"
+globs: "*.ts,*.tsx"      # ← REQUIRED when alwaysApply: false
+alwaysApply: false
+---
+```
+
+### Common Glob Patterns
+
+```yaml
+# TypeScript files
+globs: "*.ts,*.tsx"
+
+# JavaScript files  
+globs: "*.js,*.jsx"
+
+# Markdown files
+globs: "*.md,*.mdx"
+
+# Cursor rule files
+globs: "*.mdc"
+
+# Next.js app directory
+globs: "app/**/*"
+
+# Specific directories
+globs: "src/**/*.ts,components/**/*.tsx"
+
+# All files (avoid unless necessary)
+globs: "*"
+```
+
+**CRITICAL**: If `alwaysApply: false` and `globs` is missing → Rule never loads!
+
+---
+
+## 5. Rule Conflict Prevention (AUTOMATIC)
+
+### Conflict Detection
+
+The validation script checks for:
+
+```
+❌ CONFLICT TYPE 1: Multiple rules with alwaysApply: true
+└─ Solution: Auto-fix to false (except allowed 3)
+
+❌ CONFLICT TYPE 2: Contradictory instructions
+└─ Solution: Flag for manual review
+
+❌ CONFLICT TYPE 3: Same priority number
+└─ Solution: Warning (not blocking)
+
+❌ CONFLICT TYPE 4: Missing glob patterns
+└─ Solution: Auto-add "globs: '*'" with warning
+
+❌ CONFLICT TYPE 5: Invalid frontmatter
+└─ Solution: Flag for manual fix
+```
+
+---
+
+## 6. Rule Loading Performance Targets
+
+### Performance Budget
+
+```
+Maximum Rules Loaded per Task:
+├── Always loaded: 3 rules (Governance, Master, Safety)
+├── Glob-matched: 5-10 rules (framework-specific)
+└── Total active: 8-13 rules maximum
+
+Context Budget:
+├── Rule overhead: <2% of total context
+├── Load time: <50ms
+└── Response latency: <100ms
+```
+
+### Monitoring
+
+```bash
+# Check active rules for a file type
+pnpm rules:check --file=example.ts
+
+# Output:
+# Always loaded (3):
+#   - 000_RULE_GOVERNANCE.mdc
+#   - 000_master-cursor-defaults.mdc
+#   - 001_core-safety.mdc
+# Glob matched (4):
+#   - 020_typescript-standards.mdc
+#   - 010_nextjs-architecture.mdc
+#   - 013_security.mdc
+#   - zod-mandatory-enforcement.mdc
+# Total: 7 rules (within budget ✅)
+```
+
+---
+
+## 7. Rule Creation Checklist (MANDATORY)
+
+### Before Creating a New Rule
+
+```
+✅ 1. Check if existing rule can be extended
+✅ 2. Determine correct priority (10+ for new rules)
+✅ 3. Set alwaysApply: false (unless exceptional case)
+✅ 4. Define specific glob patterns
+✅ 5. Add clear description
+✅ 6. Document purpose and scope
+✅ 7. Run validation script
+✅ 8. Test with sample files
+```
+
+### Template for New Rules
+
+```yaml
+---
+description: "Clear description of what this rule does"
+globs: "*.ext,*.ext2"
+alwaysApply: false
+priority: 50  # Optional, defaults to 50
+---
+
+# Rule Name
+
+**Purpose**: What this rule accomplishes
+**Scope**: Which files/scenarios it applies to
+**Priority**: Why this priority level
+
+---
+
+## Rules
+
+1. Rule 1
+2. Rule 2
+...
+
+---
+
+**Related Rules**:
+- @rules/related-rule.mdc - Related functionality
+```
+
+---
+
+## 8. Validation Script (AUTOMATIC)
+
+### Location
+
+```
+scripts/validate-rule-config.ts
+```
+
+### What It Checks
+
+```typescript
+// Pseudo-code for validation
+function validateRuleConfig(ruleFile: string) {
+  // Check 1: Frontmatter exists
+  if (!hasFrontmatter(ruleFile)) {
+    error("Missing frontmatter");
+  }
+
+  // Check 2: alwaysApply enforcement
+  const frontmatter = parseFrontmatter(ruleFile);
+  if (frontmatter.alwaysApply === true) {
+    const allowed = [
+      "000_RULE_GOVERNANCE.mdc",
+      "000_master-cursor-defaults.mdc",
+      "001_core-safety.mdc"
+    ];
+    if (!allowed.includes(path.basename(ruleFile))) {
+      warn("Auto-fixing alwaysApply to false");
+      autoFix(ruleFile, { alwaysApply: false });
+    }
+  }
+
+  // Check 3: Glob patterns required
+  if (frontmatter.alwaysApply === false && !frontmatter.globs) {
+    error("Missing glob patterns");
+  }
+
+  // Check 4: Priority conflicts
+  checkPriorityConflicts(frontmatter.priority);
+
+  // Check 5: Naming convention
+  if (!/^\d{3}_[\w-]+\.mdc$/.test(path.basename(ruleFile))) {
+    error("Invalid filename format");
+  }
+}
+```
+
+### Running Validation
+
+```bash
+# Validate all rules
+pnpm validate:rules
+
+# Auto-fix common issues
+pnpm validate:rules --fix
+
+# Check specific rule
+pnpm validate:rules --file=.cursor/rules/022_documentation-governance.mdc
+```
+
+---
+
+## 9. Pre-commit Hook Integration
+
+### Hook Behavior
+
+```bash
+# .husky/pre-commit (partial)
+
+echo "Validating rule configurations..."
+pnpm validate:rules --strict
+
+if [ $? -ne 0 ]; then
+  echo "❌ Rule validation failed"
+  echo "Run: pnpm validate:rules --fix"
+  exit 1
+fi
+
+echo "✅ Rule validation passed"
+```
+
+---
+
+## 10. Emergency Override (USE WITH CAUTION)
+
+### When Rules Cause System Failure
+
+```bash
+# Disable all conditional rules temporarily
+export CURSOR_RULES_MINIMAL=true
+
+# This loads ONLY:
+# - 000_RULE_GOVERNANCE.mdc
+# - 000_master-cursor-defaults.mdc
+# - 001_core-safety.mdc
+
+# Then fix the problematic rule
+pnpm validate:rules --fix
+
+# Re-enable full rule set
+unset CURSOR_RULES_MINIMAL
+```
+
+---
+
+## 11. Rule Audit Log
+
+### Track Rule Changes
+
+```
+Location: .cursor/rule-audit.log
+
+Format:
+[TIMESTAMP] [ACTION] [FILE] [CHANGE]
+
+Example:
+2026-01-10T15:30:00Z AUTO_FIX 022_documentation-governance.mdc alwaysApply: true → false
+2026-01-10T15:30:01Z VALIDATE 010_docs-directory-policy.mdc alwaysApply: true → false
+2026-01-10T15:30:02Z SUCCESS All rules validated
+```
+
+---
+
+## 12. Troubleshooting Guide
+
+### Problem: Cursor hangs or is slow
+
+```
+Cause: Too many alwaysApply: true rules
+Solution:
+1. Run: pnpm validate:rules --fix
+2. Check: Only 3 rules should have alwaysApply: true
+3. Restart Cursor
+```
+
+### Problem: Rule not loading
+
+```
+Cause: Missing glob patterns or alwaysApply: false
+Solution:
+1. Check frontmatter has globs: "*.ext"
+2. Verify file extension matches glob pattern
+3. Run: pnpm rules:check --file=your-file.ts
+```
+
+### Problem: Conflicting rules
+
+```
+Cause: Multiple rules giving contradictory instructions
+Solution:
+1. Check priority levels
+2. Higher priority (lower number) wins
+3. Master rule (Priority 1) overrides all
+4. Document exception in rule description
+```
+
+---
+
+## 13. Enforcement Summary
+
+| Check | Enforcement | Action |
+|-------|-------------|--------|
+| alwaysApply: true (non-allowed) | Validation script | Auto-fix to false |
+| Missing globs | Validation script | Error + manual fix |
+| Invalid filename | Validation script | Error + manual fix |
+| Priority conflict | Validation script | Warning only |
+| Performance budget exceeded | Runtime monitoring | Warning log |
+
+---
+
+## 14. Success Metrics
+
+### Targets
+
+```
+✅ Rule load time: <50ms
+✅ Active rules per task: <13
+✅ Context overhead: <2%
+✅ Zero alwaysApply violations
+✅ 100% rules have glob patterns (when alwaysApply: false)
+✅ Zero priority conflicts (same number)
+```
+
+### Monitoring
+
+```bash
+# Check metrics
+pnpm rules:metrics
+
+# Output:
+# Rule Configuration Health: ✅ HEALTHY
+# - Total rules: 32
+# - Always loaded: 3 (target: 3)
+# - Conditional: 29 (target: >90%)
+# - Avg load time: 42ms (target: <50ms)
+# - Violations: 0 (target: 0)
+```
+
+---
+
+## CRITICAL RULES SUMMARY
+
+1. ✅ **ONLY 3 RULES** can have `alwaysApply: true`
+2. ❌ **ALL OTHER RULES** must have `alwaysApply: false`
+3. ✅ **GLOB PATTERNS** required for all conditional rules
+4. ✅ **NAMING CONVENTION** [NNN]_descriptive-name.mdc
+5. ✅ **VALIDATION SCRIPT** runs on pre-commit
+6. ✅ **AUTO-FIX** enabled for common violations
+7. ✅ **PERFORMANCE BUDGET** <13 rules active, <50ms load
+
+---
+
+**Status**: MANDATORY - Enforced via validation script
+**Version**: 1.0.0
+**Created**: 2026-01-10
+**Authority**: Repository Governance Policy

@@ -1,3 +1,13 @@
+---
+doc_type: REFERENCE
+status: active
+owner: documentation-governance
+source_of_truth: true
+created: 2026-01-10
+modified: 2026-01-10
+tags: [reference, cursor, best-practices, optimization, evidence-based]
+---
+
 # Cursor Capability Optimization: Best Practices Guide
 
 **Evidence-Based Recommendations for Maximum Productivity**

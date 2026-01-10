@@ -8,8 +8,8 @@
 
 | Document | Description | Status |
 |----------|-------------|--------|
-| [API Autogeneration Strategy](./API_AUTOGENERATION_STRATEGY.md) | Strategy for API autogeneration | Active |
-| [API Autogeneration Implementation](./API_AUTOGENERATION_IMPLEMENTATION.md) | Implementation details | Active |
+| [API Autogeneration Strategy](./DOC-0115_api-autogeneration-strategy.md) | Strategy for API autogeneration | Active |
+| [API Autogeneration Implementation](./DOC-0116_api-autogeneration-implementation.md) | Implementation details | Active |
 | [API Autogeneration Quick Reference](./API_AUTOGENERATION_QUICK_REFERENCE.md) | Quick reference guide | Active |
 
 ---
@@ -62,4 +62,4 @@ http://localhost:3000/api/trpc-playground
 
 ---
 
-**For API Questions**: See [API Autogeneration Quick Reference](./API_AUTOGENERATION_QUICK_REFERENCE.md)
+**For API Questions**: See [API Autogeneration Quick Reference](./DOC-0117_api-autogeneration-quick-reference.md)

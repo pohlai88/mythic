@@ -1,5 +1,6 @@
 ---
 description: "Terminal command safety: explain, avoid destructive actions."
+globs: "*.sh,*.bash,*.zsh"
 alwaysApply: false
 ---
 

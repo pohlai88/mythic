@@ -1,3 +1,14 @@
+---
+doc_type: STANDARD
+status: active
+owner: documentation-governance
+source_of_truth: true
+created: 2026-01-10
+modified: 2026-01-10
+tags: [nextjs, configuration, validation, types]
+migrated_from: NEXTJS_CONFIGURATION_VALIDATION.md
+---
+
 # Next.js Configuration Validation & Best Practices
 
 ## ✅ Configuration Status
@@ -28,7 +39,7 @@ pnpm types:watch
 
 # Individual type generation
 pnpm db:types          # Drizzle database types
-pnpm graphql:codegen    # GraphQL types
+pnpm graphql:codegen   # GraphQL types
 ```
 
 ---

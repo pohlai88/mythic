@@ -1,6 +1,7 @@
 ---
 description: "Documentation edit scope: restructure only, no style polishing."
-alwaysApply: true
+globs: "*.md,*.mdx"
+alwaysApply: false
 ---
 
 # Documentation Edit Scope (Always)

@@ -1,5 +1,6 @@
 ---
 description: "Keep diffs small; avoid formatting churn; align with Prettier/ESLint."
+globs: "*.ts,*.tsx,*.js,*.jsx"
 alwaysApply: false
 ---
 

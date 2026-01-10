@@ -1,5 +1,6 @@
 ---
 description: "Make answers navigable: always include file paths and anchors."
+globs: "*"
 alwaysApply: false
 ---
 

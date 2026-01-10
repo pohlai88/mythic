@@ -1,7 +1,14 @@
-# Nextra Features - Complete Checklist
+---
+doc_type: REFERENCE
+status: active
+owner: documentation-governance
+source_of_truth: true
+created: 2024-12-19
+modified: 2026-01-10
+tags: [reference, nextra, features, checklist]
+---
 
-**Date:** 2024-12-19
-**Status:** ✅ All Features Implemented
+# Nextra Features - Complete Checklist
 
 ---
 

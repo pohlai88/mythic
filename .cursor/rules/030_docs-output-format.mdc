@@ -1,6 +1,7 @@
 ---
 description: "Stable structured outputs for documentation cleanup tasks."
-alwaysApply: true
+globs: "*.md,*.mdx"
+alwaysApply: false
 ---
 
 # Documentation Task Output Format (Always)

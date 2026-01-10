@@ -8,8 +8,8 @@
 
 | Document | Description | Status |
 |----------|-------------|--------|
-| [RFL Doctrine v1.0](./RFL_DOCTRINE_v1.0.md) | Request-First Logic doctrine | Active |
-| [Consistency & Sustainability Audit](./CONSISTENCY_SUSTAINABILITY_AUDIT.md) | System consistency audit | Active |
+| [RFL Doctrine v1.0](./DOC-0114_rfl-doctrine-v1.0.md) | Request-First Logic doctrine | Active |
+| [Consistency & Sustainability Audit](./DOC-0118_consistency-sustainability-audit.md) | System consistency audit | Active |
 
 ---
 

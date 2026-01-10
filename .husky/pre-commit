@@ -1,6 +1,40 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Validate rule configurations first
+echo "🔍 Validating Cursor rule configurations..."
+pnpm validate:rules:strict
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Rule validation failed!"
+  echo "Fix issues with: pnpm validate:rules:fix"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Rule validation passed"
+echo ""
+
+# Auto-fix documentation naming before validation
+echo "🔧 Auto-fixing documentation naming..."
+pnpm fix:docs:naming || true
+
+# Validate documentation naming
+echo "📋 Validating documentation naming..."
+pnpm validate:docs:naming
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Documentation naming validation failed!"
+  echo "Run: pnpm fix:docs:naming to auto-fix issues"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Documentation naming validation passed"
+echo ""
+
 # Run lint-staged for staged files
 npx lint-staged
 

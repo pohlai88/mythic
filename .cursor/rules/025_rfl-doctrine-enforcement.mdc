@@ -1,0 +1,399 @@
+---
+description: Enforces RFL (Read Fallback Layer) doctrine - RFL must be READ-only, no write operations allowed
+globs: "**/rfl/**/*.ts,**/rfl/**/*.tsx"
+alwaysApply: false
+---
+
+# RFL Doctrine Enforcement (RFC-2119 MANDATORY)
+
+**Authority**: Prime Monad Architecture  
+**Violations**: Will result in compilation errors and pre-commit rejection.
+
+---
+
+## 1. RFL Boundary Enforcement (MANDATORY)
+
+### 1.1 RFL = READ Only
+
+**Definition**: Any file under `**/rfl/**` is part of the Read Fallback Layer and MUST be read-only.
+
+**Non-Negotiable Rule:**
+- RFL files can ONLY read from local cache
+- RFL files can ONLY pull data from server (never push)
+- RFL files can NEVER mutate external state
+- RFL files can NEVER write to transactional database
+
+---
+
+## 2. Forbidden Patterns (MUST NOT)
+
+### 2.1 Forbidden Function Names
+
+**MUST NOT** use these function names in RFL files:
+
+```typescript
+// ❌ FORBIDDEN
+create*()
+update*()
+delete*()
+remove*()
+execute*()
+post*()
+approve*()
+reject*()
+submit*()
+save*()        // If it writes to DB
+persist*()    // If it writes to DB
+commit*()    // If it writes to DB
+```
+
+**Exception**: `set()` is allowed ONLY if it updates local cache from sync (pull operation).
+
+### 2.2 Forbidden Operations
+
+**MUST NOT** perform these operations in RFL files:
+
+```typescript
+// ❌ FORBIDDEN: Database writes
+await db.insert(...)
+await db.update(...)
+await db.delete(...)
+
+// ❌ FORBIDDEN: API mutations
+await fetch('/api/...', { method: 'POST' })
+await fetch('/api/...', { method: 'PUT' })
+await fetch('/api/...', { method: 'DELETE' })
+await fetch('/api/...', { method: 'PATCH' })
+
+// ❌ FORBIDDEN: Transactional operations
+await transaction.begin()
+await transaction.commit()
+
+// ❌ FORBIDDEN: Storing secrets
+localStorage.setItem('token', secret)
+localStorage.setItem('apiKey', key)
+```
+
+### 2.3 Forbidden Imports
+
+**MUST NOT** import these in RFL files:
+
+```typescript
+// ❌ FORBIDDEN: Write operation packages
+import { db } from '@mythic/database'  // If used for writes
+import { loom } from '@mythic/loom'    // Write operations
+import { mutations } from '@mythic/loom' // Mutations
+```
+
+**Allowed**: Can import from `@mythic/database` if ONLY used for read queries (via Prism).
+
+---
+
+## 3. Required Patterns (MUST)
+
+### 3.1 Snapshot Interface
+
+**MUST** use `Snapshot<T>` interface for all RFL data:
+
+```typescript
+import type { Snapshot } from '@mythic/shared-types';
+
+// ✅ REQUIRED: All RFL data must be wrapped in Snapshot
+async function getInvoice(id: string): Promise<Snapshot<Invoice>> {
+  return {
+    data: invoice,
+    asOf: timestamp,              // ✅ REQUIRED
+    freshness: "fresh",           // ✅ REQUIRED
+    revalidateRequired: false,    // ✅ REQUIRED
+    source: "local"               // ✅ REQUIRED
+  };
+}
+```
+
+### 3.2 Freshness Metadata
+
+**MUST** include freshness metadata in all RFL payloads:
+
+```typescript
+interface Snapshot<T> {
+  data: T;
+  asOf: string;                    // ✅ REQUIRED: ISO timestamp
+  freshness: "fresh" | "stale" | "expired";  // ✅ REQUIRED
+  revalidateRequired: boolean;    // ✅ REQUIRED
+  source: "local" | "server";      // ✅ REQUIRED
+}
+```
+
+### 3.3 Allowed Operations
+
+**MUST** only use these patterns in RFL files:
+
+```typescript
+// ✅ ALLOWED: Local cache reads
+async function get(id: string): Promise<Snapshot<T> | null> {
+  return await store.get(id);
+}
+
+// ✅ ALLOWED: Local cache writes (from sync)
+async function set(id: string, data: T, timestamp?: string): Promise<void> {
+  await store.set(id, data, timestamp);
+}
+
+// ✅ ALLOWED: Pull from server (GET only)
+async function pull(id: string): Promise<T> {
+  const response = await fetch(`/api/resource/${id}`, { method: 'GET' });
+  return response.json();
+}
+
+// ✅ ALLOWED: Sync (pull + update local cache)
+async function sync(id: string): Promise<Snapshot<T>> {
+  const data = await this.pull(id);
+  await this.set(id, data);
+  return this.get(id)!;
+}
+```
+
+---
+
+## 4. Validation Rules
+
+### 4.1 Compile-Time Checks
+
+**TypeScript MUST enforce:**
+
+```typescript
+// ✅ TypeScript will catch missing fields
+function getInvoice(id: string): Snapshot<Invoice> {
+  return {
+    data: invoice,
+    // ❌ TypeScript error: missing 'asOf', 'freshness', etc.
+  };
+}
+```
+
+### 4.2 Pre-Commit Validation
+
+**Script:** `scripts/validate-rfl-compliance.ts`
+
+**Checks:**
+1. No forbidden function names in RFL files
+2. All RFL functions return `Snapshot<T>` or `Promise<Snapshot<T>>`
+3. No database write operations
+4. No API mutation operations (POST/PUT/DELETE/PATCH)
+5. No secrets stored in RFL
+6. All RFL payloads include required metadata
+
+### 4.3 Runtime Validation
+
+**MUST** validate at runtime:
+
+```typescript
+function validateSnapshot<T>(snapshot: Snapshot<T>): void {
+  if (!snapshot.asOf) throw new Error("Missing 'asOf' field");
+  if (!snapshot.freshness) throw new Error("Missing 'freshness' field");
+  if (snapshot.revalidateRequired === undefined) {
+    throw new Error("Missing 'revalidateRequired' field");
+  }
+  if (!snapshot.source) throw new Error("Missing 'source' field");
+}
+```
+
+---
+
+## 5. Cross-Domain Import Rules
+
+### 5.1 No Cross-Domain Imports
+
+**MUST NOT** import from other domains in RFL files:
+
+```typescript
+// ❌ FORBIDDEN: Cross-domain import
+import { Invoice } from '@mythic/domain-finance';
+// In domain-procurement/rfl/store.ts
+```
+
+**MUST** use shared-types instead:
+
+```typescript
+// ✅ CORRECT: Use shared-types bridge
+import { Invoice } from '@mythic/shared-types';
+// In domain-procurement/rfl/store.ts
+```
+
+### 5.2 Allowed Imports
+
+**MUST** only import from:
+
+- `@mythic/shared-types` - Shared types and RFL interfaces
+- `@mythic/shared-utils` - Shared utilities
+- `@mythic/ui` - UI components (if needed)
+- `@mythic/prism` - Read operations (server reads only)
+
+**MUST NOT** import from:
+
+- `@mythic/domain-*` (other domains)
+- `@mythic/loom` (write operations)
+- `@mythic/apps/*` (applications)
+
+---
+
+## 6. Sensitive Data Rules
+
+### 6.1 No Secrets in RFL
+
+**MUST NOT** store secrets in RFL:
+
+```typescript
+// ❌ FORBIDDEN: Storing secrets
+async function storeToken(token: string): Promise<void> {
+  await store.set('auth_token', token);  // NO SECRETS
+}
+
+// ❌ FORBIDDEN: Storing API keys
+async function storeApiKey(key: string): Promise<void> {
+  await store.set('api_key', key);  // NO SECRETS
+}
+```
+
+### 6.2 Sensitive Gate Checks
+
+**MUST** use sensitive gate checks for sensitive data:
+
+```typescript
+import { sensitiveGate } from './gates';
+
+async function getSensitiveInvoice(id: string): Promise<Snapshot<Invoice> | null> {
+  // ✅ REQUIRED: Check gate before showing sensitive data
+  const canShow = await sensitiveGate.check(id);
+  if (!canShow) {
+    await sensitiveGate.revalidate(id);
+    return null;  // Must revalidate first
+  }
+  
+  return await store.get(id);
+}
+```
+
+---
+
+## 7. Error Handling
+
+### 7.1 RFL Errors
+
+**MUST** handle RFL errors gracefully:
+
+```typescript
+async function getInvoice(id: string): Promise<Snapshot<Invoice> | null> {
+  try {
+    return await store.get(id);
+  } catch (error) {
+    // ✅ Log error but don't throw (graceful degradation)
+    console.error('RFL read error:', error);
+    return null;  // Return null, not throw
+  }
+}
+```
+
+### 7.2 Sync Errors
+
+**MUST** handle sync errors without breaking UX:
+
+```typescript
+async function syncInvoice(id: string): Promise<Snapshot<Invoice> | null> {
+  try {
+    const data = await this.pull(id);
+    await this.set(id, data);
+    return await this.get(id);
+  } catch (error) {
+    // ✅ Fallback to cached data if sync fails
+    console.warn('Sync failed, using cached data:', error);
+    return await this.get(id);  // Return cached data
+  }
+}
+```
+
+---
+
+## 8. Testing Requirements
+
+### 8.1 RFL Tests
+
+**MUST** test RFL compliance:
+
+```typescript
+describe('InvoiceStore (RFL)', () => {
+  it('MUST return Snapshot with all required fields', async () => {
+    const snapshot = await store.get('invoice-1');
+    expect(snapshot).toHaveProperty('asOf');
+    expect(snapshot).toHaveProperty('freshness');
+    expect(snapshot).toHaveProperty('revalidateRequired');
+    expect(snapshot).toHaveProperty('source');
+  });
+  
+  it('MUST NOT have write operations', () => {
+    // Check that store doesn't have create/update/delete methods
+    expect(store.create).toBeUndefined();
+    expect(store.update).toBeUndefined();
+    expect(store.delete).toBeUndefined();
+  });
+});
+```
+
+---
+
+## 9. Enforcement Summary
+
+| Rule | Enforcement | Action |
+|------|-------------|--------|
+| Forbidden function names | Pre-commit | ❌ Block commit |
+| Missing Snapshot metadata | TypeScript | ❌ Compile error |
+| Database writes in RFL | Pre-commit | ❌ Block commit |
+| API mutations in RFL | Pre-commit | ❌ Block commit |
+| Secrets in RFL | Pre-commit | ❌ Block commit |
+| Cross-domain imports | Pre-commit | ❌ Block commit |
+| Valid RFL code | Pre-commit | ✅ Allow commit |
+
+---
+
+## 10. Quick Reference
+
+### ✅ RFL CAN:
+- Read from local cache
+- Pull data from server (GET only)
+- Update local cache from sync
+- Calculate freshness
+- Check sensitive gates
+
+### ❌ RFL CANNOT:
+- Write to database
+- Mutate external state
+- Use POST/PUT/DELETE/PATCH
+- Store secrets
+- Import from other domains
+- Create/update/delete operations
+
+### 📋 Required Snapshot Fields:
+```typescript
+{
+  data: T,                    // ✅ Required
+  asOf: string,               // ✅ Required (ISO timestamp)
+  freshness: "fresh" | "stale" | "expired",  // ✅ Required
+  revalidateRequired: boolean,  // ✅ Required
+  source: "local" | "server"    // ✅ Required
+}
+```
+
+---
+
+## 11. References
+
+- **RFL Doctrine:** `docs/architecture/RFL_DOCTRINE_v1.0.md`
+- **Shared Types:** `packages/shared-types/src/rfl.ts`
+- **Prime Monad Law:** See NexusCanon Constitution
+
+---
+
+**Status**: MANDATORY - Enforced via pre-commit hooks and TypeScript  
+**Version**: 1.0.0  
+**Effective Date**: 2026-01-06  
+**Authority**: Prime Monad Architecture

@@ -1,31 +1,53 @@
 {
-  "name": "nextra-docs-template",
-  "version": "0.0.1",
-  "description": "Nextra docs template",
+  "name": "@mythic/monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mythic ERP-SaaS Monorepo",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "type-check": "turbo run type-check",
+    "format": "turbo run format",
+    "format:check": "turbo run format:check",
+    "check": "turbo run check",
+    "check:fix": "turbo run check:fix",
+    "verify": "turbo run verify",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "analyze:compliance": "tsx scripts/analyze-monorepo-compliance.ts",
+    "validate:rules": "tsx scripts/validate-rule-config.ts",
+    "validate:rules:fix": "tsx scripts/validate-rule-config.ts --fix",
+    "validate:rules:strict": "tsx scripts/validate-rule-config.ts --strict",
+    "audit:docs": "tsx scripts/audit-documentation.ts",
+    "audit:docs:registry": "tsx scripts/audit-documentation.ts --registry",
+    "audit:docs:cleanliness": "tsx scripts/audit-documentation-cleanliness.ts",
+    "audit:docs:full": "tsx scripts/audit-documentation-cleanliness.ts",
+    "verify:remediation": "tsx scripts/verify-remediation.ts",
+    "fix:docs:naming": "tsx scripts/fix-docs-naming.ts --fix",
+    "validate:docs:naming": "tsx scripts/validate-docs-naming.ts",
+    "validate:docs:naming:fix": "tsx scripts/validate-docs-naming.ts --fix"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shuding/nextra-docs-template.git"
+    "url": "git+https://github.com/mythic/monorepo.git"
   },
-  "author": "Shu Ding <g@shud.in>",
+  "author": "Mythic Team",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/shuding/nextra-docs-template/issues"
-  },
-  "homepage": "https://github.com/shuding/nextra-docs-template#readme",
-  "dependencies": {
-    "next": "^13.0.6",
-    "nextra": "latest",
-    "nextra-theme-docs": "latest",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "devDependencies": {
-    "@types/node": "18.11.10",
-    "typescript": "^4.9.3"
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "turbo": "^2.3.3",
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
   }
 }

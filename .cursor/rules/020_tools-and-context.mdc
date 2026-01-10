@@ -1,5 +1,6 @@
 ---
 description: "Use tools effectively: read/search before writing; cite paths."
+globs: "*"
 alwaysApply: false
 ---
 

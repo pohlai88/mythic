@@ -1,6 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["package.json", "pnpm-lock.yaml", "tsconfig.json", "next.config.js", "biome.json"],
+  "globalDependencies": [
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "tsconfig.json",
+    "next.config.js",
+    "biome.json"
+  ],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],

@@ -10,7 +10,7 @@ A Next.js monorepo with comprehensive documentation, governance, and AI-assisted
 
 - **[QUICK_START.md](./QUICK_START.md)** - Get started in 5 minutes
 - **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** - Quick reference guide
-- **[CURSOR_SYSTEM_ARCHITECTURE.md](./CURSOR_SYSTEM_ARCHITECTURE.md)** - System architecture overview
+- **[System Architecture](./docs/architecture/DOC-0100_system-architecture.md)** - System architecture overview
 
 ### Complete Documentation
 

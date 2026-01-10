@@ -1,3 +1,14 @@
+---
+doc_type: STANDARD
+status: active
+owner: documentation-governance
+source_of_truth: true
+created: 2026-01-10
+modified: 2026-01-10
+tags: [testing, customization, validation]
+migrated_from: TEST_REPORT_CUSTOMIZATION.md
+---
+
 # Test Report: Customization & Dependency Verification
 
 ## Test Results ✅

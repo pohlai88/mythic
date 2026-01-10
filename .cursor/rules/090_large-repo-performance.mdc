@@ -1,5 +1,6 @@
 ---
 description: "Performance & scale discipline for large codebases."
+globs: "*"
 alwaysApply: false
 ---
 

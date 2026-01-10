@@ -95,10 +95,10 @@ jobs:
           pnpm build
           EXIT_CODE=$?
           END=$(date +%s)
-          
+
           BUILD_SECONDS=$((END-START))
           CACHE_HIT="${{ steps.next-cache.outputs.cache-hit }}"
-          
+
           cat > kpi-report.json << EOF
           {
             "git_sha": "${{ github.sha }}",
@@ -108,7 +108,7 @@ jobs:
             "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           }
           EOF
-          
+
           exit $EXIT_CODE
 
       - name: Upload KPI Report

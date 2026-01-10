@@ -1,3 +1,14 @@
+---
+doc_type: REFERENCE
+status: active
+owner: documentation-governance
+source_of_truth: true
+created: 2026-01-10
+modified: 2026-01-10
+tags: [features, reference, nextra]
+migrated_from: README_FEATURES.md
+---
+
 # Nextra Maximum Features - Quick Reference
 
 **Date:** 2024-12-19

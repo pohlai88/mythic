@@ -1,5 +1,6 @@
 ---
 description: "Editing style: minimal diffs, consistent formatting, avoid churn."
+globs: "*"
 alwaysApply: false
 ---
 

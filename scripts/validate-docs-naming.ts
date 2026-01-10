@@ -100,7 +100,7 @@ async function validateDocumentation(): Promise<ValidationResult> {
     if (!location && !ROOT_EXCEPTIONS.includes(filename)) {
       violations.push({
         file,
-        reason: 'Documentation not allowed in root directory',
+        reason: `Documentation not allowed in root directory. Only these 3 files are allowed: ${ROOT_EXCEPTIONS.join(', ')}. Move to docs/, .cursor/docs/, or content/`,
         location: 'root',
       })
       stats.invalid++
@@ -211,9 +211,37 @@ async function validateDocumentation(): Promise<ValidationResult> {
 }
 
 async function main() {
+  const args = process.argv.slice(2)
+  const autoFix = args.includes('--fix') || args.includes('--auto-fix')
+  
   console.log(chalk.bold('\n📋 Documentation Naming Validation\n'))
 
   const result = await validateDocumentation()
+  
+  // Auto-fix mode
+  if (autoFix && result.violations.length > 0) {
+    console.log(chalk.yellow('\n🔧 Auto-fix mode enabled\n'))
+    console.log(chalk.cyan('Running auto-fix script...\n'))
+    
+    try {
+      const { execSync } = require('child_process')
+      execSync('tsx scripts/fix-docs-naming.ts --fix', { stdio: 'inherit' })
+      
+      // Re-validate after fix
+      console.log(chalk.cyan('\nRe-validating after fixes...\n'))
+      const newResult = await validateDocumentation()
+      
+      if (newResult.violations.length === 0) {
+        console.log(chalk.green.bold('✅ All violations fixed!\n'))
+        process.exit(0)
+      } else {
+        console.log(chalk.yellow(`⚠️  ${newResult.violations.length} violations remain\n`))
+      }
+    } catch (error) {
+      console.error(chalk.red('Auto-fix failed:'), error)
+      process.exit(1)
+    }
+  }
 
   // Print statistics
   console.log(chalk.bold('Statistics:'))

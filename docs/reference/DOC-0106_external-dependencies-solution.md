@@ -1,3 +1,14 @@
+---
+doc_type: STANDARD
+status: active
+owner: documentation-governance
+source_of_truth: true
+created: 2026-01-10
+modified: 2026-01-10
+tags: [nextra, dependencies, navigation]
+migrated_from: EXTERNAL_DEPENDENCIES_SOLUTION.md
+---
+
 # External Dependencies Solution for Nextra Navigation
 
 ## Overview
