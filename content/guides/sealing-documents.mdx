@@ -1,0 +1,92 @@
+---
+title: Sealing Documents
+description: How to seal governance documents
+---
+
+# Sealing Documents
+
+This guide explains how to seal governance documents for immutability.
+
+## Prerequisites
+
+- Document content finalized
+- Required approvals obtained
+- Ledger system access
+
+## Sealing Process
+
+### Step 1: Prepare Document
+
+Ensure your document:
+
+1. Has complete content
+2. Includes required frontmatter
+3. References appropriate layers
+
+### Step 2: Compute Hash
+
+```bash
+# Compute SHA-256 hash
+pnpm compute-hash pages/governance/sealed/your-document.mdx
+```
+
+### Step 3: Add Frontmatter
+
+```yaml
+---
+title: Your Document Title
+status: sealed
+layer: L1
+document_hash: sha256:your-computed-hash
+ledger_entry_id: urn:uuid:generated-uuid
+effective_date: 2024-01-01
+version: "1.0"
+---
+```
+
+### Step 4: Create Ledger Entry
+
+Create an entry in the public ledger with:
+
+- Document title
+- Hash
+- Effective date
+- Approvers
+
+### Step 5: Add Seal Component
+
+```mdx
+import { SealedDocument } from '@/components/governance'
+
+<SealedDocument
+  title="Your Document Title"
+  hash="your-computed-hash"
+  ledgerEntryId="urn:uuid:your-entry-id"
+  effectiveDate="2024-01-01"
+  layer="L1"
+/>
+```
+
+### Step 6: Commit and Deploy
+
+```bash
+git add .
+git commit -m "Seal: Your Document Title v1.0"
+git push
+```
+
+## Verification
+
+After sealing, verify:
+
+1. Hash matches computed value
+2. Ledger entry exists
+3. Component displays correctly
+
+## Modifying Sealed Documents
+
+Sealed documents cannot be directly modified. To change a sealed document:
+
+1. Create an amendment proposal
+2. Follow [amendment process](./amendments)
+3. If approved, create new version

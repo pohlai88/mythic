@@ -1,0 +1,81 @@
+{
+  "recommendations": [
+    // ============================================================================
+    // Core Development Tools (REQUIRED)
+    // ============================================================================
+    "biomejs.biome", // Fast linter and formatter (replaces ESLint + Prettier)
+
+    // ============================================================================
+    // Language Support
+    // ============================================================================
+    "ms-vscode.vscode-typescript-next", // Latest TypeScript features
+    "yoavbls.pretty-ts-errors", // Enhanced TypeScript error messages
+    "ms-vscode.powershell", // PowerShell support
+
+    // ============================================================================
+    // Framework & Library Support
+    // ============================================================================
+    // React & Next.js
+    "dsznajder.es7-react-js-snippets", // React/Next.js code snippets
+    "formulahendry.auto-rename-tag", // Auto-rename paired HTML/JSX tags
+    "formulahendry.auto-close-tag", // Auto-close HTML/JSX tags
+    "pulkitgangwar.nextjs-snippets", // Next.js specific snippets
+
+    // Tailwind CSS
+    "bradlc.vscode-tailwindcss", // Tailwind CSS IntelliSense
+    "jumail.headwind", // Tailwind class sorter
+
+    // GraphQL
+    "graphql.vscode-graphql", // GraphQL language features
+    "graphql.vscode-graphql-syntax", // GraphQL syntax highlighting
+    "apollographql.vscode-apollo", // Apollo GraphQL tooling
+
+    // tRPC
+    "trpc.trpc-vscode", // tRPC snippets and IntelliSense
+
+    // ============================================================================
+    // Code Quality & Productivity
+    // ============================================================================
+    "usernamehw.errorlens", // Inline error highlighting
+    "editorconfig.editorconfig", // EditorConfig support
+    "christian-kohler.path-intellisense", // Path autocomplete
+    "steoates.autoimport", // Auto-import management
+    "wix.vscode-import-cost", // Display import/require package size
+
+    // ============================================================================
+    // Documentation & Comments
+    // ============================================================================
+    "crystal-spider.jsdoc-generator", // Auto-generate JSDoc/TSDoc comments
+    "aaron-bond.better-comments", // Enhanced comment highlighting
+    "streetsidesoftware.code-spell-checker", // Spell checker
+    "jeffy-g.jsdoc-tag-completions", // JSDoc tag completions
+    "yzhang.markdown-all-in-one", // Markdown formatting and preview (for .md and .mdx files)
+
+    // ============================================================================
+    // Git & Version Control
+    // ============================================================================
+    "eamodio.gitlens", // Git supercharged
+    "mhutchie.git-graph", // Visualize git history
+
+    // ============================================================================
+    // Database & Backend
+    // ============================================================================
+    "supabase.postgrestools", // Postgres Language Server
+
+    // ============================================================================
+    // Testing
+    // ============================================================================
+    "firsttris.vscode-jest-runner", // Run Jest tests from editor
+    "orta.vscode-jest", // Jest support
+
+    // ============================================================================
+    // Utilities
+    // ============================================================================
+    "mikestead.dotenv", // .env file support
+    "wayou.vscode-todo-highlight", // Highlight TODO comments
+    "gruntfuggly.todo-tree", // TODO tree view
+    "alefragnani.project-manager", // Project management
+    "formulahendry.code-runner", // Run code snippets
+    "ms-vscode.vscode-json" // JSON language support
+  ]
+}

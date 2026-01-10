@@ -1,0 +1,100 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["package.json", "pnpm-lock.yaml", "tsconfig.json", "next.config.js", "biome.json"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["NODE_ENV", "NEXT_PUBLIC_*", "VERCEL_*"],
+      "cache": true
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "outputs": [],
+      "cache": true,
+      "dependsOn": []
+    },
+    "lint:fix": {
+      "outputs": [],
+      "cache": false,
+      "dependsOn": []
+    },
+    "lint:staged": {
+      "outputs": [],
+      "cache": false,
+      "dependsOn": []
+    },
+    "format": {
+      "outputs": [],
+      "cache": false,
+      "dependsOn": []
+    },
+    "format:check": {
+      "outputs": [],
+      "cache": true,
+      "dependsOn": []
+    },
+    "format:staged": {
+      "outputs": [],
+      "cache": false,
+      "dependsOn": []
+    },
+    "check": {
+      "outputs": [],
+      "cache": true,
+      "dependsOn": []
+    },
+    "check:fix": {
+      "outputs": [],
+      "cache": false,
+      "dependsOn": []
+    },
+    "check:staged": {
+      "outputs": [],
+      "cache": false,
+      "dependsOn": []
+    },
+    "check:ci": {
+      "outputs": [],
+      "cache": true,
+      "dependsOn": []
+    },
+    "check:changed": {
+      "outputs": [],
+      "cache": false,
+      "dependsOn": []
+    },
+    "pre-commit": {
+      "outputs": [],
+      "cache": false,
+      "dependsOn": []
+    },
+    "type-check": {
+      "dependsOn": [],
+      "outputs": [],
+      "cache": true
+    },
+    "analyze": {
+      "dependsOn": ["build"],
+      "outputs": [".next/analyze/**"],
+      "cache": false,
+      "env": ["ANALYZE"]
+    },
+    "verify": {
+      "dependsOn": ["build", "lint", "type-check"],
+      "outputs": [],
+      "cache": false
+    },
+    "start": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["build"]
+    }
+  },
+  "remoteCache": {
+    "enabled": false
+  }
+}

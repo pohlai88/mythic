@@ -1,0 +1,43 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "theguild",
+    "nosniff",
+    "twoslash",
+    "Twoslash",
+    "nextra",
+    "mdx",
+    "rehype",
+    "remark",
+    "mermaid",
+    "npm2yarn",
+    "pnpm",
+    "clsx",
+    "katex",
+    "prism",
+    "autolink",
+    "codegen",
+    "drizzle",
+    "trpc",
+    "graphql",
+    "apollo",
+    "vercel",
+    "turborepo",
+    "turbopack",
+    "biomejs",
+    "shuding"
+  ],
+  "ignorePaths": [
+    "node_modules/**",
+    ".next/**",
+    "dist/**",
+    "build/**",
+    "*.min.js",
+    "pnpm-lock.yaml",
+    "package-lock.json",
+    "yarn.lock"
+  ],
+  "flagWords": [],
+  "dictionaries": ["typescript", "node", "npm", "html", "css", "bash", "fonts"]
+}

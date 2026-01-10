@@ -1,0 +1,12 @@
+# robots.txt for Nextra Documentation Site
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private pages
+Disallow: /api/
+Disallow: /_next/
+Disallow: /.next/
+
+# Sitemap
+Sitemap: https://your-domain.com/sitemap.xml

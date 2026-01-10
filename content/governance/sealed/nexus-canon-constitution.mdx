@@ -1,0 +1,111 @@
+---
+title: NexusCanon Constitution
+description: Single source of truth for NexusCanon-AXIS governance
+status: sealed
+layer: L1
+document_hash: sha256:d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5
+ledger_entry_id: urn:uuid:b2c3d4e5-f6a7-8901-bcde-f12345678901
+effective_date: 2024-01-15
+version: "1.0"
+---
+
+import { SealedDocument, AmendmentHistory, ConstitutionalCitation } from '@/components/governance'
+
+<SealedDocument
+  title="NexusCanon Constitution"
+  hash="d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5"
+  ledgerEntryId="urn:uuid:b2c3d4e5-f6a7-8901-bcde-f12345678901"
+  effectiveDate="2024-01-15"
+  layer="L1"
+  version="1.0"
+/>
+
+# NexusCanon Constitution
+
+## Preamble
+
+This constitution establishes the governance framework for NexusCanon-AXIS, deriving authority from the LBOS Origin Paper.
+
+## Article I - Foundation
+
+### Section 1: Core Values
+
+The system shall operate according to the principles established in the LBOS Origin Paper (L0).
+
+### Section 2: Judgment Supremacy
+
+Human judgment remains supreme. AI systems provide recommendations but do not make binding decisions.
+
+## Article II - Decision Making
+
+### Section 1: Atomic Truth
+
+Each unit of truth shall be discrete and independently verifiable.
+
+### Section 2: Decision Memory
+
+All significant decisions shall be recorded with:
+- Decision ID
+- Timestamp
+- Reasoning
+- Stakeholders
+- Outcome
+
+## Article III - Document Layers
+
+### Section 1: Layer 0 (Foundational)
+
+Immutable philosophical principles. Amendment requires supermajority approval.
+
+### Section 2: Layer 1 (Constitutional)
+
+Governance rules. Amendment requires majority approval.
+
+### Section 3: Layer 2 (Operational)
+
+Active planning. May be modified through normal procedures.
+
+## Article IV - High-Integrity Modulith
+
+### Section 1: Architecture
+
+The system shall maintain a single codebase with strict module boundaries.
+
+### Section 2: Boundaries
+
+Module boundaries shall be enforced through:
+- Clear interfaces
+- Dependency rules
+- Compilation checks
+
+## Article V - Amendment
+
+### Section 1: Process
+
+Amendments must:
+1. Be proposed in writing
+2. Include rationale
+3. Undergo review period
+4. Receive required approval
+
+### Section 2: Tracking
+
+All amendments shall be tracked in the public ledger.
+
+<AmendmentHistory
+  documentTitle="NexusCanon Constitution"
+  amendments={[
+    {
+      id: "A-001",
+      title: "Courts Charter Amendment",
+      date: "2024-02-15",
+      status: "draft",
+      summary: "Establishes governance courts for dispute resolution",
+      href: "/governance/amendments/a-001-courts-charter"
+    }
+  ]}
+/>
+
+---
+
+*Document sealed on 2024-01-15. Any modifications require formal amendment procedure.*

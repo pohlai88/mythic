@@ -1,0 +1,19 @@
+{
+  "banner": "🎉 NexusCanon ガバナンスドキュメントが公開されました！",
+  "bannerLink": "探索 →",
+  "footer": "{year} © NexusCanon. Nextra によって提供",
+  "editPage": "GitHub でこのページを編集 →",
+  "feedback": "質問がありますか？フィードバックをお送りください →",
+  "lastUpdated": "最終更新日",
+  "searchPlaceholder": "ドキュメントを検索...",
+  "searchLoading": "検索を読み込み中...",
+  "searchError": "検索結果の読み込みに失敗しました",
+  "searchEmptyResult": "結果が見つかりませんでした",
+  "dark": "ダーク",
+  "light": "ライト",
+  "system": "システム",
+  "backToTop": "トップに戻る",
+  "tocTitle": "このページの内容",
+  "nextPage": "次へ",
+  "previousPage": "前へ"
+}

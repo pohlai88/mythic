@@ -1,0 +1,26 @@
+---
+description: Guidelines for creating new modules/services following Node.js standard patterns
+globs: "*.ts,*.tsx"
+alwaysApply: false
+---
+
+### **Cursor Operational Rules — Node.js Standard (v3)**
+
+**New Module Pattern Template (RFC-2119 Compliant)**
+
+**Reference Documentation:**
+- @docs/patterns/module-patterns.md - Complete module pattern guidelines
+- @docs/architecture/system-overview.md - Project structure and organization
+
+Before creating a new module/service, ensure:
+
+1. **Directory:** Does it belong in `/src/modules`, `/src/services`, or `/src/domain`?
+   - See @docs/patterns/module-patterns.md for directory structure guidelines
+2. **Standard Files:** Does every module require a `types.ts`, `index.ts`, and `[name].service.ts`?
+   - See @docs/patterns/module-patterns.md for required files
+3. **Error Handling:** Does the project use a CustomError class? (Search for `extends Error`).
+   - See @docs/patterns/module-patterns.md for error handling patterns
+4. **Logging:** Use the project-standard logger (e.g., Winston, Pino), do not use `console.log`.
+   - See @docs/patterns/module-patterns.md for logging guidelines
+5. **Testing:** Create a `[name].spec.ts` matching the style of existing tests in the repo.
+   - See @docs/patterns/module-patterns.md for testing requirements

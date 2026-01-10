@@ -1,0 +1,245 @@
+---
+description: Documentation indexing strategy and best practices for optimal Cursor AI context
+globs: "*.md,*.mdc,*.mdx"
+alwaysApply: true
+---
+
+### **Documentation Indexing Strategy (RFC-2119 Compliant)**
+
+**Reference Documentation:**
+- @docs/CURSOR_DOCUMENTATION_INDEXING_GUIDE.md - Complete indexing guide
+- @BEST_PRACTICES_STRATEGY.md - Full strategy documentation
+- @QUICK_REFERENCE.md - Quick reference guide
+
+---
+
+## 1. Three-Layer Documentation Model (MANDATORY)
+
+Cursor MUST follow this three-layer model when working with documentation:
+
+### Layer 1: External Framework Docs (Indexed)
+- **Purpose:** Framework knowledge (Next.js, React, TypeScript)
+- **Location:** Cursor Settings > Features > Docs
+- **Count:** 3-5 docs maximum
+- **Examples:** Next.js docs, React docs, Supabase docs
+
+### Layer 2: Cursor Rules (.mdc files)
+- **Purpose:** Project-specific application of framework knowledge
+- **Location:** `.cursor/rules/`
+- **Count:** 5-15 focused rules
+- **Examples:** Operational rules, module patterns, domain rules
+
+### Layer 3: Local Documentation (Referenced)
+- **Purpose:** Detailed project patterns and conventions
+- **Location:** `.cursor/docs/`
+- **Count:** As needed
+- **Examples:** Architecture docs, patterns, guides
+
+**CRITICAL:** Local docs MUST be referenced in rules using `@docs/...` syntax, NOT indexed as external URLs.
+
+---
+
+## 2. Documentation Indexing Decision Matrix (MANDATORY)
+
+Before suggesting to index documentation, Cursor MUST evaluate:
+
+| Documentation Type | Index? | Priority | Action |
+|-------------------|--------|----------|--------|
+| Primary framework (Next.js, React) | ✅ Yes | High | Always recommend |
+| Database (Supabase) | ✅ Yes | High | Always recommend |
+| UI Library (Tailwind) | ✅ Yes | Medium | Recommend if actively used |
+| Utility Library (Zod) | ✅ Yes | Medium | Recommend if actively used |
+| Niche Library | ❌ No | Low | Do NOT recommend |
+| Tutorial/Guide | ❌ No | Low | Reference manually when needed |
+| Internal Architecture | ❌ No | High | Store in `.cursor/docs/`, reference in rules |
+
+---
+
+## 3. Indexing Best Practices (MANDATORY)
+
+### 3.1 What to Index
+
+Cursor MUST recommend indexing ONLY:
+1. **Core Framework Docs (3-5 max)**
+   - Next.js Documentation: `https://nextjs.org/docs`
+   - React Documentation: `https://react.dev`
+   - Supabase Documentation: `https://supabase.com/docs`
+   - TypeScript Documentation: `https://www.typescriptlang.org/docs` (optional)
+   - Tailwind CSS: `https://tailwindcss.com/docs` (optional)
+
+2. **Version-Specific URLs**
+   - ✅ Use auto-updating URLs: `https://nextjs.org/docs`
+   - ❌ Avoid versioned URLs unless specific version needed
+
+3. **Clear Naming**
+   - ✅ "Next.js 15 Docs"
+   - ✅ "Supabase API Reference"
+   - ❌ "docs" or "next"
+
+### 3.2 What NOT to Index
+
+Cursor MUST NOT recommend indexing:
+1. **Internal Documentation**
+   - Store in `.cursor/docs/` instead
+   - Reference using `@docs/...` in rules
+
+2. **Tutorial Sites**
+   - Tutorials are reference material, not active context
+   - Use `@Docs` manually when needed
+
+3. **Deprecated Documentation**
+   - Remove old framework versions
+   - Keep only current/active documentation
+
+4. **Too Many Docs**
+   - Maximum 5-7 external docs
+   - Too many docs = diluted context = less accurate AI
+
+---
+
+## 4. Local Documentation Management (MANDATORY)
+
+### 4.1 Directory Structure
+
+Cursor MUST organize local docs in this structure:
+```
+.cursor/docs/
+├── architecture/
+│   └── system-overview.md
+├── patterns/
+│   └── module-patterns.md
+└── guides/
+    └── supabase-setup.md
+```
+
+### 4.2 Referencing Local Docs
+
+Cursor MUST reference local docs in rules using this syntax:
+```markdown
+**Reference Documentation:**
+- @docs/architecture/system-overview.md
+- @docs/patterns/module-patterns.md
+```
+
+**CRITICAL:** 
+- Use `@docs/` prefix (not `@.cursor/docs/`)
+- Use relative paths from rule file location
+- Verify file exists before referencing
+
+### 4.3 Documentation Best Practices
+
+When creating or updating local documentation:
+1. **Use Clear File Names**
+   - ✅ `api-authentication.md`
+   - ❌ `auth.md` (too vague)
+
+2. **Keep Focused**
+   - One topic per document
+   - Clear headings and structure
+
+3. **Include Metadata**
+   - Add descriptions in frontmatter (if using)
+   - Tag documents for easy discovery
+
+---
+
+## 5. Rules Integration with Documentation (MANDATORY)
+
+### 5.1 Rule Structure
+
+Every rule that references documentation MUST include:
+```markdown
+---
+description: Brief description
+globs: "*.ts,*.tsx"
+alwaysApply: false
+---
+
+**Reference Documentation:**
+- @docs/patterns/module-patterns.md - Complete module guidelines
+- @docs/architecture/system-overview.md - Project structure
+```
+
+### 5.2 Documentation in Rules
+
+Cursor MUST:
+- ✅ Reference local docs using `@docs/...` syntax
+- ✅ Keep rules focused (<100 lines)
+- ✅ Put detailed patterns in `.cursor/docs/`
+- ❌ Copy documentation content into rules
+- ❌ Create rules without referencing relevant docs
+
+---
+
+## 6. Maintenance Requirements (MANDATORY)
+
+### 6.1 Quarterly Review
+
+Cursor MUST remind user to review (when appropriate):
+- [ ] Review indexed external docs for relevance
+- [ ] Remove unused or deprecated docs
+- [ ] Update local documentation
+- [ ] Verify all `@docs/` references still work
+
+### 6.2 When to Update
+
+Update documentation when:
+- Framework version changes
+- Project architecture evolves
+- New patterns emerge
+- Old patterns become deprecated
+
+---
+
+## 7. Common Mistakes to Avoid (CRITICAL)
+
+Cursor MUST NOT:
+1. ❌ Recommend indexing 20+ docs
+2. ❌ Suggest indexing internal documentation as URLs
+3. ❌ Create rules without referencing relevant local docs
+4. ❌ Copy documentation content into rules
+5. ❌ Use vague file names for local docs
+6. ❌ Reference non-existent documentation files
+
+Cursor MUST:
+1. ✅ Recommend 3-5 essential external docs only
+2. ✅ Store internal docs in `.cursor/docs/`
+3. ✅ Reference local docs in rules using `@docs/...`
+4. ✅ Keep rules focused and reference detailed docs
+5. ✅ Use clear, descriptive file names
+6. ✅ Verify file exists before referencing
+
+---
+
+## 8. Quick Reference
+
+### Add External Doc
+```
+@Docs → Add new doc → Paste URL
+```
+
+### Reference Local Doc in Rule
+```markdown
+@docs/architecture/system-overview.md
+```
+
+### View Indexed Docs
+```
+Settings > Features > Docs
+```
+
+### Documentation Structure
+```
+External Docs (Indexed) → Framework Knowledge
+    ↓
+Rules (Referenced) → Project Application
+    ↓
+Local Docs (Referenced) → Detailed Patterns
+```
+
+---
+
+**For complete documentation, see:**
+- @BEST_PRACTICES_STRATEGY.md - Complete strategy guide
+- @docs/CURSOR_DOCUMENTATION_INDEXING_GUIDE.md - Detailed how-to guide
+- @QUICK_REFERENCE.md - One-page cheat sheet

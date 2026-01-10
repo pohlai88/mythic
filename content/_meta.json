@@ -1,0 +1,30 @@
+{
+  "index": "Introduction",
+  "governance": {
+    "title": "🏛️ Governance",
+    "type": "page"
+  },
+  "product": {
+    "title": "📦 Product",
+    "type": "page"
+  },
+  "guides": {
+    "title": "📚 Guides",
+    "type": "page"
+  },
+  "---separator": {
+    "type": "separator"
+  },
+  "api": {
+    "title": "API",
+    "type": "menu"
+  },
+  "api-docs": "API Docs",
+  "api-example": "API Example",
+  "---separator2": {
+    "type": "separator"
+  },
+  "about": "About",
+  "features": "Features",
+  "advanced": "Advanced"
+}

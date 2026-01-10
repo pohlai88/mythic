@@ -1,0 +1,7 @@
+{
+  "user": "dotansimha",
+  "repo": "graphql-yoga",
+  "branch": "main",
+  "docsPath": "website/src/pages/docs/",
+  "filePaths": ["README.md", "getting-started/index.md", "api-reference/index.md"]
+}

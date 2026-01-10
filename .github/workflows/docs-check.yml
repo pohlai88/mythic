@@ -1,0 +1,72 @@
+name: Documentation Check
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  docs-check:
+    name: Documentation Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check for markdown files in root
+        id: root-check
+        run: |
+          ROOT_MD_FILES=$(find . -maxdepth 1 -name "*.md" -not -name "README.md" -not -name "QUICK_START.md" -not -name "QUICK_REFERENCE.md" | sed 's|^\./||' || true)
+          if [ -n "$ROOT_MD_FILES" ]; then
+            echo "files<<EOF" >> $GITHUB_OUTPUT
+            echo "$ROOT_MD_FILES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Report root directory violations
+        if: steps.root-check.outputs.found == 'true'
+        run: |
+          echo "❌ Error: Found markdown files in root directory" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The following files should be moved to appropriate docs/ subdirectories:" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.root-check.outputs.files }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Allowed files in root:**" >> $GITHUB_STEP_SUMMARY
+          echo "- README.md" >> $GITHUB_STEP_SUMMARY
+          echo "- QUICK_START.md" >> $GITHUB_STEP_SUMMARY
+          echo "- QUICK_REFERENCE.md" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Run:** \`pnpm organize-docs\` to automatically organize files" >> $GITHUB_STEP_SUMMARY
+          exit 1
+
+      - name: Validate documentation
+        run: pnpm validate-docs
+
+      - name: Lint markdown files
+        run: pnpm docs:lint

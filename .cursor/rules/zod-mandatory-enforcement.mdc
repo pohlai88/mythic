@@ -1,0 +1,399 @@
+---
+description: Mandatory Zod enforcement rules - All IDENTICAL features MUST be used
+globs: "*.ts,*.tsx"
+alwaysApply: true
+---
+
+### **Zod Mandatory Enforcement Rules (RFC-2119 Compliant)**
+
+**Reference Documentation:**
+- @ZOD_MANDATORY_ENFORCEMENT_STRATEGY.md - Complete enforcement strategy
+- @ZOD_OPTIMIZATION_ANALYSIS.md - Feature analysis and patterns
+- @src/lib/zod/helpers.ts - Mandatory helper functions
+- @src/lib/api-schemas/patterns.ts - Mandatory schema patterns
+
+**Related Rules:**
+- @rules/operational-rules.mdc - Core operational rules
+
+---
+
+## 1. Import Path (MANDATORY - NON-NEGOTIABLE)
+
+**MUST** use `'zod/v4'` import path for all Zod imports.
+
+```typescript
+// ✅ CORRECT
+import { z } from 'zod/v4'
+
+// ❌ INCORRECT
+import { z } from 'zod'
+```
+
+**Enforcement**: Biome will catch violations. Cursor MUST fix immediately.
+
+---
+
+## 2. Type Inference (MANDATORY)
+
+**MUST** use `z.infer<typeof schema>` for ALL types derived from schemas.
+
+```typescript
+// ✅ CORRECT
+const userSchema = z.object({ name: z.string() })
+type User = z.infer<typeof userSchema>
+
+// ❌ INCORRECT
+type User = { name: string } // Manual type definition
+```
+
+**Enforcement**: TypeScript compiler + Biome validation.
+
+---
+
+## 3. Schema Location (MANDATORY)
+
+**MUST** define all API schemas in `src/lib/api-schemas/index.ts`.
+
+**Exceptions**:
+- Database schemas in `src/db/schema/` (use `drizzle-zod`)
+- Local component schemas (temporary, should migrate)
+
+**Enforcement**: Biome validation script.
+
+---
+
+## 4. String Schema Patterns (MANDATORY)
+
+**MUST** use these patterns for string schemas:
+
+```typescript
+// ✅ CORRECT - Use mandatory patterns
+import { mandatoryStringPattern } from '@/lib/api-schemas/patterns'
+
+const emailSchema = mandatoryStringPattern.email()
+// OR
+const emailSchema = z.string().email().min(1).max(255).describe('Email address')
+
+// ❌ INCORRECT - Missing validations
+const emailSchema = z.string().email() // Missing min, max, describe
+```
+
+**Required for strings:**
+- `.min()` - Minimum length
+- `.max()` - Maximum length
+- `.email()` - If email field
+- `.datetime()` - If datetime field
+- `.describe()` - Documentation
+
+**Enforcement**: Biome + validation script.
+
+---
+
+## 5. Number Schema Patterns (MANDATORY)
+
+**MUST** use these patterns for number schemas:
+
+```typescript
+// ✅ CORRECT
+import { mandatoryNumberPattern } from '@/lib/api-schemas/patterns'
+
+const idSchema = mandatoryNumberPattern.id()
+// OR
+const idSchema = z.number().int().positive().describe('ID')
+
+// ❌ INCORRECT
+const idSchema = z.number() // Missing int, positive, describe
+```
+
+**Required for IDs:**
+- `.int()` - Integer validation
+- `.positive()` - Positive number
+- `.describe()` - Documentation
+
+**Required for pagination:**
+- `z.coerce.number()` - Coercion from query params
+- `.int()` - Integer
+- `.min()` / `.max()` - Range validation
+- `.default()` - Default value
+
+**Enforcement**: Biome + validation script.
+
+---
+
+## 6. Object Schema Patterns (MANDATORY)
+
+**MUST** use these patterns for object schemas:
+
+```typescript
+// ✅ CORRECT
+import { mandatoryObjectPattern } from '@/lib/api-schemas/patterns'
+
+const userSchema = mandatoryObjectPattern.base({
+  email: z.string().email(),
+  name: z.string().min(1)
+}, 'User object')
+
+// Extend schema
+const extendedSchema = mandatoryObjectPattern.extended(
+  userSchema,
+  { age: z.number().int() },
+  'Extended user'
+)
+
+// Update schema (partial)
+const updateSchema = mandatoryObjectPattern.partial(
+  userSchema,
+  'User update'
+)
+
+// ❌ INCORRECT
+const userSchema = z.object({ email: z.string() }) // Missing describe
+```
+
+**Required for objects:**
+- `.describe()` - Documentation
+- `.extend()` - For schema extensions
+- `.partial()` - For update schemas
+- `.strip()` - Default (strip unknown keys)
+
+**Enforcement**: Biome + validation script.
+
+---
+
+## 7. Array Schema Patterns (MANDATORY)
+
+**MUST** use `.describe()` for all array schemas:
+
+```typescript
+// ✅ CORRECT
+const usersSchema = z.array(userSchema).describe('Array of users')
+
+// ❌ INCORRECT
+const usersSchema = z.array(userSchema) // Missing describe
+```
+
+**Enforcement**: Biome + validation script.
+
+---
+
+## 8. Enum Schema Patterns (MANDATORY)
+
+**MUST** use `.describe()` for all enum schemas:
+
+```typescript
+// ✅ CORRECT
+const orderSchema = z.enum(['asc', 'desc']).describe('Sort order')
+
+// ❌ INCORRECT
+const orderSchema = z.enum(['asc', 'desc']) // Missing describe
+```
+
+**Enforcement**: Biome + validation script.
+
+---
+
+## 9. Wrapper Methods (MANDATORY)
+
+**MUST** use these wrapper methods appropriately:
+
+```typescript
+// ✅ CORRECT
+const optionalField = z.string().optional()
+const nullableField = z.string().nullable()
+const defaultField = z.string().default('value')
+
+// ❌ INCORRECT - Using wrong wrapper
+const field = z.string() // Should be optional/nullable if needed
+```
+
+**Required patterns:**
+- `.optional()` - For optional fields
+- `.nullable()` - For nullable fields
+- `.default()` - For default values
+
+**Enforcement**: TypeScript + Biome.
+
+---
+
+## 10. Error Handling (MANDATORY)
+
+**MUST** use `z.ZodError` for error handling:
+
+```typescript
+// ✅ CORRECT - Use safeParse
+import { mandatorySafeParse } from '@/lib/api-schemas/patterns'
+
+const result = mandatorySafeParse(userSchema, input)
+if (!result.success) {
+  // Handle z.ZodError
+  return { error: result.error.issues }
+}
+
+// ✅ CORRECT - Manual error handling
+try {
+  const data = schema.parse(input)
+} catch (error) {
+  if (error instanceof z.ZodError) {
+    // Handle error
+  }
+}
+
+// ❌ INCORRECT - Using parse without error handling
+const data = schema.parse(input) // May throw unhandled error
+```
+
+**Enforcement**: Biome + validation script.
+
+---
+
+## 11. Integration Patterns (MANDATORY)
+
+**MUST** use these integration patterns:
+
+```typescript
+// ✅ CORRECT - Drizzle integration
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
+
+export const insertUserSchema = createInsertSchema(users, {
+  email: z.string().email(),
+})
+
+// ✅ CORRECT - OpenAPI integration
+import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
+
+extendZodWithOpenApi(z)
+schema.openapi({ description: 'User schema' })
+
+// ❌ INCORRECT - Missing integration
+const schema = z.object({ email: z.string() }) // Missing OpenAPI metadata
+```
+
+**Enforcement**: Biome + validation script.
+
+---
+
+## 12. Helper Functions (MANDATORY)
+
+**MUST** use mandatory helper functions when available:
+
+```typescript
+// ✅ CORRECT - Use helpers
+import {
+  createMandatoryString,
+  createMandatoryNumber,
+  mandatorySafeParse,
+} from '@/lib/zod/helpers'
+
+const email = createMandatoryString({
+  email: true,
+  min: 1,
+  max: 255,
+  description: 'Email address'
+})
+
+// ❌ INCORRECT - Manual schema creation
+const email = z.string().email() // Should use helper
+```
+
+**Enforcement**: Biome + validation script.
+
+---
+
+## 13. Validation Workflow (MANDATORY)
+
+**MUST** run validation before committing:
+
+```bash
+# Run Biome check (catches Zod violations)
+pnpm check
+
+# Run Zod-specific validation
+pnpm validate:zod
+
+# Run type check
+pnpm type-check
+```
+
+**Enforcement**: Pre-commit hooks + CI/CD.
+
+---
+
+## 14. When Creating New Schemas (MANDATORY)
+
+**MUST** follow this workflow:
+
+1. **Check existing patterns** in `src/lib/api-schemas/patterns.ts`
+2. **Use mandatory helpers** from `src/lib/zod/helpers.ts`
+3. **Add to schema registry** in `src/lib/api-schemas/index.ts`
+4. **Run validation** with `pnpm validate:zod`
+5. **Run Biome** with `pnpm check`
+
+**Enforcement**: Cursor MUST follow this workflow.
+
+---
+
+## 15. Violation Handling (MANDATORY)
+
+When Cursor detects a violation:
+
+1. **STOP** - Do not proceed with changes
+2. **REPORT** - Show exact violation
+3. **FIX** - Use mandatory patterns
+4. **VALIDATE** - Run `pnpm validate:zod` and `pnpm check`
+5. **VERIFY** - Ensure all checks pass
+
+**Enforcement**: Cursor MUST follow this process.
+
+---
+
+## 16. Migration Path (MANDATORY)
+
+**MUST** migrate existing code:
+
+```bash
+# Migrate imports
+pnpm migrate:zod-imports
+
+# Validate compliance
+pnpm validate:zod
+
+# Fix Biome errors
+pnpm check:fix
+```
+
+**Enforcement**: Run migration before making changes.
+
+---
+
+## 17. Exceptions (RARE)
+
+Exceptions to mandatory rules require explicit approval:
+
+- **Legacy code**: Temporary exceptions during migration
+- **Third-party libraries**: When Zod is used by dependencies
+- **Test files**: May use simplified patterns for testing
+
+**Enforcement**: Document exceptions in code comments.
+
+---
+
+## 18. Success Criteria
+
+All schemas MUST:
+- ✅ Use `'zod/v4'` import
+- ✅ Use `z.infer<>` for types
+- ✅ Include `.describe()` for documentation
+- ✅ Use mandatory patterns from helpers
+- ✅ Pass Biome validation
+- ✅ Pass Zod validation script
+- ✅ Be located in correct directory
+
+**Enforcement**: Zero tolerance - all criteria MUST be met.
+
+---
+
+**For complete documentation, see:**
+- @ZOD_MANDATORY_ENFORCEMENT_STRATEGY.md - Full strategy
+- @ZOD_OPTIMIZATION_ANALYSIS.md - Feature analysis
+- @src/lib/zod/helpers.ts - Helper functions
+- @src/lib/api-schemas/patterns.ts - Schema patterns

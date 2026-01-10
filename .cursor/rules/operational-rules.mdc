@@ -1,0 +1,93 @@
+---
+description: Core operational rules for Node.js development workflow and code standards
+globs: "*.ts,*.tsx,*.js,*.jsx,*.json"
+alwaysApply: true
+---
+
+### **Cursor Operational Rules — Node.js Standard (v3)**
+
+**Normative Specification (RFC-2119 Compliant)**
+
+**Reference Documentation:**
+- @docs/architecture/system-overview.md - System architecture and tech stack
+- @docs/patterns/module-patterns.md - Module creation patterns
+- @docs/guides/supabase-setup.md - Supabase configuration and usage
+
+**Related Rules:**
+- @rules/005_documentation-indexing-strategy.mdc - Documentation indexing best practices
+
+---
+
+## 1. Authority Order (NON-NEGOTIABLE)
+
+1. **Node.js Toolchain** (`npm`, `pnpm`, or `yarn`) — Primary source of truth.
+2. **Official Documentation** — Normative.
+3. **Project Configuration** (`package.json`, `tsconfig.json`, `biome.json`).
+4. **Existing Codebase Patterns** (The repository's "Institutional Memory").
+5. **Cursor / LLM suggestions** — Last resort only.
+
+---
+
+## 2. Environment & Linter Validation (MANDATORY)
+
+### 2.1 Pre-Action Requirement
+
+Before ANY modification, Cursor MUST verify the environment:
+`pnpm check` OR `pnpm build` OR `pnpm test`
+
+If these commands fail, **Cursor MUST STOP** and report the error verbatim.
+
+---
+
+## 3. No Trial-and-Error Rule (CRITICAL)
+
+Cursor MUST NOT perform exploratory debugging.
+**REQUIRED FLOW:** Diagnostic -> Analyze Trace -> Reference Docs -> Propose Minimal Change -> Explain Why.
+
+---
+
+## 4. Documentation & Version Compliance
+
+Cursor MUST check `package.json` for installed versions and use syntax compatible with that specific version.
+
+---
+
+## 5. Architecture & Pattern Consistency (ANTI-DRIFT)
+
+### 5.1 Pre-Creation Mandate
+
+Before creating ANY new file, directory, or documentation:
+
+1. **Search:** Search the workspace for existing implementations of similar logic (e.g., `grep`, `find`).
+2. **Template Matching:** Identify if there is a `.templates/` or `docs/patterns/` directory.
+3. **Draft Verification:** If a similar file exists, Cursor MUST use it as a boilerplate.
+
+### 5.2 Specific Pattern Enforcement (Saga & DB)
+
+- **Sagas:** Cursor MUST check if an existing Saga orchestrator exists before creating a new one.
+- **DB Strategy:** Cursor MUST identify the current migration/ORM pattern (e.g., Prisma, Drizzle, TypeORM) and replicate the schema declaration style exactly.
+
+---
+
+## 6. Code Style & Safety Expectations
+
+- **Type Safety:** No implicit `any`.
+- **Async/Await:** All Promises MUST be handled or returned.
+- **Input Validation:** Use the project's validation library (Zod, Joi, etc.) for all external data.
+- **Secrets:** Use `process.env` exclusively.
+
+---
+
+## 7. Workspace Safety Rule (ANTI-DESTRUCTION)
+
+Cursor MUST NOT delete lockfiles, reinitialize the environment, or rewrite core config files without explicit written authorization.
+
+---
+
+## 8. When to Halt (FAIL-FAST)
+
+Cursor MUST HALT AND ASK if:
+
+- The proposed code diverges from existing patterns.
+- The solution requires a major dependency version upgrade.
+- Database schema changes are required.

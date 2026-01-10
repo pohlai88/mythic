@@ -1,0 +1,14 @@
+{
+  "user": "B2o5T",
+  "repo": "graphql-eslint",
+  "branch": "master",
+  "docsPath": "docs/",
+  "filePaths": [
+    "README.md",
+    "getting-started/index.md",
+    "getting-started/parser-options.md",
+    "getting-started/parser.md",
+    "configs.md",
+    "custom-rules.md"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "banner": "🎉 NexusCanon Governance-Dokumentation ist jetzt live!",
+  "bannerLink": "Erkunden →",
+  "footer": "{year} © NexusCanon. Powered by Nextra",
+  "editPage": "Diese Seite auf GitHub bearbeiten →",
+  "feedback": "Frage? Geben Sie uns Feedback →",
+  "lastUpdated": "Zuletzt aktualisiert am",
+  "searchPlaceholder": "Dokumentation durchsuchen...",
+  "searchLoading": "Suche wird geladen...",
+  "searchError": "Suchergebnisse konnten nicht geladen werden",
+  "searchEmptyResult": "Keine Ergebnisse gefunden",
+  "dark": "Dunkel",
+  "light": "Hell",
+  "system": "System",
+  "backToTop": "Nach oben",
+  "tocTitle": "Auf dieser Seite",
+  "nextPage": "Weiter",
+  "previousPage": "Zurück"
+}

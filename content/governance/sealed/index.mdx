@@ -1,0 +1,40 @@
+---
+title: Sealed Documents
+description: Immutable governance documents with hash verification
+---
+
+# Sealed Documents
+
+Sealed documents are **immutable** governance documents that have been formally approved and cannot be modified without going through the amendment process.
+
+## Document Characteristics
+
+- ✅ **Hash Verified** - Each document has a SHA-256 hash for integrity verification
+- ✅ **Ledger Tracked** - All sealed documents are recorded in the public ledger
+- ✅ **Version Controlled** - Clear version history and effective dates
+- ✅ **Amendment Protected** - Changes require formal amendment procedure
+
+## Layer 0 Documents
+
+These foundational documents define the core philosophical principles:
+
+| Document | Status | Effective Date |
+|----------|--------|----------------|
+| [LBOS Origin Paper](./lbos-origin-paper) | 🔒 Sealed | 2024-01-01 |
+
+## Layer 1 Documents
+
+These constitutional documents establish governance rules:
+
+| Document | Status | Effective Date |
+|----------|--------|----------------|
+| [NexusCanon Constitution](./nexus-canon-constitution) | 🔒 Sealed | 2024-01-15 |
+| [Titan Protocol](./titan-protocol) | 🔒 Sealed | 2024-02-01 |
+
+## Verification
+
+To verify a sealed document:
+
+1. Copy the document hash
+2. Compute the SHA-256 hash of the document content
+3. Compare the hashes - they must match exactly

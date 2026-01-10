@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Zod Governance Waiver Registry",
+  "version": "2.0.0",
+  "waivers": [],
+  "metadata": {
+    "lastUpdated": "2026-01-10",
+    "maxActiveWaivers": 3,
+    "maxWaiverAgeDays": 30,
+    "reviewFrequency": "monthly",
+    "maxDurations": {
+      "hotfix": 7,
+      "legacy_migration": 30,
+      "external_api": 90
+    }
+  },
+  "waiverSchema": {
+    "id": "string (unique, auto-generated)",
+    "scope": "string (file/path#SchemaName or rule-id)",
+    "file": "string (file path)",
+    "schemaName": "string (exported schema name, optional)",
+    "owner": "string (@name - accountable person)",
+    "reason": "string (waiver reason)",
+    "type": "hotfix | legacy_migration | external_api",
+    "expires": "string (ISO date YYYY-MM-DD)",
+    "approvedBy": "string (name/email)",
+    "approvedDate": "string (ISO date)",
+    "status": "active | expired | revoked",
+    "reviewDate": "string (ISO date, optional)",
+    "upstreamContract": "string (URL, required for external_api type, optional)"
+  }
+}

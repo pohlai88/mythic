@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Apex — NexusCanon</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    >
+
+    <style>
+      :root {
+        --void: #0a0a0b;
+        --obsidian: #141416;
+        --gold: #c9a961;
+        --parchment: #f8f5f0;
+        --ash: #9ca3af;
+        --border: #252528;
+        --ease-gravity: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--void);
+        color: var(--parchment);
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        max-width: 920px;
+        width: 90%;
+        padding: 4rem 2rem;
+      }
+
+      /* ================= HEADER ================= */
+
+      header {
+        margin-bottom: 5rem;
+      }
+
+      .system-status {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--gold);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1.5rem;
+        opacity: 0.9;
+      }
+
+      .status-line {
+        width: 22px;
+        height: 1px;
+        background: var(--gold);
+        opacity: 0.5;
+      }
+
+      h1 {
+        font-weight: 300;
+        font-size: 3.5rem;
+        line-height: 1;
+        letter-spacing: -0.03em; /* CANONICAL */
+        color: #fdfdfc; /* OPTICAL SIGNAL WHITE */
+      }
+
+      h1 .divergence {
+        display: block;
+        background: linear-gradient(
+          to bottom,
+          #ffffff 0%,
+          rgba(255, 255, 255, 0.45) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .intro {
+        margin-top: 1.5rem;
+        max-width: 480px;
+        font-size: 0.85rem;
+        line-height: 1.6;
+        color: var(--ash);
+        opacity: 0.7;
+      }
+
+      /* ================= GRID ================= */
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+
+      .card {
+        background: var(--obsidian);
+        border: 1px solid var(--border);
+        padding: 2.5rem;
+        transition: all 0.8s var(--ease-gravity);
+      }
+
+      .card:hover {
+        border-color: var(--gold);
+        background: #161619;
+        transform: translateY(-2px);
+      }
+
+      .icon-box {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--gold);
+        opacity: 0.8;
+        margin-bottom: 1.5rem;
+      }
+
+      h3 {
+        font-weight: 500;
+        font-size: 1.1rem;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.75rem;
+      }
+
+      .card-text {
+        font-size: 0.85rem;
+        font-weight: 300;
+        color: var(--ash);
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+
+      .btn {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--gold);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(201, 169, 97, 0.35);
+        padding-bottom: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .btn:hover {
+        border-bottom-color: var(--gold);
+        color: var(--parchment);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <div class="system-status">
+          <div class="status-line"></div>
+          System Online
+        </div>
+
+        <h1>
+          The Apex
+          <span class="divergence">Governance.</span>
+        </h1>
+
+        <p class="intro">
+          Forensic typography enforced. Inter Light (300) with −3% tracking. Signal White grounded
+          into void. This is engineered authority.
+        </p>
+      </header>
+
+      <section class="grid">
+        <div class="card">
+          <div class="icon-box">01 • Physics</div>
+          <h3>Visual Engineering</h3>
+          <p class="card-text">
+            Serif removed. Light controlled. Contrast obeys material law. Nothing emits — everything
+            reflects.
+          </p>
+          <a class="btn" href="#">View Specs →</a>
+        </div>
+
+        <div class="card">
+          <div class="icon-box">02 • Data</div>
+          <h3>Forensic Layout</h3>
+          <p class="card-text">
+            JetBrains Mono remains mechanical. Inter remains aerodynamic. The system stays calm.
+          </p>
+          <a class="btn" href="#">Inspect Grid →</a>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
