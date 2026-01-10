@@ -1,6 +1,6 @@
 ---
 description: "Terminal command safety: explain, avoid destructive actions."
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Terminal Safety

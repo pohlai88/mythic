@@ -1,6 +1,6 @@
 ---
 description: "Plan before edits; keep changes scoped; define acceptance checks."
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Planning Discipline

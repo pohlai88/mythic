@@ -1,6 +1,6 @@
 ---
 description: "Standardize assistant outputs: steps, patches, and verification."
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Output Format

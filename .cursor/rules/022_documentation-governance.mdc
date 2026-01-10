@@ -1,0 +1,401 @@
+---
+description: Strict documentation storage and naming enforcement with hash/version requirements
+globs: "*.md,*.mdx"
+alwaysApply: true
+---
+
+# Documentation Storage & Naming Governance (RFC-2119 MANDATORY)
+
+**Authority**: This rule is MANDATORY and enforced via pre-commit hooks.
+**Violations**: Will result in automatic rejection during git commit.
+
+---
+
+## 1. Documentation Storage Rules (MANDATORY)
+
+### 1.1 ALLOWED Storage Locations
+
+```
+✅ ALLOWED:
+├── docs/                                    # Permanent documentation
+│   ├── api/                                 # API documentation
+│   ├── architecture/                        # Architecture docs
+│   ├── guides/                              # How-to guides
+│   └── reference/                           # Reference documentation
+├── .cursor/docs/                            # Cursor-specific documentation
+│   ├── architecture/
+│   ├── patterns/
+│   └── guides/
+├── content/                                 # Nextra content (public documentation)
+└── .temp-docs/                              # TEMPORARY HOLDING AREA
+    └── (expires after 7 days)
+```
+
+### 1.2 FORBIDDEN Storage Locations
+
+```
+❌ FORBIDDEN:
+├── / (root directory)                      # NO documentation in root
+├── .vscode/                                 # NO documentation (config only)
+├── scripts/                                 # NO documentation (code only)
+├── src/                                     # NO documentation (code only)
+├── app/                                     # NO documentation (code only)
+├── components/                              # NO documentation (code only)
+└── Any subdirectory not explicitly ALLOWED
+```
+
+**Exception**: Only 3 files allowed in root:
+- `README.md` (project overview)
+- `QUICK_START.md` (getting started)
+- `QUICK_REFERENCE.md` (quick reference)
+
+---
+
+## 2. Documentation Naming Convention (MANDATORY)
+
+### 2.1 REQUIRED Naming Format
+
+Every document MUST have ONE of these formats:
+
+#### Format A: SHA256 Hash Prefix
+```
+Pattern: [SHA256-8chars]_descriptive-name.md
+Example: a7f3e2b1_api-authentication-guide.md
+
+Rules:
+- First 8 characters of SHA256 hash
+- Underscore separator
+- Descriptive kebab-case name
+- .md or .mdx extension
+```
+
+#### Format B: Version Number Prefix
+```
+Pattern: v[MAJOR].[MINOR].[PATCH]_descriptive-name.md
+Example: v1.2.0_cursor-optimization-guide.md
+
+Rules:
+- Semantic versioning (MAJOR.MINOR.PATCH)
+- v prefix (lowercase)
+- Underscore separator
+- Descriptive kebab-case name
+- .md or .mdx extension
+```
+
+#### Format C: Sequential Document Number (Preferred)
+```
+Pattern: DOC-[NUMBER]_descriptive-name.md
+Example: DOC-0042_architecture-overview.md
+
+Rules:
+- DOC- prefix (uppercase)
+- 4-digit zero-padded number (0001-9999)
+- Underscore separator
+- Descriptive kebab-case name
+- .md or .mdx extension
+```
+
+### 2.2 FORBIDDEN Naming Patterns
+
+```
+❌ FORBIDDEN:
+- NO_PROPER_PREFIX.md                       # Missing hash/version/number
+- random-document-name.md                   # No identifier
+- UPPERCASE_DOCUMENT.md                     # All caps
+- document with spaces.md                   # Spaces in filename
+- temp_notes.md                             # Temporary without identifier
+- 123.md                                    # Number without prefix
+- summary.md                                # Generic name without identifier
+```
+
+---
+
+## 3. Temporary Documentation (HOLDING AREA)
+
+### 3.1 Temporary Storage Rules
+
+```
+✅ ALLOWED for temporary docs:
+Location: .temp-docs/
+Naming: TEMP-[YYYYMMDD-HHMM]_descriptive-name.md
+Example: TEMP-20260106-1430_meeting-notes.md
+
+Rules:
+- TEMP- prefix (uppercase)
+- ISO date-time stamp (YYYYMMDD-HHMM)
+- Underscore separator
+- Descriptive name
+- Maximum retention: 7 days
+- Auto-deleted by git hook after expiration
+```
+
+### 3.2 Migration from Temporary to Permanent
+
+```bash
+# Move from temporary to permanent with proper naming:
+.temp-docs/TEMP-20260106-1430_api-design.md
+  ↓
+docs/api/DOC-0043_api-design-specification.md
+  ↓
+Generate hash: sha256sum → a7f3e2b1...
+  ↓
+Update manifest: doc-manifest.json
+```
+
+---
+
+## 4. Document Manifest (MANDATORY)
+
+### 4.1 Manifest File
+
+```
+Location: .cursor/doc-manifest.json
+
+Purpose:
+- Track all permanent documentation
+- Record hash/version/number
+- Track creation and modification dates
+- Validate naming compliance
+```
+
+### 4.2 Manifest Format
+
+```json
+{
+  "version": "1.0.0",
+  "last_updated": "2026-01-06T14:30:00Z",
+  "documents": [
+    {
+      "id": "DOC-0042",
+      "path": "docs/architecture/DOC-0042_architecture-overview.md",
+      "hash": "a7f3e2b1c4d5e6f7",
+      "version": "v1.0.0",
+      "created": "2026-01-01T00:00:00Z",
+      "modified": "2026-01-06T14:30:00Z",
+      "status": "active"
+    }
+  ]
+}
+```
+
+---
+
+## 5. Pre-Commit Hook Enforcement (AUTOMATIC)
+
+### 5.1 Validation Rules
+
+The pre-commit hook MUST validate:
+
+```bash
+✅ CHECK 1: No documents in forbidden locations
+✅ CHECK 2: All documents have proper naming (hash/version/number)
+✅ CHECK 3: Temporary docs not older than 7 days
+✅ CHECK 4: Document manifest is updated
+✅ CHECK 5: No duplicate identifiers
+```
+
+### 5.2 Automatic Actions
+
+```bash
+❌ REJECT: Document without proper identifier
+   → Commit blocked with error message
+
+⚠️  WARN: Document in temporary holding > 7 days
+   → Auto-delete + commit blocked
+
+✅ ACCEPT: Document with proper identifier in allowed location
+   → Auto-update manifest + commit proceeds
+```
+
+---
+
+## 6. Document Lifecycle (MANDATORY)
+
+### 6.1 Creation Flow
+
+```
+1. Create draft in .temp-docs/ with TEMP- prefix
+   TEMP-20260106-1430_new-feature-spec.md
+
+2. Review and finalize (within 7 days)
+
+3. Move to permanent location with proper identifier
+   docs/reference/DOC-0044_new-feature-specification.md
+
+4. Manifest auto-updated via pre-commit hook
+
+5. Commit succeeds
+```
+
+### 6.2 Update Flow
+
+```
+1. Edit existing document
+   docs/api/DOC-0042_api-spec.md
+
+2. Pre-commit hook detects change
+
+3. Manifest auto-updated with new modified date
+
+4. Commit succeeds
+```
+
+### 6.3 Deletion Flow
+
+```
+1. Delete document file
+
+2. Pre-commit hook detects deletion
+
+3. Manifest auto-updated (status: "deleted")
+
+4. Commit succeeds
+```
+
+---
+
+## 7. Cursor AI Behavior (MANDATORY)
+
+### 7.1 When Creating Documentation
+
+Cursor MUST:
+1. ✅ Check if document is temporary or permanent
+2. ✅ If temporary: Use TEMP- prefix in .temp-docs/
+3. ✅ If permanent: Generate proper identifier (DOC-XXXX preferred)
+4. ✅ Place in allowed location (docs/, .cursor/docs/, content/)
+5. ✅ Never create in root directory (except 3 allowed files)
+
+### 7.2 When Organizing Documentation
+
+Cursor MUST:
+1. ✅ Validate all documents have proper identifiers
+2. ✅ Move documents without identifiers to .temp-docs/
+3. ✅ Suggest proper identifiers for temporary docs
+4. ✅ Update manifest when moving/renaming
+
+### 7.3 When Cleaning Up
+
+Cursor MUST:
+1. ✅ Identify documents without proper identifiers
+2. ✅ Warn user about violations
+3. ✅ Suggest fixes (generate identifier or move to temp)
+4. ✅ Never delete documents without user confirmation
+
+---
+
+## 8. Exceptions (RARE)
+
+### 8.1 Allowed Without Identifier
+
+```
+✅ EXCEPTION - Root directory (3 files only):
+- README.md
+- QUICK_START.md
+- QUICK_REFERENCE.md
+
+✅ EXCEPTION - Nextra content:
+- content/**/*.mdx (uses Nextra routing)
+- content/_meta.json (metadata)
+```
+
+### 8.2 No Other Exceptions
+
+All other documentation MUST follow naming rules.
+
+---
+
+## 9. Migration Path (Existing Documents)
+
+### 9.1 For Existing Documents Without Identifiers
+
+```bash
+# Step 1: Run migration script
+pnpm migrate:docs-naming
+
+# Step 2: Review generated identifiers
+# Step 3: Approve and commit
+# Step 4: All future docs must follow rules
+```
+
+### 9.2 Grace Period
+
+```
+Grace period: 30 days from rule implementation
+After grace period: Pre-commit hook enforces strictly
+Legacy docs: Moved to docs/legacy/ with warning
+```
+
+---
+
+## 10. Pre-Commit Hook Location
+
+```
+Location: .husky/pre-commit or .git/hooks/pre-commit
+Script: scripts/validate-docs-naming.ts
+Manifest: .cursor/doc-manifest.json
+```
+
+---
+
+## 11. Enforcement Summary
+
+| Rule                 | Enforcement | Action                |
+| -------------------- | ----------- | --------------------- |
+| Forbidden location   | Pre-commit  | ❌ Block commit        |
+| Missing identifier   | Pre-commit  | ❌ Block commit        |
+| Temp doc > 7 days    | Pre-commit  | ❌ Auto-delete + block |
+| Duplicate identifier | Pre-commit  | ❌ Block commit        |
+| Manifest outdated    | Pre-commit  | ✅ Auto-update         |
+| Valid document       | Pre-commit  | ✅ Allow commit        |
+
+---
+
+## 12. Quick Reference
+
+### Creating New Document
+
+```bash
+# Temporary (draft)
+.temp-docs/TEMP-20260106-1500_draft-idea.md
+
+# Permanent (final)
+docs/guides/DOC-0045_deployment-guide.md
+
+# With hash (alternative)
+docs/api/a7f3e2b1_authentication-api.md
+
+# With version (alternative)
+docs/reference/v2.1.0_cursor-optimization.md
+```
+
+### Checking Compliance
+
+```bash
+# Validate all documents
+pnpm validate:docs-naming
+
+# Check manifest
+cat .cursor/doc-manifest.json | jq .
+
+# List violations
+pnpm docs:check-violations
+```
+
+---
+
+## CRITICAL RULES SUMMARY
+
+1. ✅ **ALLOWED**: docs/, .cursor/docs/, content/, .temp-docs/
+2. ❌ **FORBIDDEN**: Root directory (except 3 files), .vscode/, any code directory
+3. ✅ **REQUIRED**: Every doc MUST have DOC-XXXX, hash, or version prefix
+4. ❌ **REJECTED**: Documents without proper identifier (commit blocked)
+5. ✅ **TEMPORARY**: .temp-docs/ with TEMP- prefix (7-day expiration)
+6. ✅ **MANIFEST**: Auto-updated via pre-commit hook
+7. ❌ **VIOLATIONS**: Zero tolerance after grace period
+
+---
+
+**Status**: MANDATORY - Enforced via pre-commit hooks
+**Version**: 1.0.0
+**Effective Date**: 2026-01-06
+**Authority**: Repository Governance Policy

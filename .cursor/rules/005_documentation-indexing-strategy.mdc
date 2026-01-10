@@ -1,7 +1,7 @@
 ---
 description: Documentation indexing strategy and best practices for optimal Cursor AI context
 globs: "*.md,*.mdc,*.mdx"
-alwaysApply: true
+alwaysApply: false
 ---
 
 ### **Documentation Indexing Strategy (RFC-2119 Compliant)**

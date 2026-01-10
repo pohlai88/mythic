@@ -1,6 +1,6 @@
 ---
 description: "Performance & scale discipline for large codebases."
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Large Repo Discipline

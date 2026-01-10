@@ -1,7 +1,7 @@
 ---
 description: Core operational rules for Node.js development workflow and code standards
 globs: "*.ts,*.tsx,*.js,*.jsx,*.json"
-alwaysApply: true
+alwaysApply: false
 ---
 
 ### **Cursor Operational Rules — Node.js Standard (v3)**

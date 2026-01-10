@@ -1,7 +1,7 @@
 ---
 description: Output format standards and structure
 globs: "*"
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Output Format

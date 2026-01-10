@@ -1,6 +1,6 @@
 ---
 description: "Make answers navigable: always include file paths and anchors."
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Reference Style

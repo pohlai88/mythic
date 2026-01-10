@@ -1,6 +1,6 @@
 ---
 description: "Editing style: minimal diffs, consistent formatting, avoid churn."
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Editing Discipline

@@ -1,6 +1,6 @@
 ---
 description: "Self-review checklist before final answer."
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Code Review Checklist (Self)

@@ -1,6 +1,7 @@
 ---
 description: "Next.js App Router conventions and component boundaries."
-alwaysApply: true
+globs: "*.ts,*.tsx,*.js,*.jsx"
+alwaysApply: false
 ---
 
 # Next.js Architecture Rules

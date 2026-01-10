@@ -1,7 +1,7 @@
 ---
 description: Mandatory Zod enforcement rules - All IDENTICAL features MUST be used
 globs: "*.ts,*.tsx"
-alwaysApply: true
+alwaysApply: false
 ---
 
 ### **Zod Mandatory Enforcement Rules (RFC-2119 Compliant)**

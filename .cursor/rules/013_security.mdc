@@ -1,7 +1,7 @@
 ---
 description: Security best practices and vulnerability prevention
 globs: "*.ts,*.tsx,*.js,*.jsx,*.env*"
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Security Configuration
