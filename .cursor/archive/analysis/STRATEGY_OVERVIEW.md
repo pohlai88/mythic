@@ -1,3 +1,10 @@
+---
+status: archived
+reason: orphan-analysis
+archived_date: 2026-01-10
+original_location: .cursor/STRATEGY_OVERVIEW.md
+---
+
 # Cursor Documentation & Rules Strategy Overview
 
 ## 🎯 The Big Picture

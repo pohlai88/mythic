@@ -1,3 +1,11 @@
+---
+status: archived
+reason: superseded-by-docs-system-migration-plan
+archived_date: 2026-01-10
+original_location: .cursor/MIGRATION_PLAN.md
+superseded_by: docs/_system/MIGRATION_PLAN.md
+---
+
 # NexusCanon Axis Implementation Plan
 
 ## Current State

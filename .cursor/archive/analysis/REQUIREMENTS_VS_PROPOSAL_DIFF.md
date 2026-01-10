@@ -1,3 +1,10 @@
+---
+status: archived
+reason: orphan-analysis
+archived_date: 2026-01-10
+original_location: .cursor/REQUIREMENTS_VS_PROPOSAL_DIFF.md
+---
+
 # Requirements vs Proposal Comparison
 
 ## Executive Summary
