@@ -1,8 +1,2 @@
 .next
 node_modules
-
-# TurboRepo
-.turbo
-
-# Pagefind search index (generated after build)
-_pagefind/
