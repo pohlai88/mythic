@@ -1,0 +1,118 @@
+---
+description: "Documentation directory policy: designated locations and doc types enforcement."
+alwaysApply: true
+---
+
+# Directory Policy (Always)
+
+## Canonical Documentation Locations
+
+### ALLOWED Locations
+
+✅ **Root Directory** (essential only, max 11 files)
+- README.md (required)
+- QUICK_START.md (required)
+- QUICK_REFERENCE.md (recommended)
+- Essential system docs (max 8 additional)
+
+✅ **docs/** (canonical internal documentation)
+- docs/_system/ (governance tracking)
+- docs/architecture/ (system architecture)
+- docs/api/ (API documentation)
+- docs/governance/ (internal governance)
+- docs/guides/ (how-to guides)
+- docs/reference/ (reference docs)
+- docs/migrations/ (historical, excluded from AI)
+- docs/changelog/ (historical, excluded from AI)
+
+✅ **content/** (public Nextra documentation)
+- content/governance/sealed/ (immutable foundation)
+- content/governance/active/ (current governance)
+- content/governance/amendments/ (governance amendments)
+- content/guides/ (user guides)
+- content/product/ (product docs)
+
+✅ **.cursor/** (Cursor AI configuration)
+- .cursor/rules/ (Cursor rules, .mdc files)
+- .cursor/docs/ (Cursor-specific docs)
+- .cursor/templates/ (plan templates)
+- .cursor/skills/ (agent skills)
+- .cursor/work/ (temporary analysis, excluded from AI)
+- .cursor/archive/ (historical, excluded from AI)
+
+✅ **.temp-docs/** (temporary holding, 7-day expiry)
+
+### FORBIDDEN Locations
+
+❌ **Root Directory** (except 11 essential files)
+- No new documentation without governance exception
+
+❌ **.vscode/** (config only)
+- Only README.md allowed (exception granted)
+
+❌ **Code Directories** (no standalone docs)
+- src/, app/, components/, lib/ (code only)
+- Exception: page-level .mdx files (Next.js convention)
+
+---
+
+## Document Types (Frontmatter Required)
+
+Every document MUST declare:
+
+```yaml
+---
+doc_type: [CONSTITUTION|STANDARD|ADR|SPEC|PRD|RUNBOOK|POLICY|NOTE|GUIDE]
+status: [draft|active|sealed|legacy|archived]
+owner: [team-or-role]
+source_of_truth: [true|false]
+created: [YYYY-MM-DD]
+modified: [YYYY-MM-DD]
+tags: [tag1, tag2, ...]
+---
+```
+
+### Document Type Definitions
+
+| Type | Location | Purpose |
+|------|----------|---------|
+| CONSTITUTION | content/governance/sealed/ | Foundational, immutable |
+| STANDARD | docs/architecture/ | Engineering standard, versioned |
+| ADR | docs/architecture/adr/ | Architecture decision, immutable once ratified |
+| SPEC | docs/architecture/ or docs/api/ | Technical specification, versioned |
+| PRD | docs/product/ | Product requirements, versioned |
+| RUNBOOK | docs/guides/ | Operational procedure, versioned |
+| POLICY | docs/governance/ | Compliance policy, versioned |
+| NOTE | .cursor/work/ | Working note, temporary |
+| GUIDE | docs/guides/ or content/guides/ | How-to guide, versioned |
+
+### Status Definitions
+
+| Status | Location | Mutability |
+|--------|----------|------------|
+| draft | .cursor/work/ or docs/*/draft/ | Mutable |
+| active | docs/*/ or content/*/active/ | Versioned |
+| sealed | content/governance/sealed/ | Immutable |
+| legacy | .cursor/archive/legacy/ | Read-only |
+| archived | .cursor/archive/*/ | Read-only |
+
+---
+
+## Enforcement
+
+### Pre-commit Hook
+- Validates new docs in ALLOWED locations only
+- Rejects commits to FORBIDDEN locations
+- Checks frontmatter compliance
+- Enforces naming conventions
+
+### Cursor AI Behavior
+- MUST NOT create docs in forbidden locations
+- MUST check existing structure before creating new docs
+- MUST suggest proper location per document type
+- MUST add frontmatter to new documentation
+
+---
+
+**Reference**: docs/_system/TAXONOMY.md
+**Authority**: Governance rule 022 + Decision D-0005

@@ -1,0 +1,88 @@
+---
+description: "Documentation edit scope: restructure only, no style polishing."
+alwaysApply: true
+---
+
+# Documentation Edit Scope (Always)
+
+## Allowed Edits
+
+✅ **Structural Changes**
+- Add minimal frontmatter (doc_type, status, owner, tags)
+- Fix heading hierarchy (# > ## > ### consistent levels)
+- Standardize titles (sentence case, no trailing periods)
+- Move/rename files (only after approval via MIGRATION_PLAN)
+
+✅ **Content Organization**
+- Update internal links (fix broken links, canonical redirects)
+- Replace duplicates with references to canonical docs
+- Add "superseded by" notices to legacy docs
+- Create stub files for redirects
+
+✅ **Metadata**
+- Add/update frontmatter (YAML)
+- Add tags for discoverability
+- Add ownership information
+- Add creation/modification dates
+
+## Forbidden Edits
+
+❌ **Style/Language Changes**
+- Stylistic rewriting (unless explicitly requested)
+- Grammar/tone polishing (content preservation priority)
+- Emoji additions (unless user requests)
+- Formatting beautification (unless fixing errors)
+
+❌ **Content Changes**
+- Changing meaning of content
+- Removing sections (unless consolidating duplicates with approval)
+- Merging multiple documents (without explicit approval)
+- Adding new content (restructure only, not content creation)
+
+❌ **Destructive Operations**
+- Deleting files (move to .cursor/archive/ instead)
+- Overwriting without git history (always use git mv)
+- Removing historical information (archive instead)
+
+---
+
+## Decision Tracking
+
+Every structural change MUST be recorded in `docs/_system/DECISIONS.md`:
+
+```markdown
+## D-XXXX (YYYY-MM-DD) — [Decision Title]
+
+**Decision**: [What was decided]
+**Rationale**: [Why]
+**Impacts**: [What changes]
+**Approved by**: [Who/when]
+**Status**: [PROPOSED|APPROVED|IMPLEMENTED]
+```
+
+---
+
+## Contradiction Handling
+
+If you detect conflicting information:
+
+1. ❌ DO NOT auto-resolve
+2. ✅ DO log in `docs/_system/CONTRADICTIONS.md`
+3. ✅ DO present options with recommendations
+4. ✅ DO wait for stakeholder approval
+
+---
+
+## Non-Destructive Principle
+
+**Priority**: Preserve > Reorganize > Polish
+
+- Always move files via git (preserves history)
+- Always create stubs at old locations (redirects)
+- Always validate links before committing
+- Always batch operations with verification steps
+
+---
+
+**Reference**: docs/_system/MIGRATION_PLAN.md
+**Authority**: Decision D-0003 (Non-destructive strategy)
