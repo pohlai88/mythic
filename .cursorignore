@@ -1,4 +1,4 @@
-﻿# Dependencies
+# Dependencies
 node_modules/
 .pnp/
 .pnp.js
@@ -37,3 +37,11 @@ docs/temp/
 # OS / editor
 .DS_Store
 Thumbs.db
+
+# PRD / Architecture Planning (codeowner-preserved)
+.cursor/product
+.cursor/Planing
+.cursor/planing  # Case-safety for Linux CI (same as Planing)
+
+# Documentation archives (historical reference only, exclude from AI)
+.cursor/archive/
