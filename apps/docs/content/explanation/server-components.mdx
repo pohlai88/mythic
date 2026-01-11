@@ -1,0 +1,45 @@
+---
+title: Why Server Components?
+type: explanation
+---
+
+# Why Server Components?
+
+This document explains the reasoning behind our Server Components architecture.
+
+## The Problem
+
+Traditional React applications ship all component code to the browser, even when components don't need interactivity. This increases bundle size and slows initial page load.
+
+## The Solution
+
+Server Components run on the server and send zero JavaScript to the browser. Only Client Components (marked with `'use client'`) are shipped to the browser.
+
+## Benefits
+
+1. **Smaller Bundle Size**: Server Components don't add to client bundle
+2. **Faster Initial Load**: Less JavaScript to download and parse
+3. **Direct Database Access**: Server Components can access databases directly
+4. **Better Security**: Sensitive logic stays on the server
+
+## When to Use Server Components
+
+- ✅ Data fetching
+- ✅ Static content
+- ✅ Server-side logic
+- ❌ Event handlers (use Client Components)
+- ❌ Browser APIs (use Client Components)
+- ❌ State hooks (use Client Components)
+
+## Architecture Decision
+
+We chose Server Components as the default because:
+- Next.js 16+ provides excellent support
+- Reduces bundle size significantly
+- Aligns with our performance goals
+- Simplifies data fetching patterns
+
+## Related
+
+- [How-To: Convert to Server Component](/how-to/convert-server-component)
+- [Reference: Component API](/reference/components)

@@ -1,0 +1,134 @@
+# Nextra Features Showcase
+
+This page demonstrates the key Nextra features enabled in this workspace.
+
+---
+
+## 🎨 Custom Components
+
+### Callouts
+
+Nextra provides built-in callout components for different types of notifications.
+
+> **Info:** This is an info callout. Use it to provide helpful information to readers.
+
+> **Warning:** This is a warning callout. Use it to alert users about potential issues.
+
+> **Tip:** This is a tip callout. Great for sharing helpful tips and tricks.
+
+---
+
+### Code Blocks with Syntax Highlighting
+
+**JavaScript Example:**
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+console.log(greet('World'));
+```
+
+**TypeScript Example:**
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+function getUser(id: number): Promise<User> {
+  return fetch(`/api/users/${id}`).then((res) => res.json());
+}
+```
+
+**Python Example:**
+
+```python
+def greet(name: str) -> str:
+    return f"Hello, {name}!"
+
+def fibonacci(n: int) -> list[int]:
+    if n <= 0:
+        return []
+    if n == 1:
+        return [0]
+    sequence = [0, 1]
+    for i in range(2, n):
+        sequence.append(sequence[i-1] + sequence[i-2])
+    return sequence
+```
+
+---
+
+## 📐 LaTeX Math Support
+
+Inline math: The quadratic formula is $x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$.
+
+Block math:
+
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+
+---
+
+## 📊 Diagrams
+
+Nextra supports Mermaid diagrams for creating flowcharts, sequence diagrams, and more.
+
+```
+graph TD
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Action 1]
+    B -->|No| D[Action 2]
+    C --> E[End]
+    D --> E
+```
+
+---
+
+## 🔍 Full-Text Search
+
+Nextra 4 includes **Pagefind**, a Rust-powered search engine that replaces FlexSearch:
+
+- ⚡ **Faster**: Rust-based indexing and search
+- 🎯 **Better Results**: Superior relevance ranking
+- 🚀 **Advanced Features**: Indexes remote MDX, dynamic content, imported files
+- 📦 **Automatic**: Works out of the box for MDX pages
+- 🔧 **Configurable**: Enable code block search if needed
+
+**Key Capabilities**:
+- ✅ Indexes remote MDX content (async components)
+- ✅ Indexes dynamic content (computed values)
+- ✅ Indexes imported JavaScript/MDX files
+- ✅ Indexes static pages (with `data-pagefind-body`)
+
+See [Pagefind Features Demo](/examples/pagefind-features) for examples.
+
+---
+
+## 📝 Reading Time
+
+Nextra automatically calculates and displays reading time for each page.
+
+---
+
+## 📋 Table of Contents
+
+The table of contents is automatically generated from your Markdown headings.
+
+---
+
+## 🎯 Best Practices
+
+1. **Use meaningful headings**: Structure your content with clear, descriptive headings
+2. **Include code examples**: Demonstrate concepts with practical code snippets
+3. **Add diagrams**: Visual representations help explain complex concepts
+4. **Keep pages focused**: Each page should cover a single topic
+
+---
+
+**Last Updated:** January 2026

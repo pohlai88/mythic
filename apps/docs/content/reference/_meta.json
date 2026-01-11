@@ -1,0 +1,10 @@
+{
+  "title": "Reference",
+  "description": "Complete API documentation. Lookup mode - facts only, no explanation.",
+  "pages": [
+    "components",
+    "api",
+    "tokens",
+    "stores"
+  ]
+}

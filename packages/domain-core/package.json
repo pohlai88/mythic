@@ -1,0 +1,28 @@
+{
+  "name": "@mythic/domain-core",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./route-handler": "./src/route-handler.ts",
+    "./server-action": "./src/server-action.ts",
+    "./query": "./src/query.ts",
+    "./proxy": "./src/proxy.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@mythic/shared-types": "workspace:*",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}

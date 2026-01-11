@@ -1,0 +1,44 @@
+---
+title: 'Getting Started Guide'
+description: 'Learn how to get started with Nextra v4 Page File Convention'
+---
+
+# Getting Started
+
+This guide demonstrates the **Page File Convention** for documentation pages.
+
+## Page File Convention Structure
+
+When using Page File Convention, your file structure looks like this:
+
+```
+app/
+├── guides/
+│   └── getting-started/
+│       └── page.mdx      ← This file
+└── [[...mdxPath]]/
+    └── page.tsx          ← Catch-all route (Content Directory Convention)
+```
+
+## Key Points
+
+1. **Metadata Required**: All `page.{md,mdx}` files must export metadata
+2. **File Location = Route**: `app/guides/getting-started/page.mdx` → `/guides/getting-started`
+3. **Colocation**: Keep related assets in the same directory
+4. **Works with Content Directory**: Both conventions can coexist
+
+## Example Metadata
+
+```yaml
+---
+title: 'Getting Started Guide'
+description: 'Learn how to get started'
+---
+```
+
+## When to Use Page File Convention
+
+- ✅ Complex pages with many assets
+- ✅ Pages that need custom layouts
+- ✅ Pages with specific routing needs
+- ✅ Better organization for large projects

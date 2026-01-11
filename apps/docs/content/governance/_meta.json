@@ -1,0 +1,15 @@
+{
+  "index": "Overview",
+  "sealed": {
+    "title": "🔒 Sealed Documents",
+    "type": "menu"
+  },
+  "active": {
+    "title": "📝 Active Documents",
+    "type": "menu"
+  },
+  "amendments": {
+    "title": "📜 Amendments",
+    "type": "menu"
+  }
+}

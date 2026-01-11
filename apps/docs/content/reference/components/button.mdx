@@ -1,0 +1,46 @@
+---
+title: Button Component
+type: reference
+---
+
+# Button
+
+Button component from the design system.
+
+## Import
+
+```typescript
+import { Button } from '@mythic/design-system/components'
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'primary' \| 'secondary' \| 'outline'` | `'primary'` | Button style variant |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Button size |
+| `disabled` | `boolean` | `false` | Disable button interaction |
+| `onClick` | `(event: MouseEvent) => void` | - | Click handler |
+| `children` | `ReactNode` | - | Button content |
+| `className` | `string` | - | Additional CSS classes |
+
+## Examples
+
+```typescript
+<Button variant="primary" size="md">Click Me</Button>
+<Button variant="secondary" disabled>Disabled</Button>
+<Button variant="outline" size="sm">Small</Button>
+```
+
+## Type Definition
+
+```typescript
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'outline'
+  size?: 'sm' | 'md' | 'lg'
+  disabled?: boolean
+  onClick?: (event: MouseEvent) => void
+  children: ReactNode
+  className?: string
+}
+```

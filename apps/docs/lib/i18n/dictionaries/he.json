@@ -1,0 +1,19 @@
+{
+  "banner": "🎉 תיעוד הממשל של NexusCanon זמין כעת!",
+  "bannerLink": "חקור →",
+  "footer": "{year} © NexusCanon. מופעל על ידי Nextra",
+  "editPage": "ערוך דף זה ב-GitHub →",
+  "feedback": "שאלה? תן לנו משוב →",
+  "lastUpdated": "עודכן לאחרונה ב",
+  "searchPlaceholder": "חפש בתיעוד...",
+  "searchLoading": "טוען חיפוש...",
+  "searchError": "נכשל בטעינת תוצאות החיפוש",
+  "searchEmptyResult": "לא נמצאו תוצאות",
+  "dark": "כהה",
+  "light": "בהיר",
+  "system": "מערכת",
+  "backToTop": "חזרה למעלה",
+  "tocTitle": "בדף זה",
+  "nextPage": "הבא",
+  "previousPage": "הקודם"
+}

@@ -1,0 +1,10 @@
+{
+  "title": "Explanation",
+  "description": "Conceptual understanding. 'Why X?' - background and reasoning.",
+  "pages": [
+    "server-components",
+    "design-tokens",
+    "contract-first",
+    "state-management"
+  ]
+}

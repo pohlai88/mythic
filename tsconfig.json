@@ -1,20 +1,58 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "incremental": true,
+    "incremental": false,
+    "composite": false,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "react-jsx",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@mythic/shared-utils": ["./packages/shared-utils/src"],
+      "@mythic/shared-utils/*": ["./packages/shared-utils/src/*"],
+      "@mythic/shared-types": ["./packages/shared-types/src"],
+      "@mythic/shared-types/*": ["./packages/shared-types/src/*"],
+      "@mythic/design-system": ["./packages/design-system/src"],
+      "@mythic/design-system/*": ["./packages/design-system/src/*"],
+      "@mythic/axis-theme": ["./packages/axis-theme/src"],
+      "@mythic/axis-theme/*": ["./packages/axis-theme/src/*"],
+      "@mythic/domain-core": ["./packages/domain-core/src"],
+      "@mythic/domain-core/*": ["./packages/domain-core/src/*"],
+      "@mythic/performance": ["./packages/performance/src"],
+      "@mythic/performance/*": ["./packages/performance/src/*"],
+      "@mythic/monitoring": ["./packages/monitoring/src"],
+      "@mythic/monitoring/*": ["./packages/monitoring/src/*"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "scripts/**/*",
+    "**/dist",
+    "**/.next",
+    "**/.turbo"
+  ]
 }

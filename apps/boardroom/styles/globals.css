@@ -1,0 +1,92 @@
+/**
+ * Global Styles for BoardRoom App
+ *
+ * ✅ DRY Implementation - Imports shared base from apps/styles/globals.css
+ * ⭐ ELITE: Using @mythic/axis-theme for BEASTMODE Gold palette
+ *
+ * This app only defines domain-specific customizations.
+ * All shared tokens are in packages/design-system/src/tokens/input.css
+ *
+ * @see https://tailwindcss.com/docs/v4-beta
+ */
+
+/* Import shared base styles from apps root */
+@import "../../styles/globals.css";
+
+/**
+ * ============================================================================
+ * DOMAIN-SPECIFIC CUSTOMIZATIONS - BoardRoom App Only
+ * ============================================================================
+ *
+ * Only add @theme if this domain needs customizations not in shared design-system.
+ * BoardRoom uses custom fonts and a custom transition duration.
+ */
+
+@theme {
+  /* Domain-specific font overrides (BoardRoom uses custom fonts) */
+  --font-family-serif: 'Cormorant Garamond', serif;
+  --font-family-sans: 'Inter', sans-serif;
+  --font-family-mono: 'JetBrains Mono', monospace;
+
+  /* Domain-specific transition duration */
+  --duration-1618: 1618ms;
+}
+
+/**
+ * ============================================================================
+ * DOMAIN-SPECIFIC DARK MODE - BoardRoom App Only
+ * ============================================================================
+ *
+ * BoardRoom has custom dark mode variants for the BEASTMODE Gold palette.
+ */
+
+@layer theme {
+  .dark {
+    /* BoardRoom-specific dark mode overrides for BEASTMODE Gold palette */
+    --color-void: 240 10% 2%;
+    --color-obsidian: 240 8% 4%;
+    --color-charcoal: 240 3% 12%;
+    --color-parchment: 40 20% 10%;
+    --color-ash: 40 10% 30%;
+    --color-gold: 40 45% 65%;
+    --color-ember: 35 40% 55%;
+
+    /* Semantic Colors - Dark mode variants */
+    --color-background: var(--color-void);
+    --color-surface: var(--color-obsidian);
+    --color-text: var(--color-parchment);
+    --color-text-muted: var(--color-ash);
+  }
+}
+
+/**
+ * ============================================================================
+ * BASE STYLES - Typography and Base Elements (BoardRoom Specific)
+ * ============================================================================
+ */
+
+@layer base {
+  body {
+    font-family: var(--font-family-sans);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    /* ✅ HSL values in @theme are space-separated, need hsl() wrapper when used directly */
+    /* Tailwind utilities (bg-void, text-parchment) handle this automatically */
+    color: hsl(var(--color-text));
+    background-color: hsl(var(--color-background));
+  }
+
+  /* ⭐ ELITE: Editorial Authority (Headings) */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-serif);
+    font-weight: 700;
+    /* ✅ HSL values in @theme are space-separated, need hsl() wrapper when used directly */
+    color: hsl(var(--color-text));
+  }
+
+  /* ⭐ ELITE: Forensic Data (Code, Numbers) */
+  code, pre, .font-mono {
+    font-family: var(--font-family-mono);
+    font-weight: 400;
+  }
+}

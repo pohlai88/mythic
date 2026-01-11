@@ -1,0 +1,104 @@
+---
+title: 'Page File Convention Documentation'
+description: 'Complete guide to using Page File Convention in Nextra v4'
+---
+
+# Page File Convention Guide
+
+## Overview
+
+The **Page File Convention** follows Next.js App Router convention with enhanced page extensions: `page.{md,mdx}`.
+
+## File Structure
+
+```
+app/
+├── about/
+│   └── page.mdx          → /about
+├── guides/
+│   ├── page.mdx         → /guides
+│   └── getting-started/
+│       └── page.mdx     → /guides/getting-started
+└── docs/
+    └── page-file-convention/
+        └── page.mdx     → /docs/page-file-convention
+```
+
+## Required: Metadata Export
+
+**⚠️ Warning**: All `page.{jsx,tsx,md,mdx}` files **must** export metadata.
+
+### Frontmatter Method (MDX)
+
+```yaml
+---
+title: 'Page Title'
+description: 'Page description'
+---
+```
+
+### Export Method (JSX/TSX)
+
+```typescript
+export const metadata = {
+  title: 'Page Title',
+  description: 'Page description',
+}
+```
+
+## Benefits
+
+### 1. Colocation
+Keep all assets for a page together:
+
+```
+app/
+└── guides/
+    └── getting-started/
+        ├── page.mdx
+        ├── diagram.png
+        └── code-example.ts
+```
+
+### 2. Better Organization
+Organize pages by feature or section:
+
+```
+app/
+├── product/
+│   ├── features/
+│   │   └── page.mdx
+│   └── roadmap/
+│       └── page.mdx
+└── api/
+    └── reference/
+        └── page.mdx
+```
+
+### 3. Faster Compilation
+Unlike catch-all routes, each page compiles independently.
+
+## Trade-offs
+
+| Aspect | Page File Convention | Content Directory Convention |
+|--------|---------------------|----------------------------|
+| Compilation | ✅ Faster (per-page) | ⚠️ Slower (all files) |
+| Colocation | ✅ Excellent | ❌ Limited |
+| Organization | ✅ Flexible | ✅ Simple |
+| Setup | ⚠️ More files | ✅ Single catch-all |
+
+## Examples
+
+See Nextra's official examples:
+- [Nextra Website](https://nextra.site) - Uses Page File Convention
+- [Nextra Blog Example](https://github.com/shuding/nextra/tree/main/examples/blog) - Page File Convention
+
+## Migration from Content Directory
+
+If migrating from Content Directory Convention:
+
+1. **Keep catch-all route** for existing content
+2. **Add new pages** using Page File Convention
+3. **Gradually migrate** content as needed
+
+Both conventions can coexist!

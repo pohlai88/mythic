@@ -1,0 +1,10 @@
+{
+  "title": "How-To Guides",
+  "description": "Task-oriented guides. 'How to do Y' - problem-solving and practical.",
+  "pages": [
+    "customize-button",
+    "create-variant",
+    "setup-zustand-store",
+    "validate-forms"
+  ]
+}

@@ -1,0 +1,18 @@
+/**
+ * ============================================================================
+ * GLOBAL STYLES - Docs App
+ * ============================================================================
+ *
+ * ✅ Single Source Architecture
+ *
+ * This file ONLY imports the shared base from apps/styles/globals.css
+ * All design tokens come from packages/design-system/src/tokens/input.css
+ *
+ * To add domain-specific customizations, use @theme directive:
+ * @theme {
+ *   --custom-token: value;
+ * }
+ */
+
+/* Import shared base styles (includes compiled design-system CSS) */
+@import "../../styles/globals.css";
