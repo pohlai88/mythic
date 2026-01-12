@@ -69,13 +69,13 @@ As seen in the prototype, The Apex uses a layout technique called **"Divergence.
 **Code Reference (Tailwind):**
 ```html
 <div class="flex items-center gap-3 text-[10px] tracking-[0.2em] text-gold uppercase opacity-90 font-mono">
-  <div class="w-6 h-[1px] bg-gold opacity-50"></div>
+  <div class="w-6 h-px bg-gold opacity-50"></div>
   <span>System Online</span>
 </div>
 
 <h1 class="font-sans font-light text-6xl tracking-tighter text-parchment mt-6">
   The Apex
-  <span class="block bg-gradient-to-b from-white to-white/40 bg-clip-text text-transparent">
+  <span class="block bg-linear-to-b from-white to-white/40 bg-clip-text text-transparent">
     Governance.
   </span>
 </h1>

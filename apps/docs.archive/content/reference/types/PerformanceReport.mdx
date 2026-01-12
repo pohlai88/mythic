@@ -1,0 +1,49 @@
+---
+title: PerformanceReport
+description: Type definition for PerformanceReport
+category: reference
+tags: [types, api]
+---
+
+# PerformanceReport
+
+Type definition for PerformanceReport
+
+## Properties
+
+### timestamp
+
+**Type**: `string`
+
+**Required**
+
+No description available
+
+
+### connection
+
+**Type**: `{ coldStart: import("C:/AI-BOS/mythic/apps/boardroom/scripts/database-performance-test").TestResult; connectionOverhead: import("C:/AI-BOS/mythic/apps/boardroom/scripts/database-performance-test").TestResult; }`
+
+**Required**
+
+No description available
+
+
+### queries
+
+**Type**: `{ preparedStatement: import("C:/AI-BOS/mythic/apps/boardroom/scripts/database-performance-test").TestResult; regularQuery: import("C:/AI-BOS/mythic/apps/boardroom/scripts/database-performance-test").TestResult; relationalQuery: import("C:/AI-BOS/mythic/apps/boardroom/scripts/database-performance-test").TestResult; manualJoin: import("C:/AI-BOS/mythic/apps/boardroom/scripts/database-performance-test").TestResult; }`
+
+**Required**
+
+No description available
+
+
+### summary
+
+**Type**: `{ totalTests: number; passed: number; failed: number; avgQueryLatency: number; avgConnectionOverhead: number; }`
+
+**Required**
+
+No description available
+
+

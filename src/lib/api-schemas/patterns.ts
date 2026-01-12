@@ -7,7 +7,7 @@
  * @see https://zod.dev - Zod v4 Official Documentation
  */
 
-import { z } from 'zod/v4'
+import { z as z4 } from 'zod/v4'
 import {
   createMandatoryArray,
   createMandatoryEnum,
@@ -107,14 +107,14 @@ export const mandatoryObjectPattern = {
   /**
    * Base object with description
    */
-  base: <T extends z.ZodRawShape>(shape: T, description: string) =>
+  base: <T extends z4.ZodRawShape>(shape: T, description: string) =>
     createMandatoryObject(shape, description),
 
   /**
    * Extended object (MUST use extend)
    */
-  extended: <T extends z.ZodRawShape, E extends z.ZodRawShape>(
-    base: z.ZodObject<T>,
+  extended: <T extends z4.ZodRawShape, E extends z4.ZodRawShape>(
+    base: z4.ZodObject<T>,
     extension: E,
     description: string
   ) => base.extend(extension).describe(description),
@@ -122,7 +122,7 @@ export const mandatoryObjectPattern = {
   /**
    * Partial object for updates (MUST use partial)
    */
-  partial: <T extends z.ZodRawShape>(base: z.ZodObject<T>, description: string) =>
+  partial: <T extends z4.ZodRawShape>(base: z4.ZodObject<T>, description: string) =>
     base.partial().describe(description),
 } as const
 
@@ -135,7 +135,7 @@ export const mandatoryArrayPattern = {
   /**
    * Array with description
    */
-  array: <T extends z.ZodTypeAny>(itemSchema: T, description: string) =>
+  array: <T extends z4.ZodTypeAny>(itemSchema: T, description: string) =>
     createMandatoryArray(itemSchema, description),
 } as const
 
@@ -155,7 +155,7 @@ export const mandatoryCoercionPattern = {
     max?: number
     description: string
   }) => {
-    let schema = z.coerce.number()
+    let schema = z4.coerce.number()
     if (options.int) schema = schema.int()
     if (options.positive) schema = schema.positive()
     if (options.min !== undefined) schema = schema.min(options.min)
@@ -176,17 +176,17 @@ export const mandatoryWrapperPattern = {
   /**
    * Optional field (MUST use for optional fields)
    */
-  optional: <T extends z.ZodTypeAny>(schema: T) => schema.optional(),
+  optional: <T extends z4.ZodTypeAny>(schema: T) => schema.optional(),
 
   /**
    * Nullable field (MUST use for nullable fields)
    */
-  nullable: <T extends z.ZodTypeAny>(schema: T) => schema.nullable(),
+  nullable: <T extends z4.ZodTypeAny>(schema: T) => schema.nullable(),
 
   /**
    * Nullish field (optional + nullable)
    */
-  nullish: <T extends z.ZodTypeAny>(schema: T) => schema.nullish(),
+  nullish: <T extends z4.ZodTypeAny>(schema: T) => schema.nullish(),
 } as const
 
 /**
@@ -194,24 +194,24 @@ export const mandatoryWrapperPattern = {
  *
  * MUST use z.infer<typeof schema> for all types
  */
-export type MandatoryInfer<T extends z.ZodTypeAny> = z.infer<T>
+export type MandatoryInfer<T extends z4.ZodTypeAny> = z4.infer<T>
 
 /**
  * MANDATORY PATTERN: Error handling
  *
  * Zod v4: Use .issues instead of .errors
  */
-export type MandatoryError = z.ZodError
+export type MandatoryError = z4.ZodError
 
 /**
  * MANDATORY PATTERN: Safe parse
  *
  * MUST use safeParse instead of parse for better error handling
  */
-export function mandatorySafeParse<T extends z.ZodTypeAny>(schema: T, input: unknown) {
+export function mandatorySafeParse<T extends z4.ZodTypeAny>(schema: T, input: unknown) {
   const result = schema.safeParse(input)
   if (result.success) {
-    return { success: true as const, data: result.data as z.infer<T> }
+    return { success: true as const, data: result.data as z4.infer<T> }
   }
   return { success: false as const, error: result.error }
 }

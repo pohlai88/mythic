@@ -1,0 +1,55 @@
+---
+title: mandatorySafeParse
+description: MANDATORY: Safe parse wrapper
+All parsing MUST use safeParse for error handling
+
+Zod v4: Uses .issues instead of .errors
+category: reference
+tags: [functions, api]
+---
+
+# mandatorySafeParse
+
+MANDATORY: Safe parse wrapper
+All parsing MUST use safeParse for error handling
+
+Zod v4: Uses .issues instead of .errors
+
+## Parameters
+
+### schema
+
+**Type**: `T`
+
+**Required**
+
+No description available
+
+
+### input
+
+**Type**: `unknown`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`{ success: true; data: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/core").output<T>; error?: undefined; } | { success: false; error: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/errors").ZodError<import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/core").output<T>>; data?: undefined; }`
+
+
+
+## Examples
+
+```typescript
+const result = mandatorySafeParse(userSchema, input)
+if (!result.success) {
+  // Access issues with result.error.issues
+  return handleError(result.error)
+}
+```
+
+

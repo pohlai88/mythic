@@ -5,8 +5,10 @@
  */
 
 import { jsonb, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z as z4 } from 'zod/v4'
+import { proposals } from './proposals'
 
 export const circles = pgTable('circles', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -38,6 +40,28 @@ export const selectCircleMemberSchema = createSelectSchema(circleMembers, {
   role: z4.enum(['sovereign', 'council', 'observer']),
   adminHat: z4.array(z4.string()).optional(),
 })
+
+// Relations for Drizzle relational queries API
+export const circlesRelations = relations(circles, ({ one, many }) => ({
+  parent: one(circles, {
+    fields: [circles.parentId],
+    references: [circles.id],
+    relationName: 'parentCircle',
+  }),
+  children: many(circles, {
+    relationName: 'parentCircle',
+  }),
+  proposals: many(proposals),
+  members: many(circleMembers),
+}))
+
+export const circleMembersRelations = relations(circleMembers, ({ one }) => ({
+  circle: one(circles, {
+    fields: [circleMembers.circleId],
+    references: [circles.id],
+  }),
+  // Note: userId references users table which may not exist yet
+}))
 
 // TypeScript types
 export type Circle = typeof circles.$inferSelect

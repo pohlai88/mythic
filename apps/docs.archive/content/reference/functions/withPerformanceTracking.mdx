@@ -1,0 +1,45 @@
+---
+title: withPerformanceTracking
+description: Create a performance tracking wrapper for route handlers
+
+Wraps a route handler function to automatically track response time and status code.
+category: reference
+tags: [functions, api]
+---
+
+# withPerformanceTracking
+
+Create a performance tracking wrapper for route handlers
+
+Wraps a route handler function to automatically track response time and status code.
+
+## Parameters
+
+### handler
+
+**Type**: `T`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`T`
+
+
+
+## Examples
+
+```typescript
+```typescript
+export const GET = withPerformanceTracking(async (req, { params }) => {
+  // Your handler code
+  return NextResponse.json({ data: 'result' })
+})
+```
+```
+
+

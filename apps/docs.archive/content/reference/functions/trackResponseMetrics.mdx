@@ -1,0 +1,36 @@
+---
+title: trackResponseMetrics
+description: Track response metrics and send to analytics
+
+This function should be called from route handlers after processing the request.
+It captures response time and status code, then sends to analytics service.
+category: reference
+tags: [functions, api]
+---
+
+# trackResponseMetrics
+
+Track response metrics and send to analytics
+
+This function should be called from route handlers after processing the request.
+It captures response time and status code, then sends to analytics service.
+
+## Parameters
+
+### options
+
+**Type**: `{ requestId: string; pathname: string; method: string; statusCode: number; responseTime: number; requestHeaders?: Headers | undefined; startTime?: number | undefined; }`
+
+**Required**
+
+- Tracking options
+
+
+
+## Returns
+
+`Promise<void>`
+
+
+
+

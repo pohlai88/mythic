@@ -1,9 +1,0 @@
-{
-  "title": "Tutorials",
-  "description": "Step-by-step learning guides. First-person plural ('We will build X together').",
-  "pages": [
-    "getting-started",
-    "building-forms",
-    "creating-components"
-  ]
-}

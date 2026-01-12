@@ -1,0 +1,366 @@
+---
+description: "Root Configuration Governance - Enforces elite monorepo config patterns (Three Governing Rules)"
+globs: "package.json,pnpm-workspace.yaml,turbo.json,tsconfig.json,next.config.*,tailwind.config.*,*.mjs,*.ts,apps/**/next.config.*,apps/**/tsconfig.json"
+alwaysApply: false
+priority: 15
+---
+
+# Root Configuration Governance (RFC-2119 MANDATORY)
+
+**Authority**: Root Configuration Elite Management Guide v2.0.0
+**Reference**: `@docs/architecture/ROOT_CONFIG_ELITE_MANAGEMENT.md`
+**Status**: MANDATORY - Enforced via Cursor AI
+
+---
+
+## 1. Three Governing Rules (SEAL-READY)
+
+### Rule 1: Root is Minimal and Monorepo-Only (MANDATORY)
+
+**✅ DO**:
+- Root configs = Only monorepo-level configs
+- App-specific configs = `apps/*/`
+- Shared configs = `packages/config/`
+- Maximum 10-15 root configs
+
+**❌ FORBIDDEN**:
+- ❌ `next.config.*` at root (MUST be in `apps/*/`)
+- ❌ App-specific configs at root
+- ❌ Duplicate configs across apps
+
+**Enforcement**:
+```typescript
+// ❌ FORBIDDEN: Root next.config.mjs
+// File: next.config.mjs (root)
+// Action: REJECT - Move to apps/*/next.config.mjs
+
+// ✅ CORRECT: App-specific config
+// File: apps/my-app/next.config.mjs
+```
+
+---
+
+### Rule 2: All Shared Config Lives in `packages/config/*` (MANDATORY)
+
+**✅ DO**:
+- Shared configs = `packages/config/*` packages
+- TurboRepo tracks `packages/config/**/*.json` in globalDependencies
+- Apps extend shared configs via workspace packages
+- Versioned config packages (`@mythic/config-*`)
+
+**❌ FORBIDDEN**:
+- ❌ Duplicate configs across apps
+- ❌ Shared configs at root (unless truly global)
+- ❌ App-specific configs in `packages/config/`
+
+**Enforcement**:
+```json
+// ✅ CORRECT: turbo.json globalDependencies
+{
+  "globalDependencies": [
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "packages/config/**/*.json"  // ✅ Shared configs only
+  ],
+  "tasks": {
+    "build": {
+      "inputs": [
+        "next.config.mjs",    // ✅ App-specific (not global)
+        "tsconfig.json"      // ✅ App-specific (not global)
+      ]
+    }
+  }
+}
+```
+
+---
+
+### Rule 3: TypeScript Solution-Style References is Canonical (MANDATORY)
+
+**✅ DO**:
+- Root `tsconfig.json` = Base config only (NO references)
+- Each app/package = References only direct dependencies
+- Prevents reference explosion at scale
+
+**❌ FORBIDDEN**:
+- ❌ References array in root `tsconfig.json` (at scale)
+- ❌ Apps referencing all packages
+- ❌ Circular references
+
+**Enforcement**:
+```json
+// ✅ CORRECT: Root tsconfig.json (base only)
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true
+  }
+  // ✅ NO references array
+}
+
+// ✅ CORRECT: App tsconfig.json (references only deps)
+{
+  "extends": "../../tsconfig.json",
+  "references": [
+    { "path": "../../packages/shared-utils" },
+    { "path": "../../packages/domain-auth" }
+  ]
+}
+```
+
+---
+
+## 2. Package Management Governance
+
+### 2.1 pnpm-workspace.yaml is Canonical (MANDATORY)
+
+**✅ DO**:
+- `pnpm-workspace.yaml` is single source of truth
+- Keep it simple (just workspace paths)
+
+**❌ FORBIDDEN**:
+- ❌ `workspaces` field in root `package.json` (double-source-of-truth)
+- ❌ Complex logic in `pnpm-workspace.yaml`
+
+**Enforcement**:
+```json
+// ❌ FORBIDDEN: workspaces in package.json
+{
+  "workspaces": ["apps/*", "packages/*"]  // ❌ Remove this
+}
+
+// ✅ CORRECT: Only pnpm-workspace.yaml
+// pnpm-workspace.yaml:
+packages:
+  - "apps/*"
+  - "packages/*"
+```
+
+---
+
+### 2.2 Version Upgrade Policy (MANDATORY)
+
+**When updating Node.js/pnpm versions**:
+
+1. ✅ Update `.node-version`, `.nvmrc`, `package.json` engines
+2. ✅ Update `packageManager` in `package.json`
+3. ✅ Run test gate: `pnpm -r build && pnpm -r lint && pnpm -r type-check`
+4. ✅ Document decision in ADR or decision ledger
+
+**Enforcement**:
+- ✅ Check if version change requires test gate
+- ✅ Verify ADR/decision ledger entry exists
+- ✅ Ensure all version files updated consistently
+
+---
+
+## 3. TurboRepo Configuration Governance
+
+### 3.1 Minimal Global Dependencies (MANDATORY)
+
+**✅ DO**:
+- Only truly global configs in `globalDependencies`
+- App-specific configs in task `inputs`
+
+**Key Principle**:
+- `globalDependencies` = Configs that affect ALL apps
+- Task `inputs` = Configs that affect specific apps
+
+**Enforcement**:
+```json
+// ✅ CORRECT: Minimal globalDependencies
+{
+  "globalDependencies": [
+    "package.json",              // ✅ Affects all
+    "pnpm-lock.yaml",            // ✅ Affects all
+    "pnpm-workspace.yaml",       // ✅ Affects all
+    "packages/config/**/*.json"   // ✅ Shared configs only
+  ],
+  "tasks": {
+    "build": {
+      "inputs": [
+        "next.config.mjs",    // ✅ App-specific
+        "tsconfig.json"        // ✅ App-specific
+      ]
+    }
+  }
+}
+```
+
+---
+
+## 4. TypeScript Configuration Governance
+
+### 4.1 Solution-Style References (CANONICAL)
+
+**✅ DO**:
+- Root `tsconfig.json` = Base config only (NO references)
+- Apps reference only direct dependencies
+- Prevents reference explosion
+
+**Enforcement**:
+- ✅ Check root `tsconfig.json` has NO references array (at scale)
+- ✅ Verify apps reference only their dependencies
+- ✅ Prevent circular references
+
+---
+
+## 5. Styling Configuration Governance
+
+### 5.1 Design System Constitution (MANDATORY)
+
+**⚠️ DEPRECATED**: This section is superseded by `033_design-system-constitution.mdc`
+
+**Design System Constitution is the ONLY source of truth:**
+- See `033_design-system-constitution.mdc` for ALL styling rules
+- Tailwind CSS v4 uses CSS-first configuration (`@theme` directive)
+- Config files are optional in Tailwind v4 (use `@source` directives)
+- Design system package is sealed and authoritative
+- All styling MUST follow design system constitution
+
+**Reference:**
+- `033_design-system-constitution.mdc` - Complete design system rules
+- `packages/design-system/` - Design system package (sealed)
+
+---
+
+## 6. Package Boundary Enforcement
+
+### 6.1 Cross-Domain Import Rules (MANDATORY)
+
+**✅ DO**:
+- Use `@mythic/shared-types` as bridge between domains
+- Apps import from shared packages only
+
+**❌ FORBIDDEN**:
+- ❌ Cross-domain imports (`@mythic/domain-*` from other domains)
+- ❌ App-to-app imports
+- ❌ Direct domain package imports in RFL
+
+**Enforcement**:
+```typescript
+// ❌ FORBIDDEN: Cross-domain import
+import { Invoice } from '@mythic/domain-finance'
+// In domain-procurement/rfl/store.ts
+
+// ✅ CORRECT: Use shared-types bridge
+import { Invoice } from '@mythic/shared-types'
+// In domain-procurement/rfl/store.ts
+```
+
+---
+
+## 7. Cursor Governance Configuration
+
+### 7.1 .cursorignore as First-Class Config (MANDATORY)
+
+**✅ DO**:
+- Exclude build artifacts from AI context
+- Preserve planning zones (`.cursor/planing`, `.cursor/product`)
+- Archive historical docs (`.cursor/archive/`)
+
+**Enforcement**:
+- ✅ Verify `.cursorignore` excludes build artifacts
+- ✅ Preserve zones are documented
+- ✅ AI context is focused on active code
+
+---
+
+### 7.2 Cursor Documentation Hierarchy (MANDATORY)
+
+**✅ DO**:
+- `.cursor/docs/` = Canonical reference (AI reads)
+- `.cursor/planing/` = Preserved zone (immutable)
+- `.cursor/product/` = Preserved zone (immutable)
+- `.cursor/archive/` = Historical (excluded from AI)
+
+**Enforcement**:
+- ✅ Verify documentation hierarchy is respected
+- ✅ Preserved zones are not modified by AI
+- ✅ Canonical references are in `.cursor/docs/`
+
+---
+
+## 8. Validation Checklist
+
+### When Creating/Modifying Root Configs:
+
+- [ ] ✅ Is this config truly monorepo-level?
+- [ ] ✅ Is this config app-specific? (If yes, move to `apps/*/`)
+- [ ] ✅ Is this config shared? (If yes, move to `packages/config/`)
+- [ ] ✅ Does `pnpm-workspace.yaml` match workspace structure?
+- [ ] ✅ Are `globalDependencies` minimal (only truly global)?
+- [ ] ✅ Are app-specific configs in task `inputs`?
+- [ ] ✅ Does root `tsconfig.json` have NO references? (at scale)
+- [ ] ✅ Do apps reference only their dependencies?
+- [ ] ✅ Is Tailwind config in design system package?
+- [ ] ✅ Are package boundaries respected?
+
+---
+
+## 9. Enforcement Actions
+
+### Automatic Enforcement:
+
+1. **Root Config Creation**:
+   - ✅ Check if config is app-specific → REJECT (move to `apps/*/`)
+   - ✅ Check if config is shared → REJECT (move to `packages/config/`)
+   - ✅ Verify config is truly monorepo-level
+
+2. **Package.json Modification**:
+   - ✅ Check for `workspaces` field → WARN (remove, use pnpm-workspace.yaml)
+   - ✅ Verify `packageManager` is pinned
+   - ✅ Verify `engines` match `.node-version` and `.nvmrc`
+
+3. **Turbo.json Modification**:
+   - ✅ Check `globalDependencies` are minimal
+   - ✅ Verify app-specific configs are in task `inputs`
+   - ✅ Verify `packages/config/**/*.json` is tracked
+
+4. **TypeScript Config Modification**:
+   - ✅ Check root `tsconfig.json` has NO references (at scale)
+   - ✅ Verify apps reference only their dependencies
+   - ✅ Prevent circular references
+
+5. **Next.js Config Creation**:
+   - ✅ REJECT if at root (must be in `apps/*/`)
+   - ✅ Verify app-specific optimizations
+
+---
+
+## 10. Quick Reference
+
+### ✅ Root Configs CAN:
+- Be monorepo-level only
+- Track shared configs in `packages/config/`
+- Use minimal `globalDependencies`
+- Have base-only TypeScript config (no references at scale)
+
+### ❌ Root Configs CANNOT:
+- Include app-specific configs (`next.config.*`, app-specific `tsconfig.json`)
+- Include `workspaces` field in `package.json`
+- Have references array in root `tsconfig.json` (at scale)
+- Duplicate shared configs
+
+### 📋 Required Patterns:
+- `pnpm-workspace.yaml` = Single source of truth
+- `packages/config/*` = Shared configs
+- `apps/*/next.config.mjs` = App-specific Next.js config
+- Root `tsconfig.json` = Base only (no references at scale)
+
+---
+
+## 11. References
+
+- **Root Config Guide**: `@docs/architecture/ROOT_CONFIG_ELITE_MANAGEMENT.md`
+- **Monorepo Best Practices**: `@docs/architecture/MONOREPO_BEST_PRACTICES.md`
+- **RFL Doctrine**: `@.cursor/rules/025_rfl-doctrine-enforcement.mdc`
+- **Package Boundary Rules**: See Root Config Guide Section 10
+
+---
+
+**Status**: MANDATORY - Enforced via Cursor AI
+**Version**: 1.0.0
+**Effective Date**: 2026-01-11
+**Authority**: Root Configuration Elite Management Guide v2.0.0

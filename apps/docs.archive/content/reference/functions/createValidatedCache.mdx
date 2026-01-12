@@ -1,0 +1,68 @@
+---
+title: createValidatedCache
+description: Create a validated cache wrapper
+
+Wraps Next.js unstable_cache with Zod validation to ensure
+cached data matches the expected schema.
+category: reference
+tags: [functions, api]
+---
+
+# createValidatedCache
+
+Create a validated cache wrapper
+
+Wraps Next.js unstable_cache with Zod validation to ensure
+cached data matches the expected schema.
+
+## Parameters
+
+### schema
+
+**Type**: `TSchema`
+
+**Required**
+
+No description available
+
+
+### fn
+
+**Type**: `(...args: TArgs) => Promise<import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/core").output<TSchema>>`
+
+**Required**
+
+No description available
+
+
+### options
+
+**Type**: `{ revalidate?: number | false | undefined; tags?: string[] | undefined; } | undefined`
+
+**Optional**
+
+No description available
+
+
+
+## Returns
+
+`Callback`
+
+
+
+## Examples
+
+```typescript
+```typescript
+const getCachedProposals = createValidatedCache(
+  proposalListResponseSchema,
+  async (filters) => {
+    return await db.select().from(proposals).where(...)
+  },
+  { tags: ['proposals'], revalidate: 60 }
+)
+```
+```
+
+

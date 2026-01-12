@@ -1,0 +1,156 @@
+# Monorepo Restructure Guide
+
+## Overview
+
+This workspace has been restructured from a Next.js template into a proper Turborepo monorepo following ERP-Luxury business platform best practices.
+
+## New Structure
+
+```
+mythic/
+├── apps/
+│   ├── docs/              # Nextra documentation site
+│   └── boardroom/         # The Apex (Executive Board Decision Engine MVP)
+│
+├── packages/
+│   ├── design-system/     # Axis Visual Canon v1.0.0
+│   ├── shared-types/      # Shared TypeScript types & Zod schemas
+│   ├── shared-utils/       # Shared utility functions
+│   └── config/            # Shared configurations (ESLint, TypeScript, etc.)
+│
+├── turbo.json             # Turborepo configuration
+├── pnpm-workspace.yaml    # pnpm workspace configuration
+└── package.json           # Root package.json
+```
+
+## Migration Steps
+
+### 1. Move Existing Files
+
+The following files need to be moved from root to `apps/docs/`:
+
+```bash
+# Move Nextra app files
+mv app apps/docs/
+mv content apps/docs/
+mv pages apps/docs/
+mv mdx-components.tsx apps/docs/
+mv nextra-remote-filepaths apps/docs/
+
+# Move Nextra-specific components
+mv components/governance apps/docs/components/
+mv components/api-reference.tsx apps/docs/components/
+mv components/code-block.tsx apps/docs/components/
+mv components/steps.tsx apps/docs/components/
+mv components/tabs.tsx apps/docs/components/
+
+# Move Nextra-specific lib files
+mv lib/i18n apps/docs/lib/
+```
+
+### 2. Update Import Paths
+
+After moving files, update import paths:
+
+- `@/lib/utils` → `@mythic/shared-utils`
+- `@/lib/utils/cn` → `@mythic/shared-utils/cn`
+- `@/components/design-system` → `@mythic/design-system`
+- Design system tokens → `@mythic/design-system/tokens`
+
+### 3. Install Dependencies
+
+```bash
+pnpm install
+```
+
+### 4. Update TypeScript Paths
+
+Update `tsconfig.json` files in each app to use workspace packages:
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@mythic/shared-utils": ["../../packages/shared-utils/src"],
+      "@mythic/shared-types": ["../../packages/shared-types/src"],
+      "@mythic/design-system": ["../../packages/design-system/src"]
+    }
+  }
+}
+```
+
+## Package Descriptions
+
+### apps/docs
+Nextra 4 documentation site. Contains all documentation content, governance components, and Nextra configuration.
+
+### apps/boardroom
+The Apex - Executive Board Decision Engine MVP. Implements the AXIS Decision BoardRoom as described in the PRD.
+
+### packages/design-system
+Axis Visual Canon v1.0.0 design system implementation:
+- Material-based color tokens (Void, Obsidian, Parchment, Ash, Gold, Ember)
+- Typography system (Editorial, Modern, Forensic)
+- Motion physics (Gravitational time)
+- Design system components (Button, Card, etc.)
+
+### packages/shared-types
+Shared TypeScript types and Zod schemas:
+- BoardRoom domain types (Proposals, Circles, Thanos Events)
+- ERP domain types (Invoices, etc.)
+- Common type definitions
+
+### packages/shared-utils
+Shared utility functions:
+- `cn()` - Class name utility (Tailwind CSS)
+- Composition utilities (Polymorphic components, AsChild pattern)
+- Date utilities (date-fns)
+- Legacy utilities (backward compatibility)
+
+## Development Workflow
+
+### Run All Apps
+```bash
+pnpm dev
+```
+
+### Run Specific App
+```bash
+pnpm dev:docs        # Run docs app
+pnpm dev:boardroom   # Run boardroom app
+```
+
+### Build All Apps
+```bash
+pnpm build
+```
+
+### Build Specific App
+```bash
+turbo run build --filter=@mythic/docs
+turbo run build --filter=@mythic/boardroom
+```
+
+## Architecture Principles
+
+Following **NexusCanon v4.0.0 + Olympian v1.0.0**:
+
+1. **Single Indivisible Runtime**: Application logic, database access, and UI rendering exist within unified memory space
+2. **The Prime Monad**: One Runtime. One Truth. Zero Latency.
+3. **Material Truth**: Design system uses material-based colors, not UI state colors
+4. **Gravitational Time**: Motion obeys gravitational time (700-1200ms hover, 1618ms commitment)
+
+## Next Steps
+
+1. Complete file migration (move existing files to apps/docs)
+2. Update all import paths
+3. Create BoardRoom app structure following PRD
+4. Implement design system components
+5. Set up database schema for BoardRoom
+6. Implement The 9 Weapons (Codex, Thanos Trace, BoardDialog, etc.)
+
+## References
+
+- PRD: `content/product/PRD_Decision_BoardRoom_MVP.md`
+- Architecture: `.cursor/NexusCanon_Olympian.md`
+- Design System: `content/product/PRD_Decision_BoardRoom_MVP.md` Section 3.1

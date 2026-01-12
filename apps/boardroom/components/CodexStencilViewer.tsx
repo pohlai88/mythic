@@ -7,7 +7,8 @@
 'use client'
 
 import { Card } from '@mythic/design-system'
-import { cn } from '@mythic/shared-utils'
+import { cn, intelligentStatusStyles } from '@mythic/shared-utils'
+import { spacing, typography, tokens, borders, margins, layout, buttons } from '@/src/lib'
 import type { StencilDefinition, StencilField } from '@/src/codex'
 
 interface CodexStencilViewerProps {
@@ -18,37 +19,37 @@ interface CodexStencilViewerProps {
 export function CodexStencilViewer({ stencil, className }: CodexStencilViewerProps) {
   if (!stencil) {
     return (
-      <div className={cn('text-ash text-sm', className)}>
+      <div className={cn(typography.body.md, tokens.text.secondary, className)}>
         No stencil selected
       </div>
     )
   }
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn(spacing.space.md, className)}>
       <div>
-        <h3 className="text-gold font-serif text-lg mb-2">{stencil.name}</h3>
-        <div className="text-ash text-sm">
-          Version {stencil.version} • ID: <span className="font-mono">{stencil.id}</span>
+        <h3 className={cn(tokens.text.accent, typography.heading.sm, margins.bottom.sm)}>{stencil.name}</h3>
+        <div className={cn(typography.body.md, tokens.text.secondary)}>
+          Version {stencil.version} • ID: <span className={typography.mono.sm}>{stencil.id}</span>
         </div>
       </div>
 
-      <Card elevation="sm" className="p-4">
-        <h4 className="text-parchment font-serif mb-3">Fields</h4>
-        <div className="space-y-3">
+      <Card elevation="sm" className={spacing.card}>
+        <h4 className={cn(tokens.text.primary, typography.heading.sm, margins.bottom.md)}>Fields</h4>
+        <div className={spacing.space.sm}>
           {stencil.fields.map((field) => (
             <FieldDefinition key={field.id} field={field} />
           ))}
         </div>
       </Card>
 
-      <Card elevation="sm" className="p-4">
-        <h4 className="text-parchment font-serif mb-3">Required Approvers</h4>
-        <div className="flex flex-wrap gap-2">
+      <Card elevation="sm" className={spacing.card}>
+        <h4 className={cn(tokens.text.primary, typography.heading.sm, margins.bottom.md)}>Required Approvers</h4>
+        <div className={cn(layout.flexWrap, spacing.gap.sm)}>
           {stencil.requiredApprovers.map((approver) => (
             <span
               key={approver}
-              className="px-3 py-1 bg-obsidian border border-gold rounded-xs text-gold text-sm font-mono"
+              className={intelligentStatusStyles('LISTENING', 'badge', cn(buttons.badge, 'px-3 py-1 text-sm'))}
             >
               {approver}
             </span>
@@ -61,25 +62,25 @@ export function CodexStencilViewer({ stencil, className }: CodexStencilViewerPro
 
 function FieldDefinition({ field }: { field: StencilField }) {
   return (
-    <div className="border-b border-charcoal pb-3 last:border-0">
-      <div className="flex items-center justify-between mb-1">
-        <span className="text-parchment font-medium">{field.label}</span>
-        <div className="flex items-center gap-2">
+    <div className={cn(borders.bottom, 'pb-3 last:border-0')}>
+      <div className={cn(layout.flexBetween, margins.bottom.sm)}>
+        <span className={cn(tokens.text.primary, 'font-medium')}>{field.label}</span>
+        <div className={cn(layout.flexCenter, spacing.gap.sm)}>
           {field.required && (
-            <span className="text-xs text-ember font-mono">REQUIRED</span>
+            <span className={cn(typography.mono.sm, tokens.text.warning)}>REQUIRED</span>
           )}
-          <span className="text-xs text-ash font-mono bg-obsidian px-2 py-1 rounded-xs">
+          <span className={cn(typography.mono.sm, tokens.text.secondary, tokens.background.surface, buttons.badge)}>
             {field.type}
           </span>
         </div>
       </div>
       {field.validationRule && (
-        <div className="text-xs text-ash font-mono mt-1">
+        <div className={cn(typography.mono.sm, tokens.text.secondary, margins.top.sm)}>
           Rule: {field.validationRule}
         </div>
       )}
       {field.options && (
-        <div className="text-xs text-ash mt-1">
+        <div className={cn(typography.body.sm, tokens.text.secondary, margins.top.sm)}>
           Options: {field.options.join(', ')}
         </div>
       )}

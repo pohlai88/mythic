@@ -5,8 +5,10 @@
  */
 
 import { jsonb, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z as z4 } from 'zod/v4'
+import { proposals } from './proposals'
 
 export const thanosEvents = pgTable('thanos_events', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -35,6 +37,15 @@ export const selectThanosEventSchema = createSelectSchema(thanosEvents, {
   how: z4.enum(['UI', 'API', 'batch']),
   metadata: z4.record(z4.string(), z4.unknown()).optional(),
 })
+
+// Relations for Drizzle relational queries API
+export const thanosEventsRelations = relations(thanosEvents, ({ one }) => ({
+  proposal: one(proposals, {
+    fields: [thanosEvents.proposalId],
+    references: [proposals.id],
+  }),
+  // Note: who references users table which may not exist yet
+}))
 
 // TypeScript types
 export type ThanosEvent = typeof thanosEvents.$inferSelect

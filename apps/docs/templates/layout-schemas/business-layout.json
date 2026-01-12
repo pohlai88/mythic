@@ -1,0 +1,56 @@
+{
+  "name": "Business Layout",
+  "version": "1.0.0",
+  "description": "Layout wireframe for business stakeholders documentation section",
+  "audience": "business",
+  "components": [
+    {
+      "type": "Navbar",
+      "props": {
+        "audience": "business",
+        "sections": ["overview", "training", "compliance"],
+        "search": false,
+        "commandPalette": false
+      },
+      "position": "sticky",
+      "styling": {
+        "background": "bg-obsidian",
+        "border": "border-b border-charcoal",
+        "height": "h-16"
+      }
+    },
+    {
+      "type": "Content",
+      "props": {
+        "maxWidth": "wide",
+        "typography": "editorial",
+        "padding": "p-8",
+        "showBreadcrumbs": true,
+        "centered": true
+      },
+      "styling": {
+        "margin": "mx-auto",
+        "maxWidth": "max-w-5xl"
+      }
+    }
+  ],
+  "responsive": {
+    "mobile": {
+      "layout": "centered",
+      "content": "full-width"
+    },
+    "tablet": {
+      "layout": "centered",
+      "content": "adaptive"
+    },
+    "desktop": {
+      "layout": "centered",
+      "content": "max-width"
+    }
+  },
+  "breakpoints": {
+    "mobile": "640px",
+    "tablet": "768px",
+    "desktop": "1024px"
+  }
+}

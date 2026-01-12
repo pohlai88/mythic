@@ -1,8 +1,8 @@
 /**
- * PostCSS Configuration for Docs App
+ * PostCSS Configuration for Documentation System
  *
- * Next.js automatically processes CSS through PostCSS during build/dev
- * This config enables Tailwind CSS v4 processing
+ * Tailwind CSS v4 configuration
+ * Reference: https://tailwindcss.com/docs
  */
 
 export default {

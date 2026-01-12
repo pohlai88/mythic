@@ -3,3 +3,29 @@ node_modules
 .env
 .env.local
 .env*.local
+.env.fixed
+env.EXAMPLE
+
+# Build artifacts
+tsconfig.tsbuildinfo
+next-env.d.ts
+vercel-types.d.ts
+.turbo/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary
+*.tmp
+*.temp
+.cache/
+
+# Turborepo
+.turbo

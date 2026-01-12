@@ -1,0 +1,50 @@
+---
+title: mandatorySafeParseAsync
+description: MANDATORY: Async safe parse wrapper
+Use for schemas with async refinements or transforms
+category: reference
+tags: [functions, api]
+---
+
+# mandatorySafeParseAsync
+
+MANDATORY: Async safe parse wrapper
+Use for schemas with async refinements or transforms
+
+## Parameters
+
+### schema
+
+**Type**: `T`
+
+**Required**
+
+No description available
+
+
+### input
+
+**Type**: `unknown`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`Promise<{ success: true; data: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/core").output<T>; error?: undefined; } | { success: false; error: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/errors").ZodError<import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/core").output<T>>; data?: undefined; }>`
+
+
+
+## Examples
+
+```typescript
+const result = await mandatorySafeParseAsync(userSchema, input)
+if (!result.success) {
+  return handleError(result.error)
+}
+```
+
+

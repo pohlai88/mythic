@@ -8,7 +8,8 @@
 'use client'
 
 import { Card } from '@mythic/design-system'
-import { cn } from '@mythic/shared-utils'
+import { cn, intelligentStatusStyles } from '@mythic/shared-utils'
+import { tokens, buttons } from '@/src/lib'
 import { memo } from 'react'
 import { EmptyState } from './EmptyState'
 
@@ -54,7 +55,7 @@ export const ErrorState = memo(function ErrorState({
         onRetry ? (
           <button
             onClick={onRetry}
-            className="px-4 py-2 bg-ember text-void rounded-xs hover:bg-ember/80 transition-colors"
+            className={intelligentStatusStyles('VETOED', 'badge', cn(buttons.small, 'transition-hover-intelligent'))}
           >
             Retry
           </button>

@@ -1,0 +1,48 @@
+---
+title: createMandatoryArray
+description: MANDATORY: Create array schema with required patterns
+category: reference
+tags: [functions, api]
+---
+
+# createMandatoryArray
+
+MANDATORY: Create array schema with required patterns
+
+## Parameters
+
+### itemSchema
+
+**Type**: `T`
+
+**Required**
+
+No description available
+
+
+### description
+
+**Type**: `string`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/schemas").ZodArray<T>`
+
+
+
+## Examples
+
+```typescript
+const usersSchema = createMandatoryArray(
+  userSchema,
+  'Array of users'
+)
+```
+
+

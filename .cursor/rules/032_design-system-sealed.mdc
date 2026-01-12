@@ -1,0 +1,352 @@
+---
+description: "DEPRECATED - Use 033_design-system-constitution.mdc instead"
+globs: "packages/design-system/**/*"
+alwaysApply: false
+priority: 32
+---
+
+# ⚠️ DEPRECATED - Use 033_design-system-constitution.mdc
+
+**This rule is deprecated. Please use `033_design-system-constitution.mdc` which is the single source of truth for the design system.**
+
+**Migration**: All design system rules are now consolidated in `033_design-system-constitution.mdc`.
+
+---
+
+# Design System Package Sealed (RFC-2119 MANDATORY)
+
+**Purpose**: Prevent unauthorized modifications to the validated ELITE-compliant design system package.
+**Authority**: Overrides all other rules for files in `packages/design-system/`
+**Status**: MANDATORY - Sealed on 2026-01-11
+**Validation**: See `packages/design-system/VALIDATION_REPORT.md`
+
+---
+
+## 1. Sealing Status
+
+### Package Information
+
+- **Package**: `@mythic/design-system`
+- **Status**: ✅ **SEALED - ELITE COMPLIANT**
+- **Sealed Date**: 2026-01-11
+- **Methodology**: `.cursor/docs/TAILWIND_ELITE_METHODOLOGY.md`
+- **Validation Report**: `packages/design-system/VALIDATION_REPORT.md`
+
+### Compliance Score
+
+**100% ELITE Compliant** - All methodology requirements met:
+- ✅ CSS-First Configuration (`@theme` directive)
+- ✅ Layer-Based Architecture (`@layer theme`)
+- ✅ Intelligence-Driven Styling
+- ✅ Variant-First Approach
+- ✅ Systematic Token Architecture
+- ✅ Zero Custom CSS (except intelligence utilities)
+- ✅ Domain-Specific Theme Extensions
+- ✅ Build Process
+
+---
+
+## 2. Blocked Operations (MANDATORY)
+
+### ❌ FORBIDDEN: File Modifications
+
+**ALL modifications to these files are BLOCKED:**
+
+```
+packages/design-system/
+├── src/tokens/
+│   ├── theme.css          ❌ BLOCKED (except via Handoff sync)
+│   └── handoff-colors.ts  ❌ BLOCKED (except via Handoff sync)
+├── src/components/
+│   ├── Button.tsx         ❌ BLOCKED
+│   ├── Card.tsx           ❌ BLOCKED
+│   ├── Toast.tsx          ❌ BLOCKED
+│   └── IntelligenceExample.tsx ❌ BLOCKED
+├── src/tokens.ts          ❌ BLOCKED
+├── src/index.ts           ❌ BLOCKED
+├── package.json           ❌ BLOCKED
+├── postcss.config.mjs     ❌ BLOCKED
+└── tsconfig.json          ❌ BLOCKED
+```
+
+### ❌ FORBIDDEN: Code Changes
+
+**These operations are BLOCKED:**
+
+1. **Token Modifications**
+   - ❌ Adding new colors to `@theme`
+   - ❌ Modifying existing color values
+   - ❌ Changing typography tokens
+   - ❌ Modifying border radius values
+   - ❌ Adding semantic color mappings
+
+2. **Component Modifications**
+   - ❌ Changing component props
+   - ❌ Modifying component styling
+   - ❌ Adding new components
+   - ❌ Removing components
+   - ❌ Changing component exports
+
+3. **CSS Modifications**
+   - ❌ Adding custom CSS
+   - ❌ Modifying `@layer` directives
+   - ❌ Adding new `@utility` directives (except intelligence utilities)
+   - ❌ Changing intelligence utility definitions
+
+4. **Configuration Changes**
+   - ❌ Modifying `package.json` dependencies
+   - ❌ Changing PostCSS configuration
+   - ❌ Modifying TypeScript configuration
+   - ❌ Changing build scripts
+
+5. **Structure Changes**
+   - ❌ Moving files
+   - ❌ Renaming files
+   - ❌ Changing directory structure
+   - ❌ Adding new directories
+
+---
+
+## 3. Allowed Operations (EXCEPTIONS)
+
+### ✅ ALLOWED: Build Operations
+
+**These operations are ALLOWED:**
+
+1. **Build Commands**
+   ```bash
+   ✅ pnpm tokens:sync        # Sync from Handoff/Figma
+   ✅ pnpm tokens:validate    # Validate tokens
+   ✅ pnpm tokens:update-css  # Update CSS from Handoff
+   ```
+
+2. **Read Operations**
+   - ✅ Reading files for reference
+   - ✅ Viewing validation report
+   - ✅ Checking methodology compliance
+
+3. **Handoff Sync** (Automated)
+   - ✅ `tokens:sync` - Sync colors from Figma
+   - ✅ `tokens:update-css` - Update CSS from Handoff tokens
+   - ✅ `tokens:validate` - Validate token integrity
+
+**Note**: Handoff sync operations are ALLOWED because they maintain synchronization with the design source (Figma), which is the single source of truth for design tokens.
+
+---
+
+## 4. Enforcement Mechanism
+
+### Pre-commit Validation
+
+**Automatic Blocking**:
+```bash
+# Pre-commit hook checks for design-system modifications
+if git diff --cached --name-only | grep -q "packages/design-system/"; then
+  echo "❌ ERROR: Design system package is SEALED"
+  echo "See: packages/design-system/VALIDATION_REPORT.md"
+  echo "Contact: Design System Maintainer"
+  exit 1
+fi
+```
+
+### Cursor AI Enforcement
+
+**When user attempts to modify sealed files**:
+
+1. **Immediate Block**: Cursor AI MUST reject the modification
+2. **Error Message**: Display validation report reference
+3. **Alternative Suggestion**: Suggest using Handoff sync or creating domain-specific theme in app
+
+**Example Error Response**:
+```
+❌ BLOCKED: Design system package is SEALED
+
+The packages/design-system package has been validated as ELITE-compliant
+and is sealed to prevent unauthorized modifications.
+
+Validation Report: packages/design-system/VALIDATION_REPORT.md
+Methodology: .cursor/docs/TAILWIND_ELITE_METHODOLOGY.md
+
+If you need to:
+- Update design tokens: Use Handoff sync (pnpm tokens:sync)
+- Add domain-specific tokens: Create @theme override in your app
+- Modify components: Create wrapper components in your app
+```
+
+---
+
+## 5. Exception Process
+
+### Requesting an Exception
+
+**If modification is absolutely necessary**:
+
+1. **Document Justification**
+   - Why is the modification needed?
+   - What problem does it solve?
+   - What are the alternatives?
+
+2. **Update Validation Report**
+   - Re-run validation after modification
+   - Update compliance score
+   - Document any methodology deviations
+
+3. **Get Approval**
+   - Design System Maintainer approval required
+   - Methodology compliance review required
+
+4. **Update Sealing Status**
+   - Update sealed date if major changes made
+   - Re-validate against methodology
+
+**Exception Request Template**:
+```markdown
+## Exception Request
+
+**File**: packages/design-system/src/tokens/theme.css
+**Change**: [Describe change]
+**Justification**: [Why is this needed?]
+**Alternatives Considered**: [What alternatives were evaluated?]
+**Methodology Impact**: [Does this affect ELITE compliance?]
+**Approval**: [Pending/Approved/Rejected]
+```
+
+---
+
+## 6. Domain-Specific Extensions
+
+### ✅ ALLOWED: App-Level Theme Extensions
+
+**Apps CAN extend the design system via `@theme` overrides:**
+
+```css
+/* apps/docs/app/globals.css */
+@import "tailwindcss";
+@import "@mythic/design-system/tokens/theme.css";
+@source "../../packages/design-system";
+
+@theme {
+  /* Domain-specific tokens (ALLOWED) */
+  --color-diataxis-tutorial: 204 96% 48%;
+  --color-diataxis-howto: 142 76% 47%;
+  --color-diataxis-reference: 0 0% 45%;
+  --color-diataxis-explanation: 48 96% 47%;
+}
+```
+
+**This is the CORRECT way to add domain-specific tokens** - it respects the base theme while allowing app-specific extensions.
+
+---
+
+## 7. Maintenance Guidelines
+
+### Handoff Sync Workflow
+
+**When design tokens change in Figma**:
+
+1. **Sync from Figma**
+   ```bash
+   pnpm tokens:sync
+   ```
+
+2. **Validate Tokens**
+   ```bash
+   pnpm tokens:validate
+   ```
+
+3. **Update CSS**
+   ```bash
+   pnpm tokens:update-css
+   ```
+
+4. **Verify Changes**
+   - Check `theme.css` was updated
+   - Verify apps still work correctly
+   - Run tests if available
+
+**Note**: This workflow maintains synchronization with the design source while preserving the sealed package structure.
+
+---
+
+## 8. Troubleshooting
+
+### Problem: "Design system is sealed" error
+
+**Cause**: Attempting to modify sealed files
+
+**Solution**:
+1. Check if change is truly necessary
+2. Consider domain-specific theme extension in app
+3. If exception needed, follow exception process
+
+### Problem: Handoff sync fails
+
+**Cause**: Configuration or API issues
+
+**Solution**:
+1. Check `.env.local` for `FIGMA_API_TOKEN` and `FIGMA_FILE_KEY`
+2. Verify Handoff CLI is installed
+3. Check Figma file permissions
+4. Review Handoff integration guide
+
+### Problem: Build fails after Handoff sync
+
+**Cause**: Invalid token format or missing tokens
+
+**Solution**:
+1. Run `pnpm tokens:validate` to check token integrity
+2. Verify HSL format in `theme.css`
+3. Check app PostCSS configuration
+4. Review build logs for specific errors
+
+---
+
+## 9. Related Documentation
+
+### Required Reading
+
+- **Validation Report**: `packages/design-system/VALIDATION_REPORT.md`
+- **Methodology**: `.cursor/docs/TAILWIND_ELITE_METHODOLOGY.md`
+- **Token README**: `packages/design-system/src/tokens/README.md`
+- **Handoff Integration**: `docs/guides/HANDOFF_INTEGRATION.md`
+
+### Related Rules
+
+- `025_zod-mandatory-enforcement.mdc` - Type safety requirements
+- `027_path-alias-enforcement.mdc` - Path alias usage
+- `031_tech-debt-prevention.mdc` - Tech debt prevention
+- `020_typescript-standards.mdc` - TypeScript standards
+
+---
+
+## 10. Summary
+
+### Sealing Status
+
+| Aspect | Status |
+|--------|--------|
+| **Package** | `@mythic/design-system` |
+| **Compliance** | 100% ELITE Compliant |
+| **Sealed Date** | 2026-01-11 |
+| **Modifications** | ❌ BLOCKED |
+| **Handoff Sync** | ✅ ALLOWED |
+| **Domain Extensions** | ✅ ALLOWED (in apps) |
+| **Exception Process** | Required for any changes |
+
+### Enforcement
+
+- ✅ Pre-commit hook blocks modifications
+- ✅ Cursor AI enforces sealing
+- ✅ Validation report documents compliance
+- ✅ Exception process for critical changes
+
+---
+
+**Status**: MANDATORY - Enforced via pre-commit and Cursor AI
+**Version**: 1.0.0
+**Created**: 2026-01-11
+**Authority**: Design System Governance Policy
+
+---
+
+**CRITICAL**: This package is SEALED. All modifications are BLOCKED except Handoff sync operations. See validation report for compliance details.

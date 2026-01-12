@@ -9,6 +9,7 @@
 
 import { Card } from '@mythic/design-system'
 import { cn } from '@mythic/shared-utils'
+import { spacing, typography, tokens } from '@/src/lib'
 import { memo } from 'react'
 
 interface LoadingStateProps {
@@ -29,8 +30,8 @@ export const LoadingState = memo(function LoadingState({
   }
 
   return (
-    <Card elevation="sm" className={cn('p-8 text-center', className)}>
-      <div className="flex flex-col items-center gap-4">
+    <Card elevation="sm" className={cn(spacing.cardLarge, 'text-center', className)}>
+      <div className={cn('flex flex-col items-center', spacing.gap.md)}>
         <div
           className={cn(
             'border-2 border-gold border-t-transparent rounded-full animate-spin',
@@ -39,7 +40,7 @@ export const LoadingState = memo(function LoadingState({
           role="status"
           aria-label="Loading"
         />
-        <p className="text-sm text-ash">{message}</p>
+        <p className={cn(typography.body.md, tokens.text.secondary)}>{message}</p>
       </div>
     </Card>
   )

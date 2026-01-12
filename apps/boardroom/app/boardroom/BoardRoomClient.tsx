@@ -12,6 +12,7 @@ import { PoolTable } from '@/components/PoolTable'
 import { GoldenThumb } from '@/components/GoldenThumb'
 import { LoadingState } from '@/components/LoadingState'
 import { ErrorState } from '@/components/ErrorState'
+import { BroadcastBanner } from '@/components/BroadcastBanner'
 import { getCurrentUserIdAction } from '@/app/actions/session'
 import { useBoardRoomStore } from '@/src/lib/stores/boardroom-store'
 import { useToast } from '@mythic/design-system'
@@ -154,9 +155,16 @@ export function BoardRoomClient({ initialProposals, error: serverError }: BoardR
   }
 
   return (
-    <div className="h-screen flex bg-void text-parchment">
-      {/* Left Panel: Pool Table (60%) */}
-      <div className="w-[60%] p-6 border-r border-obsidian">
+    <div className="h-screen flex flex-col bg-void text-parchment overflow-hidden">
+      {/* Broadcast Banner (The Herald) - Sticky at top */}
+      <div className="flex-shrink-0 px-4 lg:px-6 pt-4 lg:pt-6">
+        <BroadcastBanner />
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        {/* Left Panel: Pool Table (60%) */}
+        <div className="w-full lg:w-3/5 p-4 lg:p-6 border-b lg:border-b-0 lg:border-r border-obsidian overflow-hidden">
         <PoolTable
           proposals={proposals}
           selectedProposalId={selectedProposalId}
@@ -164,9 +172,10 @@ export function BoardRoomClient({ initialProposals, error: serverError }: BoardR
         />
       </div>
 
-      {/* Right Panel: Strategy Drawer (40%) */}
-      <div className="w-[40%] p-6">
-        <StrategyDrawer proposal={selectedProposal || null} />
+        {/* Right Panel: Strategy Drawer (40%) */}
+        <div className="w-full lg:w-2/5 p-4 lg:p-6 overflow-hidden">
+          <StrategyDrawer proposal={selectedProposal || null} />
+        </div>
       </div>
 
       {/* Golden Thumb - Fixed Bottom Right */}

@@ -14,6 +14,7 @@ import { revalidatePath } from 'next/cache'
 import type { Proposal, ProposalStatus } from '@mythic/shared-types/boardroom'
 import { transformProposalToShared } from '@/src/db/utils/transform'
 import { selectProposalSchema } from '@/src/db/schema/proposals'
+import { createVarianceBudget } from './variance'
 import {
   createProposalResponseSchema,
   approveProposalResponseSchema,
@@ -148,11 +149,14 @@ export async function approveProposal(
   const { proposalId, approvedBy } = inputResult.data
 
   try {
-    // Get current proposal
-    const [proposal] = await db
-      .select()
-      .from(proposals)
-      .where(eq(proposals.id, proposalId))
+    // Get proposal with relations using relational queries API
+    const proposal = await db.query.proposals.findFirst({
+      where: eq(proposals.id, proposalId),
+      with: {
+        circle: true,
+        stencil: true,
+      },
+    })
 
     if (!proposal) {
       return { success: false, error: 'Proposal not found' }
@@ -185,6 +189,35 @@ export async function approveProposal(
       how: 'UI',
       why: 'Proposal approved by sovereign',
     })
+
+    // Create variance budget if proposal data contains budget information
+    // Extract budgeted amount from proposal data
+    if (typeof validatedProposal.data === 'object' && validatedProposal.data !== null) {
+      const proposalData = validatedProposal.data as Record<string, unknown>
+      const budgetedAmount = proposalData.amount || proposalData.budgeted || proposalData.total
+
+      if (typeof budgetedAmount === 'number' && budgetedAmount > 0) {
+        // Extract budgeted breakdown if available
+        const budgetedBreakdown = proposalData.breakdown || proposalData.budgetedBreakdown
+
+        // Create variance budget (non-blocking - log error but don't fail approval)
+        try {
+          await createVarianceBudget({
+            proposalId: validatedProposal.id,
+            caseNumber: validatedProposal.caseNumber,
+            stencilId: validatedProposal.stencilId,
+            budgetedTotal: budgetedAmount,
+            budgetedBreakdown: typeof budgetedBreakdown === 'object' && budgetedBreakdown !== null
+              ? (budgetedBreakdown as Record<string, unknown>)
+              : undefined,
+            budgetedBy: validatedProposal.submittedBy,
+          })
+        } catch (varianceError) {
+          // Log error but don't fail proposal approval
+          console.error('Failed to create variance budget on approval:', varianceError)
+        }
+      }
+    }
 
     revalidatePath('/boardroom')
 
@@ -221,11 +254,14 @@ export async function vetoProposal(
   const { proposalId, vetoedBy, reason } = inputResult.data
 
   try {
-    // Get current proposal
-    const [proposal] = await db
-      .select()
-      .from(proposals)
-      .where(eq(proposals.id, proposalId))
+    // Get proposal with relations using relational queries API
+    const proposal = await db.query.proposals.findFirst({
+      where: eq(proposals.id, proposalId),
+      with: {
+        circle: true,
+        stencil: true,
+      },
+    })
 
     if (!proposal) {
       return { success: false, error: 'Proposal not found' }
@@ -349,6 +385,52 @@ export async function getProposals(
     const validated = proposalListResponseSchema.parse(transformedProposals)
     return validated
   } catch (error) {
+    // Check if it's a database connection error
+    const isConnectionError =
+      error instanceof Error &&
+      (error.message.includes('ECONNREFUSED') ||
+       error.message.includes('Failed query') ||
+       error.message.includes('connection') ||
+       error.message.includes('timeout') ||
+       (error.cause instanceof Error &&
+        (error.cause.message?.includes('ECONNREFUSED') ||
+         error.cause.message?.includes('connection'))))
+
+    // Check if it's a configuration error
+    const isConfigError =
+      error instanceof Error &&
+      (error.message.includes('DATABASE_URL') ||
+       error.message.includes('Database configuration') ||
+       error.message.includes('required'))
+
+    // Provide helpful error messages
+    if (isConfigError) {
+      // Configuration error - re-throw with original message (already helpful)
+      throw error
+    }
+
+    if (isConnectionError) {
+      const connectionError = new Error(
+        'Database connection failed. Please check:\n\n' +
+        '1. Database is running (for local: `docker-compose up` or start PostgreSQL)\n' +
+        '2. DATABASE_URL is set correctly in your .env file\n' +
+        '   Example: DATABASE_URL=postgresql://user:password@host:port/database?sslmode=require\n' +
+        '3. Database credentials are correct\n' +
+        '4. Network/firewall allows connection\n\n' +
+        'For local development, you can use:\n' +
+        '  DB_HOST=localhost\n' +
+        '  DB_PORT=5432\n' +
+        '  DB_USER=postgres\n' +
+        '  DB_PASSWORD=your_password\n' +
+        '  DB_NAME=mythic\n' +
+        '  DB_SSL=false\n\n' +
+        'See docs/architecture/ENVIRONMENT_VARIABLES.md for more details.'
+      )
+      connectionError.cause = error
+      throw connectionError
+    }
+
+    // Log other errors but don't throw (for production resilience)
     console.error('Error fetching proposals:', error)
     return []
   }
@@ -372,10 +454,21 @@ export async function getProposal(
   const { proposalId } = inputResult.data
 
   try {
-    const [proposal] = await db
-      .select()
-      .from(proposals)
-      .where(eq(proposals.id, proposalId))
+    // Use relational queries API for nested data
+    const proposal = await db.query.proposals.findFirst({
+      where: eq(proposals.id, proposalId),
+      with: {
+        circle: true,
+        stencil: true,
+        comments: {
+          limit: 10, // Limit comments for performance
+        },
+        events: {
+          limit: 20, // Limit events for performance
+          orderBy: (events, { desc }) => [desc(events.when)],
+        },
+      },
+    })
 
     if (!proposal) {
       return null

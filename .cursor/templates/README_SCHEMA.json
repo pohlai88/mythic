@@ -1,0 +1,367 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "README.md Schema",
+  "description": "Standardized schema for all README.md files in the monorepo",
+  "type": "object",
+  "required": [
+    "title",
+    "description",
+    "quickStart",
+    "installation",
+    "usage",
+    "architecture",
+    "development",
+    "troubleshooting",
+    "license"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Project name as H1 heading",
+      "pattern": "^# .+$"
+    },
+    "description": {
+      "type": "string",
+      "description": "One-line description (max 120 characters) starting with >",
+      "maxLength": 120,
+      "pattern": "^> .+$"
+    },
+    "badges": {
+      "type": "array",
+      "description": "Optional badges (build status, version, license)",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tableOfContents": {
+      "type": "object",
+      "description": "Table of contents with required sections",
+      "required": [
+        "overview",
+        "quickStart",
+        "installation",
+        "usage",
+        "architecture",
+        "development",
+        "troubleshooting",
+        "license"
+      ],
+      "properties": {
+        "overview": { "type": "boolean", "default": true },
+        "quickStart": { "type": "boolean", "default": true },
+        "installation": { "type": "boolean", "default": true },
+        "usage": { "type": "boolean", "default": true },
+        "configuration": { "type": "boolean", "default": false },
+        "architecture": { "type": "boolean", "default": true },
+        "apiReference": { "type": "boolean", "default": false },
+        "development": { "type": "boolean", "default": true },
+        "testing": { "type": "boolean", "default": false },
+        "troubleshooting": { "type": "boolean", "default": true },
+        "contributing": { "type": "boolean", "default": false },
+        "license": { "type": "boolean", "default": true },
+        "relatedDocumentation": { "type": "boolean", "default": true }
+      }
+    },
+    "overview": {
+      "type": "object",
+      "required": ["purpose", "keyFeatures"],
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "description": "What problem does this solve?"
+        },
+        "keyFeatures": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "techStack": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "quickStart": {
+      "type": "object",
+      "required": ["steps", "prerequisites"],
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["command", "description"],
+            "properties": {
+              "command": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          },
+          "minItems": 1,
+          "maxItems": 5
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "installation": {
+      "type": "object",
+      "properties": {
+        "fromSource": {
+          "type": "object",
+          "required": ["steps"],
+          "properties": {
+            "steps": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "asPackage": {
+          "type": "object",
+          "properties": {
+            "command": { "type": "string" },
+            "packageName": { "type": "string" }
+          }
+        }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "required": ["basic"],
+      "properties": {
+        "basic": {
+          "type": "object",
+          "required": ["code", "description"],
+          "properties": {
+            "code": { "type": "string" },
+            "description": { "type": "string" }
+          }
+        },
+        "advanced": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string" },
+            "description": { "type": "string" }
+          }
+        },
+        "cli": {
+          "type": "object",
+          "properties": {
+            "command": { "type": "string" },
+            "description": { "type": "string" }
+          }
+        }
+      }
+    },
+    "configuration": {
+      "type": "object",
+      "properties": {
+        "environmentVariables": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "description", "required"],
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "required": { "type": "boolean" },
+              "default": { "type": "string" }
+            }
+          }
+        },
+        "configFiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "description"],
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "location": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "required": ["directoryStructure"],
+      "properties": {
+        "directoryStructure": {
+          "type": "string",
+          "description": "Directory tree as code block"
+        },
+        "keyConcepts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "dataFlow": {
+          "type": "string",
+          "description": "Description of data flow"
+        }
+      }
+    },
+    "apiReference": {
+      "type": "object",
+      "properties": {
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "description"],
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "props": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name", "type", "required", "description"],
+                  "properties": {
+                    "name": { "type": "string" },
+                    "type": { "type": "string" },
+                    "required": { "type": "boolean" },
+                    "default": { "type": "string" },
+                    "description": { "type": "string" }
+                  }
+                }
+              },
+              "returns": { "type": "string" },
+              "example": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "development": {
+      "type": "object",
+      "required": ["setup", "workflow"],
+      "properties": {
+        "setup": {
+          "type": "object",
+          "required": ["commands"],
+          "properties": {
+            "commands": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["command", "description"],
+                "properties": {
+                  "command": { "type": "string" },
+                  "description": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "workflow": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "codeStyle": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "testing": {
+      "type": "object",
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["command", "description"],
+            "properties": {
+              "command": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "structure": {
+          "type": "string",
+          "description": "Description of test organization"
+        }
+      }
+    },
+    "troubleshooting": {
+      "type": "object",
+      "required": ["commonIssues"],
+      "properties": {
+        "commonIssues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["title", "symptoms", "cause", "solution"],
+            "properties": {
+              "title": { "type": "string" },
+              "symptoms": { "type": "string" },
+              "cause": { "type": "string" },
+              "solution": { "type": "string" },
+              "code": { "type": "string" }
+            }
+          }
+        },
+        "gettingHelp": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type", "link"],
+            "properties": {
+              "type": { "type": "string" },
+              "link": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "contributing": {
+      "type": "object",
+      "properties": {
+        "guidelines": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "link": {
+          "type": "string",
+          "description": "Link to CONTRIBUTING.md"
+        }
+      }
+    },
+    "license": {
+      "type": "object",
+      "required": ["type", "link"],
+      "properties": {
+        "type": { "type": "string" },
+        "link": { "type": "string" }
+      }
+    },
+    "relatedDocumentation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "link"],
+        "properties": {
+          "name": { "type": "string" },
+          "link": { "type": "string" }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["version", "lastUpdated", "status"],
+      "properties": {
+        "version": { "type": "string" },
+        "lastUpdated": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Active", "Development", "Deprecated", "Archived"]
+        }
+      }
+    }
+  }
+}

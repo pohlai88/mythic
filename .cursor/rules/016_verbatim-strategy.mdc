@@ -1,0 +1,182 @@
+---
+description: "ELITE Verbatim Strategy - Enforces exact config file contents to prevent debugging hell"
+globs: ".node-version,.nvmrc,.npmrc,pnpm-workspace.yaml,package.json,scripts/validate-verbatim.ts,scripts/verbatim-registry.json"
+alwaysApply: false
+priority: 16
+---
+
+# ELITE Verbatim Strategy (RFC-2119 MANDATORY)
+
+**Authority**: ELITE Verbatim Strategy v1.0.0
+**Reference**: `@docs/architecture/ELITE_VERBATIM_STRATEGY.md`
+**Status**: MANDATORY - Enforced via validation script and pre-commit hook
+
+---
+
+## 1. Core Principle: Verbatim = Exact Match
+
+**✅ MANDATORY**: Critical config files MUST match documented verbatim templates exactly.
+
+**Purpose**: Prevent configuration drift that causes "works on my machine" issues and debugging nightmares.
+
+---
+
+## 2. Critical Verbatim Files (MUST MATCH EXACTLY)
+
+### 2.1 Node.js Version Files
+
+**✅ `.node-version`** - For asdf/nodenv
+```
+20.18.0
+```
+
+**✅ `.nvmrc`** - For nvm
+```
+20.18.0
+```
+
+**Validation Rules**:
+- ✅ Must match `package.json` engines.node (must include Node 20)
+- ✅ Both files must have identical content
+- ✅ No trailing whitespace or comments
+
+### 2.2 Package Manager Config
+
+**✅ `.npmrc`** - pnpm Configuration
+```
+# Enable pre/post scripts for pnpm
+# pnpm@8 by default doesn't execute pre/post scripts
+# pnpm@9 by default runs pre/post scripts
+enable-pre-post-scripts=true
+```
+
+**Validation Rules**:
+- ✅ Must enable pre/post scripts for pnpm@8
+- ✅ Must match verbatim template exactly (including comments)
+
+### 2.3 Workspace Definition
+
+**✅ `pnpm-workspace.yaml`** - Canonical Source of Truth
+```yaml
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Monorepo structure:
+# - apps/docs: Nextra documentation site
+# - apps/boardroom: The Apex (Executive Board Decision Engine MVP)
+# - packages/design-system: Axis Visual Canon design system
+# - packages/shared-types: Shared TypeScript types and Zod schemas
+# - packages/shared-utils: Shared utility functions
+# - packages/config: Shared configuration (ESLint, TypeScript, etc.)
+```
+
+**Validation Rules**:
+- ✅ MUST NOT have `workspaces` field in `package.json` (single source of truth)
+- ✅ Must match verbatim template exactly
+
+---
+
+## 3. Enforcement Mechanisms
+
+### 3.1 Pre-commit Hook (MANDATORY)
+
+**Location**: `.husky/pre-commit`
+
+**Behavior**:
+- ✅ Runs `pnpm validate:verbatim` before commit
+- ✅ Blocks commit if validation fails
+- ✅ Provides clear error messages
+
+### 3.2 CI/CD Validation (MANDATORY)
+
+**Location**: `.github/workflows/ci.yml`
+
+**Behavior**:
+- ✅ Runs before build step
+- ✅ Fails build on validation errors
+- ✅ Prevents merge of broken configs
+
+### 3.3 Manual Validation
+
+**Commands**:
+```bash
+# Validate verbatim configs
+pnpm validate:verbatim
+
+# Validate all (verbatim + rules + docs)
+pnpm validate:all
+```
+
+---
+
+## 4. When Editing Verbatim Files
+
+### ✅ DO:
+
+1. **Check Documentation First**
+   - Read `docs/architecture/ELITE_VERBATIM_STRATEGY.md`
+   - Verify template in `scripts/verbatim-registry.json`
+
+2. **Update Registry if Needed**
+   - If changing verbatim template, update `scripts/verbatim-registry.json`
+   - Update documentation
+
+3. **Test Validation**
+   - Run `pnpm validate:verbatim` after changes
+   - Ensure validation passes
+
+4. **Update All Related Files**
+   - If changing Node version, update `.node-version`, `.nvmrc`, `package.json` engines
+   - If changing workspace, update `pnpm-workspace.yaml` only (NOT package.json)
+
+### ❌ DON'T:
+
+- ❌ Modify verbatim files without updating registry
+- ❌ Add environment-specific variants
+- ❌ Skip validation before commit
+- ❌ Create "equivalent" variations
+- ❌ Add `workspaces` field to `package.json`
+
+---
+
+## 5. Troubleshooting
+
+### Issue: Validation fails on commit
+
+**Solution**:
+```bash
+# Check what's wrong
+pnpm validate:verbatim
+
+# Fix files to match templates in:
+# docs/architecture/ELITE_VERBATIM_STRATEGY.md
+```
+
+### Issue: "Node version mismatch"
+
+**Solution**:
+- Ensure `.node-version` and `.nvmrc` match exactly
+- Ensure `package.json` engines.node includes Node 20
+- Run `pnpm validate:verbatim` to verify
+
+### Issue: "Workspace definition error"
+
+**Solution**:
+- Ensure `pnpm-workspace.yaml` matches verbatim template
+- Ensure `package.json` does NOT have `workspaces` field
+- Run `pnpm validate:verbatim` to verify
+
+---
+
+## 6. Related Rules
+
+- **@rules/015_root-config-governance.mdc** - Root config governance
+- **@rules/000_master-cursor-defaults.mdc** - Master defaults
+- **@rules/001_core-safety.mdc** - Core safety
+
+---
+
+**Status**: MANDATORY - Enforced via validation script
+**Version**: 1.0.0
+**Last Updated**: 2026-01-11

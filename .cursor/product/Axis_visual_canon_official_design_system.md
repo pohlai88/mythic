@@ -172,7 +172,7 @@ They must never behave the same.
 - Borders warm before content
 
 ```html
-<section class="border border-charcoal bg-obsidian transition duration-[1200ms] hover:border-gold">
+<section class="border border-charcoal bg-obsidian transition duration-1200 hover:border-gold">
 ```
 
 ---
@@ -185,7 +185,7 @@ They must never behave the same.
 
 ```html
 <button
-  class="border border-gold px-16 py-5 font-mono tracking-decree transition duration-[1618ms] hover:bg-gold"
+  class="border border-gold px-16 py-5 font-mono tracking-decree transition duration-1618 hover:bg-gold"
 >
   SIGN
 </button>

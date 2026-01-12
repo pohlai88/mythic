@@ -1,0 +1,30 @@
+---
+title: createGetRoute
+description: Create a simple GET route handler with query validation
+category: reference
+tags: [functions, api]
+---
+
+# createGetRoute
+
+Create a simple GET route handler with query validation
+
+## Parameters
+
+### config
+
+**Type**: `{ query?: TQuery | undefined; response: TResponse; handler: (ctx: import("C:/AI-BOS/mythic/apps/boardroom/src/lib/api/route-handler").RouteHandlerContext<Record<string, string>, TQuery extends import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/schemas").ZodType<unknown, unknown, import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$ZodTypeInternals<unknown, unknown>> ? import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/core").output<TQuery> : Record<string, unknown>, never>) => Promise<import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/core").output<TResponse>>; }`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`(req: import("C:/AI-BOS/mythic/node_modules/.pnpm/next@16.1.1_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/server/web/spec-extension/request").NextRequest, { params }: { params: Promise<Record<string, string>>; }) => Promise<import("C:/AI-BOS/mythic/node_modules/.pnpm/next@16.1.1_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/server/web/spec-extension/response").NextResponse<{ error: string; issues: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/errors").$ZodIssue[]; }> | import("C:/AI-BOS/mythic/node_modules/.pnpm/next@16.1.1_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/server/web/spec-extension/response").NextResponse<{ error: string; message: string; }> | import("C:/AI-BOS/mythic/node_modules/.pnpm/next@16.1.1_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/server/web/spec-extension/response").NextResponse<import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/core").output<TResponse>>>`
+
+
+
+

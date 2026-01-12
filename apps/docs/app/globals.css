@@ -1,0 +1,57 @@
+/**
+ * Global Styles for Documentation System
+ *
+ * Tailwind CSS v4 with design system tokens (CSS-First Configuration)
+ * Reference: https://tailwindcss.com/docs
+ * Reference: @rules/033_design-system-constitution.mdc
+ */
+
+/* Step 1: Import Tailwind CSS (processes first) */
+@import "tailwindcss";
+
+/* Step 2: Import shared design tokens */
+@import "@mythic/design-system/tokens/theme.css";
+
+/* Step 3: Scan shared packages for utilities */
+@source "../../packages/design-system";
+
+@theme {
+  /* Core Colors - Design System Tokens */
+  --color-void: 240 10% 4%;
+  --color-obsidian: 240 10% 8%;
+  --color-charcoal: 240 10% 15%;
+  --color-parchment: 40 20% 96%;
+  --color-ash: 240 5% 65%;
+  --color-gold: 40 45% 55%;
+  --color-ember: 15 70% 50%;
+
+  /* Font Families */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: "Cormorant Garamond", "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Diátaxis Document Type Colors */
+  --color-diataxis-tutorial: 204 96% 48%;
+  --color-diataxis-tutorial-bg: 204 96% 97%;
+  --color-diataxis-tutorial-border: 204 96% 78%;
+
+  --color-diataxis-howto: 142 76% 47%;
+  --color-diataxis-howto-bg: 142 76% 96%;
+  --color-diataxis-howto-border: 142 76% 74%;
+
+  --color-diataxis-reference: 0 0% 45%;
+  --color-diataxis-reference-bg: 0 0% 98%;
+  --color-diataxis-reference-border: 0 0% 83%;
+
+  --color-diataxis-explanation: 48 96% 47%;
+  --color-diataxis-explanation-bg: 48 96% 96%;
+  --color-diataxis-explanation-border: 48 96% 74%;
+
+  /* Documentation-Specific Spacing */
+  --spacing-doc-section: 2rem;
+  --spacing-doc-content: 1.5rem;
+  --spacing-doc-card: 1rem;
+}
+
+/* Required for math rendering */
+@import "katex/dist/katex.min.css";

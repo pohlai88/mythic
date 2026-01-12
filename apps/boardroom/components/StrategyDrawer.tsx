@@ -13,10 +13,12 @@
 'use client'
 
 import { Card } from '@mythic/design-system'
-import { cn } from '@mythic/shared-utils'
-import { useState, useEffect, useCallback, memo } from 'react'
+import { cn, intelligentRiskStyles, intelligentStatusStyles, calculateRiskStatus } from '@mythic/shared-utils'
+import { spacing, typography, tokens, buttons, borders, transitions, margins, alignment, layout } from '@/src/lib'
+import { useState, useEffect, useCallback, memo, useMemo } from 'react'
 import dynamic from 'next/dynamic'
-import { getStencil } from '@/src/codex'
+import { getStencil } from '@/app/actions/stencils'
+import { getVarianceData, type VarianceData } from '@/app/actions/variance'
 import { CodexStencilViewer } from './CodexStencilViewer'
 import { LoadingState } from './LoadingState'
 import { ErrorState } from './ErrorState'
@@ -58,9 +60,10 @@ export const StrategyDrawer = memo(function StrategyDrawer({ proposal, className
             key={tab.id}
             onClick={() => handleTabChange(tab.id)}
             className={cn(
-              'px-6 py-3 text-sm font-medium transition-all duration-1200 border-b-2',
+              'px-6 py-3 text-sm font-medium border-b-2',
+              transitions.default,
               activeTab === tab.id
-                ? 'border-gold text-parchment'
+                ? cn(borders.accent, tokens.text.primary)
                 : 'border-transparent text-ash hover:text-parchment'
             )}
           >
@@ -91,44 +94,166 @@ const tabs: { id: TabId; label: string }[] = [
 ]
 
 function ThanosTrace({ proposal }: { proposal: Proposal }) {
+  const [varianceData, setVarianceData] = useState<VarianceData | null>(null)
+  const [varianceLoading, setVarianceLoading] = useState(true)
+  const [varianceError, setVarianceError] = useState<Error | null>(null)
+
+  // Fetch variance data
+  useEffect(() => {
+    async function loadVarianceData() {
+      try {
+        setVarianceLoading(true)
+        setVarianceError(null)
+        const data = await getVarianceData({ proposalId: proposal.id })
+        setVarianceData(data)
+      } catch (err) {
+        setVarianceError(err instanceof Error ? err : new Error('Failed to load variance data'))
+      } finally {
+        setVarianceLoading(false)
+      }
+    }
+
+    loadVarianceData()
+  }, [proposal.id])
+
+  // Calculate variance percentage from real data or fallback to mock
+  const variancePct = useMemo(() => {
+    if (varianceData?.variancePct !== null && varianceData?.variancePct !== undefined) {
+      return varianceData.variancePct
+    }
+    // Fallback: try to extract from proposal data if no variance record exists
+    if (typeof proposal.data === 'object' && proposal.data !== null) {
+      const data = proposal.data as Record<string, unknown>
+      if (typeof data.amount === 'number' && typeof data.budgeted === 'number') {
+        const budgeted = data.budgeted as number
+        const actual = data.amount as number
+        if (budgeted > 0) {
+          return ((actual - budgeted) / budgeted) * 100
+        }
+      }
+    }
+    return null // No variance data available
+  }, [varianceData, proposal.data])
+
+  // Calculate risk status from variance
+  const riskStatus = useMemo(() => {
+    if (variancePct === null) return 'on_track' // Default if no data
+    return calculateRiskStatus(variancePct)
+  }, [variancePct])
+
   return (
-    <div className="space-y-4">
-      <Card elevation="sm" className="p-4">
-        <h3 className="text-gold font-serif mb-4">Past Vector (Forensic)</h3>
-        <div className="space-y-2 text-sm">
-          <div className="text-ash">
+    <div className={spacing.space.md}>
+      {/* Past Vector - Forensic History */}
+      <Card
+        elevation="sm"
+        className={intelligentRiskStyles('on_track', 'past', cn(spacing.card, borders.left))}
+      >
+        <h3 className={cn(tokens.text.accent, typography.heading.sm, margins.bottom.md)}>📋 Past Vector (Forensic)</h3>
+        <div className={cn(spacing.space.sm, typography.body.md)}>
+          <div className={tokens.text.secondary}>
             Proposal submitted {new Date(proposal.created_at).toLocaleString()}
           </div>
-          <div className="text-ash">
+          <div className={tokens.text.secondary}>
             Last updated {new Date(proposal.updated_at).toLocaleString()}
           </div>
-          <div className="text-ash text-xs mt-2 italic">
+          <div className={cn(tokens.text.secondary, typography.body.sm, margins.top.sm, 'italic')}>
             Version history feature coming soon
           </div>
         </div>
       </Card>
 
-      <Card elevation="sm" className="p-4">
-        <h3 className="text-gold font-serif mb-4">Present Vector (Pulse)</h3>
-        <div className="space-y-2 text-sm text-ash">
+      {/* Present Vector - Real-Time Pulse */}
+      <Card
+        elevation="sm"
+        className={intelligentRiskStyles('on_track', 'present', cn(spacing.card, borders.left))}
+      >
+        <h3 className={cn(tokens.text.accent, typography.heading.sm, margins.bottom.md)}>📊 Present Vector (Pulse)</h3>
+        <div className={cn(spacing.space.sm, typography.body.md, tokens.text.secondary)}>
           <div>Real-time viewers: Not available</div>
           <div>Last activity: {new Date(proposal.updated_at).toLocaleString()}</div>
-          <div className="text-xs mt-2 italic">
+          <div className={cn(typography.body.sm, margins.top.sm, 'italic')}>
             WebSocket real-time updates coming soon
           </div>
         </div>
       </Card>
 
-      <Card elevation="sm" className="p-4">
-        <h3 className="text-gold font-serif mb-4">Future Vector (Prediction)</h3>
-        <div className="space-y-2 text-sm text-ash">
-          <div>Calculated impact: Not available</div>
-          <div>Risk Score: MEDIUM</div>
-          <div>Affected downstream systems: 3</div>
-          <div className="text-xs mt-2 italic">
-            Impact analysis feature coming soon
+      {/* Future Vector - Risk Prediction (Intelligence-Driven) */}
+      <Card
+        elevation="sm"
+        className={intelligentRiskStyles(
+          variancePct !== null ? variancePct : 'on_track',
+          'future',
+          cn(spacing.card, borders.left)
+        )}
+      >
+        <h3 className={cn(tokens.text.accent, typography.heading.sm, margins.bottom.md)}>🎯 Future Vector (Prediction)</h3>
+        {varianceLoading ? (
+          <LoadingState message="Loading variance analysis..." size="sm" />
+        ) : varianceError ? (
+          <div className={cn(typography.body.md, tokens.text.secondary)}>
+            <div className={tokens.text.warning}>Error loading variance data</div>
+            <div className={cn(typography.body.sm, margins.top.sm, 'italic')}>{varianceError.message}</div>
           </div>
-        </div>
+        ) : varianceData ? (
+          <div className={cn(spacing.space.sm, typography.body.md)}>
+            {varianceData.budgeted > 0 && (
+              <div className={tokens.text.secondary}>
+                Budgeted: ${varianceData.budgeted.toLocaleString()}
+              </div>
+            )}
+            {varianceData.planned !== null && (
+              <div className={tokens.text.secondary}>
+                Planned: ${varianceData.planned.toLocaleString()}
+              </div>
+            )}
+            {varianceData.actual !== null && (
+              <div className={tokens.text.secondary}>
+                Actual: ${varianceData.actual.toLocaleString()}
+              </div>
+            )}
+            {variancePct !== null && (
+              <div className={cn(layout.flexCenter, spacing.gap.sm, margins.top.sm)}>
+                <span className={tokens.text.secondary}>Risk Score:</span>
+                <span
+                  className={intelligentRiskStyles(
+                    riskStatus,
+                    'future',
+                    buttons.badge
+                  )}
+                >
+                  {riskStatus.toUpperCase().replace('_', ' ')}
+                </span>
+                <span
+                  className={intelligentRiskStyles(
+                    variancePct,
+                    'future',
+                    typography.mono.sm
+                  )}
+                >
+                  ({variancePct > 0 ? '+' : ''}
+                  {variancePct.toFixed(1)}%)
+                </span>
+              </div>
+            )}
+            {varianceData.varianceReason && (
+              <div className={cn(typography.body.sm, tokens.text.secondary, margins.top.sm, 'italic')}>
+                Reason: {varianceData.varianceReason}
+              </div>
+            )}
+            {varianceData.milestones.length > 0 && (
+              <div className={cn(typography.body.sm, tokens.text.secondary, margins.top.sm)}>
+                Milestones: {varianceData.milestones.length} review(s)
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className={cn(spacing.space.sm, typography.body.md, tokens.text.secondary)}>
+            <div>No variance data available</div>
+            <div className={cn(typography.body.sm, margins.top.sm, 'italic')}>
+              Variance tracking will be available once budget data is recorded
+            </div>
+          </div>
+        )}
       </Card>
     </div>
   )
@@ -136,36 +261,36 @@ function ThanosTrace({ proposal }: { proposal: Proposal }) {
 
 function BoardDialog({ proposal }: { proposal: Proposal }) {
   return (
-    <div className="space-y-4">
-      <Card elevation="sm" className="p-4">
-        <div className="text-ash text-sm mb-4">Comment thread for proposal discussion</div>
-        <div className="space-y-3">
+    <div className={spacing.space.md}>
+      <Card elevation="sm" className={spacing.card}>
+        <div className={cn(typography.body.md, tokens.text.secondary, margins.bottom.md)}>Comment thread for proposal discussion</div>
+        <div className={spacing.space.sm}>
           <EmptyState
             title="No comments yet"
             description="Start the conversation by adding the first comment"
             variant="info"
-            className="p-4"
+            className={spacing.card}
           />
         </div>
       </Card>
 
-      <div className="flex gap-2">
+      <div className={cn(layout.flexCenter, spacing.gap.sm)}>
         <input
           type="text"
           placeholder="Add a comment..."
-          className="flex-1 bg-obsidian border border-charcoal rounded-xs px-4 py-2 text-parchment placeholder-ash focus:outline-hidden focus:border-gold transition-all duration-1200"
+          className={inputs.default}
           disabled
           aria-label="Comment input (coming soon)"
         />
         <button
-          className="px-6 py-2 bg-gold text-void rounded-xs font-mono text-sm hover:bg-ember transition-all duration-1618 disabled:opacity-50"
+          className={buttons.primary}
           disabled
           aria-label="Post comment (coming soon)"
         >
           POST
         </button>
       </div>
-      <div className="text-xs text-ash italic">
+      <div className={cn(typography.body.sm, tokens.text.secondary, 'italic')}>
         Commenting feature coming soon
       </div>
     </div>
@@ -182,7 +307,7 @@ function Codex({ proposal }: { proposal: Proposal }) {
       try {
         setLoading(true)
         setError(null)
-        const loadedStencil = await getStencil(proposal.stencil_id)
+        const loadedStencil = await getStencil({ stencilId: proposal.stencil_id })
         setStencil(loadedStencil)
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Failed to load stencil'))
@@ -239,26 +364,26 @@ function Codex({ proposal }: { proposal: Proposal }) {
 
 function LinkedTodos({ proposal }: { proposal: Proposal }) {
   return (
-    <div className="space-y-4">
-      <Card elevation="sm" className="p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-gold font-serif">Linked To-Dos</h3>
+    <div className={spacing.space.md}>
+      <Card elevation="sm" className={spacing.card}>
+        <div className={cn(layout.flexBetween, margins.bottom.md)}>
+          <h3 className={cn(tokens.text.accent, typography.heading.sm)}>Linked To-Dos</h3>
           <button
-            className="px-4 py-2 bg-gold text-void rounded-xs text-sm font-mono hover:bg-ember transition-all duration-1618 disabled:opacity-50"
+            className={buttons.small}
             disabled
             aria-label="Create to-do (coming soon)"
           >
             + Create To-Do
           </button>
         </div>
-        <div className="space-y-2 text-sm">
+        <div className={cn(spacing.space.sm, typography.body.md)}>
           <EmptyState
             title="No to-dos linked"
             description="Link to-dos to track action items for this proposal"
             variant="info"
-            className="p-4"
+            className={spacing.card}
           />
-          <div className="text-xs text-ash italic mt-2">
+          <div className={cn(typography.body.sm, tokens.text.secondary, 'italic mt-2')}>
             To-do integration coming soon
           </div>
         </div>

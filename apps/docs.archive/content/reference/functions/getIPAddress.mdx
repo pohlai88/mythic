@@ -1,0 +1,40 @@
+---
+title: getIPAddress
+description: Get IP address from request headers
+
+Checks common proxy headers in order:
+- x-forwarded-for (first IP in chain)
+- x-real-ip
+- cf-connecting-ip (Cloudflare)
+category: reference
+tags: [functions, api]
+---
+
+# getIPAddress
+
+Get IP address from request headers
+
+Checks common proxy headers in order:
+- x-forwarded-for (first IP in chain)
+- x-real-ip
+- cf-connecting-ip (Cloudflare)
+
+## Parameters
+
+### headers
+
+**Type**: `Headers`
+
+**Required**
+
+- Request headers
+
+
+
+## Returns
+
+`string`
+
+
+
+

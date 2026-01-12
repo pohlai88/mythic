@@ -33,6 +33,10 @@ export * from './realtime'
 // Vault/Encryption Module
 export * from './vault'
 
+// Tailwind Utilities (design tokens and responsive utilities)
+export * from './tailwind-utils'
+export * from './design-tokens'
+
 // Note: Other modules (analytics, api, cache, metrics, stores, zod)
 // are not exported here to encourage specific imports for better tree-shaking.
 // Import directly from their specific paths when needed.

@@ -106,24 +106,6 @@ export async function upsertStencil(stencil: StencilDefinition): Promise<boolean
   }
 }
 
-/**
- * Validate proposal data against stencil
- * 
- * @deprecated Use validateProposalDataWithZod from '@/src/lib/zod/stencil-schemas' instead
- * This function is kept for backward compatibility but will be removed in a future version.
- */
-export function validateProposalData(
-  data: Record<string, unknown>,
-  stencil: StencilDefinition
-): { valid: boolean; errors: string[] } {
-  // Use Zod-based validation (Contract-First approach)
-  const result = validateProposalDataWithZod(data, stencil)
-  return {
-    valid: result.valid,
-    errors: result.errors,
-  }
-}
-
 // Re-export Zod validation functions (recommended approach)
 export { validateProposalDataWithZod, createStencilSchema } from '@/src/lib/zod/stencil-schemas'
 export type { ProposalDataFromStencil } from '@/src/lib/zod/stencil-schemas'

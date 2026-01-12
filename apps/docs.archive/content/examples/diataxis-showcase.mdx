@@ -1,0 +1,256 @@
+---
+title: Diátaxis Components Showcase
+type: tutorial
+---
+
+<DocumentTypeBanner
+  type="tutorial"
+  title="Diátaxis Components Showcase"
+  description="This page demonstrates all Diátaxis components working together with Tailwind CSS in Nextra. We will explore each component type and see how they create beautiful, structured documentation."
+/>
+
+## Component Gallery
+
+This showcase demonstrates all available Diátaxis components enhanced with Tailwind CSS intelligence-driven styling.
+
+### Document Type Badges
+
+Badges provide quick visual identification of document types:
+
+<DocumentTypeBadge type="tutorial" />
+<DocumentTypeBadge type="how-to" />
+<DocumentTypeBadge type="reference" />
+<DocumentTypeBadge type="explanation" />
+
+### Tutorial Steps Component
+
+The `TutorialSteps` component provides structured, step-by-step learning:
+
+<TutorialSteps
+  steps={[
+    {
+      title: "First, we understand the structure",
+      description: "We must understand Diátaxis structure before we can use it effectively.",
+      code: `<DocumentTypeBanner type="tutorial" />`
+    },
+    {
+      title: "Now, we apply Tailwind styling",
+      description: "We use Tailwind utilities to enhance the visual presentation.",
+      code: `<div className="diataxis-tutorial gradient-success">
+  Content
+</div>`,
+      note: "Remember: Always use semantic color tokens"
+    },
+    {
+      title: "Finally, we see the result",
+      description: "We have created beautiful, structured documentation.",
+      code: `// Complete!`
+    }
+  ]}
+/>
+
+### How-To Guide Component
+
+The `HowToGuide` component structures problem-solving guides:
+
+<HowToGuide
+  problem="You need to style a component using Diátaxis and Tailwind"
+  solution="Use the HowToGuide component with Tailwind intelligence utilities"
+  steps={[
+    {
+      title: "Import the component",
+      description: "Import HowToGuide from the diataxis components",
+      code: `import { HowToGuide } from '@/components/diataxis'`
+    },
+    {
+      title: "Define your problem and solution",
+      description: "Clearly state the problem and solution approach",
+      code: `<HowToGuide
+  problem="Your problem"
+  solution="Your solution"
+  steps={[...]}
+/>`,
+      warning: "Keep problems and solutions concise and actionable"
+    }
+  ]}
+/>
+
+### Reference Table Component
+
+The `ReferenceTable` component creates clean, technical reference tables:
+
+<ReferenceTable
+  title="Diátaxis Component Props"
+  columns={[
+    { header: "Component", accessor: "component" },
+    { header: "Props", accessor: "props" },
+    { header: "Type", accessor: "type" }
+  ]}
+  data={[
+    {
+      component: "DocumentTypeBadge",
+      props: "type, size, className",
+      type: "Badge"
+    },
+    {
+      component: "DocumentTypeBanner",
+      props: "type, title, description",
+      type: "Banner"
+    },
+    {
+      component: "TutorialSteps",
+      props: "steps",
+      type: "Steps"
+    },
+    {
+      component: "HowToGuide",
+      props: "problem, solution, steps",
+      type: "Guide"
+    },
+    {
+      component: "ReferenceTable",
+      props: "title, columns, data",
+      type: "Table"
+    },
+    {
+      component: "ExplanationBox",
+      props: "type, title, children",
+      type: "Box"
+    }
+  ]}
+/>
+
+### Explanation Box Component
+
+The `ExplanationBox` component provides contextual understanding:
+
+<ExplanationBox type="concept" title="Why Diátaxis Works">
+  Diátaxis organizes documentation into four distinct types based on user needs:
+  learning (tutorials), problem-solving (how-to), information (reference), and
+  understanding (explanation). This structure helps users find exactly what they
+  need.
+</ExplanationBox>
+
+<ExplanationBox type="rationale" title="Why Tailwind Integration">
+  Tailwind CSS provides intelligence-driven utilities that adapt to context.
+  Combined with Diátaxis structure, we get documentation that is both
+  well-organized and beautifully styled.
+</ExplanationBox>
+
+<ExplanationBox type="context" title="Nextra Platform">
+  Nextra 4 provides the documentation platform with MDX support, search, and
+  navigation. Together with Diátaxis and Tailwind, we have a complete
+  documentation system.
+</ExplanationBox>
+
+## Tailwind Intelligence in Action
+
+### Intelligence-Driven Styling
+
+All Diátaxis components now use intelligence-driven utilities from `@mythic/shared-utils`:
+
+```tsx
+// DocumentTypeBadge uses intelligentStatusStyles()
+<DocumentTypeBadge type="tutorial" />
+// Automatically applies APPROVED status styling (success colors)
+
+// DocumentTypeBanner uses multiple intelligence utilities
+<DocumentTypeBanner type="how-to" />
+// Uses: intelligentStatusStyles + intelligentGradientStyles + intelligentTransitionStyles
+
+// HowToGuide uses intelligence for problem/solution sections
+<HowToGuide 
+  problem="..." 
+  solution="..."
+  steps={[...]}
+/>
+// Problem uses VETOED status (error colors)
+// Solution uses APPROVED status (success colors)
+// Steps use LISTENING status (neutral colors)
+```
+
+### Document Type Utilities
+
+```tsx
+// Tutorial styling (uses intelligence-driven APPROVED status)
+<div className="diataxis-tutorial p-4 rounded-lg">
+  Tutorial content
+</div>
+
+// How-To styling (uses intelligence-driven APPROVED status)
+<div className="diataxis-howto p-4 rounded-lg">
+  How-To content
+</div>
+
+// Reference styling (uses intelligence-driven LISTENING status)
+<div className="diataxis-reference p-4 rounded-lg">
+  Reference content
+</div>
+
+// Explanation styling (uses intelligence-driven LISTENING status)
+<div className="diataxis-explanation p-4 rounded-lg">
+  Explanation content
+</div>
+```
+
+### Combined with Intelligence Utilities
+
+```tsx
+// Tutorial with success gradient and transition
+<div className="diataxis-tutorial gradient-success transition-illuminate p-6 rounded-lg">
+  Enhanced tutorial content
+</div>
+
+// How-To with approved gradient
+<div className="diataxis-howto gradient-approved transition-hover-intelligent p-6 rounded-lg">
+  Enhanced how-to content
+</div>
+```
+
+### Using Intelligence Functions Directly
+
+```tsx
+import { 
+  getDiataxisIntelligenceStyles,
+  getDiataxisGradientStyles,
+  getDiataxisCombinedStyles 
+} from '@/lib/diataxis-intelligence'
+
+// Get intelligence styles for document type
+const badgeStyles = getDiataxisIntelligenceStyles('tutorial', 'badge')
+const borderStyles = getDiataxisIntelligenceStyles('how-to', 'border')
+
+// Get combined styles with gradient and transition
+const combinedStyles = getDiataxisCombinedStyles('tutorial', {
+  includeGradient: true,
+  includeTransition: true,
+  transitionType: 'illuminate'
+})
+```
+
+## What We've Demonstrated
+
+You have seen all Diátaxis components working together:
+
+- ✅ **Document Type Badges** - Quick visual identification
+- ✅ **Document Type Banners** - Full-width document headers
+- ✅ **Tutorial Steps** - Structured learning paths
+- ✅ **How-To Guides** - Problem-solving structures
+- ✅ **Reference Tables** - Clean technical documentation
+- ✅ **Explanation Boxes** - Contextual understanding
+- ✅ **Tailwind Utilities** - Intelligence-driven styling
+
+## Next Steps
+
+Now that you've seen all components:
+
+1. Use the templates in `content/templates/` to create new documents
+2. Apply Tailwind utilities for enhanced styling
+3. Follow Diátaxis language conventions
+4. Combine components for maximum effect
+
+---
+
+**See Also**:
+- [Integration Guide](/guides/diataxis-tailwind-nextra-integration)
+- [Templates](/templates) - Ready-to-use document templates

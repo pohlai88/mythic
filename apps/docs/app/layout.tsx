@@ -1,165 +1,60 @@
 /**
- * Root Layout for Nextra 4 App Router
+ * Root Layout for Documentation System
  *
- * Following official Nextra 4 migration guide:
- * @see https://the-guild.dev/blog/nextra-4
+ * Next.js App Router root layout
+ * Reference: https://nextjs.org/docs/app/api-reference/file-conventions/layout
  */
 
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/react'
-import { Footer, Layout, Navbar, ThemeSwitch } from 'nextra-theme-docs'
-import { Banner, Head, Search } from 'nextra/components'
-import { getPageMap } from 'nextra/page-map'
+import type { Metadata } from 'next'
 import { Providers } from './providers'
-// Tailwind CSS v4 Design System - Import shared base
-import '../styles/globals.css'
+import { CommandPalette } from '@/components/docs'
+import './globals.css'
 
-// Required for theme styles, previously was imported under the hood
-import 'nextra-theme-docs/style.css'
-import 'katex/dist/katex.min.css'
-
-// ⚠️ SPECIAL THEME: Nextra-specific theme integration (not Tailwind)
-// This is a special case for Nextra documentation theme
-import '../styles/axis-theme.css'
-
-// Import shared utilities
-import { cn } from '@mythic/shared-utils'
-
-// ============================================================================
-// Metadata API (replaces theme.config head)
-// @see https://nextjs.org/docs/app/building-your-application/optimizing/metadata
-// ============================================================================
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://nexuscanon.dev'),
   title: {
-    default: 'NexusCanon Documentation',
-    template: '%s | NexusCanon',
+    default: 'ERP Documentation',
+    template: '%s | ERP Documentation',
   },
-  description: 'Comprehensive governance and documentation powered by Nextra',
-  keywords: ['documentation', 'nextra', 'next.js', 'mdx', 'governance', 'nexuscanon'],
-  authors: [{ name: 'NexusCanon' }],
+  description: 'Comprehensive ERP system documentation for developers, users, and business stakeholders',
+  keywords: ['ERP', 'documentation', 'next.js', 'mdx', 'business'],
+  authors: [{ name: 'Mythic ERP' }],
   openGraph: {
-    title: 'NexusCanon Documentation',
-    description: 'Comprehensive governance and documentation powered by Nextra',
+    title: 'ERP Documentation',
+    description: 'Comprehensive ERP system documentation',
     type: 'website',
-    images: ['/og-image.png'],
     url: 'https://nexuscanon.dev',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NexusCanon Documentation',
-    description: 'Comprehensive governance and documentation powered by Nextra',
-    images: ['/og-image.png'],
+    title: 'ERP Documentation',
+    description: 'Comprehensive ERP system documentation',
   },
   icons: {
     icon: '/favicon.ico',
-    // apple: '/apple-touch-icon.png', // Removed - file doesn't exist. Use Next.js ImageResponse API to generate dynamically if needed.
   },
+}
+
+export const viewport = {
   themeColor: '#000000',
 }
 
-// ============================================================================
-// Banner Component (new banner prop on <Layout>)
-// ============================================================================
-const banner = (
-  <Banner storageKey="nexuscanon-v4">
-    🎉 NexusCanon Governance Docs are now live!{' '}
-    <a href="/governance" style={{ textDecoration: 'underline' }}>
-      Explore →
-    </a>
-  </Banner>
-)
-
-// ============================================================================
-// Footer Component (provide as last child of <Layout>)
-// ============================================================================
-const footer = (
-  <Footer>
-    {new Date().getFullYear()} © NexusCanon. Powered by{' '}
-    <a href="https://nextra.site" target="_blank" rel="noreferrer">
-      Nextra
-    </a>
-  </Footer>
-)
-
-// ============================================================================
-// Remote Docs Page Maps
-// Import remote page maps for sidebar navigation
-// ============================================================================
-// Uncomment when remote docs are configured:
-// import { pageMap as graphqlEslintPageMap } from './remote/graphql-eslint/[[...slug]]/page'
-// import { pageMap as graphqlYogaPageMap } from './remote/graphql-yoga/[[...slug]]/page'
-
-// ============================================================================
-// Root Layout
-// ============================================================================
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const pageMap = await getPageMap()
-
-  // Merge remote docs into page map for sidebar navigation
-  // Uncomment when remote docs are configured:
-  // try {
-  //   const { pageMap: graphqlEslintPageMap } = await import('./remote/graphql-eslint/[[...slug]]/page')
-  //   const { pageMap: graphqlYogaPageMap } = await import('./remote/graphql-yoga/[[...slug]]/page')
-  //
-  //   pageMap = [
-  //     ...pageMap,
-  //     {
-  //       name: 'remote',
-  //       route: '/remote',
-  //       children: [graphqlEslintPageMap, graphqlYogaPageMap],
-  //     },
-  //   ]
-  // } catch (error) {
-  //   // Remote docs not available, use default page map
-  //   console.warn('Remote docs not available:', error)
-  // }
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      dir="ltr"
-      // Suggested by `next-themes` package
-      suppressHydrationWarning
-    >
-      {/* ⭐ ELITE: Axis Visual Canon - BEASTMODE Gold colors */}
-      <Head backgroundColor={{ dark: '#0a0a0b', light: '#f8f6f0' }} />
-      <body>
+    <html lang="en" dir="ltr" suppressHydrationWarning>
+      <head>
+        <meta name="theme-color" content="#0a0a0b" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="bg-void text-parchment">
         <Providers>
-          <Layout
-            pageMap={pageMap}
-            banner={banner}
-            docsRepositoryBase="https://github.com/shuding/nextra-docs-template"
-            sidebar={{
-              defaultMenuCollapseLevel: 1,
-              toggleButton: true,
-              autoCollapse: true,
-            }}
-            toc={{
-              backToTop: true,
-            }}
-            navigation={{
-              prev: true,
-              next: true,
-            }}
-          >
-            <Navbar
-              logo={
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontWeight: 600, fontSize: '18px' }}>NexusCanon</span>
-                </div>
-              }
-              projectLink="https://github.com/shuding/nextra-docs-template"
-            >
-              <Search />
-              <ThemeSwitch />
-            </Navbar>
-
-            {children}
-
-            {footer}
-          </Layout>
-          <Analytics />
-          <SpeedInsights />
+          {children}
+          <CommandPalette />
         </Providers>
       </body>
     </html>

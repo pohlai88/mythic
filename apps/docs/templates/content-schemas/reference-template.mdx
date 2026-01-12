@@ -1,0 +1,102 @@
+---
+title: Reference Template
+description: Template for reference documentation following Diataxis framework
+audience: developers
+type: reference
+published: true
+---
+
+# [API/Component/Concept] Reference
+
+> [One-line description - max 120 characters]
+
+## Overview
+
+[Brief, factual description - no explanation, just facts about what this is]
+
+## Import
+
+```typescript
+import { [Component/Function] } from '[package/path]'
+```
+
+## API Reference
+
+### Properties / Parameters
+
+| Property   | Type     | Required | Default | Description |
+| ---------- | -------- | -------- | ------- | ----------- |
+| `prop1`    | `string` | Yes      | -       | Description |
+| `prop2`    | `number` | No       | `0`     | Description |
+| `prop3`    | `boolean`| No       | `false` | Description |
+
+### Methods / Functions
+
+#### `methodName(param1: string, param2?: number): Promise<Result>`
+
+Description of what this method does.
+
+**Parameters**:
+- `param1`: Description
+- `param2`: Description (optional)
+
+**Returns**: `Promise<Result>` - Description of return value
+
+**Example**:
+
+```typescript
+const result = await methodName('value', 42)
+```
+
+## Examples
+
+### Basic Usage
+
+```typescript
+import { Component } from '@mythic/package'
+
+function App() {
+  return <Component prop1="value" />
+}
+```
+
+### Advanced Usage
+
+```typescript
+import { Component } from '@mythic/package'
+
+function App() {
+  return (
+    <Component
+      prop1="value"
+      prop2={42}
+      prop3={true}
+    />
+  )
+}
+```
+
+## Type Definitions
+
+```typescript
+interface ComponentProps {
+  prop1: string
+  prop2?: number
+  prop3?: boolean
+}
+
+type Result = {
+  success: boolean
+  data?: unknown
+}
+```
+
+## Related
+
+- [How-To: Using This Component](/how-to/use-component) - Task-oriented guide
+- [Tutorial: Building with This Component](/tutorials/build-with-component) - Step-by-step learning
+- [Explanation: Why This Design](/explanation/design-rationale) - Background information
+
+---
+
+**Last Updated**: [YYYY-MM-DD]

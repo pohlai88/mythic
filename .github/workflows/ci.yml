@@ -1,0 +1,141 @@
+name: CI
+
+# ⚠️ LINTER NOTE: Warnings about TURBO_TOKEN/TURBO_TEAM are expected false positives
+# These are optional secrets - syntax is correct, warnings can be ignored
+# The workflow works correctly whether secrets are set or not
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    env:
+      # Optional: Turbo remote cache credentials (empty if not set)
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # ⭐ ELITE: Shallow clone for Turbo filtering
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate verbatim configs
+        run: pnpm validate:verbatim
+
+      - name: Build
+        run: pnpm build
+        # ⭐ ELITE: Remote cache enabled (optional, uses job-level env vars)
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm type-check
+
+      - name: Format check
+        run: pnpm format:check
+
+      - name: Test
+        run: pnpm test
+        if: github.event_name == 'pull_request'
+
+      - name: Build summary
+        if: always()
+        run: pnpm turbo:summary
+
+  quality:
+    name: Quality Checks
+    runs-on: ubuntu-latest
+    env:
+      # Optional: Turbo remote cache credentials (empty if not set)
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run quality checks in parallel
+        run: |
+          pnpm lint &
+          pnpm type-check &
+          pnpm format:check &
+          wait
+
+  changed-files:
+    name: Build Changed Files Only
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    env:
+      # Optional: Turbo remote cache credentials (empty if not set)
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build changed packages
+        run: pnpm build:changed
+
+      - name: Lint changed files
+        run: pnpm lint:changed
+
+      - name: Biome check (changed files only)
+        run: pnpm biome check --changed
+
+      - name: Type check changed files
+        run: pnpm type-check:changed

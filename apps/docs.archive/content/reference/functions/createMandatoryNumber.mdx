@@ -1,0 +1,40 @@
+---
+title: createMandatoryNumber
+description: MANDATORY: Create number schema with required validations
+category: reference
+tags: [functions, api]
+---
+
+# createMandatoryNumber
+
+MANDATORY: Create number schema with required validations
+
+## Parameters
+
+### options
+
+**Type**: `{ min?: number | undefined; max?: number | undefined; int?: boolean | undefined; positive?: boolean | undefined; description: string; }`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/schemas").ZodNumber`
+
+
+
+## Examples
+
+```typescript
+const idSchema = createMandatoryNumber({
+  int: true,
+  positive: true,
+  description: 'User ID'
+})
+```
+
+

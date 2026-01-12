@@ -1,0 +1,54 @@
+---
+title: intelligentRiskStyles
+description: Intelligent risk-based styling for Tri-Vector components
+
+Automatically applies appropriate colors, borders, and backgrounds
+based on risk status and vector type.
+category: reference
+tags: [functions, api]
+---
+
+# intelligentRiskStyles
+
+Intelligent risk-based styling for Tri-Vector components
+
+Automatically applies appropriate colors, borders, and backgrounds
+based on risk status and vector type.
+
+## Parameters
+
+### riskStatus
+
+**Type**: `number | import("C:/AI-BOS/mythic/packages/shared-utils/src/tailwind-intelligence").RiskStatus`
+
+**Required**
+
+- Risk status or variance percentage
+
+
+### vectorType
+
+**Type**: `import("C:/AI-BOS/mythic/packages/shared-utils/src/tailwind-intelligence").VectorType`
+
+**Optional**
+
+- Which vector (past/present/future)
+
+
+### className
+
+**Type**: `string | undefined`
+
+**Optional**
+
+- Additional classes to merge
+
+
+
+## Returns
+
+`string`
+
+
+
+

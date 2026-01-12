@@ -1,0 +1,40 @@
+---
+title: POST
+description: POST /api/analytics
+
+Receives analytics events and stores them in the database.
+Validates events with Zod schema before storage.
+
+ELITE: Request deduplication, PostgreSQL error handling, body size limits
+category: reference
+tags: [functions, api]
+---
+
+# POST
+
+POST /api/analytics
+
+Receives analytics events and stores them in the database.
+Validates events with Zod schema before storage.
+
+ELITE: Request deduplication, PostgreSQL error handling, body size limits
+
+## Parameters
+
+### request
+
+**Type**: `import("C:/AI-BOS/mythic/node_modules/.pnpm/next@16.1.1_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/server/web/spec-extension/request").NextRequest`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`Promise<import("C:/AI-BOS/mythic/node_modules/.pnpm/next@16.1.1_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/server/web/spec-extension/response").NextResponse<{ error: string; message: string; }> | import("C:/AI-BOS/mythic/node_modules/.pnpm/next@16.1.1_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/server/web/spec-extension/response").NextResponse<{ error: string; issues: any; }> | import("C:/AI-BOS/mythic/node_modules/.pnpm/next@16.1.1_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/server/web/spec-extension/response").NextResponse<{ success: boolean; message: string; }>>`
+
+
+
+

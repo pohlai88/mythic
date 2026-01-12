@@ -1,0 +1,51 @@
+---
+title: cn
+description: Merge Tailwind CSS classes with clsx
+
+Handles:
+- Conditional classes
+- Design system tokens
+- Class conflicts (tailwind-merge)
+- Type safety
+category: reference
+tags: [functions, api]
+---
+
+# cn
+
+Merge Tailwind CSS classes with clsx
+
+Handles:
+- Conditional classes
+- Design system tokens
+- Class conflicts (tailwind-merge)
+- Type safety
+
+## Parameters
+
+### inputs
+
+**Type**: `import("C:/AI-BOS/mythic/node_modules/.pnpm/clsx@2.1.1/node_modules/clsx/clsx").ClassValue[]`
+
+**Optional**
+
+No description available
+
+
+
+## Returns
+
+`string`
+
+
+
+## Examples
+
+```typescript
+```tsx
+cn('base-class', isActive && 'active-class', className)
+cn('p-4', 'p-6') // Resolves to 'p-6' (conflict resolution)
+```
+```
+
+

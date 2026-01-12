@@ -1,0 +1,30 @@
+---
+title: createBroadcastCreatedMessage
+description: Create broadcast_created WebSocket message
+category: reference
+tags: [functions, api]
+---
+
+# createBroadcastCreatedMessage
+
+Create broadcast_created WebSocket message
+
+## Parameters
+
+### broadcast
+
+**Type**: `BroadcastData`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`{ type: "broadcast_created"; broadcastId: string; broadcast: { id: string; createdBy: string; type: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ approval: "approval"; veto: "veto"; announcement: "announcement"; poll: "poll"; emergency: "emergency"; }>; title: string; message: string | null; audience: string; priority: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ normal: "normal"; low: "low"; high: "high"; urgent: "urgent"; }>; }; timestamp: Date; }`
+
+
+
+

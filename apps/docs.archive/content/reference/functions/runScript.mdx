@@ -1,0 +1,50 @@
+---
+title: runScript
+description: Run script with error handling
+category: reference
+tags: [functions, api]
+---
+
+# runScript
+
+Run script with error handling
+
+## Parameters
+
+### ctx
+
+**Type**: `import("C:/AI-BOS/mythic/src/lib/script-utils").ScriptContext`
+
+**Required**
+
+No description available
+
+
+### fn
+
+**Type**: `() => Promise<void>`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`Promise<void>`
+
+
+
+## Examples
+
+```typescript
+```typescript
+const ctx = initScript('validate-docs')
+await runScript(ctx, async () => {
+  await validateAll()
+})
+```
+```
+
+

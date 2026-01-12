@@ -1,45 +1,13 @@
 /**
- * Next.js Configuration for Nextra 4
+ * Next.js Configuration for Documentation System
  *
- * Nextra 4 requires App Router. This configuration:
- * - Uses content/ directory for MDX files
- * - Enables Turbopack for faster builds (via --turbopack flag in dev script)
- * - Configures Pagefind search
- *
- * ⚠️ NEXTRA 4 CHANGES:
- * 1. theme.config.tsx is NO LONGER SUPPORTED
- *    - Removed: theme and themeConfig options from nextra()
- *    - Theme options now passed as props to components in app/layout.tsx
- *    - See app/layout.tsx for Layout, Navbar, Footer, Search, Banner props
- *
- * 2. TURBOPACK COMPATIBILITY:
- *    - Only JSON-serializable values can be passed to nextra() function
- *    - Custom remarkPlugins, rehypePlugins, or recmaPlugins (functions) are NOT supported
- *    - If you need custom plugins, you must use Webpack (remove --turbopack flag)
- *
- * @see https://the-guild.dev/blog/nextra-4
+ * Follows Next.js App Router best practices
+ * Uses @next/mdx for MDX processing
+ * Reference: https://nextjs.org/docs/app/guides/mdx
  */
 
-import nextra from 'nextra'
+import createMDX from '@next/mdx'
 import bundleAnalyzer from '@next/bundle-analyzer'
-
-const withNextra = nextra({
-  // Content directory configuration (Nextra 4)
-  // MDX files are loaded from content/ directory
-  contentDirBasePath: '/',
-
-  // Nextra 4 features (all JSON-serializable - Turbopack compatible)
-  defaultShowCopyCode: true,
-  readingTime: true,
-  latex: true,
-
-  // Search configuration (Pagefind - Rust-powered search engine)
-  // Pagefind replaces FlexSearch in Nextra 4
-  // Benefits: Faster, better results, indexes remote MDX, dynamic content, imported files
-  search: {
-    codeblocks: false, // Set to true to enable code block search
-  },
-})
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -47,6 +15,9 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Configure pageExtensions to include MDX files
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+
   // Performance optimizations
   reactStrictMode: true,
   compress: true,
@@ -54,47 +25,56 @@ const nextConfig = {
   // Production build optimizations
   productionBrowserSourceMaps: false,
 
-  // ⭐ ELITE: Experimental features for build optimization
+  // Experimental features for build optimization
   experimental: {
     // Optimize package imports (workspace + external)
     optimizePackageImports: [
       // Workspace packages
       '@mythic/shared-utils',
       '@mythic/shared-types',
-      '@mythic/design-system',
-      '@mythic/axis-theme',
       // External packages
-      'nextra',
-      'nextra-theme-docs',
       'katex',
+      '@tanstack/react-query',
+      '@vercel/analytics',
+      '@vercel/speed-insights',
+      'fuse.js',
+      'cmdk',
     ],
-    // ⭐ ELITE: Server Actions optimization
+    // Server Actions optimization
     serverActions: {
       bodySizeLimit: '2mb',
       allowedOrigins: ['localhost:3000', '*.vercel.app'],
     },
+    // Optimize server components
+    optimizeServerReact: true,
   },
 
-  // Turbopack configuration (root level, not in experimental)
+  // Turbopack configuration
   turbopack: {
     resolveAlias: {
-      'next-mdx-import-source-file': './mdx-components.tsx',
       '@mythic/shared-utils': '../../packages/shared-utils/src',
       '@mythic/shared-types': '../../packages/shared-types/src',
-      '@mythic/design-system': '../../packages/design-system/src',
-      '@mythic/axis-theme': '../../packages/axis-theme/src',
     },
   },
 
-  // ⭐ ELITE: Webpack optimizations (fallback when not using Turbopack)
+  // Webpack optimizations (fallback when not using Turbopack)
   webpack: (config, { dev, isServer }) => {
+    // Fix React version mismatch in monorepo
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      react: require.resolve('react'),
+      'react-dom': require.resolve('react-dom'),
+      'react/jsx-runtime': require.resolve('react/jsx-runtime'),
+      'react/jsx-dev-runtime': require.resolve('react/jsx-dev-runtime'),
+    }
+
     // Production optimizations
     if (!dev && !isServer) {
-      // ⭐ ELITE: Performance budgets
+      // Performance budgets
       config.performance = {
         maxAssetSize: 250000, // 250 KB
         maxEntrypointSize: 250000,
-        hints: process.env.CI ? 'error' : 'warning', // Fail in CI, warn locally
+        hints: process.env.CI ? 'error' : 'warning',
       }
 
       // Optimize chunk splitting
@@ -114,7 +94,7 @@ const nextConfig = {
               test: /node_modules/,
               priority: 20,
             },
-            // ⭐ ELITE: Workspace packages chunk
+            // Workspace packages chunk
             workspace: {
               name: 'workspace',
               test: /[\\/]packages[\\/]/,
@@ -183,4 +163,12 @@ const nextConfig = {
   },
 }
 
-export default withBundleAnalyzer(withNextra(nextConfig))
+// Configure MDX with @next/mdx
+// Reference: https://nextjs.org/docs/app/guides/mdx
+const withMDX = createMDX({
+  // Add markdown plugins if needed
+  // Options can be added here for remark/rehype plugins
+})
+
+// Merge MDX config with Next.js config
+export default withBundleAnalyzer(withMDX(nextConfig))

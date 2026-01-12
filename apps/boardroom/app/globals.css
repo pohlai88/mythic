@@ -1,0 +1,84 @@
+/**
+ * BoardRoom App Global Styles
+ *
+ * Battle-Proven Pattern: Each app processes Tailwind independently
+ * and imports shared tokens directly from design system.
+ */
+
+/* Step 1: Import Tailwind CSS (processes first) */
+@import "tailwindcss";
+
+/* Step 2: Import shared design tokens */
+@import "@mythic/design-system/tokens/theme.css";
+
+/* Step 3: Scan shared packages for utilities */
+@source "../../packages/design-system";
+
+/**
+ * ============================================================================
+ * APP-SPECIFIC THEME OVERRIDES
+ * ============================================================================
+ */
+
+@theme {
+  /* Domain-specific font overrides (BoardRoom uses custom fonts) */
+  /* Tailwind v4: Use --font-* naming (not --font-family-*) */
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Domain-specific transition duration */
+  --duration-1618: 1618ms;
+}
+
+/**
+ * ============================================================================
+ * DOMAIN-SPECIFIC DARK MODE - BoardRoom App Only
+ * ============================================================================
+ *
+ * BoardRoom has custom dark mode variants for the BEASTMODE Gold palette.
+ */
+
+@layer theme {
+  .dark {
+    /* BoardRoom-specific dark mode overrides for BEASTMODE Gold palette */
+    --color-void: 240 10% 2%;
+    --color-obsidian: 240 8% 4%;
+    --color-charcoal: 240 3% 12%;
+    --color-parchment: 40 20% 10%;
+    --color-ash: 40 10% 30%;
+    --color-gold: 40 45% 65%;
+    --color-ember: 35 40% 55%;
+
+    /* Semantic Colors - Dark mode variants */
+    --color-background: var(--color-void);
+    --color-surface: var(--color-obsidian);
+    --color-text: var(--color-parchment);
+    --color-text-muted: var(--color-ash);
+  }
+}
+
+/**
+ * ============================================================================
+ * BASE STYLES - Typography and Base Elements (BoardRoom Specific)
+ * ============================================================================
+ */
+
+@layer base {
+  body {
+    @apply font-sans bg-void text-parchment;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+  }
+
+  /* ⭐ ELITE: Editorial Authority (Headings) */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-bold text-parchment;
+  }
+
+  /* ⭐ ELITE: Forensic Data (Code, Numbers) */
+  code, pre, .font-mono {
+    @apply font-mono;
+    font-weight: 400;
+  }
+}

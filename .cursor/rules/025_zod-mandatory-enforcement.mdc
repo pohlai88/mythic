@@ -217,32 +217,73 @@ const field = z.string() // Should be optional/nullable if needed
 
 ## 10. Error Handling (MANDATORY)
 
-**MUST** use `z.ZodError` for error handling:
+### 10.1 .parse() vs .safeParse() Rules
+
+**MUST** use `.safeParse()` for user input, external APIs, and uncertain data sources.
+
+**MAY** use `.parse()` only in these scoped exceptions:
+
+#### ✅ ALLOWED: Bootstrap/Startup Invariants
 
 ```typescript
-// ✅ CORRECT - Use safeParse
-import { mandatorySafeParse } from '@/lib/api-schemas/patterns'
+// ✅ ALLOWED - Environment variables (fail fast at startup)
+// apps/boardroom/src/lib/env.ts
+export const env = refinedEnvSchema.parse({
+  DATABASE_URL: process.env.DATABASE_URL,
+  // ... fail fast if invalid
+})
 
-const result = mandatorySafeParse(userSchema, input)
-if (!result.success) {
-  // Handle z.ZodError
-  return { error: result.error.issues }
-}
-
-// ✅ CORRECT - Manual error handling
-try {
-  const data = schema.parse(input)
-} catch (error) {
-  if (error instanceof z.ZodError) {
-    // Handle error
-  }
-}
-
-// ❌ INCORRECT - Using parse without error handling
-const data = schema.parse(input) // May throw unhandled error
+// ✅ ALLOWED - Build-time configuration
+// next.config.mjs, tailwind.config.ts
+const config = configSchema.parse(buildConfig)
 ```
 
-**Enforcement**: Biome + validation script.
+#### ✅ ALLOWED: Test Files
+
+```typescript
+// ✅ ALLOWED - Test files should fail loudly
+// **/*.test.ts, **/*.spec.ts
+const result = schema.parse(mockData) // Tests should throw on invalid data
+expect(result).toBeDefined()
+```
+
+#### ✅ ALLOWED: Internal Invariant Layers
+
+```typescript
+// ✅ ALLOWED - Internal assertion functions
+// src/lib/actions/validate-action.ts
+function assertValid<T>(schema: ZodSchema<T>, data: unknown): T {
+  // This is an internal invariant - if it fails, it's a programming error
+  return schema.parse(data)
+}
+```
+
+#### ❌ REQUIRED: User Input & External Data
+
+```typescript
+// ❌ REQUIRED - User input must use safeParse
+const result = inputSchema.safeParse(userInput)
+if (!result.success) {
+  return { error: result.error.format() }
+}
+
+// ❌ REQUIRED - External API responses
+const result = apiResponseSchema.safeParse(apiData)
+if (!result.success) {
+  throw new Error('Invalid API response')
+}
+
+// ❌ REQUIRED - Database results (when uncertain)
+const result = dbSchema.safeParse(dbRow)
+if (!result.success) {
+  // Handle gracefully
+}
+```
+
+**Enforcement**: 
+- Biome override for test files allows `.parse()`
+- Validation script checks `.parse()` usage against exception list
+- Code review enforces `.safeParse()` for user-facing code
 
 ---
 

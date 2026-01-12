@@ -60,7 +60,7 @@ registry.register(
     example: {
       email: 'newuser@example.com',
       name: 'Jane Doe',
-      password: 'securepassword123',
+      password: 'example-password-placeholder', // Example only - use environment variables in production
     },
   })
 )

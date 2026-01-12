@@ -9,7 +9,7 @@
  * - Client SDK generation
  */
 
-import { z } from 'zod/v4'
+import { z as z4 } from 'zod/v4'
 
 // ============================================================================
 // Common Schemas
@@ -18,54 +18,54 @@ import { z } from 'zod/v4'
 /**
  * Standard error response schema
  */
-export const errorResponseSchema = z.object({
-  error: z.string().describe('Error message'),
-  code: z.string().optional().describe('Error code'),
-  details: z.record(z.string(), z.unknown()).optional().describe('Additional error details'),
-  timestamp: z.string().datetime().describe('Error timestamp'),
+export const errorResponseSchema = z4.object({
+  error: z4.string().describe('Error message'),
+  code: z4.string().optional().describe('Error code'),
+  details: z4.record(z4.string(), z4.unknown()).optional().describe('Additional error details'),
+  timestamp: z4.string().datetime().describe('Error timestamp'),
 })
 
-export type ErrorResponse = z.infer<typeof errorResponseSchema>
+export type ErrorResponse = z4.infer<typeof errorResponseSchema>
 
 /**
  * Standard success response wrapper
  */
-export const successResponseSchema = <T extends z.ZodTypeAny>(dataSchema: T) =>
-  z
+export const successResponseSchema = <T extends z4.ZodTypeAny>(dataSchema: T) =>
+  z4
     .object({
-      success: z.boolean().default(true),
+      success: z4.boolean().default(true),
       data: dataSchema,
-      message: z.string().optional(),
+      message: z4.string().optional(),
     })
     .describe('Standard success response wrapper')
 
 /**
  * Pagination parameters
  */
-export const paginationParamsSchema = z.object({
-  page: z.coerce.number().int().min(1).default(1).describe('Page number'),
-  limit: z.coerce.number().int().min(1).max(100).default(10).describe('Items per page'),
-  sort: z.string().optional().describe('Sort field'),
-  order: z.enum(['asc', 'desc']).default('asc').describe('Sort order'),
+export const paginationParamsSchema = z4.object({
+  page: z4.coerce.number().int().min(1).default(1).describe('Page number'),
+  limit: z4.coerce.number().int().min(1).max(100).default(10).describe('Items per page'),
+  sort: z4.string().optional().describe('Sort field'),
+  order: z4.enum(['asc', 'desc']).default('asc').describe('Sort order'),
 })
 
-export type PaginationParams = z.infer<typeof paginationParamsSchema>
+export type PaginationParams = z4.infer<typeof paginationParamsSchema>
 
 /**
  * Paginated response
  */
-export const paginatedResponseSchema = <T extends z.ZodTypeAny>(itemSchema: T) =>
-  z
+export const paginatedResponseSchema = <T extends z4.ZodTypeAny>(itemSchema: T) =>
+  z4
     .object({
-      items: z.array(itemSchema).describe('Array of items'),
-      pagination: z
+      items: z4.array(itemSchema).describe('Array of items'),
+      pagination: z4
         .object({
-          page: z.number().int().describe('Current page number'),
-          limit: z.number().int().describe('Items per page'),
-          total: z.number().int().describe('Total number of items'),
-          totalPages: z.number().int().describe('Total number of pages'),
-          hasNext: z.boolean().describe('Whether there is a next page'),
-          hasPrev: z.boolean().describe('Whether there is a previous page'),
+          page: z4.number().int().describe('Current page number'),
+          limit: z4.number().int().describe('Items per page'),
+          total: z4.number().int().describe('Total number of items'),
+          totalPages: z4.number().int().describe('Total number of pages'),
+          hasNext: z4.boolean().describe('Whether there is a next page'),
+          hasPrev: z4.boolean().describe('Whether there is a previous page'),
         })
         .describe('Pagination metadata'),
     })
@@ -78,56 +78,56 @@ export const paginatedResponseSchema = <T extends z.ZodTypeAny>(itemSchema: T) =
 /**
  * User creation input schema
  */
-export const createUserInputSchema = z.object({
-  email: z.string().email().describe('User email address'),
-  name: z.string().min(1).max(255).describe('User full name'),
-  password: z.string().min(8).describe('User password (min 8 characters)'),
+export const createUserInputSchema = z4.object({
+  email: z4.string().email().describe('User email address'),
+  name: z4.string().min(1).max(255).describe('User full name'),
+  password: z4.string().min(8).describe('User password (min 8 characters)'),
 })
 
-export type CreateUserInput = z.infer<typeof createUserInputSchema>
+export type CreateUserInput = z4.infer<typeof createUserInputSchema>
 
 /**
  * User update input schema
  */
-export const updateUserInputSchema = z
+export const updateUserInputSchema = z4
   .object({
-    email: z.string().email().optional().describe('User email address'),
-    name: z.string().min(1).max(255).optional().describe('User full name'),
-    isActive: z.boolean().optional().describe('User active status'),
+    email: z4.string().email().optional().describe('User email address'),
+    name: z4.string().min(1).max(255).optional().describe('User full name'),
+    isActive: z4.boolean().optional().describe('User active status'),
   })
   .describe('User update input schema')
 
-export type UpdateUserInput = z.infer<typeof updateUserInputSchema>
+export type UpdateUserInput = z4.infer<typeof updateUserInputSchema>
 
 /**
  * User ID parameter schema
  */
-export const userIdParamsSchema = z.object({
-  id: z.coerce.number().int().positive().describe('User ID'),
+export const userIdParamsSchema = z4.object({
+  id: z4.coerce.number().int().positive().describe('User ID'),
 })
 
-export type UserIdParams = z.infer<typeof userIdParamsSchema>
+export type UserIdParams = z4.infer<typeof userIdParamsSchema>
 
 /**
  * User response schema
  */
-export const userResponseSchema = z.object({
-  id: z.number().int().describe('User ID'),
-  email: z.string().email().describe('User email'),
-  name: z.string().nullable().describe('User name'),
-  isActive: z.boolean().describe('User active status'),
-  createdAt: z.string().datetime().describe('Creation timestamp'),
-  updatedAt: z.string().datetime().describe('Last update timestamp'),
+export const userResponseSchema = z4.object({
+  id: z4.number().int().describe('User ID'),
+  email: z4.string().email().describe('User email'),
+  name: z4.string().nullable().describe('User name'),
+  isActive: z4.boolean().describe('User active status'),
+  createdAt: z4.string().datetime().describe('Creation timestamp'),
+  updatedAt: z4.string().datetime().describe('Last update timestamp'),
 })
 
-export type UserResponse = z.infer<typeof userResponseSchema>
+export type UserResponse = z4.infer<typeof userResponseSchema>
 
 /**
  * User list response schema
  */
 export const userListResponseSchema = paginatedResponseSchema(userResponseSchema)
 
-export type UserListResponse = z.infer<typeof userListResponseSchema>
+export type UserListResponse = z4.infer<typeof userListResponseSchema>
 
 // ============================================================================
 // Query Parameter Schemas
@@ -137,11 +137,11 @@ export type UserListResponse = z.infer<typeof userListResponseSchema>
  * User query parameters
  */
 export const userQuerySchema = paginationParamsSchema.extend({
-  search: z.string().optional().describe('Search term for name or email'),
-  isActive: z.coerce.boolean().optional().describe('Filter by active status'),
+  search: z4.string().optional().describe('Search term for name or email'),
+  isActive: z4.coerce.boolean().optional().describe('Filter by active status'),
 })
 
-export type UserQuery = z.infer<typeof userQuerySchema>
+export type UserQuery = z4.infer<typeof userQuerySchema>
 
 // ============================================================================
 // Export all schemas for autogeneration

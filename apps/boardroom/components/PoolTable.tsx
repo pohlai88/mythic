@@ -10,8 +10,9 @@
 'use client'
 
 import { Card } from '@mythic/design-system'
-import { cn } from '@mythic/shared-utils'
+import { cn, intelligentStatusStyles, intelligentStyles } from '@mythic/shared-utils'
 import { useMemo, memo, useCallback } from 'react'
+import { gridCols, spacing, typography, tokens, margins, alignment, layout, buttons } from '@/src/lib'
 import { EmptyState } from './EmptyState'
 import type { Proposal } from '@mythic/shared-types/boardroom'
 
@@ -87,9 +88,9 @@ export function PoolTable({
   }
 
   return (
-    <div className={cn('flex flex-col h-full', className)}>
+    <div className={cn(layout.flexCol, 'h-full', className)}>
       {/* Dashboard Metrics Header */}
-      <div className="grid grid-cols-5 gap-4 mb-6">
+      <div className={cn('grid', gridCols[5], spacing.gap.md, margins.bottom.lg)}>
         <MetricCard label="Total Pending" value={metrics.totalPending} />
         <MetricCard label="Awaiting Your Vote" value={metrics.awaitingYourVote} />
         <MetricCard label="Avg Decision Time" value={`${metrics.avgDecisionTime}d`} />
@@ -99,7 +100,7 @@ export function PoolTable({
 
       {/* Proposal List */}
       <div className="flex-1 overflow-y-auto">
-        <div className="space-y-2">
+        <div className={spacing.space.sm}>
           {proposals.map((proposal) => (
             <ProposalRow
               key={proposal.id}
@@ -123,17 +124,21 @@ const MetricCard = memo(function MetricCard({
   value: string | number
   variant?: 'default' | 'warning'
 }) {
+  // Use intelligence-driven styling for warning variant
+  const valueStyles = useMemo(() => {
+    if (variant === 'warning') {
+      return intelligentStyles({
+        isUrgent: true,
+        className: cn(typography.mono.lg, tokens.text.warning),
+      })
+    }
+    return cn(typography.mono.lg, tokens.text.primary)
+  }, [variant])
+
   return (
-    <Card elevation="sm" className="p-3" hover={false}>
-      <div className="text-ash text-sm mb-1">{label}</div>
-      <div
-        className={cn(
-          'text-2xl font-mono',
-          variant === 'warning' ? 'text-ember' : 'text-parchment'
-        )}
-      >
-        {value}
-      </div>
+    <Card elevation="sm" className={spacing.cardSmall} hover={false}>
+      <div className={cn(typography.body.md, margins.bottom.sm)}>{label}</div>
+      <div className={valueStyles}>{value}</div>
     </Card>
   )
 })
@@ -147,14 +152,6 @@ const ProposalRow = memo(function ProposalRow({
   isSelected: boolean
   onSelect: (proposalId: string) => void
 }) {
-  const statusColors = {
-    DRAFT: 'text-ash',
-    LISTENING: 'text-gold',
-    APPROVED: 'text-success',
-    VETOED: 'text-ember',
-    ARCHIVED: 'text-ash opacity-50',
-  }
-
   const handleClick = useCallback(() => {
     onSelect(proposal.id)
   }, [proposal.id, onSelect])
@@ -172,33 +169,47 @@ const ProposalRow = memo(function ProposalRow({
     return new Date(proposal.created_at).toLocaleDateString()
   }, [proposal.created_at])
 
+  // Calculate if proposal is at risk (exceeds SLA threshold)
+  const isAtRisk = useMemo(() => {
+    if (proposal.status !== 'LISTENING') return false
+    const now = new Date()
+    const timeSinceSubmission = now.getTime() - new Date(proposal.created_at).getTime()
+    const slaThreshold = 48 * 60 * 60 * 1000 // 48 hours
+    return timeSinceSubmission > slaThreshold
+  }, [proposal.status, proposal.created_at])
+
+  // Use intelligence-driven styling
+  const cardStyles = intelligentStyles({
+    status: proposal.status,
+    isSelected,
+    isUrgent: isAtRisk,
+    className: cn(spacing.card, 'cursor-pointer transition-illuminate'),
+  })
+
   return (
     <Card
       elevation={isSelected ? 'md' : 'sm'}
-      className={cn(
-        'p-4 cursor-pointer transition-all duration-1200',
-        isSelected && 'border-gold'
-      )}
+      className={cardStyles}
       hover
       onClick={handleClick}
     >
-      <div className="flex items-center justify-between">
+      <div className={layout.flexBetween}>
         <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="font-mono text-sm text-ash">{proposal.case_number}</span>
+          <div className={cn(layout.flexCenter, spacing.gap.md, margins.bottom.sm)}>
+            <span className={cn(typography.mono.md, tokens.text.secondary)}>{proposal.case_number}</span>
             <span
-              className={cn(
-                'text-xs font-medium px-2 py-1 rounded-xs',
-                statusColors[proposal.status]
-              )}
+              className={intelligentStatusStyles(proposal.status, 'badge', buttons.badge)}
             >
               {proposal.status}
             </span>
+            {isAtRisk && (
+              <span className={cn(typography.body.sm, tokens.text.warning, 'animate-pulse')}>⚠️ At Risk</span>
+            )}
           </div>
-          <div className="text-parchment font-serif">{title}</div>
+          <div className={cn(tokens.text.primary, typography.heading.sm)}>{title}</div>
         </div>
-        <div className="text-right">
-          <div className="text-ash text-sm">{formattedDate}</div>
+        <div className={alignment.right}>
+          <div className={cn(typography.body.md, tokens.text.secondary)}>{formattedDate}</div>
         </div>
       </div>
     </Card>

@@ -1,0 +1,36 @@
+---
+title: safeParseEnv
+description: Safe environment variable parsing
+
+Use this when you want to handle validation errors gracefully:
+  const result = safeParseEnv()
+  if (result.success) {
+    const env = result.data
+  } else {
+    console.error('Invalid environment:', result.error)
+  }
+category: reference
+tags: [functions, api]
+---
+
+# safeParseEnv
+
+Safe environment variable parsing
+
+Use this when you want to handle validation errors gracefully:
+  const result = safeParseEnv()
+  if (result.success) {
+    const env = result.data
+  } else {
+    console.error('Invalid environment:', result.error)
+  }
+
+
+
+## Returns
+
+`import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/parse").ZodSafeParseResult<{ DB_HOST: string; DB_PORT: number; DB_USER: string; DB_PASSWORD: string; DB_NAME: string; DB_SSL: boolean; NODE_ENV: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ development: "development"; production: "production"; test: "test"; }>; ANALYTICS_ENABLED: boolean; ANALYTICS_ENDPOINT: string; ANALYTICS_RETENTION_DAYS: number; DATABASE_URL?: string | undefined; NEXT_PUBLIC_APP_URL?: string | undefined; ANALYTICS_API_KEY?: string | undefined; }>`
+
+
+
+

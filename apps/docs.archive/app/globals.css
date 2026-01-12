@@ -1,0 +1,137 @@
+/**
+ * Docs App Global Styles
+ *
+ * Battle-Proven Pattern: Each app processes Tailwind independently
+ * and imports shared tokens directly from design system.
+ */
+
+/* Step 1: Import Tailwind CSS (processes first) */
+@import "tailwindcss";
+
+/* Step 2: Import shared design tokens */
+@import "@mythic/design-system/tokens/theme.css";
+
+/* Step 3: Scan shared packages for utilities */
+@source "../../packages/design-system";
+
+/**
+ * ============================================================================
+ * APP-SPECIFIC THEME OVERRIDES
+ * ============================================================================
+ */
+
+@theme {
+  /* Font Families (for font-sans, font-serif, font-mono utilities) */
+  /* Axis Visual Canon: Editorial Authority (serif), Forensic Data (mono) */
+  /* Tailwind v4: Use --font-* naming (not --font-family-*) */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: "Cormorant Garamond", "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Diátaxis Document Type Colors (extends base palette) */
+  --color-diataxis-tutorial: 204 96% 48%;
+  --color-diataxis-tutorial-bg: 204 96% 97%;
+  --color-diataxis-tutorial-border: 204 96% 78%;
+
+  --color-diataxis-howto: 142 76% 47%;
+  --color-diataxis-howto-bg: 142 76% 96%;
+  --color-diataxis-howto-border: 142 76% 74%;
+
+  --color-diataxis-reference: 0 0% 45%;
+  --color-diataxis-reference-bg: 0 0% 98%;
+  --color-diataxis-reference-border: 0 0% 83%;
+
+  --color-diataxis-explanation: 48 96% 47%;
+  --color-diataxis-explanation-bg: 48 96% 96%;
+  --color-diataxis-explanation-border: 48 96% 74%;
+
+  /* Documentation-Specific Spacing */
+  --spacing-doc-section: 2rem;
+  --spacing-doc-content: 1.5rem;
+  --spacing-doc-card: 1rem;
+
+  /* Documentation-Specific Typography */
+  /* Note: These reference the font utilities defined above */
+  --font-doc-heading: var(--font-serif);
+  --font-doc-body: var(--font-sans);
+  --font-doc-code: var(--font-mono);
+
+  /* Documentation-Specific Colors */
+  --color-doc-highlight: var(--color-gold);
+  --color-doc-muted: var(--color-ash);
+  --color-doc-accent: var(--color-gold);
+  --color-doc-border: var(--color-charcoal);
+
+  /* Motion (Gravitational Time) - Axis Visual Canon */
+  /* Hover: 700-1200ms (using 1000ms as default) */
+  /* Commitment: 1618ms (for buttons that ratify decisions) */
+  --duration-hover: 1000ms;
+  --duration-commit: 1618ms;
+  /* No bounce, no snap, no elastic - gravitational time only */
+  --ease-gravity: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/**
+ * ============================================================================
+ * DIÁTAXIS DARK MODE - Pure Tailwind dark: Variant
+ * ============================================================================
+ */
+
+@layer theme {
+  .dark {
+    /* Diátaxis dark mode variants */
+    --color-diataxis-tutorial: 204 96% 68%;
+    --color-diataxis-tutorial-bg: 204 96% 18%;
+    --color-diataxis-tutorial-border: 204 96% 38%;
+
+    --color-diataxis-howto: 142 76% 65%;
+    --color-diataxis-howto-bg: 142 76% 20%;
+    --color-diataxis-howto-border: 142 76% 38%;
+
+    --color-diataxis-reference: 0 0% 60%;
+    --color-diataxis-reference-bg: 0 0% 9%;
+    --color-diataxis-reference-border: 0 0% 25%;
+
+    --color-diataxis-explanation: 48 96% 65%;
+    --color-diataxis-explanation-bg: 48 96% 20%;
+    --color-diataxis-explanation-border: 48 96% 38%;
+  }
+}
+
+/**
+ * ============================================================================
+ * BASE STYLES
+ * ============================================================================
+ */
+
+@layer base {
+  body {
+    @apply bg-void text-parchment font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-bold;
+    color: hsl(var(--color-signal-white));
+  }
+
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    @apply text-parchment;
+  }
+
+  code, pre, kbd, samp {
+    @apply font-mono;
+  }
+
+  a, button, [role='button'] {
+    transition-property: all;
+    transition-duration: var(--duration-hover);
+    transition-timing-function: var(--ease-gravity);
+  }
+
+  button[type='submit'],
+  button[data-commitment='true'] {
+    transition-property: all;
+    transition-duration: var(--duration-commit);
+    transition-timing-function: var(--ease-gravity);
+  }
+}

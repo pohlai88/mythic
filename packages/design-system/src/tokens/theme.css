@@ -1,0 +1,25 @@
+/**
+ * Design System Tokens - Theme CSS
+ *
+ * Axis Visual Canon v1.0.0
+ * Tailwind CSS v4 CSS-first configuration
+ *
+ * This file is the single source of truth for design tokens.
+ * Apps import this file directly: @import "@mythic/design-system/tokens/theme.css"
+ */
+
+@theme {
+  /* Core Colors - BEASTMODE Gold Palette */
+  --color-void: 240 10% 4%;
+  --color-obsidian: 240 10% 8%;
+  --color-charcoal: 240 10% 15%;
+  --color-parchment: 40 20% 96%;
+  --color-ash: 240 5% 65%;
+  --color-gold: 40 45% 55%;
+  --color-ember: 15 70% 50%;
+
+  /* Font Families */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: "Cormorant Garamond", "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}

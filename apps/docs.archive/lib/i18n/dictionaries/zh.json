@@ -1,0 +1,19 @@
+{
+  "banner": "🎉 NexusCanon 治理文档现已上线！",
+  "bannerLink": "探索 →",
+  "footer": "{year} © NexusCanon. 使用 Next.js 和 Tailwind CSS 构建",
+  "editPage": "在 GitHub 上编辑此页面 →",
+  "feedback": "有问题？给我们反馈 →",
+  "lastUpdated": "最后更新于",
+  "searchPlaceholder": "搜索文档...",
+  "searchLoading": "正在加载搜索...",
+  "searchError": "加载搜索结果失败",
+  "searchEmptyResult": "未找到结果",
+  "dark": "深色",
+  "light": "浅色",
+  "system": "系统",
+  "backToTop": "返回顶部",
+  "tocTitle": "本页内容",
+  "nextPage": "下一页",
+  "previousPage": "上一页"
+}

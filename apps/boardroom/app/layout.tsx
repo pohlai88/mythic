@@ -11,9 +11,11 @@ import { Providers } from './providers'
 import { ToastProvider } from '@mythic/design-system'
 import type { Metadata } from 'next'
 // Tailwind CSS v4 - Design System
-import '../styles/globals.css'
+// Next.js Best Practice: Import from app/ directory
+import './globals.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://axis.dev'),
   title: {
     default: 'The Apex - Executive Board Decision Engine',
     template: '%s | AXIS',

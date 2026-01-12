@@ -1,0 +1,19 @@
+{
+  "banner": "🎉 NexusCanon Governance Docs are now live!",
+  "bannerLink": "Explore →",
+  "footer": "{year} © NexusCanon. Built with Next.js and Tailwind CSS",
+  "editPage": "Edit this page on GitHub →",
+  "feedback": "Question? Give us feedback →",
+  "lastUpdated": "Last updated on",
+  "searchPlaceholder": "Search documentation...",
+  "searchLoading": "Loading search...",
+  "searchError": "Failed to load search results",
+  "searchEmptyResult": "No results found",
+  "dark": "Dark",
+  "light": "Light",
+  "system": "System",
+  "backToTop": "Back to top",
+  "tocTitle": "On this page",
+  "nextPage": "Next",
+  "previousPage": "Previous"
+}

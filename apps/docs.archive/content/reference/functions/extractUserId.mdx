@@ -1,0 +1,40 @@
+---
+title: extractUserId
+description: Extract user ID from request headers
+
+Looks for user ID in common header locations:
+- x-user-id
+- x-user-uuid
+- authorization (JWT token - requires parsing)
+category: reference
+tags: [functions, api]
+---
+
+# extractUserId
+
+Extract user ID from request headers
+
+Looks for user ID in common header locations:
+- x-user-id
+- x-user-uuid
+- authorization (JWT token - requires parsing)
+
+## Parameters
+
+### headers
+
+**Type**: `Headers`
+
+**Required**
+
+- Request headers
+
+
+
+## Returns
+
+`string | undefined`
+
+
+
+

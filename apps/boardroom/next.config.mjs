@@ -12,7 +12,7 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
 
   // Next.js 16 optimizations
-  swcMinify: true,
+  // Note: swcMinify is deprecated in Next.js 16 - SWC minification is enabled by default
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? {
       exclude: ['error', 'warn'],
@@ -33,7 +33,6 @@ const nextConfig = {
       '@mythic/design-system',
       '@mythic/shared-utils',
       '@mythic/shared-types',
-      '@mythic/axis-theme',
       '@mythic/domain-core',
       '@mythic/performance',
       '@mythic/monitoring',

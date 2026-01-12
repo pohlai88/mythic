@@ -5,9 +5,14 @@
  */
 
 import { boolean, jsonb, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z as z4 } from 'zod/v4'
 import { proposalStatusSchema } from '@mythic/shared-types/boardroom'
+import { circles } from './circles'
+import { boardComments } from './comments'
+import { thanosEvents } from './thanos'
+import { proposalStencils } from './stencils'
 
 export const proposals = pgTable('proposals', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -122,6 +127,22 @@ export const selectProposalSchema = baseSelectProposalSchema
 export const proposalInputSchema = insertProposalSchema
   .pipe(selectProposalSchema)
   .describe('Proposal input transformation pipeline')
+
+// Relations for Drizzle relational queries API
+export const proposalsRelations = relations(proposals, ({ one, many }) => ({
+  circle: one(circles, {
+    fields: [proposals.circleId],
+    references: [circles.id],
+  }),
+  stencil: one(proposalStencils, {
+    fields: [proposals.stencilId],
+    references: [proposalStencils.id],
+  }),
+  comments: many(boardComments),
+  events: many(thanosEvents),
+  // Note: submittedBy, approvedBy, vetoedBy reference users table
+  // which may not exist yet - these can be added when users table is created
+}))
 
 // TypeScript types
 export type Proposal = typeof proposals.$inferSelect

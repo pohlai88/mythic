@@ -1,0 +1,55 @@
+---
+title: createMandatoryRecord
+description: MANDATORY: Record schema with explicit key and value types
+
+Zod v4 requires both key and value schemas for z.record()
+Key must be a string-compatible schema (ZodString, ZodEnum, etc.)
+category: reference
+tags: [functions, api]
+---
+
+# createMandatoryRecord
+
+MANDATORY: Record schema with explicit key and value types
+
+Zod v4 requires both key and value schemas for z.record()
+Key must be a string-compatible schema (ZodString, ZodEnum, etc.)
+
+## Parameters
+
+### valueSchema
+
+**Type**: `V`
+
+**Required**
+
+No description available
+
+
+### description
+
+**Type**: `string`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/schemas").ZodRecord<import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/schemas").ZodString, V>`
+
+
+
+## Examples
+
+```typescript
+const metadataSchema = createMandatoryRecord(
+  z.string(),
+  z.unknown(),
+  'Metadata key-value pairs'
+)
+```
+
+

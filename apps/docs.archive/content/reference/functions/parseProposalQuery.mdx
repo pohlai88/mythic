@@ -1,0 +1,36 @@
+---
+title: parseProposalQuery
+description: Validate and parse query parameters
+
+Helper function to safely parse query parameters from URL search params
+or request body.
+category: reference
+tags: [functions, api]
+---
+
+# parseProposalQuery
+
+Validate and parse query parameters
+
+Helper function to safely parse query parameters from URL search params
+or request body.
+
+## Parameters
+
+### input
+
+**Type**: `unknown`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/parse").ZodSafeParseResult<{ page: number; limit: number; sort: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ status: "status"; case_number: "case_number"; created_at: "created_at"; updated_at: "updated_at"; }>; order: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ desc: "desc"; asc: "asc"; }>; status?: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ DRAFT: "DRAFT"; LISTENING: "LISTENING"; APPROVED: "APPROVED"; VETOED: "VETOED"; ARCHIVED: "ARCHIVED"; }> | undefined; circleId?: string | undefined; stencilId?: string | undefined; submittedBy?: string | undefined; search?: string | undefined; createdAfter?: Date | undefined; createdBefore?: Date | undefined; statuses?: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ DRAFT: "DRAFT"; LISTENING: "LISTENING"; APPROVED: "APPROVED"; VETOED: "VETOED"; ARCHIVED: "ARCHIVED"; }>[] | undefined; }>`
+
+
+
+

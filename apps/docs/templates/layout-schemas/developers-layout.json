@@ -1,0 +1,88 @@
+{
+  "name": "Developers Layout",
+  "version": "1.0.0",
+  "description": "Layout wireframe for developers documentation section",
+  "audience": "developers",
+  "components": [
+    {
+      "type": "Navbar",
+      "props": {
+        "audience": "developers",
+        "modules": ["api", "architecture", "guides"],
+        "search": true,
+        "commandPalette": true
+      },
+      "position": "sticky",
+      "styling": {
+        "background": "bg-obsidian",
+        "border": "border-b border-charcoal",
+        "height": "h-16"
+      }
+    },
+    {
+      "type": "Sidebar",
+      "props": {
+        "navigation": "hierarchical",
+        "search": true,
+        "collapsible": true
+      },
+      "position": "fixed",
+      "styling": {
+        "width": "w-64",
+        "background": "bg-obsidian",
+        "border": "border-r border-charcoal",
+        "responsive": {
+          "mobile": "hidden",
+          "tablet": "collapsible",
+          "desktop": "visible"
+        }
+      }
+    },
+    {
+      "type": "Content",
+      "props": {
+        "maxWidth": "prose",
+        "typography": "editorial",
+        "padding": "p-8"
+      },
+      "styling": {
+        "margin": "ml-64",
+        "responsive": {
+          "mobile": "ml-0",
+          "tablet": "ml-0",
+          "desktop": "ml-64"
+        }
+      }
+    },
+    {
+      "type": "CommandPalette",
+      "props": {
+        "shortcut": "Cmd+K",
+        "fuzzySearch": true
+      },
+      "position": "overlay"
+    }
+  ],
+  "responsive": {
+    "mobile": {
+      "layout": "stack",
+      "sidebar": "hidden",
+      "content": "full-width"
+    },
+    "tablet": {
+      "layout": "sidebar-collapsible",
+      "sidebar": "collapsible",
+      "content": "adaptive"
+    },
+    "desktop": {
+      "layout": "sidebar-fixed",
+      "sidebar": "fixed",
+      "content": "with-sidebar"
+    }
+  },
+  "breakpoints": {
+    "mobile": "640px",
+    "tablet": "768px",
+    "desktop": "1024px"
+  }
+}

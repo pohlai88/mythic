@@ -31,9 +31,9 @@ alwaysApply: false
 - Organize in `components/` directory
 
 **Styling:**
-- Use Tailwind CSS for styling
-- Follow design system patterns
-- Maintain consistent spacing and colors
+- ⚠️ **DEPRECATED**: See `033_design-system-constitution.mdc` for ALL styling rules
+- Design system constitution is the ONLY source of truth for styling
+- All styling MUST follow Tailwind CSS v4 best practices from design system constitution
 
 **Web Dev Workflows:**
 - Component creation workflow

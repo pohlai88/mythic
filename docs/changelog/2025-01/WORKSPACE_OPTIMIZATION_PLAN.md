@@ -342,11 +342,17 @@ module.exports = {
 };
 ```
 
-**Install Tailwind:**
+**Install Tailwind (v4):**
 
 ```bash
-pnpm add -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
+# Tailwind CSS v4 - CSS-first configuration (no config file needed)
+pnpm add -D tailwindcss@^4.1.18
+
+# For standalone CLI usage (if needed outside Next.js):
+pnpm add -D @tailwindcss/cli
+
+# Usage with CLI (v4):
+npx @tailwindcss/cli -i input.css -o output.css
 ```
 
 ---

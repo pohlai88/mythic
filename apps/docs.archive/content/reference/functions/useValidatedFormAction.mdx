@@ -1,0 +1,62 @@
+---
+title: useValidatedFormAction
+description: Hook for validated form actions
+
+Wraps a server action with Zod validation for form inputs.
+Provides type-safe form handling with validation errors.
+category: reference
+tags: [functions, api]
+---
+
+# useValidatedFormAction
+
+Hook for validated form actions
+
+Wraps a server action with Zod validation for form inputs.
+Provides type-safe form handling with validation errors.
+
+## Parameters
+
+### schema
+
+**Type**: `TSchema`
+
+**Required**
+
+No description available
+
+
+### action
+
+**Type**: `(input: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/core").output<TSchema>) => Promise<import("C:/AI-BOS/mythic/apps/boardroom/src/lib/forms/validated-form-action").FormActionResult<unknown>>`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`{ state: import("C:/AI-BOS/mythic/apps/boardroom/src/lib/forms/validated-form-action").FormActionState; formAction: (payload: FormData) => void; isPending: boolean; }`
+
+
+
+## Examples
+
+```typescript
+```typescript
+const { state, formAction, isPending } = useValidatedFormAction(
+  createProposalInputSchema,
+  createProposal
+)
+
+<form action={formAction}>
+  {state.issues?.map(issue => (
+    <div key={issue.path.join('.')}>{issue.message}</div>
+  ))}
+</form>
+```
+```
+
+

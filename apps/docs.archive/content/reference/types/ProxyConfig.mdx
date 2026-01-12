@@ -1,0 +1,40 @@
+---
+title: ProxyConfig
+description: Proxy Config
+category: reference
+tags: [types, api]
+---
+
+# ProxyConfig
+
+Proxy Config
+
+## Properties
+
+### requestSchema
+
+**Type**: `import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/schemas").ZodType<unknown, unknown, import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$ZodTypeInternals<unknown, unknown>> | undefined`
+
+**Optional**
+
+Request validation schema
+
+
+### excludePaths
+
+**Type**: `string[] | undefined`
+
+**Optional**
+
+Paths to exclude from proxy
+
+
+### handler
+
+**Type**: `((request: import("C:/AI-BOS/mythic/node_modules/.pnpm/next@16.1.1_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/server/web/spec-extension/request").NextRequest) => import("C:/AI-BOS/mythic/node_modules/.pnpm/next@16.1.1_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/server/web/spec-extension/response").NextResponse<unknown> | Promise<import("C:/AI-BOS/mythic/node_modules/.pnpm/next@16.1.1_react-dom@18.3.1_react@18.3.1/node_modules/next/dist/server/web/spec-extension/response").NextResponse<unknown> | null> | null) | undefined`
+
+**Optional**
+
+Custom handler
+
+

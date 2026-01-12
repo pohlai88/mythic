@@ -1,0 +1,88 @@
+{
+  "name": "Users Layout",
+  "version": "1.0.0",
+  "description": "Layout wireframe for end users documentation section",
+  "audience": "users",
+  "components": [
+    {
+      "type": "Navbar",
+      "props": {
+        "audience": "users",
+        "modules": ["boardroom", "accounting", "finance", "crm", "manufacturing", "supply-chain", "procurement", "marketing", "investor-relations"],
+        "search": true,
+        "commandPalette": true
+      },
+      "position": "sticky",
+      "styling": {
+        "background": "bg-obsidian",
+        "border": "border-b border-charcoal",
+        "height": "h-16"
+      }
+    },
+    {
+      "type": "ModuleNav",
+      "props": {
+        "navigation": "module-based",
+        "showAllModules": true
+      },
+      "position": "sidebar",
+      "styling": {
+        "width": "w-64",
+        "background": "bg-obsidian",
+        "border": "border-r border-charcoal",
+        "responsive": {
+          "mobile": "hidden",
+          "tablet": "collapsible",
+          "desktop": "visible"
+        }
+      }
+    },
+    {
+      "type": "Content",
+      "props": {
+        "maxWidth": "prose",
+        "typography": "editorial",
+        "padding": "p-8",
+        "showBreadcrumbs": true
+      },
+      "styling": {
+        "margin": "ml-64",
+        "responsive": {
+          "mobile": "ml-0",
+          "tablet": "ml-0",
+          "desktop": "ml-64"
+        }
+      }
+    },
+    {
+      "type": "CommandPalette",
+      "props": {
+        "shortcut": "Cmd+K",
+        "fuzzySearch": true
+      },
+      "position": "overlay"
+    }
+  ],
+  "responsive": {
+    "mobile": {
+      "layout": "stack",
+      "sidebar": "hidden",
+      "content": "full-width"
+    },
+    "tablet": {
+      "layout": "sidebar-collapsible",
+      "sidebar": "collapsible",
+      "content": "adaptive"
+    },
+    "desktop": {
+      "layout": "sidebar-fixed",
+      "sidebar": "fixed",
+      "content": "with-sidebar"
+    }
+  },
+  "breakpoints": {
+    "mobile": "640px",
+    "tablet": "768px",
+    "desktop": "1024px"
+  }
+}

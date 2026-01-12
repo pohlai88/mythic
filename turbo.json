@@ -5,103 +5,184 @@
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
     "tsconfig.json",
-    "next.config.js",
-    "biome.json"
+    "biome.json",
+    ".env",
+    ".env.local",
+    ".env.production"
   ],
-  "pipeline": {
+  "globalEnv": [
+    "NODE_ENV",
+    "CI",
+    "VERCEL",
+    "VERCEL_ENV",
+    "NEXT_PUBLIC_*",
+    "TURBO_TOKEN",
+    "TURBO_TEAM"
+  ],
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["NODE_ENV", "NEXT_PUBLIC_*", "VERCEL_*"],
-      "cache": true
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "!.next/static/chunks/**",
+        "dist/**",
+        "build/**"
+      ],
+      "env": ["NODE_ENV", "NEXT_PUBLIC_*", "VERCEL_*", "ANALYZE"],
+      "cache": true,
+      "persistent": false,
+      "outputLogs": "new-only"
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": []
     },
     "lint": {
+      "dependsOn": [],
       "outputs": [],
       "cache": true,
-      "dependsOn": []
+      "persistent": false
     },
     "lint:fix": {
+      "dependsOn": [],
       "outputs": [],
       "cache": false,
-      "dependsOn": []
+      "persistent": false
     },
     "lint:staged": {
+      "dependsOn": [],
       "outputs": [],
       "cache": false,
-      "dependsOn": []
+      "persistent": false
     },
     "format": {
+      "dependsOn": [],
       "outputs": [],
       "cache": false,
-      "dependsOn": []
+      "persistent": false
     },
     "format:check": {
+      "dependsOn": [],
       "outputs": [],
       "cache": true,
-      "dependsOn": []
+      "persistent": false
     },
     "format:staged": {
+      "dependsOn": [],
       "outputs": [],
       "cache": false,
-      "dependsOn": []
+      "persistent": false
     },
     "check": {
+      "dependsOn": [],
       "outputs": [],
       "cache": true,
-      "dependsOn": []
+      "persistent": false
     },
     "check:fix": {
+      "dependsOn": [],
       "outputs": [],
       "cache": false,
-      "dependsOn": []
+      "persistent": false
     },
     "check:staged": {
+      "dependsOn": [],
       "outputs": [],
       "cache": false,
-      "dependsOn": []
+      "persistent": false
     },
     "check:ci": {
+      "dependsOn": [],
       "outputs": [],
       "cache": true,
-      "dependsOn": []
+      "persistent": false
     },
     "check:changed": {
+      "dependsOn": [],
       "outputs": [],
       "cache": false,
-      "dependsOn": []
+      "persistent": false
     },
     "pre-commit": {
+      "dependsOn": [],
       "outputs": [],
       "cache": false,
-      "dependsOn": []
+      "persistent": false
     },
     "type-check": {
       "dependsOn": [],
+      "outputs": ["tsconfig.tsbuildinfo"],
+      "inputs": ["src/**/*.ts", "src/**/*.tsx", "tsconfig.json", "tsconfig.*.json"],
+      "cache": true,
+      "persistent": false
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "outputs": ["coverage/**", ".test-results/**"],
+      "cache": true,
+      "persistent": false,
+      "env": ["NODE_ENV", "CI"]
+    },
+    "test:watch": {
+      "dependsOn": ["^build"],
       "outputs": [],
-      "cache": true
+      "cache": false,
+      "persistent": true
+    },
+    "test:coverage": {
+      "dependsOn": ["build"],
+      "outputs": ["coverage/**"],
+      "cache": true,
+      "persistent": false,
+      "env": ["NODE_ENV", "CI"]
     },
     "analyze": {
       "dependsOn": ["build"],
       "outputs": [".next/analyze/**"],
       "cache": false,
+      "persistent": false,
       "env": ["ANALYZE"]
     },
     "verify": {
       "dependsOn": ["build", "lint", "type-check"],
       "outputs": [],
-      "cache": false
+      "cache": false,
+      "persistent": false
     },
     "start": {
       "cache": false,
       "persistent": true,
       "dependsOn": ["build"]
+    },
+    "clean": {
+      "cache": false,
+      "persistent": false,
+      "dependsOn": []
+    },
+    "generate": {
+      "dependsOn": [],
+      "outputs": ["**/generated/**"],
+      "cache": true,
+      "persistent": false
+    },
+    "migrate": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "cache": false,
+      "persistent": false
+    },
+    "seed": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "cache": false,
+      "persistent": false
     }
   },
   "remoteCache": {
-    "enabled": false
-  }
+    "enabled": true,
+    "signature": true
+  },
+  "ui": "tui"
 }

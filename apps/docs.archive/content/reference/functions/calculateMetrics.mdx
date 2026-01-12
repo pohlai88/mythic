@@ -1,0 +1,30 @@
+---
+title: calculateMetrics
+description: Calculate dashboard metrics from proposals
+category: reference
+tags: [functions, api]
+---
+
+# calculateMetrics
+
+Calculate dashboard metrics from proposals
+
+## Parameters
+
+### proposals
+
+**Type**: `{ id: string; case_number: string; stencil_id: string; circle_id: string; status: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ DRAFT: "DRAFT"; LISTENING: "LISTENING"; APPROVED: "APPROVED"; VETOED: "VETOED"; ARCHIVED: "ARCHIVED"; }>; submitted_by: string; data: Record<string, unknown>; created_at: Date; updated_at: Date; approved_at?: Date | undefined; vetoed_at?: Date | undefined; approved_by?: string | undefined; vetoed_by?: string | undefined; veto_reason?: string | undefined; }[]`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`Promise<import("C:/AI-BOS/mythic/apps/boardroom/src/lib/metrics/calculate-metrics").DashboardMetrics>`
+
+
+
+

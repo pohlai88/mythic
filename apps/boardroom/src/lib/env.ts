@@ -196,10 +196,85 @@ export function safeParseEnv() {
  * Get database connection string
  *
  * Returns DATABASE_URL if provided, otherwise constructs from individual vars.
+ * Validates that required configuration is present.
+ * Optimizes Neon connection string for serverless performance.
+ *
+ * @throws {Error} If database configuration is missing or invalid
  */
 export function getDatabaseUrl(): string {
+  // Prefer DATABASE_URL if provided
   if (env.DATABASE_URL) {
-    return env.DATABASE_URL
+    // Validate URL format
+    try {
+      const url = new URL(env.DATABASE_URL)
+
+      // Optimize for Neon serverless
+      // Ensure pooler endpoint for serverless (better connection pooling)
+      if (url.hostname.includes('.neon.tech') && !url.hostname.includes('-pooler')) {
+        // Convert direct endpoint to pooler endpoint
+        url.hostname = url.hostname.replace(
+          /^ep-([^-]+)-([^.]+)\./,
+          'ep-$1-$2-pooler.'
+        )
+      }
+
+      // Add serverless-optimized parameters
+      url.searchParams.set('sslmode', 'require')
+
+      // Preserve channel_binding if present (Neon security requirement)
+      if (!url.searchParams.has('channel_binding') && url.hostname.includes('.neon.tech')) {
+        url.searchParams.set('channel_binding', 'require')
+      }
+
+      // Optimize connection timeout for serverless
+      // Production: 5s (faster failover), Development: 10s (more lenient)
+      const timeout = process.env.NODE_ENV === 'production' ? '5' : '10'
+      if (!url.searchParams.has('connect_timeout')) {
+        url.searchParams.set('connect_timeout', timeout)
+      } else {
+        // Override if set but not optimal for production
+        if (process.env.NODE_ENV === 'production') {
+          const currentTimeout = Number.parseInt(url.searchParams.get('connect_timeout') || '10')
+          if (currentTimeout > 5) {
+            url.searchParams.set('connect_timeout', '5')
+          }
+        }
+      }
+
+      // Add pool timeout (0 = unlimited, optimal for serverless)
+      if (!url.searchParams.has('pool_timeout')) {
+        url.searchParams.set('pool_timeout', '0')
+      }
+
+      return url.toString()
+    } catch {
+      throw new Error(
+        'DATABASE_URL is not a valid URL. Please check your .env file.\n' +
+        'Expected format: postgresql://user:password@host:port/database?sslmode=require'
+      )
+    }
+  }
+
+  // Validate individual variables are set (not just defaults)
+  const hasIndividualConfig =
+    process.env.DB_HOST &&
+    process.env.DB_USER &&
+    process.env.DB_NAME
+
+  if (!hasIndividualConfig) {
+    throw new Error(
+      'Database configuration is missing. Please set one of the following:\n\n' +
+      'Option 1 (Recommended): DATABASE_URL\n' +
+      '  DATABASE_URL=postgresql://user:password@host:port/database?sslmode=require\n\n' +
+      'Option 2: Individual variables\n' +
+      '  DB_HOST=localhost (or your database host)\n' +
+      '  DB_PORT=5432\n' +
+      '  DB_USER=postgres (or your database user)\n' +
+      '  DB_PASSWORD=your_password\n' +
+      '  DB_NAME=mythic (or your database name)\n' +
+      '  DB_SSL=false (or true for cloud databases)\n\n' +
+      'See docs/architecture/ENVIRONMENT_VARIABLES.md for more details.'
+    )
   }
 
   // Construct connection string from individual vars

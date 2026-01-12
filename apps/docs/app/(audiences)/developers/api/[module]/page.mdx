@@ -1,0 +1,100 @@
+---
+title: BoardRoom API Reference
+description: Complete API reference for BoardRoom module
+audience: developers
+module: boardroom
+type: reference
+published: true
+---
+
+# BoardRoom API Reference
+
+> Complete API reference for the BoardRoom executive decision engine module
+
+## Overview
+
+The BoardRoom API provides endpoints for managing proposals, approvals, and decision tracking in the ERP system.
+
+## Base URL
+
+```
+/api/v1/boardroom
+```
+
+## Authentication
+
+All API requests require authentication via Bearer token:
+
+```bash
+Authorization: Bearer <token>
+```
+
+## Endpoints
+
+### Proposals
+
+#### `GET /api/v1/boardroom/proposals`
+
+List all proposals.
+
+**Query Parameters**:
+
+| Parameter | Type     | Required | Description |
+| --------- | -------- | -------- | ----------- |
+| `status`  | `string` | No       | Filter by status |
+| `limit`   | `number` | No       | Results limit |
+| `offset`  | `number` | No       | Results offset |
+
+**Response**:
+
+```json
+{
+  "proposals": [
+    {
+      "id": "uuid",
+      "caseNumber": "CASE-2026-000001",
+      "status": "APPROVED",
+      "stencilId": "hiring-request",
+      "data": {}
+    }
+  ],
+  "total": 100
+}
+```
+
+#### `POST /api/v1/boardroom/proposals`
+
+Create a new proposal.
+
+**Request Body**:
+
+```json
+{
+  "stencilId": "hiring-request",
+  "circleId": "uuid",
+  "data": {
+    "position": "Software Engineer",
+    "department": "Engineering"
+  }
+}
+```
+
+**Response**:
+
+```json
+{
+  "id": "uuid",
+  "caseNumber": "CASE-2026-000001",
+  "status": "DRAFT",
+  "createdAt": "2026-01-11T00:00:00Z"
+}
+```
+
+## Related Documentation
+
+- [How-To: Creating Proposals](/users/boardroom/guides/creating-proposals) - User guide
+- [Tutorial: BoardRoom Integration](/developers/guides/boardroom-integration) - Integration tutorial
+
+---
+
+**Last Updated**: 2026-01-11

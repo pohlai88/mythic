@@ -31,7 +31,16 @@
       "public/sw.js",
       "public/workbox-*.js"
     ],
-    "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/*.json", "**/*.jsonc", "**/*.css"]
+    "include": [
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.mjs",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.json",
+      "**/*.jsonc",
+      "**/*.css"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -71,7 +80,7 @@
       },
       "suspicious": {
         "noConsole": {
-          "level": "warn",
+          "level": "error",
           "options": {
             "allow": ["warn", "error"]
           }
@@ -79,7 +88,8 @@
         "noExplicitAny": "warn",
         "noArrayIndexKey": "warn",
         "noAssignInExpressions": "warn",
-        "noDoubleEquals": "warn"
+        "noDoubleEquals": "warn",
+        "noCommentText": "error"
       },
       "complexity": {
         "noForEach": "off",
@@ -97,6 +107,14 @@
       },
       "nursery": {
         "useSortedClasses": "off"
+      },
+      "a11y": {
+        "useKeyWithClickEvents": "warn",
+        "useKeyWithMouseEvents": "warn",
+        "useValidAnchor": "warn",
+        "useValidAriaProps": "warn",
+        "useValidAriaValues": "warn",
+        "useValidLang": "warn"
       }
     }
   },
@@ -138,16 +156,24 @@
       "include": [
         "*.config.js",
         "*.config.ts",
-        "next.config.js",
-        "tailwind.config.ts",
+        "*.config.mjs",
+        "next.config.*",
+        "tailwind.config.*",
         "turbo.json"
       ],
       "formatter": {
         "lineWidth": 120
+      },
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "warn"
+          }
+        }
       }
     },
     {
-      "include": ["src/lib/api-schemas/**", "src/lib/zod/**"],
+      "include": ["**/env.ts", "**/env.*.ts", "**/*env*.ts"],
       "linter": {
         "rules": {
           "suspicious": {
@@ -160,10 +186,20 @@
             "useImportType": "error"
           }
         }
+      },
+      "javascript": {
+        "globals": ["process"]
       }
     },
     {
-      "include": ["pages/**", "app/**", "components/**"],
+      "include": [
+        "src/lib/api-schemas/**",
+        "src/lib/zod/**",
+        "apps/**/src/lib/api-schemas/**",
+        "apps/**/src/lib/zod/**",
+        "packages/**/src/lib/api-schemas/**",
+        "packages/**/src/lib/zod/**"
+      ],
       "linter": {
         "rules": {
           "suspicious": {
@@ -171,12 +207,83 @@
           },
           "correctness": {
             "useExhaustiveDependencies": "error"
+          },
+          "style": {
+            "useImportType": "error",
+            "noRestrictedGlobals": {
+              "level": "error",
+              "options": {
+                "deniedGlobals": ["z"]
+              }
+            }
+          },
+          "security": {
+            "noDangerouslySetInnerHtml": "error",
+            "noGlobalEval": "error"
           }
         }
       }
     },
     {
-      "include": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
+      "include": [
+        "**/server-actions/**",
+        "**/actions/**",
+        "apps/**/app/actions/**",
+        "apps/**/app/api/**"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "error"
+          },
+          "correctness": {
+            "useExhaustiveDependencies": "error"
+          },
+          "style": {
+            "useImportType": "error"
+          },
+          "security": {
+            "noDangerouslySetInnerHtml": "error",
+            "noGlobalEval": "error"
+          }
+        }
+      }
+    },
+    {
+      "include": [
+        "pages/**",
+        "app/**",
+        "components/**",
+        "apps/**/app/**",
+        "apps/**/pages/**",
+        "apps/**/components/**"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "error"
+          },
+          "correctness": {
+            "useExhaustiveDependencies": "error"
+          },
+          "style": {
+            "useImportType": "warn"
+          },
+          "security": {
+            "noDangerouslySetInnerHtml": "warn"
+          }
+        }
+      }
+    },
+    {
+      "include": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/__tests__/**",
+        "**/__mocks__/**"
+      ],
       "linter": {
         "rules": {
           "suspicious": {
@@ -189,7 +296,7 @@
       }
     },
     {
-      "include": ["scripts/**/*.ts"],
+      "include": ["scripts/**/*.ts", "scripts/**/*.js", "scripts/**/*.mjs"],
       "linter": {
         "rules": {
           "suspicious": {
@@ -205,7 +312,11 @@
       }
     },
     {
-      "include": ["components/api-reference.tsx"],
+      "include": [
+        "components/api-reference.tsx",
+        "pages/api/graphql/**",
+        "apps/**/pages/api/graphql/**"
+      ],
       "linter": {
         "rules": {
           "style": {
@@ -215,11 +326,16 @@
       }
     },
     {
-      "include": ["pages/api/graphql/**"],
+      "include": ["apps/boardroom/**/*.ts", "apps/boardroom/**/*.tsx"],
       "linter": {
         "rules": {
           "style": {
-            "useNamingConvention": "off"
+            "noRestrictedGlobals": {
+              "level": "warn",
+              "options": {
+                "deniedGlobals": []
+              }
+            }
           }
         }
       }

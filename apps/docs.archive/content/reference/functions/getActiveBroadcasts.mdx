@@ -1,0 +1,40 @@
+---
+title: getActiveBroadcasts
+description: Get active broadcasts for a user
+
+Returns broadcasts that:
+- Haven't expired (expiresAt > now or null)
+- User hasn't read yet
+- Match user's audience (all, circle, role)
+category: reference
+tags: [functions, api]
+---
+
+# getActiveBroadcasts
+
+Get active broadcasts for a user
+
+Returns broadcasts that:
+- Haven't expired (expiresAt > now or null)
+- User hasn't read yet
+- Match user's audience (all, circle, role)
+
+## Parameters
+
+### input
+
+**Type**: `unknown`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`Promise<import("C:/AI-BOS/mythic/apps/boardroom/app/actions/broadcasts").BroadcastData[]>`
+
+
+
+

@@ -1,0 +1,300 @@
+{
+  "generated": "2026-01-11T23:53:20.867Z",
+  "count": 49,
+  "components": [
+    {
+      "name": "GuidesIndex",
+      "description": "",
+      "filePath": "apps/docs/components/GuidesIndex.tsx",
+      "propCount": 1
+    },
+    {
+      "name": "Cards",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/docs/components/Cards.tsx",
+      "propCount": 3
+    },
+    {
+      "name": "Badge",
+      "description": "",
+      "filePath": "apps/docs/components/badge.tsx",
+      "propCount": 1
+    },
+    {
+      "name": "APIReference",
+      "description": "",
+      "filePath": "apps/docs/components/api-reference.tsx",
+      "propCount": 1
+    },
+    {
+      "name": "VarianceDisplay",
+      "description": "Variance Display Component\n\nDisplays the Tri-Vector model (Budgeted/Planned/Actual) with\nintelligence-driven styling based on variance percentages.",
+      "filePath": "apps/boardroom/components/VarianceDisplay.tsx",
+      "propCount": 3
+    },
+    {
+      "name": "StrategyDrawer",
+      "description": "",
+      "filePath": "apps/boardroom/components/StrategyDrawer.tsx",
+      "propCount": 2
+    },
+    {
+      "name": "PoolTable",
+      "description": "",
+      "filePath": "apps/boardroom/components/PoolTable.tsx",
+      "propCount": 4
+    },
+    {
+      "name": "LoadingState",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/boardroom/components/LoadingState.tsx",
+      "propCount": 3
+    },
+    {
+      "name": "GoldenThumb",
+      "description": "",
+      "filePath": "apps/boardroom/components/GoldenThumb.tsx",
+      "propCount": 4
+    },
+    {
+      "name": "ErrorState",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/boardroom/components/ErrorState.tsx",
+      "propCount": 5
+    },
+    {
+      "name": "EmptyState",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/boardroom/components/EmptyState.tsx",
+      "propCount": 6
+    },
+    {
+      "name": "CodexStencilViewer",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/boardroom/components/CodexStencilViewer.tsx",
+      "propCount": 2
+    },
+    {
+      "name": "BroadcastVersionHistory",
+      "description": "",
+      "filePath": "apps/boardroom/components/BroadcastVersionHistory.tsx",
+      "propCount": 2
+    },
+    {
+      "name": "BroadcastReactions",
+      "description": "",
+      "filePath": "apps/boardroom/components/BroadcastReactions.tsx",
+      "propCount": 2
+    },
+    {
+      "name": "BroadcastHistory",
+      "description": "",
+      "filePath": "apps/boardroom/components/BroadcastHistory.tsx",
+      "propCount": 1
+    },
+    {
+      "name": "BroadcastExport",
+      "description": "",
+      "filePath": "apps/boardroom/components/BroadcastExport.tsx",
+      "propCount": 1
+    },
+    {
+      "name": "BroadcastDrafts",
+      "description": "",
+      "filePath": "apps/boardroom/components/BroadcastDrafts.tsx",
+      "propCount": 1
+    },
+    {
+      "name": "BroadcastComments",
+      "description": "",
+      "filePath": "apps/boardroom/components/BroadcastComments.tsx",
+      "propCount": 2
+    },
+    {
+      "name": "BroadcastBanner",
+      "description": "",
+      "filePath": "apps/boardroom/components/BroadcastBanner.tsx",
+      "propCount": 1
+    },
+    {
+      "name": "BroadcastAnalytics",
+      "description": "",
+      "filePath": "apps/boardroom/components/BroadcastAnalytics.tsx",
+      "propCount": 1
+    },
+    {
+      "name": "Link",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/docs/components/shared/Link.tsx",
+      "propCount": 281
+    },
+    {
+      "name": "Container",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/docs/components/shared/Container.tsx",
+      "propCount": 264
+    },
+    {
+      "name": "Card",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/docs/components/shared/Card.tsx",
+      "propCount": 267
+    },
+    {
+      "name": "Button",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/docs/components/shared/Button.tsx",
+      "propCount": 277
+    },
+    {
+      "name": "Badge",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/docs/components/shared/Badge.tsx",
+      "propCount": 267
+    },
+    {
+      "name": "DocsNavbar",
+      "description": "",
+      "filePath": "apps/docs/components/layout/DocsNavbar.tsx",
+      "propCount": 3
+    },
+    {
+      "name": "DocsLayout",
+      "description": "",
+      "filePath": "apps/docs/components/layout/DocsLayout.tsx",
+      "propCount": 3
+    },
+    {
+      "name": "DocsFooter",
+      "description": "",
+      "filePath": "apps/docs/components/layout/DocsFooter.tsx",
+      "propCount": 1
+    },
+    {
+      "name": "StatusBadge",
+      "description": "",
+      "filePath": "apps/docs/components/governance/StatusBadge.tsx",
+      "propCount": 3
+    },
+    {
+      "name": "SealedDocument",
+      "description": "",
+      "filePath": "apps/docs/components/governance/SealedDocument.tsx",
+      "propCount": 7
+    },
+    {
+      "name": "ReferenceBenchmark",
+      "description": "",
+      "filePath": "apps/docs/components/governance/ReferenceBenchmark.tsx",
+      "propCount": 6
+    },
+    {
+      "name": "LedgerLink",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/docs/components/governance/LedgerLink.tsx",
+      "propCount": 4
+    },
+    {
+      "name": "HashVerification",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/docs/components/governance/HashVerification.tsx",
+      "propCount": 5
+    },
+    {
+      "name": "ConstitutionalCitation",
+      "description": "",
+      "filePath": "apps/docs/components/governance/ConstitutionalCitation.tsx",
+      "propCount": 6
+    },
+    {
+      "name": "AmendmentHistory",
+      "description": "",
+      "filePath": "apps/docs/components/governance/AmendmentHistory.tsx",
+      "propCount": 3
+    },
+    {
+      "name": "TutorialSteps",
+      "description": "",
+      "filePath": "apps/docs/components/diataxis/TutorialSteps.tsx",
+      "propCount": 2
+    },
+    {
+      "name": "ReferenceTable",
+      "description": "",
+      "filePath": "apps/docs/components/diataxis/ReferenceTable.tsx",
+      "propCount": 4
+    },
+    {
+      "name": "HowToGuide",
+      "description": "",
+      "filePath": "apps/docs/components/diataxis/HowToGuide.tsx",
+      "propCount": 4
+    },
+    {
+      "name": "ExplanationBox",
+      "description": "",
+      "filePath": "apps/docs/components/diataxis/ExplanationBox.tsx",
+      "propCount": 3
+    },
+    {
+      "name": "DocumentTypeBanner",
+      "description": "",
+      "filePath": "apps/docs/components/diataxis/DocumentTypeBanner.tsx",
+      "propCount": 4
+    },
+    {
+      "name": "DocumentTypeBadge",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/apps/docs/components/diataxis/DocumentTypeBadge.tsx",
+      "propCount": 3
+    },
+    {
+      "name": "ToastProvider",
+      "description": "",
+      "filePath": "C:/AI-BOS/mythic/packages/design-system/src/components/Toast.tsx",
+      "propCount": 0
+    },
+    {
+      "name": "RiskExample",
+      "description": "Example: Risk-Based Styling",
+      "filePath": "packages/design-system/src/components/IntelligenceExample.tsx",
+      "propCount": 1
+    },
+    {
+      "name": "StatusExample",
+      "description": "Example: Status-Based Styling",
+      "filePath": "packages/design-system/src/components/IntelligenceExample.tsx",
+      "propCount": 1
+    },
+    {
+      "name": "CombinedIntelligenceExample",
+      "description": "Example: Combined Intelligence Styling",
+      "filePath": "packages/design-system/src/components/IntelligenceExample.tsx",
+      "propCount": 4
+    },
+    {
+      "name": "FluentBuilderExample",
+      "description": "Example: Fluent Builder API",
+      "filePath": "packages/design-system/src/components/IntelligenceExample.tsx",
+      "propCount": 0
+    },
+    {
+      "name": "TriVectorExample",
+      "description": "Example: Tri-Vector Display",
+      "filePath": "packages/design-system/src/components/IntelligenceExample.tsx",
+      "propCount": 3
+    },
+    {
+      "name": "Card",
+      "description": "Axis Card Component\n\nCards illuminate knowledge:\n- Dim at rest (obsidian background)\n- Light descends on hover (border warms to gold)\n- 1200ms transition duration",
+      "filePath": "C:/AI-BOS/mythic/packages/design-system/src/components/Card.tsx",
+      "propCount": 265
+    },
+    {
+      "name": "Button",
+      "description": "Axis Button Component\n\nMotion: 1618ms transition for commitment actions\nColors: Material-based (Gold for authority, Ember for consequence)",
+      "filePath": "C:/AI-BOS/mythic/packages/design-system/src/components/Button.tsx",
+      "propCount": 276
+    }
+  ]
+}

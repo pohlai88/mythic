@@ -1,0 +1,38 @@
+{
+  "version": "1.0.0",
+  "description": "ELITE Verbatim Strategy - File Registry",
+  "files": [
+    {
+      "path": ".node-version",
+      "category": "critical",
+      "template": "20.18.0",
+      "validation": "must-match-package-json-engines",
+      "documentation": "docs/architecture/ELITE_VERBATIM_STRATEGY.md#node-version-files",
+      "description": "Node.js version for asdf/nodenv"
+    },
+    {
+      "path": ".nvmrc",
+      "category": "critical",
+      "template": "20.18.0",
+      "validation": "must-match-node-version",
+      "documentation": "docs/architecture/ELITE_VERBATIM_STRATEGY.md#node-version-files",
+      "description": "Node.js version for nvm"
+    },
+    {
+      "path": ".npmrc",
+      "category": "critical",
+      "template": "# Enable pre/post scripts for pnpm\n# pnpm@8 by default doesn't execute pre/post scripts\n# pnpm@9 by default runs pre/post scripts\nenable-pre-post-scripts=true",
+      "validation": "must-enable-pre-post-scripts",
+      "documentation": "docs/architecture/ELITE_VERBATIM_STRATEGY.md#npmrc",
+      "description": "pnpm configuration"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "category": "critical",
+      "template": "packages:\n  - \"apps/*\"\n  - \"packages/*\"\n\n# Monorepo structure:\n# - apps/docs: Nextra documentation site\n# - apps/boardroom: The Apex (Executive Board Decision Engine MVP)\n# - packages/design-system: Axis Visual Canon design system\n# - packages/shared-types: Shared TypeScript types and Zod schemas\n# - packages/shared-utils: Shared utility functions\n# - packages/config: Shared configuration (ESLint, TypeScript, etc.)",
+      "validation": "must-not-have-workspaces-in-package-json",
+      "documentation": "docs/architecture/ROOT_CONFIG_ELITE_MANAGEMENT.md#pnpm-workspace",
+      "description": "Workspace definition (canonical source of truth)"
+    }
+  ]
+}

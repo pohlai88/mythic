@@ -12,7 +12,8 @@
 'use client'
 
 import { Button } from '@mythic/design-system'
-import { getCommitmentTransition, getHoverTransition } from '@mythic/axis-theme/motion'
+import { intelligentInputStyles } from '@mythic/shared-utils'
+import { getCommitmentTransition, getHoverTransition } from '@mythic/design-system/lib/motion'
 import { useState } from 'react'
 import type { Proposal } from '@mythic/shared-types/boardroom'
 
@@ -75,7 +76,7 @@ export function GoldenThumb({
           size="lg"
           onClick={handleApprove}
           disabled={isProcessing}
-          className="min-w-[200px]"
+          className="min-w-48"
         >
           {isProcessing ? 'SIGNING...' : 'APPROVE'}
         </Button>
@@ -85,7 +86,7 @@ export function GoldenThumb({
           size="lg"
           onClick={() => setShowVetoDialog(true)}
           disabled={isProcessing}
-          className="min-w-[200px]"
+          className="min-w-48"
         >
           VETO
         </Button>
@@ -107,7 +108,7 @@ export function GoldenThumb({
             }
           }}
           disabled={isProcessing}
-          className="min-w-[200px]"
+          className="min-w-48"
         >
           CONSULT
         </Button>
@@ -125,7 +126,7 @@ export function GoldenThumb({
               value={vetoReason}
               onChange={(e) => setVetoReason(e.target.value)}
               placeholder="Enter veto reason..."
-              className="w-full bg-void border border-charcoal rounded-xs px-4 py-2 text-parchment placeholder-ash focus:outline-hidden focus:border-gold transition-all duration-1200 min-h-[100px] mb-4"
+              className={intelligentInputStyles('w-full min-h-24 mb-4 resize-y')}
             />
             <div className="flex gap-3 justify-end">
               <Button

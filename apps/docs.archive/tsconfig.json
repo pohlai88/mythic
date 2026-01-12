@@ -1,0 +1,46 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "noEmit": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@/components/*": [
+        "./components/*"
+      ],
+      "@/lib/*": [
+        "./lib/*"
+      ],
+      "@/app/*": [
+        "./app/*"
+      ],
+      "@mythic/shared-utils": [
+        "../../packages/shared-utils/src"
+      ],
+      "@mythic/shared-utils/*": [
+        "../../packages/shared-utils/src/*"
+      ],
+      "@mythic/design-system": [
+        "../../packages/design-system/src"
+      ],
+      "@mythic/design-system/*": [
+        "../../packages/design-system/src/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "../../packages/shared-utils/src/**/*",
+    "../../packages/design-system/src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

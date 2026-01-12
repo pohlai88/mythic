@@ -1,0 +1,700 @@
+---
+description: "Design System Constitution - Single Source of Truth for UI/UX Design System (Tailwind Best Practices ONLY)"
+globs: "*.tsx,*.ts,*.jsx,*.js,*.css,*.mdx,*.md"
+alwaysApply: false
+priority: 33
+---
+
+# Design System Constitution (RFC-2119 MANDATORY)
+
+**Purpose**: Single source of truth for UI/UX design system following Tailwind CSS v4 best practices as the ONLY rule.
+**Authority**: Overrides all other design/styling rules
+**Status**: MANDATORY - Final and authoritative
+**Version**: 1.0.0
+**Date**: 2026-01-11
+
+---
+
+## 1. Design System Authority
+
+### Single Source of Truth
+
+**The design system package is the ONLY source for UI/UX styling:**
+
+```
+@mythic/design-system
+├── src/tokens/theme.css      ← Design tokens (SOURCE OF TRUTH - Direct Import)
+├── src/components/            ← UI Components (SEALED)
+└── docs/guides/              ← Best practices documentation
+```
+
+**Battle-Proven Architecture:**
+- Each app processes Tailwind independently
+- Apps import `theme.css` directly (no compilation needed)
+- Single source of truth for tokens
+- No intermediate files or build dependencies
+
+**MANDATORY Rules:**
+1. ✅ **ALL styling MUST use design system tokens**
+2. ✅ **NO custom CSS** (except app-specific `@theme` overrides)
+3. ✅ **NO hardcoded colors/values** (use tokens)
+4. ✅ **NO direct component modifications** (use wrapper components)
+5. ✅ **Tailwind CSS v4 best practices ONLY**
+
+---
+
+## 2. Process Flow Sequence
+
+### Phase 1: Design Token Definition (Figma → Code)
+
+**Step 1.1: Design in Figma**
+```
+Figma Design File
+  → Define variables (colors, typography, spacing)
+  → Use semantic naming (primary, secondary, success, error)
+  → Organize in design system structure
+```
+
+**Step 1.2: Sync from Figma (Handoff)**
+```bash
+# Sync design tokens from Figma
+pnpm tokens:sync
+
+# This updates:
+# - packages/design-system/src/tokens/handoff-colors.ts
+# - packages/design-system/src/tokens/theme.css (via script)
+```
+
+**Step 1.3: Validate Tokens**
+```bash
+# Validate token integrity
+pnpm tokens:validate
+
+# Check for:
+# - HSL format compliance
+# - Semantic naming
+# - Token references
+```
+
+**Note**: No build step needed! Apps import `theme.css` directly.
+
+---
+
+### Phase 2: App Integration
+
+**Step 2.1: Create App globals.css**
+```css
+/* apps/[app-name]/app/globals.css */
+
+/* Step 1: Import Tailwind CSS (processes first) */
+@import "tailwindcss";
+
+/* Step 2: Import shared design tokens */
+@import "@mythic/design-system/tokens/theme.css";
+
+/* Step 3: Scan shared packages for utilities */
+@source "../../packages/design-system";
+
+/* Step 4: App-specific theme overrides (if needed) */
+@theme {
+  /* Domain-specific tokens ONLY */
+  --color-domain-specific: 200 50% 50%;
+  --font-domain-custom: 'Custom Font', sans-serif;
+}
+
+/* Step 5: App-specific base styles (if needed) */
+@layer base {
+  body {
+    @apply bg-void text-parchment;
+  }
+}
+```
+
+**Step 2.2: Import in Layout**
+```tsx
+// apps/[app-name]/app/layout.tsx
+import './globals.css'
+```
+
+**Step 2.3: Use Design System Components**
+```tsx
+// Import from design system
+import { Button, Card, Input } from '@mythic/design-system'
+
+// Use with variants
+<Button variant="primary" size="lg">Submit</Button>
+<Card className="card-interactive">Content</Card>
+```
+
+---
+
+### Phase 3: Component Development
+
+**Step 3.1: Use Design Tokens**
+```tsx
+// ✅ CORRECT: Use design tokens
+<div className="bg-gold text-void p-4 rounded-md shadow-md">
+
+// ❌ WRONG: Hardcoded values
+<div className="bg-[#c9a961] text-[#0a0a0a] p-[16px]">
+```
+
+**Step 3.2: Use @apply Patterns (for reusable patterns)**
+```tsx
+// ✅ CORRECT: Use @apply patterns from design system
+<div className="card-base">Static Card</div>
+<div className="card-interactive">Interactive Card</div>
+<div className="stack-md">Vertical Stack</div>
+<div className="grid-responsive">Responsive Grid</div>
+
+// ❌ WRONG: Custom CSS classes
+<div className="custom-card">Card</div>
+```
+
+**Step 3.3: Use Utility Classes (for dynamic styles)**
+```tsx
+// ✅ CORRECT: Utility classes for dynamic styles
+<div className={cn(
+  "rounded-lg p-4",
+  variant === "primary" && "bg-gold text-void",
+  variant === "secondary" && "bg-ash text-void"
+)}>
+
+// ❌ WRONG: @apply for dynamic styles
+```
+
+**Step 3.4: Responsive Design (Mobile-First)**
+```tsx
+// ✅ CORRECT: Mobile-first responsive
+<div className="
+  text-sm          /* Mobile: 14px */
+  sm:text-base     /* Small: 16px */
+  lg:text-lg       /* Large: 18px */
+  xl:text-xl       /* XL: 20px */
+">
+
+// ❌ WRONG: Desktop-first
+<div className="text-xl lg:text-sm">
+```
+
+---
+
+### Phase 4: Validation & Testing
+
+**Step 4.1: Build Validation**
+```bash
+# Type check
+pnpm type-check
+
+# Lint
+pnpm lint
+
+# Build
+pnpm build
+```
+
+**Step 4.2: Visual Validation**
+- ✅ Check design tokens match Figma
+- ✅ Verify responsive breakpoints
+- ✅ Test dark mode
+- ✅ Validate accessibility
+
+**Step 4.3: Token Validation**
+```bash
+# Validate token integrity
+pnpm tokens:validate
+
+# Check for:
+# - Missing tokens
+# - Broken references
+# - Format compliance
+```
+
+---
+
+## 3. Tailwind CSS v4 Best Practices (ONLY RULE)
+
+### 3.1 CSS-First Configuration
+
+**MANDATORY: Use `@theme` directive**
+
+```css
+/* ✅ CORRECT: CSS-first configuration */
+@theme {
+  --color-primary: 40 45% 55%;  /* HSL format */
+  --spacing-4: 1rem;
+  --font-size-base: 1rem;
+}
+
+/* ❌ FORBIDDEN: JavaScript config */
+module.exports = {
+  theme: { colors: { primary: '#...' } }
+}
+```
+
+### 3.2 Color Format: HSL
+
+**MANDATORY: Use HSL format for all colors**
+
+```css
+/* ✅ CORRECT: HSL without hsl() wrapper */
+@theme {
+  --color-gold: 40 45% 55%;
+}
+
+/* ❌ FORBIDDEN: Hex, RGB, or other formats */
+--color-gold: #c9a961;
+--color-gold: rgb(201, 169, 97);
+```
+
+### 3.3 Source Scanning
+
+**MANDATORY: Use `@source` directives**
+
+```css
+/* ✅ CORRECT: Explicit source scanning */
+@source "../../apps/docs";
+@source "../../apps/boardroom";
+@source "../../packages/design-system";
+
+/* ❌ FORBIDDEN: content array in config */
+content: ['./src/**/*.{js,ts,jsx,tsx}']
+```
+
+### 3.4 Layer Organization
+
+**MANDATORY: Use `@layer` for organization**
+
+```css
+/* ✅ CORRECT: Layer-based architecture */
+@theme {
+  --color-primary: 40 45% 55%;
+}
+
+@layer theme {
+  .dark {
+    --color-primary: 40 45% 65%;
+  }
+}
+
+@layer components {
+  .card-base {
+    @apply rounded-lg p-4;
+  }
+}
+```
+
+### 3.5 @apply Usage
+
+**MANDATORY: Use @apply for reusable patterns only**
+
+```css
+/* ✅ CORRECT: Reusable component patterns */
+@layer components {
+  .card-base {
+    @apply rounded-lg border border-charcoal bg-surface p-6 shadow-base;
+  }
+}
+
+/* ❌ FORBIDDEN: @apply for one-off styles */
+/* ❌ FORBIDDEN: Chaining @apply classes */
+```
+
+### 3.6 Utility Classes
+
+**MANDATORY: Prefer utility classes for dynamic styles**
+
+```tsx
+// ✅ CORRECT: Utility classes for dynamic styles
+<div className={cn(
+  "base-classes",
+  condition && "conditional-class"
+)}>
+
+// ❌ FORBIDDEN: @apply for dynamic styles
+```
+
+### 3.7 Responsive Design
+
+**MANDATORY: Mobile-first approach**
+
+```tsx
+// ✅ CORRECT: Mobile-first
+<div className="text-sm sm:text-base lg:text-lg">
+
+// ❌ FORBIDDEN: Desktop-first
+<div className="text-lg lg:text-sm">
+```
+
+---
+
+## 4. Design System Package Structure
+
+### 4.1 Sealed Package
+
+**The design system package is SEALED:**
+
+```
+packages/design-system/
+├── src/tokens/
+│   ├── theme.css          ❌ BLOCKED (except Handoff sync)
+│   └── handoff-colors.ts  ❌ BLOCKED (except Handoff sync)
+├── src/components/         ❌ BLOCKED (all components)
+└── package.json            ❌ BLOCKED
+```
+
+**Exceptions:**
+- ✅ Handoff sync operations (`pnpm tokens:sync`)
+- ✅ Read operations (for reference)
+
+### 4.2 App-Specific Extensions
+
+**Apps CAN extend via `@theme` overrides:**
+
+```css
+/* ✅ ALLOWED: App-specific theme extensions */
+@import "tailwindcss";
+@import "@mythic/design-system/tokens/theme.css";
+@source "../../packages/design-system";
+
+@theme {
+  /* Domain-specific tokens */
+  --color-domain-specific: 200 50% 50%;
+}
+```
+
+---
+
+## 5. Component Usage Patterns
+
+### 5.1 Design System Components
+
+**MANDATORY: Use design system components**
+
+```tsx
+// ✅ CORRECT: Import from design system
+import { Button, Card, Input } from '@mythic/design-system'
+
+<Button variant="primary">Submit</Button>
+<Card>Content</Card>
+<Input label="Email" />
+```
+
+### 5.2 Wrapper Components
+
+**MANDATORY: Create wrappers for app-specific needs**
+
+```tsx
+// ✅ CORRECT: Wrapper component in app
+// apps/[app]/components/AppButton.tsx
+import { Button, type ButtonProps } from '@mythic/design-system'
+
+export function AppButton(props: ButtonProps) {
+  return <Button {...props} className="app-specific-class" />
+}
+
+// ❌ FORBIDDEN: Modify design system component directly
+```
+
+### 5.3 Custom Components
+
+**MANDATORY: Use design tokens in custom components**
+
+```tsx
+// ✅ CORRECT: Use design tokens
+export function CustomCard() {
+  return (
+    <div className="card-base bg-surface text-text p-6 rounded-lg">
+      Content
+    </div>
+  )
+}
+
+// ❌ FORBIDDEN: Hardcoded styles
+<div style={{ backgroundColor: '#0a0a0a', padding: '24px' }}>
+```
+
+---
+
+## 6. Token Usage Rules
+
+### 6.1 Color Tokens
+
+**MANDATORY: Use semantic color tokens**
+
+```tsx
+// ✅ CORRECT: Semantic colors
+<div className="bg-success-500 text-white">Success</div>
+<div className="bg-error-500 text-white">Error</div>
+<div className="bg-gold text-void">Primary</div>
+
+// ❌ FORBIDDEN: Hardcoded colors
+<div className="bg-[#10b981] text-white">Success</div>
+```
+
+### 6.2 Spacing Tokens
+
+**MANDATORY: Use spacing scale**
+
+```tsx
+// ✅ CORRECT: Spacing scale
+<div className="p-4 m-6 space-y-4">
+
+// ❌ FORBIDDEN: Arbitrary spacing
+<div className="p-[17px] m-[23px]">
+```
+
+### 6.3 Typography Tokens
+
+**MANDATORY: Use typography tokens**
+
+```tsx
+// ✅ CORRECT: Typography tokens
+<h1 className="text-2xl font-bold leading-tight">Heading</h1>
+<p className="text-base font-normal leading-normal">Body</p>
+
+// ❌ FORBIDDEN: Custom typography
+<h1 style={{ fontSize: '24px', fontWeight: 700 }}>
+```
+
+---
+
+## 7. Process Flow Diagram
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    DESIGN SYSTEM WORKFLOW                    │
+└─────────────────────────────────────────────────────────────┘
+
+PHASE 1: DESIGN TOKEN DEFINITION
+┌──────────────┐
+│   Figma      │  Design variables (colors, typography, spacing)
+└──────┬───────┘
+       │
+       │ pnpm tokens:sync
+       ▼
+┌──────────────┐
+│  Handoff     │  Sync tokens from Figma
+│  Sync        │  → handoff-colors.ts
+└──────┬───────┘
+       │
+       │ pnpm tokens:update-css
+       ▼
+┌──────────────┐
+│  theme.css   │  @theme directive (HSL format) - Direct Import
+└──────┬───────┘
+
+PHASE 2: APP INTEGRATION (Each App Processes Independently)
+       │
+       │ @import "tailwindcss"
+       │ @import "@mythic/design-system/tokens/theme.css"
+       │ @source "../../packages/design-system"
+       ▼
+┌──────────────┐
+│  globals.css  │  App-specific CSS (editable)
+└──────┬───────┘
+       │
+       │ import './globals.css'
+       ▼
+┌──────────────┐
+│  App Layout  │  Import app CSS
+└──────┬───────┘
+
+PHASE 3: COMPONENT DEVELOPMENT
+       │
+       │ import { Button, Card } from '@mythic/design-system'
+       ▼
+┌──────────────┐
+│ Components   │  Use design system components
+└──────┬───────┘
+       │
+       │ className="bg-gold text-void p-4"
+       ▼
+┌──────────────┐
+│  UI/UX       │  Styled with design tokens
+└──────────────┘
+
+PHASE 4: VALIDATION
+┌──────────────┐
+│  Build       │  pnpm build (each app independently)
+└──────┬───────┘
+       │
+       │ pnpm tokens:validate
+       ▼
+┌──────────────┐
+│  Validation  │  Token integrity check
+└──────────────┘
+```
+
+---
+
+## 8. Enforcement Rules
+
+### 8.1 MANDATORY Requirements
+
+**ALL code MUST:**
+1. ✅ Use design system tokens (no hardcoded values)
+2. ✅ Follow Tailwind CSS v4 best practices
+3. ✅ Use HSL color format
+4. ✅ Use mobile-first responsive design
+5. ✅ Use `@source` directives (not config files)
+6. ✅ Use semantic color tokens
+7. ✅ Use spacing scale (not arbitrary values)
+
+### 8.2 FORBIDDEN Practices
+
+**NEVER:**
+1. ❌ Hardcode colors/values
+2. ❌ Create custom CSS (except app `@theme` overrides)
+3. ❌ Modify design system package directly
+4. ❌ Use JavaScript config for theme
+5. ❌ Use desktop-first responsive design
+6. ❌ Skip source scanning
+7. ❌ Use @apply for one-off styles
+
+### 8.3 Validation
+
+**Pre-commit checks:**
+```bash
+# Validate token usage
+pnpm tokens:validate
+
+# Check for hardcoded values
+# Check for design system violations
+# Check for Tailwind best practices compliance
+```
+
+---
+
+## 9. Quick Reference
+
+### Design Tokens
+```tsx
+// Colors
+bg-gold, text-void, border-charcoal
+bg-success-500, bg-error-500, bg-warning-500
+
+// Spacing
+p-4, m-6, space-y-4, gap-4
+
+// Typography
+text-sm, text-base, text-lg
+font-sans, font-serif, font-mono
+font-bold, font-medium
+
+// Shadows
+shadow-sm, shadow-md, shadow-lg
+
+// Border Radius
+rounded-md, rounded-lg, rounded-full
+```
+
+### Component Patterns
+```tsx
+// Card patterns
+<div className="card-base">Static</div>
+<div className="card-interactive">Interactive</div>
+
+// Layout patterns
+<div className="stack-md">Vertical</div>
+<div className="grid-responsive">Grid</div>
+<div className="container-responsive">Container</div>
+```
+
+### Responsive Patterns
+```tsx
+// Mobile-first
+<div className="text-sm sm:text-base lg:text-lg xl:text-xl">
+
+// Grid
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+```
+
+---
+
+## 10. Documentation References
+
+### Required Reading
+- **Design System**: `packages/design-system/README.md`
+- **Tailwind Best Practices**: `packages/design-system/docs/guides/tailwind-best-practices.md`
+- **Framework Setup**: `packages/design-system/docs/guides/tailwind-framework-setup.md`
+- **Design Tokens**: `packages/design-system/docs/tokens/README.md`
+- **Components**: `packages/design-system/docs/components/README.md`
+
+### Official Documentation
+- [Tailwind CSS v4 Docs](https://tailwindcss.com/docs)
+- [Installation Guide](https://tailwindcss.com/docs/installation/framework-guides)
+- [Core Concepts](https://tailwindcss.com/docs/core-concepts)
+
+---
+
+## 11. Summary
+
+### Design System Constitution
+
+| Aspect               | Rule                                      |
+| -------------------- | ----------------------------------------- |
+| **Source of Truth**  | `@mythic/design-system/tokens/theme.css`  |
+| **Styling Method**   | Tailwind CSS v4 best practices ONLY       |
+| **Token Format**     | HSL in `@theme` directive                 |
+| **Component Source** | Design system components                  |
+| **Custom Styles**    | App-specific `@theme` overrides only      |
+| **Responsive**       | Mobile-first approach                     |
+| **Architecture**     | Each app processes Tailwind independently |
+| **Validation**       | Pre-commit token validation               |
+
+### Process Flow
+
+1. **Design** → Figma variables
+2. **Sync** → Handoff sync (`pnpm tokens:sync`)
+3. **Import** → Apps import `theme.css` directly (no build step)
+4. **Process** → Each app processes Tailwind independently
+5. **Use** → Components and tokens
+6. **Validate** → Token integrity checks
+
+---
+
+**Status**: MANDATORY - Single source of truth for UI/UX design system
+**Authority**: Overrides all other design/styling rules
+**Version**: 1.0.0
+**Created**: 2026-01-11
+
+---
+
+**CRITICAL**: This is the ONLY rule for UI/UX design system. All styling MUST follow Tailwind CSS v4 best practices and use the design system package as the single source of truth.
+
+---
+
+## 12. Battle-Proofing Status
+
+### ✅ Rules Consolidated
+
+**Status**: ✅ **COMPLETE**
+
+**Active Rule**:
+- ✅ `033_design-system-constitution.mdc` - **ONLY RULE** for design system
+
+**Deprecated/Updated Rules**:
+- ⚠️ `032_design-system-sealed.mdc` - Deprecated (points to constitution)
+- ⚠️ `018_web-development.mdc` - Styling section deprecated (references constitution)
+- ⚠️ `015_root-config-governance.mdc` - Styling section deprecated (references constitution)
+
+**Result**: Single source of truth established ✅
+
+### ✅ Application Consistency
+
+**Audit Status**: See `DESIGN_SYSTEM_CONSISTENCY_AUDIT.md`
+
+**Compliance**: 88% (minor violations: arbitrary values)
+
+**Action Required**: Replace arbitrary values with design system tokens
+
+### ✅ Enforcement
+
+**Pre-commit Validation**: Recommended
+**CI/CD Integration**: Recommended
+**Audit Script**: `pnpm audit:consistency`
+
+---
+
+**BATTLE-PROOFED**: This rule is the ONLY source of truth. All other design/styling rules are deprecated or reference this constitution.

@@ -1,3 +1,11 @@
 packages:
   - "apps/*"
   - "packages/*"
+
+# Monorepo structure:
+# - apps/docs: Nextra documentation site
+# - apps/boardroom: The Apex (Executive Board Decision Engine MVP)
+# - packages/design-system: Axis Visual Canon design system
+# - packages/shared-types: Shared TypeScript types and Zod schemas
+# - packages/shared-utils: Shared utility functions
+# - packages/config: Shared configuration (TypeScript, Tailwind, etc.)

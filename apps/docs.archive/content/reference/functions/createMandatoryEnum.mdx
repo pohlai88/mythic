@@ -1,0 +1,52 @@
+---
+title: createMandatoryEnum
+description: MANDATORY: Create enum schema with required patterns
+
+Zod v4 uses readonly tuple for enum values
+category: reference
+tags: [functions, api]
+---
+
+# createMandatoryEnum
+
+MANDATORY: Create enum schema with required patterns
+
+Zod v4 uses readonly tuple for enum values
+
+## Parameters
+
+### values
+
+**Type**: `T`
+
+**Required**
+
+No description available
+
+
+### description
+
+**Type**: `string`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/schemas").ZodEnum<{ [k in keyof { [k in T[number]]: k; }]: { [k in T[number]]: k; }[k]; }>`
+
+
+
+## Examples
+
+```typescript
+const orderSchema = createMandatoryEnum(
+  ['asc', 'desc'] as const,
+  'Sort order'
+)
+```
+
+

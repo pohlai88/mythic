@@ -1,0 +1,34 @@
+---
+title: getBroadcastAnalytics
+description: Get broadcast analytics
+
+Returns statistics about broadcasts (read rates, engagement, etc.)
+category: reference
+tags: [functions, api]
+---
+
+# getBroadcastAnalytics
+
+Get broadcast analytics
+
+Returns statistics about broadcasts (read rates, engagement, etc.)
+
+## Parameters
+
+### broadcastId
+
+**Type**: `string | undefined`
+
+**Optional**
+
+No description available
+
+
+
+## Returns
+
+`Promise<{ totalBroadcasts: number; totalReads: number; averageReadRate: number; byType: Record<string, { count: number; reads: number; }>; recentActivity: { date: string; count: number; }[]; }>`
+
+
+
+

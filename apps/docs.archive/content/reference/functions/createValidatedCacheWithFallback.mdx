@@ -1,0 +1,63 @@
+---
+title: createValidatedCacheWithFallback
+description: Create a validated cache with error recovery
+
+Similar to createValidatedCache but uses .catch() to provide
+a fallback value if validation fails.
+category: reference
+tags: [functions, api]
+---
+
+# createValidatedCacheWithFallback
+
+Create a validated cache with error recovery
+
+Similar to createValidatedCache but uses .catch() to provide
+a fallback value if validation fails.
+
+## Parameters
+
+### schema
+
+**Type**: `TSchema`
+
+**Required**
+
+No description available
+
+
+### fn
+
+**Type**: `(...args: TArgs) => Promise<import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/core").output<TSchema>>`
+
+**Required**
+
+No description available
+
+
+### fallback
+
+**Type**: `import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/core").output<TSchema>`
+
+**Required**
+
+No description available
+
+
+### options
+
+**Type**: `{ revalidate?: number | false | undefined; tags?: string[] | undefined; } | undefined`
+
+**Optional**
+
+No description available
+
+
+
+## Returns
+
+`Callback`
+
+
+
+

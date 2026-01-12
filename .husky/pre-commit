@@ -16,6 +16,21 @@ fi
 echo "✅ Rule validation passed"
 echo ""
 
+# Validate verbatim config files
+echo "🔍 Validating verbatim config files..."
+pnpm validate:verbatim
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Verbatim validation failed!"
+  echo "Fix config files to match documented templates in docs/architecture/ELITE_VERBATIM_STRATEGY.md"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Verbatim validation passed"
+echo ""
+
 # Auto-fix documentation naming before validation
 echo "🔧 Auto-fixing documentation naming..."
 pnpm fix:docs:naming || true
@@ -35,8 +50,100 @@ fi
 echo "✅ Documentation naming validation passed"
 echo ""
 
+# Validate tech debt patterns
+echo "🔍 Validating tech debt patterns..."
+pnpm validate:tech-debt
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Tech debt validation failed!"
+  echo "Fix issues before committing"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Tech debt validation passed"
+echo ""
+
+# Validate imports (path aliases)
+echo "🔍 Validating imports..."
+pnpm validate:imports
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Import validation failed!"
+  echo "Fix relative imports before committing"
+  echo "Run: pnpm validate:imports to see violations"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Import validation passed"
+echo ""
+
+# Validate design system sealing
+echo "🔒 Validating design system sealing..."
+pnpm validate:design-system-sealed
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Design system sealing validation failed!"
+  echo "The design-system package is SEALED and cannot be modified."
+  echo "See: packages/design-system/VALIDATION_REPORT.md"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Design system sealing validation passed"
+echo ""
+
+# Validate CSS file locking
+echo "🔒 Validating CSS file locking..."
+pnpm validate:css-files
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ CSS file locking validation failed!"
+  echo "System-generated CSS files must be built via build:css and tokens:propagate-version"
+  echo ""
+  exit 1
+fi
+
+echo "✅ CSS file locking validation passed"
+echo ""
+
 # Run lint-staged for staged files
 npx lint-staged
+
+# Validate README files (README-only policy)
+echo "📋 Validating README files..."
+cd apps/docs && pnpm readme:validate-all
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ README validation failed!"
+  echo "Fix README files to match standard template"
+  echo ""
+  exit 1
+fi
+
+echo "✅ README validation passed"
+echo ""
+
+# Check README-only policy
+cd apps/docs && pnpm readme:check-only
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ README-only policy violation!"
+  echo "Only README.md files are allowed in apps/ and packages/"
+  echo "Move content to README.md, then delete non-README .md files"
+  echo ""
+  exit 1
+fi
+
+echo "✅ README-only policy: Compliant"
+echo ""
 
 # Check for markdown files in root (except allowed ones)
 ROOT_MD_FILES=$(git diff --cached --name-only --diff-filter=A | grep -E '^[^/]+\.md$' | grep -vE '^(README|QUICK_START|QUICK_REFERENCE)\.md$' || true)

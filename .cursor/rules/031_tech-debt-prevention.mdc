@@ -1,0 +1,432 @@
+---
+description: "Tech Debt Prevention - Prohibits TODOs, placeholders, stubs, incomplete implementations, and placeholder static assets"
+globs: "*.ts,*.tsx,*.js,*.jsx,*.png,*.svg,*.ico,*.jpg,*.jpeg,*.gif,*.webp,*.txt,*.md"
+alwaysApply: false
+priority: 31
+---
+
+# Tech Debt Prevention (RFC-2119 MANDATORY)
+
+**Purpose**: Prevent accumulation of technical debt by prohibiting incomplete code patterns
+**Authority**: Blocks commits with TODOs, placeholders, stubs, and incomplete implementations
+**Status**: MANDATORY - Enforced via pre-commit hooks and Biome linting
+
+---
+
+## 1. Prohibited Patterns (STRICT)
+
+### ❌ FORBIDDEN: TODO Comments
+
+**Patterns to Reject:**
+```typescript
+// TODO: Implement feature
+// TODO: Fix this later
+// TODO: Add error handling
+// FIXME: This needs work
+// XXX: Temporary hack
+// HACK: Workaround
+```
+
+**Allowed Exception:**
+```typescript
+// TODO(issue-123): Implement feature - See https://github.com/org/repo/issues/123
+// TODO(2026-02-01): Temporary until API v2 is released
+```
+
+**Enforcement:**
+- Biome lint rule: `noCommentTodo` (error level)
+- Pre-commit hook: Rejects commits with TODO comments (unless linked to issue)
+- Cursor AI: Warns when generating code with TODO comments
+
+---
+
+### ❌ FORBIDDEN: Placeholder Values
+
+**Patterns to Reject:**
+```typescript
+const userId = 'current-user-id' // Placeholder
+const data = 'placeholder'
+const value = 'TODO'
+const result = null // Placeholder
+```
+
+**Allowed Exception:**
+```typescript
+// Only in test files
+const mockUserId = 'test-user-id' // Test fixture
+```
+
+**Enforcement:**
+- Biome lint rule: Custom regex pattern
+- Pre-commit hook: Rejects commits with placeholder strings
+- Cursor AI: Suggests proper implementation instead
+
+---
+
+### ❌ FORBIDDEN: Stub Functions
+
+**Patterns to Reject:**
+```typescript
+function processData() {
+  // Stub
+  return null
+}
+
+async function fetchData() {
+  throw new Error('Not implemented')
+}
+
+function calculate() {
+  return 0 // Stub
+}
+```
+
+**Allowed Exception:**
+```typescript
+// Only in test files
+function mockFunction() {
+  return null // Test stub
+}
+```
+
+**Enforcement:**
+- Biome lint rule: Detects functions that only throw/return null/return 0
+- Pre-commit hook: Rejects commits with stub functions
+- Cursor AI: Requires implementation or proper error handling
+
+---
+
+### ❌ FORBIDDEN: Empty State Placeholders
+
+**Patterns to Reject:**
+```typescript
+if (!data) {
+  return <div>Loading...</div> // Placeholder
+}
+
+if (items.length === 0) {
+  return null // Missing empty state
+}
+```
+
+**Required Pattern:**
+```typescript
+if (!data) {
+  return <LoadingState message="Loading proposals..." />
+}
+
+if (items.length === 0) {
+  return <EmptyState
+    title="No proposals found"
+    description="Create your first proposal to get started"
+    action={<Button onClick={handleCreate}>Create Proposal</Button>}
+  />
+}
+```
+
+**Enforcement:**
+- Biome lint rule: Detects missing empty state components
+- Pre-commit hook: Rejects commits with placeholder empty states
+- Cursor AI: Requires proper EmptyState component usage
+
+---
+
+### ❌ FORBIDDEN: Console.log in Production Code
+
+**Patterns to Reject:**
+```typescript
+console.log('Debug:', data)
+console.info('Info:', message)
+console.debug('Debug:', value)
+```
+
+**Allowed:**
+```typescript
+console.error('Error:', error) // Error logging
+console.warn('Warning:', warning) // Warning logging
+```
+
+**Enforcement:**
+- Biome lint rule: `noConsole` (error level, allow: ['error', 'warn'])
+- Pre-commit hook: Rejects commits with console.log/info/debug
+- Cursor AI: Suggests proper logging service
+
+---
+
+### ❌ FORBIDDEN: Incomplete Error Handling
+
+**Patterns to Reject:**
+```typescript
+try {
+  await operation()
+} catch (error) {
+  // TODO: Handle error
+}
+
+try {
+  await operation()
+} catch (error) {
+  console.log(error) // Incomplete
+}
+```
+
+**Required Pattern:**
+```typescript
+try {
+  await operation()
+} catch (error) {
+  logger.error('Operation failed', { error, context })
+  return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+}
+```
+
+**Enforcement:**
+- Biome lint rule: Detects empty catch blocks
+- Pre-commit hook: Rejects commits with incomplete error handling
+- Cursor AI: Requires proper error handling
+
+---
+
+### ❌ FORBIDDEN: Placeholder Static Assets
+
+**Patterns to Reject:**
+```typescript
+// Placeholder files in public directories
+apps/docs/public/apple-touch-icon.png // Contains "Placeholder" text
+apps/boardroom/public/og-image.png // Contains "TODO" text
+public/favicon.ico // Contains placeholder metadata
+```
+
+**Static Asset Validation:**
+- Text files (`.txt`, `.md`, `.svg`, `.xml`, `.html`, `.css`, `.json`) checked for placeholder text
+- Binary files (`.png`, `.jpg`, `.jpeg`, `.ico`, `.gif`, `.webp`) checked for placeholder text in metadata
+- All files in `public/` directories scanned for placeholder patterns
+
+**Required Pattern:**
+```typescript
+// Use Next.js metadata API with fallbacks instead
+export const metadata = {
+  icons: {
+    icon: '/favicon.ico', // Actual file, not placeholder
+    apple: '/apple-touch-icon.png', // Actual file, not placeholder
+  },
+  openGraph: {
+    images: ['/og-image.png'], // Actual file, not placeholder
+  },
+}
+
+// Or document missing assets in README, not as placeholders
+// Missing: favicon.ico - Will be added in next design iteration
+```
+
+**Enforcement:**
+- Pre-commit hook: Rejects commits with placeholder static assets
+- Validation script: Scans all public directories for placeholder content
+- Cursor AI: Prevents creation of placeholder files
+
+---
+
+### ❌ FORBIDDEN: Scripts That Create Placeholder Files
+
+**Patterns to Reject:**
+```typescript
+// Scripts that write placeholder files
+writeFileSync('public/favicon.ico', 'Placeholder')
+fs.writeFile('public/og-image.png', 'TODO: Replace with actual image')
+createWriteStream('public/apple-touch-icon.png').write('Placeholder')
+```
+
+**Required Pattern:**
+```typescript
+// Scripts should NOT create placeholder files
+// Instead, either:
+// 1. Generate actual assets
+import { generateFavicon } from './generate-favicon'
+await generateFavicon(outputPath)
+
+// 2. Skip creation if asset doesn't exist
+if (!existsSync(assetPath)) {
+  console.warn(`Asset ${assetPath} not found - using Next.js metadata fallback`)
+  return
+}
+
+// 3. Document missing assets, don't create placeholders
+// Missing assets documented in README.md
+```
+
+**Enforcement:**
+- Validation script: Detects `writeFileSync`/`writeFile` calls with placeholder strings
+- Pre-commit hook: Rejects commits with scripts that create placeholders
+- Cursor AI: Prevents generating code that creates placeholder files
+
+---
+
+## 2. Empty State Requirements (MANDATORY)
+
+### Empty State Component Pattern
+
+**Location:** `apps/boardroom/components/EmptyState.tsx` (must exist)
+
+**Required Props:**
+```typescript
+interface EmptyStateProps {
+  title: string
+  description?: string
+  icon?: React.ReactNode
+  action?: React.ReactNode
+  variant?: 'default' | 'error' | 'warning' | 'info'
+}
+```
+
+**Usage:**
+```typescript
+if (proposals.length === 0) {
+  return (
+    <EmptyState
+      title="No proposals found"
+      description="Create your first proposal to get started"
+      action={<Button onClick={handleCreate}>Create Proposal</Button>}
+    />
+  )
+}
+```
+
+**Enforcement:**
+- All list components MUST handle empty states
+- All data-fetching components MUST handle loading/error/empty states
+- Pre-commit hook: Validates empty state usage
+
+---
+
+## 3. Biome Configuration (ENHANCED)
+
+### Custom Rules Added
+
+```json
+{
+  "linter": {
+    "rules": {
+      "suspicious": {
+        "noCommentTodo": {
+          "level": "error",
+          "options": {
+            "terms": ["TODO", "FIXME", "XXX", "HACK", "STUB", "PLACEHOLDER"]
+          }
+        },
+        "noConsole": {
+          "level": "error",
+          "options": {
+            "allow": ["error", "warn"]
+          }
+        }
+      },
+      "correctness": {
+        "noEmptyBlockStatements": "error",
+        "noUnusedVariables": "error"
+      }
+    }
+  }
+}
+```
+
+---
+
+## 4. Pre-commit Hook Integration
+
+### Hook Behavior
+
+```bash
+# .husky/pre-commit (partial)
+
+echo "Checking for tech debt patterns..."
+pnpm biome check --write
+
+# Run comprehensive tech debt validation
+pnpm validate:tech-debt
+
+if [ $? -ne 0 ]; then
+  echo "❌ Tech debt validation failed!"
+  echo "Fix issues before committing"
+  exit 1
+fi
+
+echo "✅ Tech debt check passed"
+```
+
+### Validation Script Coverage
+
+The `validate-tech-debt.ts` script checks:
+- ✅ Code files (`.ts`, `.tsx`, `.js`, `.jsx`) for TODOs, placeholders, stubs
+- ✅ Static assets (`.png`, `.svg`, `.ico`, etc.) for placeholder content
+- ✅ Scripts that create placeholder files (`writeFileSync` with placeholder strings)
+- ✅ Console.log usage (except error/warn)
+- ✅ Empty states and loading states
+- ✅ Incomplete error handling
+
+**Location**: `scripts/validate-tech-debt.ts`
+
+---
+
+## 5. Cursor AI Behavior
+
+### When Generating Code
+
+**MUST:**
+- ✅ Implement complete functionality
+- ✅ Handle all error cases
+- ✅ Include proper empty states
+- ✅ Use proper logging (not console.log)
+- ✅ Handle loading states
+
+**MUST NOT:**
+- ❌ Leave TODO comments
+- ❌ Use placeholder values
+- ❌ Create stub functions
+- ❌ Skip error handling
+- ❌ Use console.log for debugging
+
+---
+
+## 6. Migration Strategy
+
+### Phase 1: Create EmptyState Component
+- Create `apps/boardroom/components/EmptyState.tsx`
+- Create `apps/boardroom/components/LoadingState.tsx`
+- Create `apps/boardroom/components/ErrorState.tsx`
+
+### Phase 2: Fix Existing TODOs
+- Link TODOs to GitHub issues
+- Implement missing functionality
+- Remove placeholder values
+
+### Phase 3: Enable Strict Enforcement
+- Enable Biome rules
+- Enable pre-commit hooks
+- Update Cursor rules
+
+---
+
+## 7. Success Criteria
+
+**Before Commit:**
+- ✅ Zero TODO comments (unless linked to issue)
+- ✅ Zero placeholder values in code
+- ✅ Zero placeholder static assets
+- ✅ Zero scripts that create placeholder files
+- ✅ Zero stub functions
+- ✅ All empty states handled
+- ✅ All error cases handled
+- ✅ No console.log/info/debug
+
+**Code Quality:**
+- ✅ 100% implementation coverage
+- ✅ Proper error handling everywhere
+- ✅ User-friendly empty states
+- ✅ Proper logging infrastructure
+
+---
+
+**Status**: MANDATORY - Enforced via validation script
+**Version**: 1.0.0
+**Created**: 2026-01-10
+**Authority**: Repository Governance Policy

@@ -1,0 +1,43 @@
+---
+title: createWebSocketMessage
+description: Create WebSocket message
+
+Helper to create validated WebSocket messages
+category: reference
+tags: [functions, api]
+---
+
+# createWebSocketMessage
+
+Create WebSocket message
+
+Helper to create validated WebSocket messages
+
+## Parameters
+
+### type
+
+**Type**: `T`
+
+**Required**
+
+No description available
+
+
+### data
+
+**Type**: `Omit<Extract<{ type: "proposal_updated"; proposalId: string; changes: Record<string, unknown>; timestamp: Date; }, { type: T; }> | Extract<{ type: "comment_added"; proposalId: string; commentId: string; authorId: string; content: string; mentions: string[]; timestamp: Date; }, { type: T; }> | Extract<{ type: "presence_update"; userId: string; status: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ viewing: "viewing"; editing: "editing"; idle: "idle"; }>; timestamp: Date; proposalId?: string | undefined; }, { type: T; }> | Extract<{ type: "approval_status_changed"; proposalId: string; status: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ DRAFT: "DRAFT"; LISTENING: "LISTENING"; APPROVED: "APPROVED"; VETOED: "VETOED"; ARCHIVED: "ARCHIVED"; }>; timestamp: Date; approvedBy?: string | undefined; }, { type: T; }> | Extract<{ type: "broadcast_created"; broadcastId: string; broadcast: { id: string; createdBy: string; type: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ approval: "approval"; veto: "veto"; announcement: "announcement"; poll: "poll"; emergency: "emergency"; }>; title: string; message: string | null; audience: string; priority: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ normal: "normal"; low: "low"; high: "high"; urgent: "urgent"; }>; }; timestamp: Date; }, { type: T; }> | Extract<{ type: "broadcast_updated"; broadcastId: string; changes: Record<string, unknown>; timestamp: Date; }, { type: T; }> | Extract<{ type: "broadcast_read"; broadcastId: string; userId: string; timestamp: Date; }, { type: T; }>, "type" | "timestamp">`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`Extract<{ type: "proposal_updated"; proposalId: string; changes: Record<string, unknown>; timestamp: Date; }, { type: T; }> | Extract<{ type: "comment_added"; proposalId: string; commentId: string; authorId: string; content: string; mentions: string[]; timestamp: Date; }, { type: T; }> | Extract<{ type: "presence_update"; userId: string; status: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ viewing: "viewing"; editing: "editing"; idle: "idle"; }>; timestamp: Date; proposalId?: string | undefined; }, { type: T; }> | Extract<{ type: "approval_status_changed"; proposalId: string; status: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ DRAFT: "DRAFT"; LISTENING: "LISTENING"; APPROVED: "APPROVED"; VETOED: "VETOED"; ARCHIVED: "ARCHIVED"; }>; timestamp: Date; approvedBy?: string | undefined; }, { type: T; }> | Extract<{ type: "broadcast_created"; broadcastId: string; broadcast: { id: string; createdBy: string; type: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ approval: "approval"; veto: "veto"; announcement: "announcement"; poll: "poll"; emergency: "emergency"; }>; title: string; message: string | null; audience: string; priority: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ normal: "normal"; low: "low"; high: "high"; urgent: "urgent"; }>; }; timestamp: Date; }, { type: T; }> | Extract<{ type: "broadcast_updated"; broadcastId: string; changes: Record<string, unknown>; timestamp: Date; }, { type: T; }> | Extract<{ type: "broadcast_read"; broadcastId: string; userId: string; timestamp: Date; }, { type: T; }>`
+
+
+
+

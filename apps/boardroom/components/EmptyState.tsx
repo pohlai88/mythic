@@ -8,8 +8,9 @@
 'use client'
 
 import { Card } from '@mythic/design-system'
-import { cn } from '@mythic/shared-utils'
-import { memo } from 'react'
+import { cn, intelligentStatusStyles } from '@mythic/shared-utils'
+import { spacing, typography, tokens, margins, alignment, layout, borders } from '@/src/lib'
+import { memo, useMemo } from 'react'
 
 interface EmptyStateProps {
   title: string
@@ -28,28 +29,40 @@ export const EmptyState = memo(function EmptyState({
   variant = 'default',
   className,
 }: EmptyStateProps) {
-  const variantStyles = {
-    default: 'text-parchment border-charcoal',
-    error: 'text-ember border-ember',
-    warning: 'text-gold border-gold',
-    info: 'text-ash border-ash',
+  // Map variant to proposal status for intelligence-driven styling
+  const statusMap: Record<'default' | 'error' | 'warning' | 'info', 'DRAFT' | 'VETOED' | 'LISTENING' | 'APPROVED'> = {
+    default: 'DRAFT',
+    error: 'VETOED',
+    warning: 'LISTENING',
+    info: 'APPROVED',
   }
+
+  // Use intelligence-driven styling for variants
+  const variantStyles = useMemo(() => {
+    return intelligentStatusStyles(statusMap[variant], 'border', borders.dashed)
+  }, [variant])
+
+  const textStyles = useMemo(() => {
+    return intelligentStatusStyles(statusMap[variant], 'text')
+  }, [variant])
 
   return (
     <Card
       elevation="sm"
       className={cn(
-        'p-8 text-center border-2 border-dashed',
-        variantStyles[variant],
+        spacing.cardLarge,
+        alignment.center,
+        variantStyles,
+        textStyles,
         className
       )}
     >
-      {icon && <div className="mb-4 flex justify-center">{icon}</div>}
-      <h3 className="text-lg font-serif mb-2">{title}</h3>
+      {icon && <div className={cn(margins.bottom.md, layout.flexCenter)}>{icon}</div>}
+      <h3 className={cn(typography.heading.sm, margins.bottom.sm)}>{title}</h3>
       {description && (
-        <p className="text-sm text-ash mb-6 max-w-md mx-auto">{description}</p>
+        <p className={cn(typography.body.md, tokens.text.secondary, margins.bottom.lg, 'max-w-md mx-auto')}>{description}</p>
       )}
-      {action && <div className="flex justify-center">{action}</div>}
+      {action && <div className={layout.flexCenter}>{action}</div>}
     </Card>
   )
 })

@@ -1,0 +1,156 @@
+---
+description: "Strict no-pollution compliance rules for documentation system"
+globs: "apps/docs/**/*"
+alwaysApply: false
+priority: 5
+---
+
+# No-Pollution Compliance Rules
+
+**Authority**: This rule enforces zero tolerance for pollution from archived content or non-compliant patterns.
+
+---
+
+## Archive Isolation (MANDATORY)
+
+### Zero References to Archive
+
+- ❌ **FORBIDDEN**: Import from `apps/docs.archive`
+- ❌ **FORBIDDEN**: Reference archived files
+- ❌ **FORBIDDEN**: Copy-paste from archive without validation
+- ✅ **REQUIRED**: Archive is read-only reference only
+
+### Archive Location
+
+- Archive: `apps/docs.archive/`
+- Status: Read-only, not imported
+- Purpose: Reference for selective copying only
+
+---
+
+## Build-Time Validation (MANDATORY)
+
+### Validation Checks
+
+1. **No Archive References**: Scan codebase for `docs.archive` references
+2. **Schema Compliance**: Validate all MDX files against Drizzle Zod schemas
+3. **Next.js Compliance**: Validate routing follows Next.js App Router patterns
+4. **Tailwind Compliance**: Validate styling uses Tailwind V4 patterns
+5. **README Compliance**: Validate README-only policy
+
+### Build Failure
+
+- Build MUST fail if validation fails
+- Error messages MUST indicate what needs fixing
+- No warnings - only errors
+
+---
+
+## Pre-Commit Hooks (MANDATORY)
+
+### Validation Scripts
+
+```bash
+# .husky/pre-commit
+pnpm docs:validate              # Validate content schemas
+pnpm docs:check-pollution        # Check for archive references
+pnpm docs:check-nextjs           # Check Next.js compliance
+pnpm docs:check-tailwind         # Check Tailwind compliance
+pnpm readme:validate-all         # Validate README files
+pnpm readme:check-only           # Check README-only policy
+```
+
+### Blocking Behavior
+
+- Pre-commit hooks MUST block commits if validation fails
+- No bypass options
+- Clear error messages required
+
+---
+
+## CI/CD Checks (MANDATORY)
+
+### GitHub Actions
+
+```yaml
+- name: Validate Documentation
+  run: |
+    pnpm docs:validate
+    pnpm docs:check-pollution
+    pnpm docs:check-nextjs-compliance
+    pnpm docs:check-tailwind-compliance
+    pnpm readme:validate-all
+    pnpm readme:check-only
+```
+
+### Failure Behavior
+
+- CI/CD MUST fail if any check fails
+- No warnings allowed
+- Must fix before merge
+
+---
+
+## Content Validation
+
+### Schema Validation
+
+- All MDX files MUST validate against Drizzle Zod schemas
+- Frontmatter MUST match schema exactly
+- Invalid frontmatter = build failure
+
+### Structure Validation
+
+- All routes MUST follow Next.js App Router patterns
+- All layouts MUST follow Tailwind V4 patterns
+- All content MUST follow Diataxis framework
+
+---
+
+## README-Only Policy
+
+### Enforcement
+
+- Only README.md allowed in apps/ and packages/
+- All other .md files MUST be removed
+- Dot-directories excluded (.cursor/, .vscode/, etc.)
+
+### Validation
+
+- Pre-commit: Check for non-README .md files
+- CI/CD: Validate README-only policy
+- Build-time: Fail if non-README .md files found
+
+---
+
+## Zero Tolerance Policy
+
+### Violations
+
+- ❌ Archive references in code
+- ❌ Non-compliant schemas
+- ❌ Non-compliant routing
+- ❌ Non-compliant styling
+- ❌ Non-README .md files
+- ❌ Missing validation
+
+### Consequences
+
+- Build failure
+- Pre-commit rejection
+- CI/CD failure
+- No exceptions
+
+---
+
+## References
+
+- Plan: ERP Documentation System - Clean Build Strategy
+- README Policy: README_ONLY_POLICY_NEXTJS_BEST_PRACTICES.md
+- Schema: README_STANDARD_SCHEMA_AND_TEMPLATE.md
+
+---
+
+**Enforcement**: Build-time, pre-commit, CI/CD
+**Compliance**: Zero tolerance - no exceptions
+**Status**: MANDATORY

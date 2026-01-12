@@ -42,6 +42,32 @@ export const websocketMessageSchema = z4.discriminatedUnion('type', [
     approvedBy: z4.string().uuid().optional(),
     timestamp: z4.date(),
   }),
+  z4.object({
+    type: z4.literal('broadcast_created'),
+    broadcastId: z4.string().uuid(),
+    broadcast: z4.object({
+      id: z4.string().uuid(),
+      createdBy: z4.string().uuid(),
+      type: z4.enum(['approval', 'veto', 'announcement', 'poll', 'emergency']),
+      title: z4.string(),
+      message: z4.string().nullable(),
+      audience: z4.string(),
+      priority: z4.enum(['low', 'normal', 'high', 'urgent']),
+    }),
+    timestamp: z4.date(),
+  }),
+  z4.object({
+    type: z4.literal('broadcast_updated'),
+    broadcastId: z4.string().uuid(),
+    changes: z4.record(z4.string(), z4.unknown()),
+    timestamp: z4.date(),
+  }),
+  z4.object({
+    type: z4.literal('broadcast_read'),
+    broadcastId: z4.string().uuid(),
+    userId: z4.string().uuid(),
+    timestamp: z4.date(),
+  }),
 ]).describe('WebSocket message validation schema')
 
 /**

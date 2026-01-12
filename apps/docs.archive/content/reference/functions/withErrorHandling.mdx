@@ -1,0 +1,54 @@
+---
+title: withErrorHandling
+description: Wrap an async function with error handling
+category: reference
+tags: [functions, api]
+---
+
+# withErrorHandling
+
+Wrap an async function with error handling
+
+## Parameters
+
+### fn
+
+**Type**: `() => Promise<T>`
+
+**Required**
+
+No description available
+
+
+### options
+
+**Type**: `import("C:/AI-BOS/mythic/src/lib/error-handler").HandleErrorOptions`
+
+**Optional**
+
+No description available
+
+
+
+## Returns
+
+`Promise<import("C:/AI-BOS/mythic/src/lib/error-handler").ErrorResult | { success: true; data: T; }>`
+
+
+
+## Examples
+
+```typescript
+```typescript
+const safeOperation = withErrorHandling(async () => {
+  await operation()
+}, { context: { operation: 'processFile' } })
+
+const result = await safeOperation()
+if (!result.success) {
+  // Handle error
+}
+```
+```
+
+

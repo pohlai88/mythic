@@ -1,0 +1,48 @@
+---
+title: isActionAllowedForRole
+description: Check if action is allowed for role
+category: reference
+tags: [functions, api]
+---
+
+# isActionAllowedForRole
+
+Check if action is allowed for role
+
+## Parameters
+
+### action
+
+**Type**: `import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ read_proposal: "read_proposal"; create_proposal: "create_proposal"; approve_proposal: "approve_proposal"; veto_proposal: "veto_proposal"; edit_proposal: "edit_proposal"; delete_proposal: "delete_proposal"; view_audit_trail: "view_audit_trail"; manage_circles: "manage_circles"; manage_stencils: "manage_stencils"; manage_global_config: "manage_global_config"; decrypt_eyes_only: "decrypt_eyes_only"; }>`
+
+**Required**
+
+No description available
+
+
+### role
+
+**Type**: `import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ sovereign: "sovereign"; council: "council"; observer: "observer"; }>`
+
+**Required**
+
+No description available
+
+
+### resourceType
+
+**Type**: `import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ circle: "circle"; stencil: "stencil"; proposal: "proposal"; config: "config"; vault: "vault"; }>`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`Promise<boolean>`
+
+
+
+

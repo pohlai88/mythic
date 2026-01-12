@@ -1,0 +1,27 @@
+{
+  "name": "@mythic/design-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Axis Visual Canon design system - Tailwind CSS v4 design tokens and components",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens/theme.css": "./src/tokens/theme.css",
+    "./components": "./src/components/index.ts"
+  },
+  "scripts": {
+    "tokens:sync": "tsx scripts/sync-figma-tokens.ts",
+    "tokens:validate": "tsx scripts/validate-tokens.ts"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.3.3",
+    "tsx": "^4.7.0"
+  }
+}

@@ -1,0 +1,123 @@
+---
+description: "Tailwind CSS v4 best practices for documentation system - Priority 2 reference"
+globs: "apps/docs/**/*.tsx,apps/docs/**/*.ts,apps/docs/**/*.css"
+alwaysApply: false
+priority: 20
+---
+
+# Tailwind V4 Best Practices for Documentation System (Priority 2)
+
+**Authority**: This rule enforces Tailwind CSS v4 official best practices as the PRIMARY reference for all UI/UX patterns.
+
+**Source**: [Tailwind CSS v4 Documentation](https://tailwindcss.com/docs) - Official Tailwind patterns
+
+---
+
+## Tailwind V4 Configuration (MANDATORY)
+
+### PostCSS Setup
+
+```javascript
+// postcss.config.mjs
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+  },
+}
+```
+
+### Theme Configuration
+
+```css
+/* app/globals.css */
+@import "tailwindcss";
+
+@theme {
+  /* Design system tokens */
+  --color-void: 240 10% 4%;
+  --color-obsidian: 240 10% 8%;
+  --color-charcoal: 240 10% 15%;
+  --color-parchment: 40 20% 96%;
+  --color-ash: 240 5% 65%;
+  --color-gold: 40 45% 55%;
+  --color-ember: 15 70% 50%;
+}
+```
+
+---
+
+## Styling Patterns (MANDATORY)
+
+### Use Design System Tokens
+
+```tsx
+// ✅ CORRECT: Use design system tokens
+<div className="bg-void text-parchment border-charcoal">
+
+// ❌ INCORRECT: Hardcoded colors
+<div className="bg-[#0a0a0b] text-[#f5f5f0]">
+```
+
+### Responsive Design
+
+```tsx
+// ✅ CORRECT: Mobile-first responsive
+<div className="p-4 sm:p-6 md:p-8 lg:p-10">
+
+// ❌ INCORRECT: Desktop-first
+<div className="p-10 lg:p-8 md:p-6 sm:p-4">
+```
+
+### Container Queries
+
+```tsx
+// ✅ CORRECT: Use container queries when appropriate
+<div className="@container">
+  <div className="@md:text-lg">
+```
+
+---
+
+## Component Patterns
+
+### Utility-First
+
+- Use Tailwind utilities, not custom CSS
+- Compose utilities for complex styles
+- Use `cn()` helper for conditional classes
+
+### Design System Integration
+
+- Use `@mythic/design-system` tokens
+- Follow Axis Visual Canon design system
+- Use intelligence utilities for conditional styling
+
+---
+
+## Performance
+
+### Purge/Content Configuration
+
+- Configure content paths in `tailwind.config.ts`
+- Include all MDX files in content paths
+- Optimize for production builds
+
+### JIT Mode
+
+- Tailwind V4 uses JIT by default
+- No need for separate JIT configuration
+- Optimized for development and production
+
+---
+
+## References
+
+- [Tailwind CSS v4 Docs](https://tailwindcss.com/docs) - Official documentation
+- [Tailwind V4 Migration](https://tailwindcss.com/docs/upgrade-guide) - Migration guide
+- [Container Queries](https://tailwindcss.com/docs/container-queries) - Container query patterns
+
+---
+
+**Priority**: 2 (High - Tailwind V4 official patterns)
+**Enforcement**: Build-time validation, linting
+**Compliance**: All styling MUST use Tailwind V4 patterns

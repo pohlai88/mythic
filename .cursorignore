@@ -10,8 +10,7 @@ build/
 dist/
 
 # Environment
-.env
-.env*.local
+
 
 # Logs
 *.log
@@ -40,7 +39,6 @@ Thumbs.db
 
 
 # PRD / Architecture Planning (codeowner-preserved)
-.cursor/product
 .cursor/Planing
 .cursor/planing  # Case-safety for Linux CI
 

@@ -1,0 +1,34 @@
+---
+title: checkPermission
+description: Check if user has permission
+
+Validates all inputs and outputs with Zod schemas
+category: reference
+tags: [functions, api]
+---
+
+# checkPermission
+
+Check if user has permission
+
+Validates all inputs and outputs with Zod schemas
+
+## Parameters
+
+### check
+
+**Type**: `{ userId: string; resourceType: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ circle: "circle"; stencil: "stencil"; proposal: "proposal"; config: "config"; vault: "vault"; }>; resourceId: string; action: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ read_proposal: "read_proposal"; create_proposal: "create_proposal"; approve_proposal: "approve_proposal"; veto_proposal: "veto_proposal"; edit_proposal: "edit_proposal"; delete_proposal: "delete_proposal"; view_audit_trail: "view_audit_trail"; manage_circles: "manage_circles"; manage_stencils: "manage_stencils"; manage_global_config: "manage_global_config"; decrypt_eyes_only: "decrypt_eyes_only"; }>; context?: Record<string, unknown> | undefined; }`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`Promise<{ allowed: boolean; reason?: string | undefined; requiredRole?: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ sovereign: "sovereign"; council: "council"; observer: "observer"; }> | undefined; currentRole?: import("C:/AI-BOS/mythic/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/core/schemas").$InferEnumOutput<{ sovereign: "sovereign"; council: "council"; observer: "observer"; }> | undefined; }>`
+
+
+
+

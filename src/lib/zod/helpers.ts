@@ -7,7 +7,7 @@
  * @see https://zod.dev - Zod v4 Official Documentation
  */
 
-import { z } from 'zod/v4'
+import { z as z4 } from 'zod/v4'
 
 /**
  * MANDATORY: Create string schema with required validations
@@ -17,6 +17,7 @@ import { z } from 'zod/v4'
  *   min: 1,
  *   max: 255,
  *   email: true,
+ *   trim: true,
  *   description: 'User email address'
  * })
  */
@@ -25,9 +26,22 @@ export function createMandatoryString(options: {
   max?: number
   email?: boolean
   datetime?: boolean
+  url?: boolean
+  uuid?: boolean
+  trim?: boolean
+  toLowerCase?: boolean
+  regex?: RegExp
   description: string
 }) {
-  let schema = z.string()
+  let schema = z4.string()
+
+  if (options.trim) {
+    schema = schema.trim()
+  }
+
+  if (options.toLowerCase) {
+    schema = schema.toLowerCase()
+  }
 
   if (options.min !== undefined) {
     schema = schema.min(options.min)
@@ -43,6 +57,18 @@ export function createMandatoryString(options: {
 
   if (options.datetime) {
     schema = schema.datetime()
+  }
+
+  if (options.url) {
+    schema = schema.url()
+  }
+
+  if (options.uuid) {
+    schema = schema.uuid()
+  }
+
+  if (options.regex) {
+    schema = schema.regex(options.regex)
   }
 
   return schema.describe(options.description)
@@ -65,7 +91,7 @@ export function createMandatoryNumber(options: {
   positive?: boolean
   description: string
 }) {
-  let schema = z.number()
+  let schema = z4.number()
 
   if (options.min !== undefined) {
     schema = schema.min(options.min)
@@ -95,8 +121,8 @@ export function createMandatoryNumber(options: {
  *   name: z.string().min(1)
  * }, 'User object')
  */
-export function createMandatoryObject<T extends z.ZodRawShape>(shape: T, description: string) {
-  return z.object(shape).describe(description)
+export function createMandatoryObject<T extends z4.ZodRawShape>(shape: T, description: string) {
+  return z4.object(shape).describe(description)
 }
 
 /**
@@ -108,8 +134,8 @@ export function createMandatoryObject<T extends z.ZodRawShape>(shape: T, descrip
  *   'Array of users'
  * )
  */
-export function createMandatoryArray<T extends z.ZodTypeAny>(itemSchema: T, description: string) {
-  return z.array(itemSchema).describe(description)
+export function createMandatoryArray<T extends z4.ZodTypeAny>(itemSchema: T, description: string) {
+  return z4.array(itemSchema).describe(description)
 }
 
 /**
@@ -127,7 +153,7 @@ export function createMandatoryEnum<const T extends readonly [string, ...string[
   values: T,
   description: string
 ) {
-  return z.enum(values).describe(description)
+  return z4.enum(values).describe(description)
 }
 
 /**
@@ -143,10 +169,31 @@ export function createMandatoryEnum<const T extends readonly [string, ...string[
  *   return handleError(result.error)
  * }
  */
-export function mandatorySafeParse<T extends z.ZodTypeAny>(schema: T, input: unknown) {
+export function mandatorySafeParse<T extends z4.ZodTypeAny>(schema: T, input: unknown) {
   const result = schema.safeParse(input)
   if (result.success) {
-    return { success: true as const, data: result.data as z.infer<T> }
+    return { success: true as const, data: result.data as z4.infer<T> }
+  }
+  return { success: false as const, error: result.error }
+}
+
+/**
+ * MANDATORY: Async safe parse wrapper
+ * Use for schemas with async refinements or transforms
+ *
+ * @example
+ * const result = await mandatorySafeParseAsync(userSchema, input)
+ * if (!result.success) {
+ *   return handleError(result.error)
+ * }
+ */
+export async function mandatorySafeParseAsync<T extends z4.ZodTypeAny>(
+  schema: T,
+  input: unknown
+) {
+  const result = await schema.safeParseAsync(input)
+  if (result.success) {
+    return { success: true as const, data: result.data as z4.infer<T> }
   }
   return { success: false as const, error: result.error }
 }
@@ -158,7 +205,7 @@ export function mandatorySafeParse<T extends z.ZodTypeAny>(schema: T, input: unk
  * @example
  * type User = InferMandatory<typeof userSchema>
  */
-export type InferMandatory<T extends z.ZodTypeAny> = z.infer<T>
+export type InferMandatory<T extends z4.ZodTypeAny> = z4.infer<T>
 
 /**
  * MANDATORY: Schema registry helper
@@ -170,7 +217,7 @@ export type InferMandatory<T extends z.ZodTypeAny> = z.infer<T>
  *   product: productSchema
  * })
  */
-export function createMandatoryRegistry<T extends Record<string, z.ZodTypeAny>>(schemas: T): T {
+export function createMandatoryRegistry<T extends Record<string, z4.ZodTypeAny>>(schemas: T): T {
   return schemas
 }
 
@@ -187,6 +234,6 @@ export function createMandatoryRegistry<T extends Record<string, z.ZodTypeAny>>(
  *   'Metadata key-value pairs'
  * )
  */
-export function createMandatoryRecord<V extends z.ZodTypeAny>(valueSchema: V, description: string) {
-  return z.record(z.string(), valueSchema).describe(description)
+export function createMandatoryRecord<V extends z4.ZodTypeAny>(valueSchema: V, description: string) {
+  return z4.record(z4.string(), valueSchema).describe(description)
 }

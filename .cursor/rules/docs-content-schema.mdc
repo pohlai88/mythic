@@ -1,0 +1,166 @@
+---
+description: "Content schema and Diataxis framework standards for documentation"
+globs: "apps/docs/**/*.mdx,apps/docs/**/*.md"
+alwaysApply: false
+priority: 30
+---
+
+# Content Schema & Diataxis Framework
+
+**Authority**: This rule enforces content structure using Diataxis framework and Drizzle Zod schemas.
+
+---
+
+## Diataxis Document Types
+
+### Tutorial
+- **Purpose**: Learning-oriented, step-by-step guide
+- **Structure**: Introduction → Steps → Conclusion
+- **Audience**: New users learning the system
+
+### How-To
+- **Purpose**: Problem-oriented, task-focused guide
+- **Structure**: Problem → Solution → Steps
+- **Audience**: Users solving specific problems
+
+### Reference
+- **Purpose**: Factual information, API documentation
+- **Structure**: Overview → API Reference → Examples
+- **Audience**: Developers needing technical details
+
+### Explanation
+- **Purpose**: Conceptual understanding, background
+- **Structure**: Context → Explanation → Implications
+- **Audience**: All audiences understanding concepts
+
+---
+
+## Frontmatter Schema (Drizzle Zod)
+
+### Required Fields
+
+```yaml
+---
+title: string (required)
+description: string (optional)
+audience: 'developers' | 'users' | 'business' (required)
+module: string (optional)
+type: 'tutorial' | 'how-to' | 'reference' | 'explanation' (optional)
+published: boolean (default: true)
+lastUpdated: string (datetime, optional)
+---
+```
+
+### Validation
+
+- All frontmatter MUST validate against Drizzle Zod schema
+- Use `createInsertSchema` and `createSelectSchema` pattern
+- Build-time validation fails if schema doesn't match
+
+---
+
+## Content Structure
+
+### Tutorial Structure
+
+```markdown
+## Introduction
+[What we're learning]
+
+## Steps
+1. Step 1
+2. Step 2
+3. Step 3
+
+## Conclusion
+[What we learned]
+```
+
+### How-To Structure
+
+```markdown
+## Problem
+[What problem are we solving?]
+
+## Solution
+[Overview of solution]
+
+## Steps
+1. Step 1
+2. Step 2
+
+## Troubleshooting
+[Common issues]
+```
+
+### Reference Structure
+
+```markdown
+## Overview
+[Brief description]
+
+## API Reference
+[Technical details]
+
+## Examples
+[Code examples]
+```
+
+### Explanation Structure
+
+```markdown
+## Context
+[Background information]
+
+## Explanation
+[Detailed explanation]
+
+## Implications
+[What this means]
+```
+
+---
+
+## Cross-Referencing
+
+### Internal Links
+
+```markdown
+- [Related Tutorial](./tutorials/related)
+- [API Reference](../reference/api)
+- [How-To Guide](../how-to/guide)
+```
+
+### External Links
+
+- Use absolute URLs for external references
+- Include `rel="noreferrer"` for security
+- Use descriptive link text
+
+---
+
+## Code Examples
+
+### Syntax Highlighting
+
+```typescript
+// Use language tags for syntax highlighting
+const example = 'code'
+```
+
+### Inline Code
+
+Use `backticks` for inline code and file names.
+
+---
+
+## References
+
+- [Diataxis Framework](https://diataxis.fr/) - Documentation framework
+- [Drizzle Zod](https://orm.drizzle.team/docs/zod) - Schema validation
+- [MDX Documentation](https://mdxjs.com/) - MDX syntax
+
+---
+
+**Enforcement**: Build-time validation, schema checking
+**Compliance**: All content MUST follow Diataxis structure and validate against schema

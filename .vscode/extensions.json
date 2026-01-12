@@ -65,6 +65,7 @@
     // ============================================================================
     // Testing
     // ============================================================================
+    "ZixuanChen.vitest-explorer", // Vitest test explorer and runner (PRIMARY)
     "firsttris.vscode-jest-runner", // Run Jest tests from editor
     "orta.vscode-jest", // Jest support
 

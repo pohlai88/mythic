@@ -1,0 +1,126 @@
+---
+description: "Next.js App Router best practices for documentation system - Priority 1 reference"
+globs: "apps/docs/**/*.ts,apps/docs/**/*.tsx,apps/docs/**/*.js,apps/docs/**/*.jsx"
+alwaysApply: false
+priority: 10
+---
+
+# Next.js Best Practices for Documentation System (Priority 1)
+
+**Authority**: This rule enforces Next.js official best practices as the PRIMARY reference for all documentation system patterns.
+
+**Source**: [Next.js Documentation](https://nextjs.org/docs) - Official Next.js patterns
+
+---
+
+## App Router Conventions (MANDATORY)
+
+### File-Based Routing
+
+- Use `app/` directory for all routes
+- Use route groups `(audiences)/` for organization without affecting URLs
+- Use dynamic segments `[module]` for module-based routing
+- Use `page.tsx` or `page.mdx` for route pages
+- Use `layout.tsx` for shared layouts
+
+### Server Components (Default)
+
+- **Default to Server Components** - Only use `"use client"` when required
+- Keep data-fetching in Server Components
+- Use Server Actions for mutations
+- Minimize client-side JavaScript
+
+### Metadata API
+
+- Use Next.js Metadata API for SEO and page metadata
+- Generate metadata dynamically with `generateMetadata()`
+- Use `generateStaticParams()` for static generation
+
+### Static Generation
+
+- Use `generateStaticParams()` for all dynamic routes
+- Pre-render all documentation pages at build time
+- Use `revalidate` for ISR when needed
+
+---
+
+## Routing Patterns
+
+### Route Groups
+
+```typescript
+// ✅ CORRECT: Use route groups for organization
+app/
+├── (audiences)/
+│   ├── developers/
+│   ├── users/
+│   └── business/
+```
+
+### Dynamic Routes
+
+```typescript
+// ✅ CORRECT: Dynamic segments for modules
+app/(audiences)/users/[module]/page.mdx
+```
+
+### Catch-All Routes
+
+```typescript
+// ✅ CORRECT: Catch-all for flexible routing
+app/[[...mdxPath]]/page.tsx
+```
+
+---
+
+## MDX Integration
+
+### @next/mdx Configuration
+
+```javascript
+// next.config.mjs
+import createMDX from '@next/mdx'
+
+const withMDX = createMDX({
+  // MDX options
+})
+
+export default withMDX(nextConfig)
+```
+
+### MDX Components
+
+- Use `mdx-components.tsx` for global MDX components
+- Follow Next.js MDX guide: https://nextjs.org/docs/app/guides/mdx
+- Use Server Components in MDX when possible
+
+---
+
+## Performance Best Practices
+
+### Code Splitting
+
+- Use dynamic imports for large components
+- Optimize bundle size with `optimizePackageImports`
+- Use Turbopack for faster development
+
+### Static Generation
+
+- Pre-render all documentation pages
+- Use `generateStaticParams()` for dynamic routes
+- Minimize runtime JavaScript
+
+---
+
+## References
+
+- [Next.js App Router](https://nextjs.org/docs/app) - Official App Router docs
+- [Next.js MDX Guide](https://nextjs.org/docs/app/guides/mdx) - MDX integration
+- [Next.js Metadata API](https://nextjs.org/docs/app/api-reference/functions/generate-metadata) - Metadata generation
+- [Next.js Static Generation](https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming) - Static generation
+
+---
+
+**Priority**: 1 (Highest - Next.js official patterns)
+**Enforcement**: Build-time validation, pre-commit hooks
+**Compliance**: All patterns MUST align with Next.js official documentation

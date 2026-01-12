@@ -10,6 +10,9 @@ tags: [reference, turborepo, monorepo, optimization]
 
 # TurboRepo Workspace Optimization
 
+> **📚 For the latest comprehensive optimization guide, see:**  
+> [DOC-0123_turborepo-optimization-complete.md](../../_system/DOC-0123_turborepo-optimization-complete.md)
+
 ---
 
 ## 🎯 Overview
@@ -19,6 +22,9 @@ This workspace has been optimized for **TurboRepo** to provide:
 - 🔄 **Task parallelization** for concurrent execution
 - 📦 **Output caching** to skip unchanged work
 - 🚀 **Better CI/CD performance** with remote cache support
+- 🎯 **Advanced filtering** for targeted execution
+- 📊 **Task graph visualization** for optimization
+- 🔐 **Remote cache ready** (signature enabled)
 
 ---
 

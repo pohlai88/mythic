@@ -5,8 +5,10 @@
  */
 
 import { jsonb, pgTable, integer, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z as z4 } from 'zod/v4'
+import { proposals } from './proposals'
 
 export const proposalStencils = pgTable('proposal_stencils', {
   id: varchar('id', { length: 100 }).primaryKey(), // e.g., "hiring_request_v2"
@@ -37,6 +39,11 @@ export const selectProposalStencilSchema = createSelectSchema(proposalStencils, 
   fields: z4.array(fieldSchema),
   requiredApprovers: z4.array(z4.string()),
 })
+
+// Relations for Drizzle relational queries API
+export const proposalStencilsRelations = relations(proposalStencils, ({ many }) => ({
+  proposals: many(proposals),
+}))
 
 // TypeScript types
 export type ProposalStencil = typeof proposalStencils.$inferSelect

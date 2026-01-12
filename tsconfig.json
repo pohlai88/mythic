@@ -34,8 +34,6 @@
       "@mythic/shared-types/*": ["./packages/shared-types/src/*"],
       "@mythic/design-system": ["./packages/design-system/src"],
       "@mythic/design-system/*": ["./packages/design-system/src/*"],
-      "@mythic/axis-theme": ["./packages/axis-theme/src"],
-      "@mythic/axis-theme/*": ["./packages/axis-theme/src/*"],
       "@mythic/domain-core": ["./packages/domain-core/src"],
       "@mythic/domain-core/*": ["./packages/domain-core/src/*"],
       "@mythic/performance": ["./packages/performance/src"],

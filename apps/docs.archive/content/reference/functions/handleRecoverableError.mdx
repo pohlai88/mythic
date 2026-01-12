@@ -1,0 +1,53 @@
+---
+title: handleRecoverableError
+description: Handle error and return result (for recoverable errors)
+category: reference
+tags: [functions, api]
+---
+
+# handleRecoverableError
+
+Handle error and return result (for recoverable errors)
+
+## Parameters
+
+### error
+
+**Type**: `unknown`
+
+**Required**
+
+No description available
+
+
+### options
+
+**Type**: `Omit<import("C:/AI-BOS/mythic/src/lib/error-handler").HandleErrorOptions, "exit">`
+
+**Optional**
+
+No description available
+
+
+
+## Returns
+
+`import("C:/AI-BOS/mythic/src/lib/error-handler").ErrorResult`
+
+
+
+## Examples
+
+```typescript
+```typescript
+try {
+  await operation()
+} catch (error) {
+  return handleRecoverableError(error, {
+    context: { file: 'example.ts' }
+  })
+}
+```
+```
+
+

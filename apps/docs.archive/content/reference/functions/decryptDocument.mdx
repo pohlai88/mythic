@@ -1,0 +1,43 @@
+---
+title: decryptDocument
+description: Decrypt a document
+
+Validates decryption request and encrypted data with Zod schemas
+category: reference
+tags: [functions, api]
+---
+
+# decryptDocument
+
+Decrypt a document
+
+Validates decryption request and encrypted data with Zod schemas
+
+## Parameters
+
+### request
+
+**Type**: `{ encryptedDataId: string; requestingUserId: string; reason: string; }`
+
+**Required**
+
+No description available
+
+
+### encryptedData
+
+**Type**: `{ encrypted: string; iv: string; algorithm: "AES-GCM"; keyId: string; authorizedUsers: string[]; createdAt: Date; expiresAt?: Date | undefined; }`
+
+**Required**
+
+No description available
+
+
+
+## Returns
+
+`Promise<ArrayBuffer>`
+
+
+
+

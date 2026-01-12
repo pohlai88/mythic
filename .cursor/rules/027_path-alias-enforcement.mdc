@@ -1,0 +1,276 @@
+---
+description: "Path Alias Enforcement - Bans relative imports, enforces @ alias pattern"
+globs: "*.ts,*.tsx"
+alwaysApply: false
+priority: 27
+---
+
+# Path Alias Enforcement Rules (RFC-2119 MANDATORY)
+
+**Reference Documentation:**
+- @PATH_ALIAS_CURSOR_MAINTENANCE.md - Complete maintenance strategy
+- @apps/boardroom/docs/IMPORT_GUIDE.md - Import patterns and examples
+- @apps/boardroom/tsconfig.json - Path alias configuration
+
+**Related Rules:**
+- @rules/015_root-config-governance.mdc - Config management
+- @rules/020_typescript-standards.mdc - TypeScript patterns
+- @rules/025_zod-mandatory-enforcement.mdc - Similar enforcement pattern
+
+---
+
+## 1. Import Path Pattern (MANDATORY - NON-NEGOTIABLE)
+
+**MUST** use `@/` alias imports for all internal imports.
+
+```typescript
+// ✅ CORRECT
+import { db } from '@/src/db'
+import { PoolTable } from '@/components/PoolTable'
+import { getProposals } from '@/app/actions/proposals'
+import { checkPermission } from '@/src/lib/auth'
+
+// ❌ INCORRECT - Relative imports banned
+import { db } from '../db'
+import { PoolTable } from '../../components/PoolTable'
+import { getProposals } from '../../../app/actions/proposals'
+import { checkPermission } from '../lib/auth'
+```
+
+**Enforcement**: Biome + Cursor validation. Cursor MUST fix immediately.
+
+---
+
+## 2. Path Alias Hierarchy (MANDATORY)
+
+**MUST** use most specific alias available:
+
+```typescript
+// ✅ CORRECT - Most specific
+import { authService } from '@/src/lib/auth'
+import { Proposal } from '@/src/db/schema'
+import { PoolTable } from '@/components/PoolTable'
+
+// ⚠️ ACCEPTABLE - Less specific but valid
+import { authService } from '@/src/lib/auth/service'
+
+// ❌ INCORRECT - Root alias for source files (ambiguous)
+import { env } from '@/lib/env' // Should be @/src/lib/env
+```
+
+**Alias Priority** (most specific to least):
+1. `@/src/lib/*` - Library modules
+2. `@/src/db/*` - Database modules  
+3. `@/components/*` - Components
+4. `@/app/*` - App Router
+5. `@/` - Root (use sparingly, only for root-level files)
+
+**Enforcement**: Cursor MUST use most specific alias available.
+
+---
+
+## 3. Barrel Export Usage (MANDATORY)
+
+**MUST** use barrel exports when available:
+
+```typescript
+// ✅ CORRECT - Use barrel export
+import { checkPermission, validateRBACResult } from '@/src/lib/auth'
+import { createAuditEvent, getAuditTrail } from '@/src/lib/audit'
+import * as schema from '@/src/db/schema'
+
+// ❌ INCORRECT - Direct file import when barrel exists
+import { checkPermission } from '@/src/lib/auth/rbac-service'
+import { createAuditEvent } from '@/src/lib/audit/audit-service'
+```
+
+**Barrel Files** (always use these):
+- `@/src/lib/auth` → `@/src/lib/auth/index.ts`
+- `@/src/lib/audit` → `@/src/lib/audit/index.ts`
+- `@/src/lib/config` → `@/src/lib/config/index.ts`
+- `@/src/lib/frontend` → `@/src/lib/frontend/index.ts`
+- `@/src/lib/realtime` → `@/src/lib/realtime/index.ts`
+- `@/src/lib/vault` → `@/src/lib/vault/index.ts`
+- `@/src/db/schema` → `@/src/db/schema/index.ts`
+
+**Enforcement**: Cursor MUST check for barrel files before using direct imports.
+
+---
+
+## 4. Export Pattern in Barrel Files (MANDATORY)
+
+**MUST** use named exports in barrel files:
+
+```typescript
+// ✅ CORRECT - Named exports for functions/services
+export {
+  functionA,
+  functionB,
+  type TypeA,
+  type TypeB,
+} from './module-a'
+
+// ✅ CORRECT - Re-export all for schemas
+export * from './schema-module'
+
+// ❌ INCORRECT - Mixing patterns inconsistently
+export * from './module-a'
+export { functionB } from './module-b' // Inconsistent
+```
+
+**Pattern Rules**:
+- **Functions/Services**: Use named exports `export { ... }`
+- **Schemas/Types**: Use `export *` for re-exports
+- **Be consistent** within each barrel file
+
+**Enforcement**: Biome validation + Cursor review.
+
+---
+
+## 5. Type-Only Imports (MANDATORY)
+
+**MUST** use `import type` for type-only imports:
+
+```typescript
+// ✅ CORRECT
+import type { Proposal } from '@/src/db/schema'
+import type { UserConfig } from '@/src/lib/config'
+import { getProposals } from '@/app/actions/proposals' // Value import
+
+// ❌ INCORRECT - Mixing types and values
+import { Proposal, getProposals } from '@/src/db/schema' // Proposal is type-only
+```
+
+**Enforcement**: TypeScript compiler + Biome `useImportType` rule.
+
+---
+
+## 6. Validation Workflow (MANDATORY)
+
+**MUST** run validation before committing:
+
+```bash
+# Run import validation
+pnpm validate:imports
+
+# Run Biome check
+pnpm check
+
+# Run type check
+pnpm type-check
+```
+
+**Enforcement**: Pre-commit hooks + CI/CD.
+
+---
+
+## 7. When Creating New Files (MANDATORY)
+
+**MUST** follow this workflow:
+
+1. **Check existing barrel exports** in `@/src/lib/*/index.ts`
+2. **Use appropriate alias** from tsconfig.json
+3. **Add to barrel file** if creating new module
+4. **Run validation** with `pnpm validate:imports`
+5. **Run Biome** with `pnpm check`
+
+**Enforcement**: Cursor MUST follow this workflow.
+
+---
+
+## 8. Violation Handling (MANDATORY)
+
+When Cursor detects a violation:
+
+1. **STOP** - Do not proceed with changes
+2. **REPORT** - Show exact violation with file path and line number
+3. **FIX** - Use path alias pattern (convert relative to alias)
+4. **VALIDATE** - Run `pnpm validate:imports` and `pnpm check`
+5. **VERIFY** - Ensure all checks pass before continuing
+
+**Enforcement**: Cursor MUST follow this process.
+
+---
+
+## 9. Exceptions (RARE)
+
+Exceptions to mandatory rules require explicit approval:
+
+- **Legacy code**: Temporary exceptions during migration (document in comments)
+- **Config files**: `next.config.mjs`, `tailwind.config.ts`, `drizzle.config.ts` (may use relative)
+- **Test files**: May use relative for test fixtures (document why)
+
+**Exception Format**:
+```typescript
+// EXCEPTION: Relative import allowed - Config file (see rule 9)
+import { getDatabaseConfig } from './src/lib/env'
+```
+
+**Enforcement**: Document exceptions in code comments with reference to this rule.
+
+---
+
+## 10. Migration from Relative Imports (MANDATORY)
+
+When migrating existing code:
+
+1. **Identify** all relative imports (`../`, `./`)
+2. **Resolve** to absolute path from app root
+3. **Map** to appropriate alias:
+   - `src/lib/auth` → `@/src/lib/auth`
+   - `app/actions` → `@/app/actions`
+   - `components/PoolTable` → `@/components/PoolTable`
+4. **Replace** import statement
+5. **Validate** with TypeScript compiler
+
+**Migration Script**: Use `scripts/migrate-to-aliases.ts` for bulk migration.
+
+**Enforcement**: Run migration script before manual fixes.
+
+---
+
+## 11. Success Criteria
+
+All imports MUST:
+- ✅ Use `@/` aliases (no relative imports in `src/**`)
+- ✅ Use most specific alias available
+- ✅ Use barrel exports when available
+- ✅ Use `import type` for type-only imports
+- ✅ Pass Biome validation
+- ✅ Pass import validation script
+- ✅ Pass TypeScript compilation
+- ✅ No circular dependencies
+
+---
+
+## 12. Integration with Other Rules
+
+This rule works with:
+- **015_root-config-governance.mdc**: Ensures tsconfig.json paths are correct
+- **020_typescript-standards.mdc**: Enforces TypeScript import patterns
+- **025_zod-mandatory-enforcement.mdc**: Similar enforcement pattern
+- **031_tech-debt-prevention.mdc**: Prevents import-related tech debt
+
+**Enforcement**: All rules must pass together.
+
+---
+
+## 13. Cursor AI Instructions
+
+**When editing files**:
+- Always check for relative imports first
+- Convert relative imports to aliases immediately
+- Use barrel exports when available
+- Run validation after changes
+
+**When creating new files**:
+- Use path aliases from the start
+- Add exports to appropriate barrel file
+- Follow the alias hierarchy
+
+**When reviewing code**:
+- Flag any relative imports
+- Suggest correct alias path
+- Verify barrel exports are used
+
+**Enforcement**: Cursor MUST follow these instructions automatically.
