@@ -4,7 +4,6 @@
  *
  * Single enforcement point that validates all ELITE requirements:
  * - Zod contract coverage
- * - BiomeJS linting
  * - Handoff token validation
  * - Server Component ratio
  * - Documentation structure (Diataxis)
@@ -17,7 +16,6 @@ interface EliteGateResult {
   passed: boolean
   checks: {
     zodContracts: boolean
-    biomeLint: boolean
     tokens: boolean
     serverComponents: boolean
     docsStructure: boolean
@@ -40,7 +38,6 @@ async function runEliteGate(): Promise<EliteGateResult> {
   const errors: string[] = []
   const checks: EliteGateResult['checks'] = {
     zodContracts: false,
-    biomeLint: false,
     tokens: false,
     serverComponents: false,
     docsStructure: false,
@@ -57,14 +54,6 @@ async function runEliteGate(): Promise<EliteGateResult> {
   }
   logger.info({ success: zodCheck.success }, zodCheck.success ? 'Zod contracts valid' : 'Zod contracts invalid')
 
-  // Check 2: BiomeJS Linting
-  logger.info('Checking BiomeJS linting...')
-  const biomeCheck = await runCheck('pnpm lint', 'BiomeJS lint')
-  checks.biomeLint = biomeCheck.success
-  if (!biomeCheck.success) {
-    errors.push(biomeCheck.error || 'BiomeJS linting failed')
-  }
-  logger.info({ success: biomeCheck.success }, biomeCheck.success ? 'BiomeJS linting passed' : 'BiomeJS linting failed')
 
   // Check 3: Handoff Tokens
   logger.info('Checking Handoff tokens...')

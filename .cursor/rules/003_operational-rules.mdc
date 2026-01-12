@@ -22,7 +22,7 @@ alwaysApply: false
 
 1. **Node.js Toolchain** (`npm`, `pnpm`, or `yarn`) — Primary source of truth.
 2. **Official Documentation** — Normative.
-3. **Project Configuration** (`package.json`, `tsconfig.json`, `biome.json`).
+3. **Project Configuration** (`package.json`, `tsconfig.json`).
 4. **Existing Codebase Patterns** (The repository's "Institutional Memory").
 5. **Cursor / LLM suggestions** — Last resort only.
 

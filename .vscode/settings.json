@@ -7,15 +7,10 @@
   "editor.detectIndentation": false,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "editor.defaultFormatter": "biomejs.biome",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.biome": "explicit",
-    "source.organizeImports.biome": "explicit"
-  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.quickSuggestions": {
     "strings": true
   },
-
   // ============================================================================
   // File Management
   // ============================================================================
@@ -34,7 +29,6 @@
     "**/node_modules": true,
     "**/package-lock.json": true
   },
-
   // ============================================================================
   // TypeScript & JavaScript
   // ============================================================================
@@ -44,48 +38,26 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "javascript.preferences.importModuleSpecifier": "relative",
   "javascript.suggest.autoImports": true,
-
-  // ============================================================================
-  // Biome Configuration
-  // ============================================================================
-  "biome.enabled": true,
-  "biome.lsp.bin": "${workspaceFolder}/node_modules/@biomejs/biome/bin/biome",
   "[javascript]": {
-    "editor.defaultFormatter": "biomejs.biome",
-    "editor.codeActionsOnSave": {
-      "source.fixAll.biome": "explicit",
-      "source.organizeImports.biome": "explicit"
-    }
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome",
-    "editor.codeActionsOnSave": {
-      "source.fixAll.biome": "explicit",
-      "source.organizeImports.biome": "explicit"
-    }
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome",
-    "editor.codeActionsOnSave": {
-      "source.fixAll.biome": "explicit",
-      "source.organizeImports.biome": "explicit"
-    }
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome",
-    "editor.codeActionsOnSave": {
-      "source.fixAll.biome": "explicit",
-      "source.organizeImports.biome": "explicit"
-    }
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[css]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[markdown]": {
     "editor.defaultFormatter": "yzhang.markdown-all-in-one",
@@ -97,15 +69,26 @@
     "editor.formatOnSave": true,
     "editor.wordWrap": "on"
   },
-
   // ============================================================================
   // Tailwind CSS IntelliSense Configuration
   // ============================================================================
   "tailwindCSS.experimental.classRegex": [
-    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
-    ["twMerge\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
-    ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"]
+    [
+      "cva\\(([^)]*)\\)",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ],
+    [
+      "cn\\(([^)]*)\\)",
+      "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"
+    ],
+    [
+      "twMerge\\(([^)]*)\\)",
+      "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"
+    ],
+    [
+      "clsx\\(([^)]*)\\)",
+      "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"
+    ]
   ],
   "tailwindCSS.includeLanguages": {
     "typescript": "javascript",
@@ -130,7 +113,6 @@
     "**/build/**"
   ],
   "css.validate": false,
-
   // ============================================================================
   // Extension-Specific Settings
   // ============================================================================
@@ -139,19 +121,24 @@
   "markdown.extension.toc.levels": "2..6",
   "markdown.extension.preview.autoShowPreviewToSide": false,
   "markdown.extension.print.absoluteImgPath": false,
-
   // ============================================================================
   // Vitest Configuration
   // ============================================================================
   "vitest.enable": true,
   "vitest.commandLine": "pnpm test",
-  "vitest.include": ["**/*.{test,spec}.{ts,tsx}"],
-  "vitest.exclude": ["**/node_modules/**", "**/dist/**", "**/.next/**", "**/.turbo/**"],
+  "vitest.include": [
+    "**/*.{test,spec}.{ts,tsx}"
+  ],
+  "vitest.exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.next/**",
+    "**/.turbo/**"
+  ],
   "vitest.workspaceConfig": "./vitest.config.ts",
   "vitest.nodeEnv": {
     "NODE_ENV": "test"
   },
-
   // ============================================================================
   // Git Configuration
   // ============================================================================
@@ -165,7 +152,16 @@
   "gitlens.currentLine.enabled": true,
   "gitlens.hovers.enabled": true,
   "gitlens.statusBar.enabled": true,
-
+  // ============================================================================
+  // ESLint Configuration (Flat Config)
+  // ============================================================================
+  "eslint.enable": true,
+  "eslint.useFlatConfig": true,
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.workingDirectories": [{ "pattern": "apps/*" }, { "pattern": "packages/*" }],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
   // ============================================================================
   // Disabled Features
   // ============================================================================
@@ -174,7 +170,6 @@
   "npm.autoDetect": "off",
   "npm-intellisense.enabled": false,
   "prettier.enable": false,
-  
   // ============================================================================
   // Spell Checker - Disabled
   // ============================================================================
@@ -182,14 +177,12 @@
   "cSpell.enableFiletypes": [],
   "cSpell.showStatus": false,
   "cSpell.diagnosticLevel": "none",
-
   // ============================================================================
   // Language-Specific Formatters
   // ============================================================================
   "[powershell]": {
     "editor.defaultFormatter": "ms-vscode.powershell"
   },
-
   // ============================================================================
   // GitHub Actions Workflow Linter
   // ============================================================================

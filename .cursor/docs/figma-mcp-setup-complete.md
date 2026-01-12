@@ -1,15 +1,15 @@
 # Figma MCP Setup - Complete Guide
 
-**Date**: 2026-01-11  
+**Date**: 2026-01-11
 **Status**: ✅ **MCP Server Available**
 
 ---
 
 ## Current Status
 
-✅ **MCP Server**: Connected and working  
-✅ **File Key**: `mbsMTEqv9RB7LpNamx3QUj`  
-✅ **File**: Empty (ready for initial token sync)  
+✅ **MCP Server**: Connected and working
+✅ **File Key**: `mbsMTEqv9RB7LpNamx3QUj`
+✅ **File**: Empty (ready for initial token sync)
 ⚠️ **API Token**: Needs `file_variables:write` scope for pushing tokens
 
 ---

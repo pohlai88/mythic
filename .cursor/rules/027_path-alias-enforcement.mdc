@@ -37,7 +37,7 @@ import { getProposals } from '../../../app/actions/proposals'
 import { checkPermission } from '../lib/auth'
 ```
 
-**Enforcement**: Biome + Cursor validation. Cursor MUST fix immediately.
+**Enforcement**: TypeScript compiler + validation scripts + Cursor validation. Cursor MUST fix immediately.
 
 ---
 
@@ -60,7 +60,7 @@ import { env } from '@/lib/env' // Should be @/src/lib/env
 
 **Alias Priority** (most specific to least):
 1. `@/src/lib/*` - Library modules
-2. `@/src/db/*` - Database modules  
+2. `@/src/db/*` - Database modules
 3. `@/components/*` - Components
 4. `@/app/*` - App Router
 5. `@/` - Root (use sparingly, only for root-level files)
@@ -123,7 +123,7 @@ export { functionB } from './module-b' // Inconsistent
 - **Schemas/Types**: Use `export *` for re-exports
 - **Be consistent** within each barrel file
 
-**Enforcement**: Biome validation + Cursor review.
+**Enforcement**: TypeScript compiler + validation scripts + Cursor review.
 
 ---
 
@@ -141,7 +141,7 @@ import { getProposals } from '@/app/actions/proposals' // Value import
 import { Proposal, getProposals } from '@/src/db/schema' // Proposal is type-only
 ```
 
-**Enforcement**: TypeScript compiler + Biome `useImportType` rule.
+**Enforcement**: TypeScript compiler + validation scripts.
 
 ---
 
@@ -152,9 +152,6 @@ import { Proposal, getProposals } from '@/src/db/schema' // Proposal is type-onl
 ```bash
 # Run import validation
 pnpm validate:imports
-
-# Run Biome check
-pnpm check
 
 # Run type check
 pnpm type-check
@@ -172,7 +169,7 @@ pnpm type-check
 2. **Use appropriate alias** from tsconfig.json
 3. **Add to barrel file** if creating new module
 4. **Run validation** with `pnpm validate:imports`
-5. **Run Biome** with `pnpm check`
+5. **Run type check** with `pnpm type-check`
 
 **Enforcement**: Cursor MUST follow this workflow.
 
@@ -185,7 +182,7 @@ When Cursor detects a violation:
 1. **STOP** - Do not proceed with changes
 2. **REPORT** - Show exact violation with file path and line number
 3. **FIX** - Use path alias pattern (convert relative to alias)
-4. **VALIDATE** - Run `pnpm validate:imports` and `pnpm check`
+4. **VALIDATE** - Run `pnpm validate:imports` and `pnpm type-check`
 5. **VERIFY** - Ensure all checks pass before continuing
 
 **Enforcement**: Cursor MUST follow this process.
@@ -236,7 +233,6 @@ All imports MUST:
 - ✅ Use most specific alias available
 - ✅ Use barrel exports when available
 - ✅ Use `import type` for type-only imports
-- ✅ Pass Biome validation
 - ✅ Pass import validation script
 - ✅ Pass TypeScript compilation
 - ✅ No circular dependencies

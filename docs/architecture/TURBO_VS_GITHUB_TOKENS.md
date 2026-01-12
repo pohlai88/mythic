@@ -18,8 +18,8 @@
 
 ### 1. Turbo Token & Team (`TURBO_TOKEN`, `TURBO_TEAM`)
 
-**Service**: Vercel Turbo (Remote Cache)  
-**Purpose**: Share build cache across team members and CI/CD  
+**Service**: Vercel Turbo (Remote Cache)
+**Purpose**: Share build cache across team members and CI/CD
 **Used by**: Turborepo for remote caching
 
 **What it does**:
@@ -45,8 +45,8 @@
 
 ### 2. GitHub Token (`GITHUB_TOKEN`)
 
-**Service**: GitHub API  
-**Purpose**: Access GitHub repositories, create issues, manage PRs, etc.  
+**Service**: GitHub API
+**Purpose**: Access GitHub repositories, create issues, manage PRs, etc.
 **Used by**: GitHub Actions, scripts that interact with GitHub
 
 **What it does**:
@@ -71,15 +71,15 @@
 
 ## Side-by-Side Comparison
 
-| Feature | Turbo Token/Team | GitHub Token |
-|---------|------------------|--------------|
-| **Service** | Vercel Turbo | GitHub API |
-| **Purpose** | Remote build cache | GitHub API access |
-| **Used by** | Turborepo | GitHub Actions, scripts |
-| **Required?** | ❌ Optional | ❌ Optional |
-| **What it enables** | Faster builds, shared cache | GitHub automation |
-| **How to get** | `turbo login` + Vercel | GitHub → Settings → Tokens |
-| **In your .env** | `TURBO_TOKEN`, `TURBO_TEAM` | `GITHUB_TOKEN` |
+| Feature             | Turbo Token/Team            | GitHub Token               |
+| ------------------- | --------------------------- | -------------------------- |
+| **Service**         | Vercel Turbo                | GitHub API                 |
+| **Purpose**         | Remote build cache          | GitHub API access          |
+| **Used by**         | Turborepo                   | GitHub Actions, scripts    |
+| **Required?**       | ❌ Optional                  | ❌ Optional                 |
+| **What it enables** | Faster builds, shared cache | GitHub automation          |
+| **How to get**      | `turbo login` + Vercel      | GitHub → Settings → Tokens |
+| **In your .env**    | `TURBO_TOKEN`, `TURBO_TEAM` | `GITHUB_TOKEN`             |
 
 ---
 
@@ -162,11 +162,11 @@ TURBO_TEAM=your_turbo_team
 
 ## Summary
 
-| Token | Service | Purpose | Required? |
-|-------|---------|---------|-----------|
-| `GITHUB_TOKEN` | GitHub API | GitHub automation | ❌ Optional |
-| `TURBO_TOKEN` | Vercel Turbo | Remote build cache | ❌ Optional |
-| `TURBO_TEAM` | Vercel Turbo | Team identifier | ❌ Optional |
+| Token          | Service      | Purpose            | Required?  |
+| -------------- | ------------ | ------------------ | ---------- |
+| `GITHUB_TOKEN` | GitHub API   | GitHub automation  | ❌ Optional |
+| `TURBO_TOKEN`  | Vercel Turbo | Remote build cache | ❌ Optional |
+| `TURBO_TEAM`   | Vercel Turbo | Team identifier    | ❌ Optional |
 
 **Key Points**:
 - ✅ They are **completely different** services
@@ -185,7 +185,7 @@ TURBO_TEAM=your_turbo_team
 - ⚠️ `TURBO_TOKEN` - For remote cache (optional)
 - ⚠️ `TURBO_TEAM` - For remote cache (optional)
 
-**Recommendation**: 
+**Recommendation**:
 - ✅ Keep `GITHUB_TOKEN` if you use GitHub API
 - ⚠️ Add `TURBO_TOKEN/TEAM` only if you want faster CI/CD builds
 

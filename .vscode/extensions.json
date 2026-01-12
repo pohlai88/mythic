@@ -3,8 +3,8 @@
     // ============================================================================
     // Core Development Tools (REQUIRED)
     // ============================================================================
-    "biomejs.biome", // Fast linter and formatter (replaces ESLint + Prettier)
-
+    "dbaeumer.vscode-eslint", // ESLint support
+    "esbenp.prettier-vscode", // Prettier formatter
     // ============================================================================
     // Language Support
     // ============================================================================

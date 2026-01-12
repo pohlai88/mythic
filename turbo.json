@@ -5,7 +5,6 @@
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
     "tsconfig.json",
-    "biome.json",
     ".env",
     ".env.local",
     ".env.production"
@@ -41,9 +40,15 @@
     },
     "lint": {
       "dependsOn": [],
-      "outputs": [],
+      "outputs": [".eslintcache", "**/.eslintcache"],
       "cache": true,
-      "persistent": false
+      "persistent": false,
+      "inputs": [
+        "**/*.{ts,tsx,js,jsx}",
+        "eslint.config.*",
+        "package.json",
+        "pnpm-lock.yaml"
+      ]
     },
     "lint:fix": {
       "dependsOn": [],

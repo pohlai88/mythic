@@ -123,11 +123,9 @@ function extractInternalLinks(content: string): Array<{ text: string; url: strin
     const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g
     let match: RegExpExecArray | null
 
-    // biome-ignore lint/suspicious/noAssignInExpressions: Standard regex exec pattern
     while ((match = linkRegex.exec(line)) !== null) {
       const url = match[2]
       // Only check internal links (relative paths)
-      // biome-ignore lint/complexity/useSimplifiedLogicExpression: Clear intent with explicit checks
       if (!url.startsWith('http') && !url.startsWith('mailto:') && !url.startsWith('#')) {
         links.push({
           text: match[1],

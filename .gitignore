@@ -29,3 +29,7 @@ coverage/
 
 # Turborepo
 .turbo
+
+# ESLint
+.eslintcache
+eslint-report.*

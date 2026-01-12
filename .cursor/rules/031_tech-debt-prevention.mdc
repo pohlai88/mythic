@@ -9,7 +9,7 @@ priority: 31
 
 **Purpose**: Prevent accumulation of technical debt by prohibiting incomplete code patterns
 **Authority**: Blocks commits with TODOs, placeholders, stubs, and incomplete implementations
-**Status**: MANDATORY - Enforced via pre-commit hooks and Biome linting
+**Status**: MANDATORY - Enforced via pre-commit hooks and validation scripts
 
 ---
 
@@ -34,7 +34,7 @@ priority: 31
 ```
 
 **Enforcement:**
-- Biome lint rule: `noCommentTodo` (error level)
+- Validation script: Detects TODO comments (error level)
 - Pre-commit hook: Rejects commits with TODO comments (unless linked to issue)
 - Cursor AI: Warns when generating code with TODO comments
 
@@ -57,7 +57,7 @@ const mockUserId = 'test-user-id' // Test fixture
 ```
 
 **Enforcement:**
-- Biome lint rule: Custom regex pattern
+- Validation script: Custom regex pattern detection
 - Pre-commit hook: Rejects commits with placeholder strings
 - Cursor AI: Suggests proper implementation instead
 
@@ -90,7 +90,7 @@ function mockFunction() {
 ```
 
 **Enforcement:**
-- Biome lint rule: Detects functions that only throw/return null/return 0
+- Validation script: Detects functions that only throw/return null/return 0
 - Pre-commit hook: Rejects commits with stub functions
 - Cursor AI: Requires implementation or proper error handling
 
@@ -125,7 +125,7 @@ if (items.length === 0) {
 ```
 
 **Enforcement:**
-- Biome lint rule: Detects missing empty state components
+- Validation script: Detects missing empty state components
 - Pre-commit hook: Rejects commits with placeholder empty states
 - Cursor AI: Requires proper EmptyState component usage
 
@@ -147,7 +147,7 @@ console.warn('Warning:', warning) // Warning logging
 ```
 
 **Enforcement:**
-- Biome lint rule: `noConsole` (error level, allow: ['error', 'warn'])
+- Validation script: Detects console.log/info/debug (error level, allow: ['error', 'warn'])
 - Pre-commit hook: Rejects commits with console.log/info/debug
 - Cursor AI: Suggests proper logging service
 
@@ -181,7 +181,7 @@ try {
 ```
 
 **Enforcement:**
-- Biome lint rule: Detects empty catch blocks
+- Validation script: Detects empty catch blocks
 - Pre-commit hook: Rejects commits with incomplete error handling
 - Cursor AI: Requires proper error handling
 
@@ -298,36 +298,17 @@ if (proposals.length === 0) {
 
 ---
 
-## 3. Biome Configuration (ENHANCED)
+## 3. Validation Script Configuration (ENHANCED)
 
-### Custom Rules Added
+### Validation Rules
 
-```json
-{
-  "linter": {
-    "rules": {
-      "suspicious": {
-        "noCommentTodo": {
-          "level": "error",
-          "options": {
-            "terms": ["TODO", "FIXME", "XXX", "HACK", "STUB", "PLACEHOLDER"]
-          }
-        },
-        "noConsole": {
-          "level": "error",
-          "options": {
-            "allow": ["error", "warn"]
-          }
-        }
-      },
-      "correctness": {
-        "noEmptyBlockStatements": "error",
-        "noUnusedVariables": "error"
-      }
-    }
-  }
-}
-```
+The `validate-tech-debt.ts` script enforces:
+- TODO comment detection (error level)
+- Console.log/info/debug detection (error level, allow: ['error', 'warn'])
+- Empty catch block detection
+- Placeholder value detection
+- Stub function detection
+- Missing empty state detection
 
 ---
 
@@ -339,7 +320,6 @@ if (proposals.length === 0) {
 # .husky/pre-commit (partial)
 
 echo "Checking for tech debt patterns..."
-pnpm biome check --write
 
 # Run comprehensive tech debt validation
 pnpm validate:tech-debt
@@ -400,7 +380,7 @@ The `validate-tech-debt.ts` script checks:
 - Remove placeholder values
 
 ### Phase 3: Enable Strict Enforcement
-- Enable Biome rules
+- Enable validation scripts
 - Enable pre-commit hooks
 - Update Cursor rules
 

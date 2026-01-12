@@ -12,7 +12,7 @@ echo "📦 Installing dependencies..."
 pnpm install --frozen-lockfile
 
 # DoD Gate 2: Lint (hard gate - fails on errors)
-echo "🔍 Running Biome linter..."
+echo "🔍 Running linter..."
 pnpm lint
 
 # DoD Gate 3: Type check (hard gate - fails on errors)

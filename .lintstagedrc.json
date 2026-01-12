@@ -1,6 +1,8 @@
 {
-  "*.{ts,tsx}": ["biome check --write"],
+  "*.{ts,tsx,js,jsx}": [
+    "eslint --fix --max-warnings 0",
+    "prettier --write"
+  ],
   "*.{md,mdx,mdc}": ["markdownlint-cli2 --fix"],
-  "*.json": ["biome format --write"],
-  "*.jsonc": []
+  "*.{json,jsonc,css,scss}": ["prettier --write"]
 }

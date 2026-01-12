@@ -43,7 +43,7 @@ async function validateTokenWithAPI(token: string): Promise<{
     if (!response.ok) {
       const errorText = await response.text()
       let errorMessage = `HTTP ${response.status}: ${errorText}`
-      
+
       if (response.status === 403) {
         errorMessage = 'Token is invalid or expired'
       } else if (response.status === 401) {
@@ -57,7 +57,7 @@ async function validateTokenWithAPI(token: string): Promise<{
     }
 
     const data = await response.json()
-    
+
     return {
       valid: true,
       user: {
@@ -132,7 +132,7 @@ async function validateFigmaToken(token?: string): Promise<void> {
   console.log(`   User ID: ${result.user?.id}`)
   console.log(`   Email: ${result.user?.email}`)
   console.log(`   Handle: ${result.user?.handle}`)
-  
+
   if (result.scopes && result.scopes.length > 0) {
     console.log(`\n🔑 Token Scopes:`)
     result.scopes.forEach(scope => {
@@ -145,12 +145,12 @@ async function validateFigmaToken(token?: string): Promise<void> {
   // Check for required scopes
   const requiredScopes = ['file_read', 'file_variables:read']
   const optionalScopes = ['file_variables:write']
-  
+
   if (result.scopes) {
-    const hasRequired = requiredScopes.every(scope => 
+    const hasRequired = requiredScopes.every(scope =>
       result.scopes?.some(s => s.includes(scope))
     )
-    const hasWrite = optionalScopes.some(scope => 
+    const hasWrite = optionalScopes.some(scope =>
       result.scopes?.some(s => s.includes(scope))
     )
 
@@ -160,7 +160,7 @@ async function validateFigmaToken(token?: string): Promise<void> {
     } else {
       console.log('   ⚠️  Missing some read scopes')
     }
-    
+
     if (hasWrite) {
       console.log('   ✅ Has write access (file_variables:write)')
       console.log('   💡 Can push tokens to Figma')
@@ -179,7 +179,7 @@ async function validateFigmaToken(token?: string): Promise<void> {
 async function main() {
   const args = process.argv.slice(2)
   const tokenArg = args.find(arg => arg.startsWith('--token='))
-  
+
   const token = tokenArg ? tokenArg.split('=')[1] : undefined
 
   try {

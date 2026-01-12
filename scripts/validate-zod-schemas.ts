@@ -8,9 +8,8 @@
  * - Located in src/lib/api-schemas/
  * - Uses mandatory patterns
  *
- * This script works with Biome to catch violations.
- * Run Biome first: pnpm check
- * Then run this: pnpm validate:zod
+ * Validates Zod schema compliance with mandatory requirements.
+ * Run this: pnpm validate:zod
  *
  * Usage:
  *   pnpm validate:zod
@@ -155,44 +154,15 @@ function validateFile(file: string): ValidationResult {
   return { file, errors, warnings }
 }
 
-/**
- * Run Biome check first
- */
-function runBiomeCheck(): { success: boolean; output: string } {
-  try {
-    const output = execSync('pnpm check --reporter=json', {
-      encoding: 'utf-8',
-      stdio: 'pipe',
-    })
-    return { success: true, output }
-  } catch (error: unknown) {
-    const execError = error as { stdout?: Buffer; message?: string }
-    return {
-      success: false,
-      output: execError.stdout?.toString() || execError.message || 'Unknown error',
-    }
-  }
-}
 
 /**
  * Main validation function
  */
 async function validateSchemas() {
-  log.info('🔍 Validating Zod schemas with Biome integration...')
+  log.info('🔍 Validating Zod schemas...')
 
-  // Step 1: Run Biome check
-  log.info('📋 Step 1: Running Biome check...')
-  const biomeResult = runBiomeCheck()
-  if (!biomeResult.success) {
-    log.warn('⚠️  Biome found issues. Review output:')
-    log.warn({ output: biomeResult.output }, 'Biome output')
-    log.info('💡 Run `pnpm check:fix` to auto-fix issues')
-  } else {
-    log.info('✅ Biome check passed')
-  }
-
-  // Step 2: Custom Zod validation
-  log.info('📋 Step 2: Running custom Zod validation...')
+  // Run Zod validation
+  log.info('📋 Running Zod validation...')
 
   // Find all TypeScript files
   const files = await glob(['**/*.{ts,tsx}'], {
@@ -249,18 +219,16 @@ async function validateSchemas() {
       filesWithIssues: results.length,
       totalErrors,
       totalWarnings,
-      biomePassed: biomeResult.success,
     },
     '📊 Validation Summary'
   )
   log.info('='.repeat(60))
 
-  if (totalErrors > 0 || !biomeResult.success) {
+  if (totalErrors > 0) {
     log.error('❌ Validation failed! Please fix errors before committing.')
     log.info('💡 Next steps:')
-    log.info('   1. Run `pnpm check:fix` to auto-fix Biome issues')
-    log.info('   2. Review and fix custom Zod validation errors')
-    log.info('   3. Run `pnpm validate:zod` again to verify')
+    log.info('   1. Review and fix Zod validation errors')
+    log.info('   2. Run `pnpm validate:zod` again to verify')
     process.exit(1)
   } else if (totalWarnings > 0) {
     log.warn('⚠️  Validation passed with warnings.')
@@ -268,7 +236,6 @@ async function validateSchemas() {
     process.exit(0)
   } else {
     log.info('✅ All schemas comply with mandatory requirements!')
-    log.info('✅ Biome check passed!')
     process.exit(0)
   }
 }

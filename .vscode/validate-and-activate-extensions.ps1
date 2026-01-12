@@ -202,7 +202,6 @@ $reportContent += @"
 ## 📝 Extension Categories
 
 ### Core Development
-- Biome: `biomejs.biome` (Fast linter and formatter - replaces ESLint + Prettier)
 
 ### React & Next.js
 - ES7+ React Snippets: `dsznajder.es7-react-js-snippets`

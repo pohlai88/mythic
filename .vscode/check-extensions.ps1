@@ -2,7 +2,6 @@
 # Checks which recommended extensions are installed
 
 $recommended = @(
-    "biomejs.biome", # Biome - Fast linter and formatter (replaces ESLint + Prettier)
     "dsznajder.es7-react-js-snippets",
     "formulahendry.auto-rename-tag",
     "formulahendry.auto-close-tag",

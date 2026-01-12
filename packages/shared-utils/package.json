@@ -10,9 +10,7 @@
     "./cn": "./src/cn.ts"
   },
   "scripts": {
-    "type-check": "tsc --noEmit",
-    "lint": "biome check .",
-    "lint:fix": "biome check --write ."
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "clsx": "^2.1.0",

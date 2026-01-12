@@ -2,7 +2,6 @@
 # This script installs all recommended extensions
 
 $extensions = @(
-    "biomejs.biome", # Biome - Fast linter and formatter (replaces ESLint + Prettier)
     "dsznajder.es7-react-js-snippets",
     "formulahendry.auto-rename-tag",
     "formulahendry.auto-close-tag",

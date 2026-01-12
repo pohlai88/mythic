@@ -35,22 +35,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Cache Biome
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/biome
-            node_modules/.cache/biome
-          key: ${{ runner.os }}-biome-${{ hashFiles('**/biome.json') }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-biome-${{ hashFiles('**/biome.json') }}-
-
-      - name: Run Biome CI
-        run: pnpm check:ci:github
-        # Hard gate: fails on errors (optimized for CI)
-        # GitHub reporter creates annotations in PR
-        continue-on-error: false
-
       - name: Run TypeScript check
         run: pnpm type-check
         # Hard gate: fails on errors

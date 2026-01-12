@@ -64,7 +64,6 @@ const baseComponents = {
 }
 
 export function useMDXComponents(
-  // biome-ignore lint/suspicious/noExplicitAny: MDX components accept flexible prop types
   components?: Record<string, React.ComponentType<any>>
 ) {
   return {

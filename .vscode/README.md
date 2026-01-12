@@ -23,7 +23,6 @@ This directory contains VS Code workspace-specific configuration files for the e
 Workspace-specific VS Code settings including:
 
 - TypeScript/JavaScript configuration
-- Biome integration (linter and formatter)
 - Tailwind CSS IntelliSense setup
 - Editor preferences
 - Git configuration
@@ -32,7 +31,6 @@ Workspace-specific VS Code settings including:
 
 Recommended VS Code extensions for this project:
 
-- Core: Biome (replaces ESLint + Prettier)
 - React/Next.js: React snippets, JSX helpers
 - Tailwind CSS: IntelliSense, Headwind
 - Supabase: Postgres tools
@@ -76,7 +74,6 @@ Historical validation reports and setup documentation have been moved to `.vscod
 This configuration follows Next.js best practices:
 
 - ✅ TypeScript/JavaScript path aliases configured
-- ✅ Biome auto-fix on save (linter and formatter)
 - ✅ Tailwind CSS IntelliSense enabled
 - ✅ Next.js-specific file exclusions
 - ✅ Editor formatting standards

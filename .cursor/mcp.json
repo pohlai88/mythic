@@ -1,0 +1,1 @@
+{"mcpServers":{"eslint":{"command":"npx","args":["@eslint/mcp@latest","--stdio"],"cwd":"${workspaceFolder}"}}}

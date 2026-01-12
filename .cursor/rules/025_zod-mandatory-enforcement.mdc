@@ -29,7 +29,7 @@ import { z } from 'zod/v4'
 import { z } from 'zod'
 ```
 
-**Enforcement**: Biome will catch violations. Cursor MUST fix immediately.
+**Enforcement**: Validation scripts will catch violations. Cursor MUST fix immediately.
 
 ---
 
@@ -46,7 +46,7 @@ type User = z.infer<typeof userSchema>
 type User = { name: string } // Manual type definition
 ```
 
-**Enforcement**: TypeScript compiler + Biome validation.
+**Enforcement**: TypeScript compiler + validation scripts.
 
 ---
 
@@ -58,7 +58,7 @@ type User = { name: string } // Manual type definition
 - Database schemas in `src/db/schema/` (use `drizzle-zod`)
 - Local component schemas (temporary, should migrate)
 
-**Enforcement**: Biome validation script.
+**Enforcement**: Validation script.
 
 ---
 
@@ -85,7 +85,7 @@ const emailSchema = z.string().email() // Missing min, max, describe
 - `.datetime()` - If datetime field
 - `.describe()` - Documentation
 
-**Enforcement**: Biome + validation script.
+**Enforcement**: Validation script.
 
 ---
 
@@ -116,7 +116,7 @@ const idSchema = z.number() // Missing int, positive, describe
 - `.min()` / `.max()` - Range validation
 - `.default()` - Default value
 
-**Enforcement**: Biome + validation script.
+**Enforcement**: Validation script.
 
 ---
 
@@ -156,7 +156,7 @@ const userSchema = z.object({ email: z.string() }) // Missing describe
 - `.partial()` - For update schemas
 - `.strip()` - Default (strip unknown keys)
 
-**Enforcement**: Biome + validation script.
+**Enforcement**: Validation script.
 
 ---
 
@@ -172,7 +172,7 @@ const usersSchema = z.array(userSchema).describe('Array of users')
 const usersSchema = z.array(userSchema) // Missing describe
 ```
 
-**Enforcement**: Biome + validation script.
+**Enforcement**: Validation script.
 
 ---
 
@@ -188,7 +188,7 @@ const orderSchema = z.enum(['asc', 'desc']).describe('Sort order')
 const orderSchema = z.enum(['asc', 'desc']) // Missing describe
 ```
 
-**Enforcement**: Biome + validation script.
+**Enforcement**: Validation script.
 
 ---
 
@@ -211,7 +211,7 @@ const field = z.string() // Should be optional/nullable if needed
 - `.nullable()` - For nullable fields
 - `.default()` - For default values
 
-**Enforcement**: TypeScript + Biome.
+**Enforcement**: TypeScript compiler + validation scripts.
 
 ---
 
@@ -280,8 +280,7 @@ if (!result.success) {
 }
 ```
 
-**Enforcement**: 
-- Biome override for test files allows `.parse()`
+**Enforcement**:
 - Validation script checks `.parse()` usage against exception list
 - Code review enforces `.safeParse()` for user-facing code
 
@@ -309,7 +308,7 @@ schema.openapi({ description: 'User schema' })
 const schema = z.object({ email: z.string() }) // Missing OpenAPI metadata
 ```
 
-**Enforcement**: Biome + validation script.
+**Enforcement**: Validation script.
 
 ---
 
@@ -336,7 +335,7 @@ const email = createMandatoryString({
 const email = z.string().email() // Should use helper
 ```
 
-**Enforcement**: Biome + validation script.
+**Enforcement**: Validation script.
 
 ---
 
@@ -345,9 +344,6 @@ const email = z.string().email() // Should use helper
 **MUST** run validation before committing:
 
 ```bash
-# Run Biome check (catches Zod violations)
-pnpm check
-
 # Run Zod-specific validation
 pnpm validate:zod
 
@@ -367,7 +363,7 @@ pnpm type-check
 2. **Use mandatory helpers** from `src/lib/zod/helpers.ts`
 3. **Add to schema registry** in `src/lib/api-schemas/index.ts`
 4. **Run validation** with `pnpm validate:zod`
-5. **Run Biome** with `pnpm check`
+5. **Run type check** with `pnpm type-check`
 
 **Enforcement**: Cursor MUST follow this workflow.
 
@@ -380,7 +376,7 @@ When Cursor detects a violation:
 1. **STOP** - Do not proceed with changes
 2. **REPORT** - Show exact violation
 3. **FIX** - Use mandatory patterns
-4. **VALIDATE** - Run `pnpm validate:zod` and `pnpm check`
+4. **VALIDATE** - Run `pnpm validate:zod` and `pnpm type-check`
 5. **VERIFY** - Ensure all checks pass
 
 **Enforcement**: Cursor MUST follow this process.
@@ -398,8 +394,8 @@ pnpm migrate:zod-imports
 # Validate compliance
 pnpm validate:zod
 
-# Fix Biome errors
-pnpm check:fix
+# Fix type errors
+pnpm type-check
 ```
 
 **Enforcement**: Run migration before making changes.
@@ -425,8 +421,8 @@ All schemas MUST:
 - ✅ Use `z.infer<>` for types
 - ✅ Include `.describe()` for documentation
 - ✅ Use mandatory patterns from helpers
-- ✅ Pass Biome validation
 - ✅ Pass Zod validation script
+- ✅ Pass TypeScript compilation
 - ✅ Be located in correct directory
 
 **Enforcement**: Zero tolerance - all criteria MUST be met.
