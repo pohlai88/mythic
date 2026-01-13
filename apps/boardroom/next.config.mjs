@@ -11,6 +11,11 @@ const nextConfig = {
   compress: true,
   productionBrowserSourceMaps: false,
 
+  // React Compiler: Automatic React optimization
+  // Next.js 16.1.1 native support with SWC optimization
+  // Reference: https://nextjs.org/docs/app/api-reference/config/next-config-js/reactCompiler
+  reactCompiler: true,
+
   // Next.js 16 optimizations
   // Note: swcMinify is deprecated in Next.js 16 - SWC minification is enabled by default
   compiler: {

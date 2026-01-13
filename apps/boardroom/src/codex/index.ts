@@ -7,16 +7,16 @@
  * @see PRD Section 4.3.1
  */
 
-import { db } from '@/src/db'
-import { proposalStencils } from '@/src/db/schema'
-import { eq } from 'drizzle-orm'
-import type { ProposalStencil } from '@/src/db/schema'
-import { validateProposalDataWithZod } from '@/src/lib/zod/stencil-schemas'
+import { db } from "@/src/db"
+import { proposalStencils } from "@/src/db/schema"
+import { eq } from "drizzle-orm"
+import type { ProposalStencil } from "@/src/db/schema"
+import { validateProposalDataWithZod } from "@/src/lib/zod/stencil-schemas"
 
 export interface StencilField {
   id: string
   label: string
-  type: 'string' | 'number' | 'date' | 'enum' | 'jsonb'
+  type: "string" | "number" | "date" | "enum" | "jsonb"
   required: boolean
   validationRule?: string
   options?: string[] // For enum type
@@ -50,7 +50,7 @@ export async function getStencil(stencilId: string): Promise<StencilDefinition |
       requiredApprovers: stencil.requiredApprovers as string[],
     }
   } catch (error) {
-    console.error('Error fetching stencil:', error)
+    console.error("Error fetching stencil:", error)
     return null
   }
 }
@@ -69,7 +69,7 @@ export async function getAllStencils(): Promise<StencilDefinition[]> {
       requiredApprovers: stencil.requiredApprovers as string[],
     }))
   } catch (error) {
-    console.error('Error fetching stencils:', error)
+    console.error("Error fetching stencils:", error)
     return []
   }
 }
@@ -101,91 +101,91 @@ export async function upsertStencil(stencil: StencilDefinition): Promise<boolean
 
     return true
   } catch (error) {
-    console.error('Error upserting stencil:', error)
+    console.error("Error upserting stencil:", error)
     return false
   }
 }
 
 // Re-export Zod validation functions (recommended approach)
-export { validateProposalDataWithZod, createStencilSchema } from '@/src/lib/zod/stencil-schemas'
-export type { ProposalDataFromStencil } from '@/src/lib/zod/stencil-schemas'
+export { validateProposalDataWithZod, createStencilSchema } from "@/src/lib/zod/stencil-schemas"
+export type { ProposalDataFromStencil } from "@/src/lib/zod/stencil-schemas"
 
 /**
  * Default stencils (seed data)
  */
 export const defaultStencils: StencilDefinition[] = [
   {
-    id: 'hiring_request_v2',
-    name: 'Hiring Request',
+    id: "hiring_request_v2",
+    name: "Hiring Request",
     version: 2,
     fields: [
       {
-        id: 'job_title',
-        label: 'Job Title',
-        type: 'string',
+        id: "job_title",
+        label: "Job Title",
+        type: "string",
         required: true,
       },
       {
-        id: 'level',
-        label: 'Seniority Level',
-        type: 'enum',
+        id: "level",
+        label: "Seniority Level",
+        type: "enum",
         required: true,
-        options: ['junior', 'mid', 'senior', 'principal'],
+        options: ["junior", "mid", "senior", "principal"],
       },
       {
-        id: 'annual_salary',
-        label: 'Annual Salary (USD)',
-        type: 'number',
+        id: "annual_salary",
+        label: "Annual Salary (USD)",
+        type: "number",
         required: true,
-        validationRule: 'min:50000|max:500000',
+        validationRule: "min:50000|max:500000",
       },
       {
-        id: 'department',
-        label: 'Department',
-        type: 'string',
+        id: "department",
+        label: "Department",
+        type: "string",
         required: true,
       },
       {
-        id: 'justification',
-        label: 'Justification',
-        type: 'string',
+        id: "justification",
+        label: "Justification",
+        type: "string",
         required: false,
       },
     ],
-    requiredApprovers: ['CTO', 'CFO', 'CEO'],
+    requiredApprovers: ["CTO", "CFO", "CEO"],
   },
   {
-    id: 'budget_expansion_v1',
-    name: 'Budget Expansion',
+    id: "budget_expansion_v1",
+    name: "Budget Expansion",
     version: 1,
     fields: [
       {
-        id: 'department',
-        label: 'Department',
-        type: 'string',
+        id: "department",
+        label: "Department",
+        type: "string",
         required: true,
       },
       {
-        id: 'amount',
-        label: 'Amount (USD)',
-        type: 'number',
+        id: "amount",
+        label: "Amount (USD)",
+        type: "number",
         required: true,
-        validationRule: 'min:1000',
+        validationRule: "min:1000",
       },
       {
-        id: 'quarter',
-        label: 'Quarter',
-        type: 'enum',
+        id: "quarter",
+        label: "Quarter",
+        type: "enum",
         required: true,
-        options: ['Q1', 'Q2', 'Q3', 'Q4'],
+        options: ["Q1", "Q2", "Q3", "Q4"],
       },
       {
-        id: 'reason',
-        label: 'Reason',
-        type: 'string',
+        id: "reason",
+        label: "Reason",
+        type: "string",
         required: true,
       },
     ],
-    requiredApprovers: ['CFO', 'CEO'],
+    requiredApprovers: ["CFO", "CEO"],
   },
 ]

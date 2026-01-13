@@ -1,4 +1,25 @@
+# robots.txt for StratonHub
+# Canonical documentation hub for NexusCanon and AXIS
+#
+# This file tells search engines which parts of the site they can crawl.
+# For Next.js apps, we typically allow all public content but block
+# internal paths like /api, /_next, and admin routes.
+
+# Allow all search engines to crawl all public content
 User-agent: *
 Allow: /
 
-Sitemap: https://nexuscanon.dev/sitemap.xml
+# Disallow internal Next.js paths and API routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /_vercel/
+
+# Disallow admin or internal-only paths (if any)
+# Disallow: /admin/
+# Disallow: /internal/
+
+# Sitemap location
+# Note: Update this URL to match your actual deployment domain
+# Default: https://www.nexuscanon.com (from layout.tsx)
+# Alternative: https://nexuscanon.dev (from README.md)
+Sitemap: https://www.nexuscanon.com/sitemap.xml

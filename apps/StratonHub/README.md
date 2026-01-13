@@ -1,6 +1,7 @@
-# Documentation System
+# StratonHub
 
-> Production-ready ERP documentation system built with Next.js App Router, Tailwind CSS v4, and custom MDX processing
+> Production-ready ERP documentation system built with Next.js App Router,
+> Tailwind CSS v4, and custom MDX processing
 
 ---
 
@@ -23,19 +24,25 @@
 
 ## Overview
 
-The ERP Documentation System provides comprehensive documentation for developers, end users, and business stakeholders. Built with Next.js 16 App Router, Tailwind CSS v4, and custom MDX processing, it delivers a fast, searchable, and professional documentation experience.
+The ERP Documentation System provides comprehensive documentation for
+developers, end users, and business stakeholders. Built with Next.js 16 App
+Router, Tailwind CSS v4, and custom MDX processing, it delivers a fast,
+searchable, and professional documentation experience.
 
-**Purpose**: Provide a single source of truth for all ERP system documentation, serving multiple audiences with appropriate content and navigation.
+**Purpose**: Provide a single source of truth for all ERP system documentation,
+serving multiple audiences with appropriate content and navigation.
 
 **Key Features**:
+
 - Audience-based navigation (Developers, Users, Business)
-- Module-based organization (11 ERP modules)
+- Surface-based organization (11 surfaces/domains)
 - Fuzzy full-text search with command palette (Cmd+K)
 - Type-safe content validation with Drizzle Zod schemas
 - Diataxis framework for content structure
 - Responsive design with Tailwind V4
 
 **Tech Stack**:
+
 - Next.js 16 (App Router)
 - Tailwind CSS v4
 - @next/mdx for MDX processing
@@ -61,6 +68,7 @@ pnpm dev
 ```
 
 **Prerequisites**:
+
 - Node.js >= 18.0.0
 - pnpm >= 8.0.0
 - Workspace dependencies installed
@@ -75,8 +83,8 @@ pnpm dev
 # Clone repository (if not already cloned)
 git clone [repository-url]
 
-# Navigate to docs app
-cd apps/docs
+# Navigate to StratonHub app
+cd apps/StratonHub
 
 # Install dependencies
 pnpm install
@@ -92,8 +100,8 @@ pnpm build
 cd [monorepo-root]
 pnpm install
 
-# Start docs development server
-cd apps/docs
+# Start StratonHub development server
+cd apps/StratonHub
 pnpm dev
 ```
 
@@ -128,7 +136,7 @@ pnpm start
 
 ### Content Management
 
-- Add MDX files to `app/(audiences)/[audience]/[module]/page.mdx`
+- Add MDX files to `app/(audiences)/[audience]/[surface]/page.mdx`
 - Frontmatter must validate against Drizzle Zod schema
 - Content must follow Diataxis framework
 
@@ -147,6 +155,7 @@ ANALYZE=true  # Enable bundle analysis
 ### Next.js Configuration
 
 Configuration in `next.config.mjs`:
+
 - MDX processing with `@next/mdx`
 - Performance optimizations
 - Security headers
@@ -155,6 +164,7 @@ Configuration in `next.config.mjs`:
 ### Tailwind V4 Configuration
 
 Configuration in `postcss.config.mjs` and `app/globals.css`:
+
 - Design system tokens
 - Custom theme variables
 - Responsive breakpoints
@@ -166,7 +176,7 @@ Configuration in `postcss.config.mjs` and `app/globals.css`:
 ### Directory Structure
 
 ```
-apps/docs/
+apps/StratonHub/
 ├── app/                          # Next.js App Router
 │   ├── (audiences)/             # Route group for audiences
 │   │   ├── developers/          # Developers documentation
@@ -181,7 +191,7 @@ apps/docs/
 │   └── docs/                     # Documentation components
 │       ├── CommandPalette.tsx   # Cmd+K command palette
 │       ├── AudienceSelector.tsx  # Audience switcher
-│       └── ModuleNav.tsx        # Module navigation
+│       └── ModuleNav.tsx        # Surface navigation
 ├── lib/
 │   ├── content/                 # Content management
 │   │   ├── schemas.ts           # Drizzle Zod schemas
@@ -198,17 +208,22 @@ apps/docs/
 
 ### Key Concepts
 
-**Audience-Based Organization**: Content organized by target audience (developers, users, business) for better navigation and discovery.
+**Audience-Based Organization**: Content organized by target audience
+(developers, users, business) for better navigation and discovery.
 
-**Module-Based Routing**: Dynamic routes for ERP modules enable scalable content organization.
+**Surface-Based Routing**: Dynamic routes for surfaces/domains enable scalable
+content organization.
 
-**Type-Safe Content**: Drizzle Zod schemas ensure all content frontmatter is validated at build time.
+**Type-Safe Content**: Drizzle Zod schemas ensure all content frontmatter is
+validated at build time.
 
-**Diataxis Framework**: Content follows Diataxis document types (tutorial, how-to, reference, explanation) for consistent structure.
+**Diataxis Framework**: Content follows Diataxis document types (tutorial,
+how-to, reference, explanation) for consistent structure.
 
 ### Data Flow
 
-1. **Build Time**: MDX files indexed, frontmatter validated, search index generated
+1. **Build Time**: MDX files indexed, frontmatter validated, search index
+   generated
 2. **Request Time**: Routes resolved, content loaded, metadata generated
 3. **Runtime**: Search queries processed, command palette provides results
 
@@ -228,7 +243,7 @@ Search documentation content.
 | ---------- | -------- | -------- | ------------------ |
 | `q`        | `string` | Yes      | Search query       |
 | `audience` | `string` | No       | Filter by audience |
-| `module`   | `string` | No       | Filter by module   |
+| `surface`  | `string` | No       | Filter by surface  |
 | `limit`    | `number` | No       | Results limit      |
 
 **Response**:
@@ -242,7 +257,7 @@ Search documentation content.
       "description": "string",
       "route": "string",
       "audience": "developers" | "users" | "business",
-      "module": "string",
+      "surface": "string",
       "type": "tutorial" | "how-to" | "reference" | "explanation",
       "score": 0.5
     }
@@ -258,15 +273,17 @@ Search documentation content.
 Schema for validating new content frontmatter.
 
 **Required Fields**:
+
 - `title`: string
 - `audience`: 'developers' | 'users' | 'business'
 
 **Optional Fields**:
+
 - `description`: string
-- `module`: ERP module name
+- `surface`: Surface/domain name
 - `type`: Diataxis document type
 - `published`: boolean (default: true)
-- `lastUpdated`: datetime string
+- `last_updated`: datetime string (YYYY-MM-DD format)
 
 ---
 
@@ -290,7 +307,7 @@ pnpm lint
 
 ### Development Workflow
 
-1. Create content in `app/(audiences)/[audience]/[module]/page.mdx`
+1. Create content in `app/(audiences)/[audience]/[surface]/page.mdx`
 2. Ensure frontmatter validates against schema
 3. Test content rendering
 4. Validate with `pnpm docs:validate`
@@ -305,7 +322,7 @@ pnpm lint
 
 ### Adding New Content
 
-1. Choose appropriate audience and module
+1. Choose appropriate audience and surface
 2. Select document type (tutorial, how-to, reference, explanation)
 3. Use template from `templates/content-schemas/`
 4. Fill in frontmatter following schema
@@ -341,6 +358,7 @@ pnpm readme:check-only
 ### Test Structure
 
 Validation scripts ensure:
+
 - Content schema compliance
 - Next.js App Router compliance
 - Tailwind V4 compliance
@@ -360,6 +378,7 @@ Validation scripts ensure:
 **Cause**: Frontmatter doesn't match Drizzle Zod schema
 
 **Solution**:
+
 1. Check frontmatter against schema in `lib/content/schemas.ts`
 2. Ensure all required fields are present
 3. Ensure field types match schema
@@ -372,6 +391,7 @@ Validation scripts ensure:
 **Cause**: Search index not generated or API not working
 
 **Solution**:
+
 1. Ensure search index exists: `public/search-index.json`
 2. Check API route: `app/api/search/route.ts`
 3. Verify search index was built at build time
@@ -384,6 +404,7 @@ Validation scripts ensure:
 **Cause**: File structure doesn't match App Router conventions
 
 **Solution**:
+
 1. Ensure files are in `app/` directory
 2. Use `page.mdx` for route pages
 3. Check route structure matches file path
@@ -396,6 +417,7 @@ Validation scripts ensure:
 **Cause**: Tailwind V4 not configured correctly
 
 **Solution**:
+
 1. Check `postcss.config.mjs` has `@tailwindcss/postcss` plugin
 2. Verify `app/globals.css` imports Tailwind
 3. Ensure design system tokens are defined
@@ -418,7 +440,8 @@ Private - Internal use only
 
 ## Related Documentation
 
-- [Selective Copy Process](./SELECTIVE_COPY_PROCESS.md) - How to copy content from archive
+- [Selective Copy Process](./SELECTIVE_COPY_PROCESS.md) - How to copy content
+  from archive
 - [Layout Schemas](./templates/layout-schemas/) - Layout wireframes
 - [Content Templates](./templates/content-schemas/) - Content templates
 - [System Documentation](../../docs/README.md) - System documentation
@@ -426,6 +449,4 @@ Private - Internal use only
 
 ---
 
-**Version**: 1.0.0
-**Last Updated**: 2026-01-11
-**Status**: Active
+**Version**: 1.0.0 **Last Updated**: 2026-01-11 **Status**: Active

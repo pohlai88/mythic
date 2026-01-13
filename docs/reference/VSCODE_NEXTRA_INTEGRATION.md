@@ -30,6 +30,7 @@
 **Answer:** Files are arranged by **file structure** + **navigation metadata**:
 
 1. **File Structure = Route Structure**
+
    ```
    pages/
    ├── index.mdx              → / (homepage)
@@ -56,16 +57,19 @@
 **Answer:** Detection happens at **3 levels**:
 
 #### Level 1: VS Code Detection (Instant)
+
 - ✅ **Automatic** - VS Code detects new files immediately
 - ✅ **No action needed** - Just create the file
 - ✅ **File explorer updates** - See new files instantly
 
 #### Level 2: Next.js Route Detection (Automatic)
+
 - ✅ **Automatic** - Next.js dev server watches `pages/`
 - ✅ **Hot reload** - Routes appear immediately
 - ✅ **No restart needed** - Fast Refresh handles it
 
 #### Level 3: Navigation Detection (Auto-Generated)
+
 - ⚙️ **Run script** - `pnpm generate:meta`
 - ⚙️ **Or watch mode** - `pnpm generate:meta:watch`
 - ✅ **Auto-updates** - Navigation syncs with files
@@ -85,12 +89,14 @@
    - `Watch All (Meta + Dev)` - Meta + Dev server together
 
 **Or use keyboard shortcuts:**
+
 - `Ctrl+Shift+B` - Run default build task
 - Configure in `.vscode/tasks.json` (already created!)
 
 ### Option 2: File Watcher Extension
 
 **Install "File Watcher" extension:**
+
 1. Open Extensions (`Ctrl+Shift+X`)
 2. Search: "File Watcher"
 3. Install: "File Watcher" by appulate
@@ -99,6 +105,7 @@
 ### Option 3: VS Code Settings (Auto-Format)
 
 **Already configured in `.vscode/settings.json`:**
+
 - ✅ `formatOnSave: true` - Auto-format on save
 - ✅ `formatOnPaste: true` - Auto-format on paste
 - ✅ Biome formatter - Handles MDX/Markdown
@@ -165,20 +172,24 @@ pnpm generate:meta:watch
 ## VS Code Features Already Configured
 
 ### ✅ File Watching
+
 - VS Code watches all files automatically
 - No configuration needed
 
 ### ✅ Auto-Formatting
+
 - MDX files format on save
 - Markdown files format on save
 - Biome handles formatting
 
 ### ✅ IntelliSense
+
 - Path autocomplete works
 - Import suggestions work
 - TypeScript types work
 
 ### ✅ Git Integration
+
 - Git detects new files
 - Shows in source control
 - Can commit immediately
@@ -206,6 +217,7 @@ pnpm generate:meta:watch
 ### Navigation Not Updating?
 
 1. **Run generator manually:**
+
    ```bash
    pnpm generate:meta
    ```
@@ -259,18 +271,18 @@ pnpm docs:generate
 
 ### File Detection Timeline
 
-| Action | Detection Time | Automatic? |
-|--------|---------------|------------|
-| Create file in VS Code | Instant | ✅ Yes |
-| Next.js route created | 1-2 seconds | ✅ Yes |
-| Navigation updated | When script runs | ⚙️ Manual/Watch |
-| Site reloads | 1-2 seconds | ✅ Yes |
+| Action                 | Detection Time   | Automatic?      |
+| ---------------------- | ---------------- | --------------- |
+| Create file in VS Code | Instant          | ✅ Yes          |
+| Next.js route created  | 1-2 seconds      | ✅ Yes          |
+| Navigation updated     | When script runs | ⚙️ Manual/Watch |
+| Site reloads           | 1-2 seconds      | ✅ Yes          |
 
 ---
 
 ## Summary
 
-**Your Questions Answered:
+\*\*Your Questions Answered:
 
 1. **"How will files be automatically populated?"**
    - ✅ VS Code filesystem watches automatically
@@ -288,8 +300,10 @@ pnpm docs:generate
    - ✅ Navigation detects when script runs (manual or watch mode)
 
 **Bottom Line:**
+
 - **Files:** Automatically detected by VS Code + Next.js
 - **Routes:** Automatically created by Next.js
 - **Navigation:** Auto-generated with our script (run once or watch)
 
-**Everything is automatic except navigation generation - but we've made that easy with watch mode!**
+**Everything is automatic except navigation generation - but we've made that
+easy with watch mode!**

@@ -45,7 +45,7 @@
       "persistent": false,
       "inputs": [
         "**/*.{ts,tsx,js,jsx}",
-        "eslint.config.*",
+        ".config/eslint.config.*",
         "package.json",
         "pnpm-lock.yaml"
       ]
@@ -119,7 +119,12 @@
     "type-check": {
       "dependsOn": [],
       "outputs": ["tsconfig.tsbuildinfo"],
-      "inputs": ["src/**/*.ts", "src/**/*.tsx", "tsconfig.json", "tsconfig.*.json"],
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "tsconfig.json",
+        "tsconfig.*.json"
+      ],
       "cache": true,
       "persistent": false
     },

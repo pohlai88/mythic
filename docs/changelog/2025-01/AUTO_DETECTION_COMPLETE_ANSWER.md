@@ -29,9 +29,11 @@
 
 ### Q2: "How will files be automatically arranged?"
 
-**Answer:** Files are arranged by **file structure** which automatically becomes **route structure:**
+**Answer:** Files are arranged by **file structure** which automatically becomes
+**route structure:**
 
 1. **File Structure = Route Structure (Automatic)**
+
    ```
    pages/
    ├── index.mdx              → / (homepage)
@@ -41,6 +43,7 @@
        ├── getting-started.mdx → /guides/getting-started
        └── advanced.mdx        → /guides/advanced
    ```
+
    - ✅ **Automatic** - File location = Route location
    - ✅ **No configuration** - Just organize files in folders
 
@@ -63,18 +66,21 @@
 **Answer:** Detection happens at **3 automatic levels:**
 
 #### Level 1: VS Code Detection (Instant, 100% Automatic)
+
 - ✅ **VS Code detects new files immediately**
 - ✅ **File explorer updates instantly**
 - ✅ **No action needed** - Just create the file
 - ✅ **Works with any file type** - `.mdx`, `.md`, `.tsx`, etc.
 
 #### Level 2: Next.js Route Detection (1-2 seconds, 100% Automatic)
+
 - ✅ **Next.js dev server watches `pages/` directory**
 - ✅ **Routes created automatically** when files are added
 - ✅ **Hot reload** - Site updates without restart
 - ✅ **No configuration needed** - Built into Next.js
 
 #### Level 3: Navigation Detection (Auto-Generated with Script)
+
 - ⚙️ **Run once:** `pnpm generate:meta` (manual)
 - ⚙️ **Or watch mode:** `pnpm generate:meta:watch` (automatic)
 - ✅ **Auto-updates** - Navigation syncs with files
@@ -120,8 +126,8 @@
 
 ### ✅ 100% Automatic (No Action Needed)
 
-| Feature                    | Status      | How It Works                |
-| -------------------------- | ----------- | --------------------------- |
+| Feature                    | Status       | How It Works                |
+| -------------------------- | ------------ | --------------------------- |
 | **VS Code File Detection** | ✅ Automatic | Built-in filesystem watcher |
 | **File Explorer Updates**  | ✅ Automatic | VS Code watches workspace   |
 | **Next.js Route Creation** | ✅ Automatic | File-based routing          |
@@ -130,8 +136,8 @@
 
 ### ⚙️ Auto-Generated (Run Script Once or Watch)
 
-| Feature                | Status           | How It Works                 |
-| ---------------------- | ---------------- | ---------------------------- |
+| Feature                | Status            | How It Works                 |
+| ---------------------- | ----------------- | ---------------------------- |
 | **Navigation Sidebar** | ⚙️ Auto-Generated | Run `pnpm generate:meta`     |
 | **API Documentation**  | ⚙️ Auto-Generated | Run `pnpm generate:api-docs` |
 | **Meta Files**         | ⚙️ Auto-Generated | Script creates `_meta.json`  |
@@ -176,8 +182,8 @@ pnpm docs:generate
 
 ## File Detection Timeline
 
-| Action                 | Detection Time   | Automatic?   | Requires           |
-| ---------------------- | ---------------- | ------------ | ------------------ |
+| Action                 | Detection Time   | Automatic?    | Requires           |
+| ---------------------- | ---------------- | ------------- | ------------------ |
 | Create file in VS Code | Instant          | ✅ Yes        | Nothing            |
 | Next.js route created  | 1-2 seconds      | ✅ Yes        | Dev server running |
 | Navigation updated     | When script runs | ⚙️ Watch mode | Script watching    |
@@ -190,6 +196,7 @@ pnpm docs:generate
 Since your workspace is **only documents**, here's how it works:
 
 ### Current Structure:
+
 ```
 mythic/
 ├── pages/              ← Your documentation files
@@ -204,6 +211,7 @@ mythic/
 ```
 
 ### How It Works:
+
 1. **You create:** `pages/new-doc.mdx`
 2. **VS Code detects:** Instantly (automatic)
 3. **Next.js creates route:** `/new-doc` (automatic)
@@ -239,19 +247,25 @@ mythic/
 ## Summary: All Your Questions Answered
 
 ### ✅ Q1: "How will files be automatically populated?"
+
 **Answer:**
+
 - VS Code filesystem watches automatically
 - Next.js dev server watches `pages/` automatically
 - Navigation script can watch automatically (watch mode)
 
 ### ✅ Q2: "How will files be automatically arranged?"
+
 **Answer:**
+
 - File structure = route structure (automatic)
 - Navigation arranged by `_meta.json` (auto-generated)
 - VS Code explorer shows file structure (automatic)
 
 ### ✅ Q3: "How will new features/functions/routes be detected?"
+
 **Answer:**
+
 - VS Code detects instantly (automatic)
 - Next.js detects in 1-2 seconds (automatic)
 - Navigation detects when script runs (manual or watch mode)
@@ -260,13 +274,15 @@ mythic/
 
 ## Bottom Line
 
-**Everything is automatic except navigation generation - but we've made that easy:**
+**Everything is automatic except navigation generation - but we've made that
+easy:**
 
 1. **Files:** ✅ Automatically detected by VS Code + Next.js
 2. **Routes:** ✅ Automatically created by Next.js
 3. **Navigation:** ⚙️ Auto-generated with our script (run once or watch)
 
 **To maximize automation:**
+
 - Run `pnpm generate:meta:watch` in a terminal
 - Or use VS Code task: "Watch All (Meta + Dev)"
 - Then just create files - everything updates automatically!

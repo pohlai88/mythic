@@ -15,20 +15,20 @@
  * @returns SHA-256 hash of the IP address (64 character hex string)
  */
 export async function hashIP(ip: string): Promise<string> {
-  if (!ip || ip === 'unknown') {
-    return 'unknown'
+  if (!ip || ip === "unknown") {
+    return "unknown"
   }
 
   try {
     const encoder = new TextEncoder()
     const data = encoder.encode(ip)
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data)
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data)
     const hashArray = Array.from(new Uint8Array(hashBuffer))
-    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
   } catch (error) {
     // Fallback to 'unknown' if hashing fails
-    console.error('IP hashing failed:', error)
-    return 'unknown'
+    console.error("IP hashing failed:", error)
+    return "unknown"
   }
 }
 
@@ -42,8 +42,8 @@ export async function hashIP(ip: string): Promise<string> {
  * @returns Hash string (not cryptographically secure, but privacy-preserving)
  */
 export function hashIPSync(ip: string): string {
-  if (!ip || ip === 'unknown') {
-    return 'unknown'
+  if (!ip || ip === "unknown") {
+    return "unknown"
   }
 
   // Simple hash function for Edge Runtime
@@ -51,11 +51,11 @@ export function hashIPSync(ip: string): string {
   let hash = 0
   for (let i = 0; i < ip.length; i++) {
     const char = ip.charCodeAt(i)
-    hash = ((hash << 5) - hash) + char
+    hash = (hash << 5) - hash + char
     hash = hash & hash // Convert to 32-bit integer
   }
-  
+
   // Convert to positive hex string
-  const hexHash = Math.abs(hash).toString(16).padStart(16, '0')
+  const hexHash = Math.abs(hash).toString(16).padStart(16, "0")
   return hexHash
 }

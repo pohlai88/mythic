@@ -5,15 +5,20 @@
  * Includes filtering by type and search functionality.
  */
 
-'use client'
+"use client"
 
-import { Card } from '@mythic/design-system'
-import { cn, intelligentStatusStyles, intelligentInputStyles, intelligentButtonStyles } from '@mythic/shared-utils'
-import { useState, useEffect, useCallback, memo } from 'react'
-import { getBroadcastHistory, type BroadcastData } from '@/app/actions/broadcasts'
-import { getCurrentUserIdAction } from '@/app/actions/session'
-import { LoadingState } from './LoadingState'
-import { EmptyState } from './EmptyState'
+import { Card } from "@mythic/tailwindcss-v4-design-system"
+import {
+  cn,
+  intelligentStatusStyles,
+  intelligentInputStyles,
+  intelligentButtonStyles,
+} from "@mythic/nextjs-shared-utils"
+import { useState, useEffect, useCallback, memo } from "react"
+import { getBroadcastHistory, type BroadcastData } from "@/app/actions/broadcasts"
+import { getCurrentUserIdAction } from "@/app/actions/session"
+import { LoadingState } from "./LoadingState"
+import { EmptyState } from "./EmptyState"
 
 interface BroadcastHistoryProps {
   className?: string
@@ -23,40 +28,40 @@ interface BroadcastHistoryProps {
  * Map broadcast type to proposal status for intelligence-driven styling
  */
 function mapBroadcastTypeToStatus(
-  type: BroadcastData['type']
-): 'DRAFT' | 'LISTENING' | 'APPROVED' | 'VETOED' {
+  type: BroadcastData["type"]
+): "DRAFT" | "LISTENING" | "APPROVED" | "VETOED" {
   switch (type) {
-    case 'approval':
-      return 'APPROVED'
-    case 'veto':
-      return 'VETOED'
-    case 'announcement':
-    case 'poll':
-      return 'LISTENING'
-    case 'emergency':
-      return 'VETOED'
+    case "approval":
+      return "APPROVED"
+    case "veto":
+      return "VETOED"
+    case "announcement":
+    case "poll":
+      return "LISTENING"
+    case "emergency":
+      return "VETOED"
     default:
-      return 'LISTENING'
+      return "LISTENING"
   }
 }
 
 /**
  * Get icon for broadcast type
  */
-function getBroadcastIcon(type: BroadcastData['type']): string {
+function getBroadcastIcon(type: BroadcastData["type"]): string {
   switch (type) {
-    case 'approval':
-      return '✅'
-    case 'veto':
-      return '❌'
-    case 'announcement':
-      return '📢'
-    case 'poll':
-      return '🗳️'
-    case 'emergency':
-      return '🚨'
+    case "approval":
+      return "✅"
+    case "veto":
+      return "❌"
+    case "announcement":
+      return "📢"
+    case "poll":
+      return "🗳️"
+    case "emergency":
+      return "🚨"
     default:
-      return '📢'
+      return "📢"
   }
 }
 
@@ -67,8 +72,8 @@ export const BroadcastHistory = memo(function BroadcastHistory({
   const [loading, setLoading] = useState(true)
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(0)
-  const [filterType, setFilterType] = useState<BroadcastData['type'] | 'all'>('all')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [filterType, setFilterType] = useState<BroadcastData["type"] | "all">("all")
+  const [searchQuery, setSearchQuery] = useState("")
   const pageSize = 20
 
   // Load broadcast history
@@ -85,14 +90,14 @@ export const BroadcastHistory = memo(function BroadcastHistory({
         userId,
         limit: pageSize,
         offset: page * pageSize,
-        type: filterType === 'all' ? undefined : filterType,
+        type: filterType === "all" ? undefined : filterType,
         search: searchQuery || undefined,
       })
 
       setBroadcasts(result.broadcasts)
       setTotal(result.total)
     } catch (error) {
-      console.error('Error loading broadcast history:', error)
+      console.error("Error loading broadcast history:", error)
     } finally {
       setLoading(false)
     }
@@ -109,7 +114,7 @@ export const BroadcastHistory = memo(function BroadcastHistory({
 
   if (loading && broadcasts.length === 0) {
     return (
-      <div className={cn('p-6', className)}>
+      <div className={cn("p-6", className)}>
         <LoadingState message="Loading broadcast history..." />
       </div>
     )
@@ -117,7 +122,7 @@ export const BroadcastHistory = memo(function BroadcastHistory({
 
   if (broadcasts.length === 0) {
     return (
-      <div className={cn('p-6', className)}>
+      <div className={cn("p-6", className)}>
         <EmptyState
           title="No broadcasts found"
           description="No broadcast announcements have been created yet"
@@ -129,7 +134,7 @@ export const BroadcastHistory = memo(function BroadcastHistory({
   const totalPages = Math.ceil(total / pageSize)
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn("space-y-4", className)}>
       {/* Filters and Search */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <div className="flex items-center gap-4 flex-1">
@@ -137,7 +142,7 @@ export const BroadcastHistory = memo(function BroadcastHistory({
           <select
             value={filterType}
             onChange={(e) => {
-              setFilterType(e.target.value as BroadcastData['type'] | 'all')
+              setFilterType(e.target.value as BroadcastData["type"] | "all")
             }}
             className={intelligentInputStyles()}
           >
@@ -155,7 +160,7 @@ export const BroadcastHistory = memo(function BroadcastHistory({
             placeholder="Search broadcasts..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className={intelligentInputStyles('w-full')}
+            className={intelligentInputStyles("w-full")}
           />
         </div>
       </div>
@@ -171,10 +176,10 @@ export const BroadcastHistory = memo(function BroadcastHistory({
               key={broadcast.id}
               elevation="sm"
               className={cn(
-                'p-4 border-l-4',
-                intelligentStatusStyles(status, 'border'),
-                intelligentStatusStyles(status, 'text'),
-                broadcast.isRead && 'opacity-60'
+                "p-4 border-l-4",
+                intelligentStatusStyles(status, "border"),
+                intelligentStatusStyles(status, "text"),
+                broadcast.isRead && "opacity-60"
               )}
             >
               <div className="flex items-start justify-between gap-4">
@@ -184,16 +189,14 @@ export const BroadcastHistory = memo(function BroadcastHistory({
                     <span
                       className={intelligentStatusStyles(
                         status,
-                        'badge',
-                        'text-xs font-medium px-2 py-1 rounded-xs'
+                        "badge",
+                        "text-xs font-medium px-2 py-1 rounded-xs"
                       )}
                     >
                       {broadcast.type.toUpperCase()}
                     </span>
-                    {broadcast.isRead && (
-                      <span className="text-xs text-ash font-mono">READ</span>
-                    )}
-                    {broadcast.type === 'emergency' && (
+                    {broadcast.isRead && <span className="text-xs text-ash font-mono">READ</span>}
+                    {broadcast.type === "emergency" && (
                       <span className="text-xs text-ember font-mono">URGENT</span>
                     )}
                   </div>
@@ -202,7 +205,7 @@ export const BroadcastHistory = memo(function BroadcastHistory({
                     <div
                       className="text-sm text-ash mb-2 prose prose-invert max-w-none"
                       dangerouslySetInnerHTML={{
-                        __html: broadcast.message.replace(/\n/g, '<br />'),
+                        __html: broadcast.message.replace(/\n/g, "<br />"),
                       }}
                     />
                   )}
@@ -232,14 +235,22 @@ export const BroadcastHistory = memo(function BroadcastHistory({
             <button
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               disabled={page === 0}
-              className={intelligentButtonStyles('secondary', 'md', 'disabled:opacity-50 disabled:cursor-not-allowed')}
+              className={intelligentButtonStyles(
+                "secondary",
+                "md",
+                "disabled:opacity-50 disabled:cursor-not-allowed"
+              )}
             >
               Previous
             </button>
             <button
               onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1}
-              className={intelligentButtonStyles('secondary', 'md', 'disabled:opacity-50 disabled:cursor-not-allowed')}
+              className={intelligentButtonStyles(
+                "secondary",
+                "md",
+                "disabled:opacity-50 disabled:cursor-not-allowed"
+              )}
             >
               Next
             </button>

@@ -2,17 +2,17 @@
  * Seed default stencils into database
  */
 
-import { createScriptLogger } from '@/src/lib/logger'
-import { upsertStencil } from './index'
-import { defaultStencils } from './index'
+import { createScriptLogger } from "@/src/lib/logger"
+import { upsertStencil } from "./index"
+import { defaultStencils } from "./index"
 
-const logger = createScriptLogger('seed-stencils')
+const logger = createScriptLogger("seed-stencils")
 
 /**
  * Seed default stencils
  */
 export async function seedStencils(): Promise<void> {
-  logger.info('Seeding default stencils...')
+  logger.info("Seeding default stencils...")
 
   for (const stencil of defaultStencils) {
     const success = await upsertStencil(stencil)
@@ -23,5 +23,5 @@ export async function seedStencils(): Promise<void> {
     }
   }
 
-  logger.info('Stencil seeding complete!')
+  logger.info("Stencil seeding complete!")
 }

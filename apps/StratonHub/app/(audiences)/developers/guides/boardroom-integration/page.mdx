@@ -1,0 +1,169 @@
+---
+title: BoardRoom Integration
+description: Developer tutorial for integrating with the BoardRoom API
+audience: developers
+type: tutorial
+published: true
+---
+
+# BoardRoom Integration
+
+> Complete tutorial for integrating external systems with the BoardRoom API
+
+## Overview
+
+This tutorial guides you through integrating your application with the BoardRoom
+executive decision engine.
+
+**What you'll learn**:
+
+- Authentication with the BoardRoom API
+- Creating proposals programmatically
+- Handling approval webhooks
+- Best practices for production integration
+
+## Prerequisites
+
+- API access credentials
+- Understanding of REST APIs
+- Development environment with HTTP client
+
+## Step 1: Authentication Setup
+
+### Obtain API Credentials
+
+1. Request API credentials from your administrator
+2. Store credentials securely (never commit to source control)
+3. Use environment variables for credential management
+
+### Authentication Flow
+
+```typescript
+const response = await fetch("/api/v1/auth/token", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    clientId: process.env.BOARDROOM_CLIENT_ID,
+    clientSecret: process.env.BOARDROOM_CLIENT_SECRET,
+  }),
+})
+
+const { accessToken, expiresIn } = await response.json()
+```
+
+## Step 2: Create a Proposal
+
+### API Endpoint
+
+```
+POST /api/v1/boardroom/proposals
+```
+
+### Request Format
+
+```json
+{
+  "stencilId": "hiring-request",
+  "circleId": "engineering-leadership",
+  "data": {
+    "position": "Senior Software Engineer",
+    "department": "Engineering",
+    "justification": "Team expansion for Q2 initiatives",
+    "budget": 150000
+  }
+}
+```
+
+### Response
+
+```json
+{
+  "id": "prop_abc123",
+  "caseNumber": "CASE-2026-000042",
+  "status": "SUBMITTED",
+  "createdAt": "2026-01-13T10:00:00Z"
+}
+```
+
+## Step 3: Handle Webhooks
+
+### Configure Webhook Endpoint
+
+Register your webhook URL in the BoardRoom settings:
+
+```
+https://your-app.com/webhooks/boardroom
+```
+
+### Webhook Payload
+
+```json
+{
+  "event": "proposal.approved",
+  "proposalId": "prop_abc123",
+  "caseNumber": "CASE-2026-000042",
+  "approvedBy": "user_xyz789",
+  "approvedAt": "2026-01-13T14:30:00Z"
+}
+```
+
+### Verify Webhook Signature
+
+```typescript
+import crypto from "crypto"
+
+function verifyWebhook(payload: string, signature: string): boolean {
+  const expected = crypto
+    .createHmac("sha256", process.env.WEBHOOK_SECRET)
+    .update(payload)
+    .digest("hex")
+
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))
+}
+```
+
+## Step 4: Error Handling
+
+### Common Error Codes
+
+| Code | Meaning         | Action               |
+| ---- | --------------- | -------------------- |
+| 400  | Invalid request | Check request format |
+| 401  | Unauthorized    | Refresh token        |
+| 403  | Forbidden       | Check permissions    |
+| 404  | Not found       | Verify resource ID   |
+| 429  | Rate limited    | Implement backoff    |
+
+### Retry Strategy
+
+```typescript
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn()
+    } catch (error) {
+      if (attempt === maxRetries - 1) throw error
+      await sleep(Math.pow(2, attempt) * 1000)
+    }
+  }
+  throw new Error("Max retries exceeded")
+}
+```
+
+## Best Practices
+
+1. **Idempotency**: Use idempotency keys for proposal creation
+2. **Rate Limiting**: Implement exponential backoff
+3. **Logging**: Log all API interactions for debugging
+4. **Monitoring**: Set up alerts for webhook failures
+
+## Related Documentation
+
+- [API Reference](/developers/api/boardroom) - Complete API documentation
+- [BoardRoom User Guide](/users/boardroom) - End-user documentation
+
+---
+
+**Last Updated**: 2026-01-13

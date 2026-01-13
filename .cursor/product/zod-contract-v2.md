@@ -10,7 +10,8 @@
 - Primitives: `z.string()`, `z.number()`, `z.boolean()`, `z.date()`
 - Collections: `z.object()`, `z.array()`, `z.enum()`, `z.record()`
 - Wrappers: `.optional()`, `.nullable()`, `.default()`
-- Methods: `.min()`, `.max()`, `.email()`, `.datetime()`, `.int()`, `.positive()`, `.coerce()`
+- Methods: `.min()`, `.max()`, `.email()`, `.datetime()`, `.int()`,
+  `.positive()`, `.coerce()`
 - Integration: `drizzle-zod`, `zod-to-openapi`
 - Documentation: `.describe()`
 - Transformation: `.transform()`
@@ -18,12 +19,15 @@
 **Missing High-Value Features (61 features):**
 
 - Error handling: `.safeParse()`, `.safeParseAsync()`, `.parseAsync()`
-- String methods: `.trim()`, `.toLowerCase()`, `.url()`, `.uuid()`, `.regex()`, `.startsWith()`, `.endsWith()`
+- String methods: `.trim()`, `.toLowerCase()`, `.url()`, `.uuid()`, `.regex()`,
+  `.startsWith()`, `.endsWith()`
 - Number methods: `.nonnegative()`, `.finite()`, `.safe()`, `.multipleOf()`
 - Object methods: `.pick()`, `.omit()`, `.deepPartial()`, `.merge()`, `.and()`
 - Array methods: `.nonempty()`, `.min()`, `.max()`, `.length()`
-- Advanced: `.refine()`, `.superRefine()`, `.check()`, `.pipe()`, `.catch()`, `.readonly()`, `.brand()`
-- Unions: `z.union()`, `z.intersection()`, `z.discriminatedUnion()`, `z.literal()`, `z.tuple()`
+- Advanced: `.refine()`, `.superRefine()`, `.check()`, `.pipe()`, `.catch()`,
+  `.readonly()`, `.brand()`
+- Unions: `z.union()`, `z.intersection()`, `z.discriminatedUnion()`,
+  `z.literal()`, `z.tuple()`
 - Template literals: `z.templateLiteral()` (Zod 4 feature)
 - Metadata: `.meta()`, `.register()`
 
@@ -31,24 +35,28 @@
 
 ### Phase 1: Environment Variable Validation (Priority: CRITICAL)
 
-**Current Issue:** Environment variables accessed without validation (`process.env.DATABASE_URL`, etc.)
+**Current Issue:** Environment variables accessed without validation
+(`process.env.DATABASE_URL`, etc.)
 
 **Implementation:**
 
 1. Create `apps/boardroom/src/lib/env.ts`:
+
 ```typescript
-import { z } from 'zod/v4'
+import { z } from "zod/v4"
 
 const envSchema = z.object({
-  DATABASE_URL: z.string().url().describe('PostgreSQL connection string'),
+  DATABASE_URL: z.string().url().describe("PostgreSQL connection string"),
   DB_HOST: z.string().min(1).optional(),
   DB_PORT: z.coerce.number().int().positive().max(65535).optional(),
   DB_USER: z.string().min(1).optional(),
   DB_PASSWORD: z.string().optional(),
   DB_NAME: z.string().min(1).optional(),
   DB_SSL: z.coerce.boolean().optional(),
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
+  LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
   NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
 })
 
@@ -65,20 +73,23 @@ export type Env = z.infer<typeof envSchema>
 
 ### Phase 2: Form Validation with React Hook Form (Priority: HIGH)
 
-**Current Issue:** Manual validation in `apps/boardroom/src/codex/index.ts` (lines 111-163)
+**Current Issue:** Manual validation in `apps/boardroom/src/codex/index.ts`
+(lines 111-163)
 
 **Implementation:**
 
 1. Install dependencies:
+
 ```bash
 pnpm add react-hook-form@^7.52.0 @hookform/resolvers@^3.3.4
 ```
 
 2. Create dynamic stencil validation schemas:
+
 ```typescript
 // apps/boardroom/src/lib/zod/stencil-validator.ts
-import { z } from 'zod/v4'
-import type { StencilDefinition } from '@/src/codex'
+import { z } from "zod/v4"
+import type { StencilDefinition } from "@/src/codex"
 
 export function createStencilSchema(stencil: StencilDefinition) {
   const shape: z.ZodRawShape = {}
@@ -87,19 +98,19 @@ export function createStencilSchema(stencil: StencilDefinition) {
     let fieldSchema: z.ZodTypeAny
 
     switch (field.type) {
-      case 'string':
+      case "string":
         fieldSchema = z.string().trim()
         break
-      case 'number':
+      case "number":
         fieldSchema = z.coerce.number()
         break
-      case 'date':
+      case "date":
         fieldSchema = z.coerce.date()
         break
-      case 'enum':
+      case "enum":
         fieldSchema = z.enum(field.options as [string, ...string[]])
         break
-      case 'jsonb':
+      case "jsonb":
         fieldSchema = z.record(z.string(), z.unknown())
         break
     }
@@ -111,16 +122,15 @@ export function createStencilSchema(stencil: StencilDefinition) {
       if (rules.max) fieldSchema = fieldSchema.max(rules.max)
     }
 
-    shape[field.id] = field.required
-      ? fieldSchema
-      : fieldSchema.optional()
+    shape[field.id] = field.required ? fieldSchema : fieldSchema.optional()
   }
 
   return z.object(shape).describe(`Schema for stencil: ${stencil.name}`)
 }
 ```
 
-3. Replace manual validation in `apps/boardroom/src/codex/index.ts` with Zod schemas
+3. Replace manual validation in `apps/boardroom/src/codex/index.ts` with Zod
+   schemas
 
 **Impact:** +8% utilization, type-safe forms, better UX
 
@@ -133,6 +143,7 @@ export function createStencilSchema(stencil: StencilDefinition) {
 **Implementation:**
 
 1. Update `apps/boardroom/app/actions/proposals.ts`:
+
 ```typescript
 // Add response schemas
 const createProposalResponseSchema = z.object({
@@ -150,10 +161,11 @@ export async function createProposal(...) {
 ```
 
 2. Create middleware for API route validation:
+
 ```typescript
 // apps/boardroom/src/lib/api/validate-response.ts
-import { z } from 'zod/v4'
-import { NextResponse } from 'next/server'
+import { z } from "zod/v4"
+import { NextResponse } from "next/server"
 
 export function validateResponse<T extends z.ZodTypeAny>(
   data: unknown,
@@ -162,7 +174,7 @@ export function validateResponse<T extends z.ZodTypeAny>(
   const result = schema.safeParse(data)
   if (!result.success) {
     return NextResponse.json(
-      { error: 'Invalid response format', details: result.error.issues },
+      { error: "Invalid response format", details: result.error.issues },
       { status: 500 }
     )
   }
@@ -170,38 +182,42 @@ export function validateResponse<T extends z.ZodTypeAny>(
 }
 ```
 
-
 **Impact:** +5% utilization, prevents invalid API responses
 
 ---
 
 ### Phase 4: Enhanced Drizzle-Zod Integration (Priority: MEDIUM)
 
-**Current State:** Using `createInsertSchema` and `createSelectSchema` from drizzle-zod
+**Current State:** Using `createInsertSchema` and `createSelectSchema` from
+drizzle-zod
 
 **Optimization:**
 
 1. Add custom refinements to Drizzle schemas:
+
 ```typescript
 // apps/boardroom/src/db/schema/proposals.ts
 export const insertProposalSchema = createInsertSchema(proposals, {
   status: proposalStatusSchema,
   data: z.record(z.string(), z.unknown()),
 })
-  .refine((data) => {
-    // Business logic: case number format
-    return /^CASE-\d{4}-\d{6}$/.test(data.caseNumber)
-  }, { message: 'Invalid case number format' })
-  .describe('Proposal creation schema with business rules')
+  .refine(
+    (data) => {
+      // Business logic: case number format
+      return /^CASE-\d{4}-\d{6}$/.test(data.caseNumber)
+    },
+    { message: "Invalid case number format" }
+  )
+  .describe("Proposal creation schema with business rules")
 ```
 
 2. Add transformation pipelines:
+
 ```typescript
 export const proposalInputSchema = insertProposalSchema
   .pipe(selectProposalSchema)
   .transform((data) => transformProposalToShared(data))
 ```
-
 
 **Impact:** +3% utilization, stronger database validation
 
@@ -214,22 +230,26 @@ export const proposalInputSchema = insertProposalSchema
 **Implementation:**
 
 1. Create query param schemas:
+
 ```typescript
 // apps/boardroom/src/lib/api-schemas/queries.ts
-import { z } from 'zod/v4'
+import { z } from "zod/v4"
 
 export const proposalQuerySchema = z.object({
   status: proposalStatusSchema.optional(),
   circleId: z.string().uuid().optional(),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().min(1).max(100).default(10),
-  sort: z.enum(['created_at', 'updated_at', 'case_number']).default('created_at'),
-  order: z.enum(['asc', 'desc']).default('desc'),
+  sort: z
+    .enum(["created_at", "updated_at", "case_number"])
+    .default("created_at"),
+  order: z.enum(["asc", "desc"]).default("desc"),
   search: z.string().trim().min(1).optional(),
 })
 ```
 
 2. Update `getProposals` action:
+
 ```typescript
 export async function getProposals(
   filters?: z.infer<typeof proposalQuerySchema>
@@ -238,7 +258,6 @@ export async function getProposals(
   // ... use validatedFilters
 }
 ```
-
 
 **Impact:** +4% utilization, type-safe queries
 
@@ -249,6 +268,7 @@ export async function getProposals(
 **Implementation:**
 
 1. Use `.safeParse()` everywhere instead of `.parse()`:
+
 ```typescript
 // Replace all .parse() with .safeParse()
 const result = schema.safeParse(input)
@@ -258,6 +278,7 @@ if (!result.success) {
 ```
 
 2. Add `.refine()` for complex business rules:
+
 ```typescript
 const proposalSchema = z.object({...})
   .refine((data) => data.dueDate > data.createdAt, {
@@ -267,22 +288,22 @@ const proposalSchema = z.object({...})
 ```
 
 3. Use `.pipe()` for transformation chains:
+
 ```typescript
-const processedData = rawSchema
-  .pipe(transformSchema)
-  .pipe(validateSchema)
+const processedData = rawSchema.pipe(transformSchema).pipe(validateSchema)
 ```
 
 4. Add `.catch()` for error recovery:
+
 ```typescript
-const schema = z.string().catch('default')
+const schema = z.string().catch("default")
 ```
 
 5. Use `.readonly()` for immutable types:
+
 ```typescript
 const configSchema = z.object({...}).readonly()
 ```
-
 
 **Impact:** +15% utilization, better error handling
 
@@ -294,8 +315,10 @@ const configSchema = z.object({...}).readonly()
 
 **Reasons:**
 
-1. **Native Zod Integration:** `drizzle-zod` provides `createInsertSchema` and `createSelectSchema` out of the box
-2. **Type Safety:** Drizzle's `$inferSelect` and `$inferInsert` work seamlessly with Zod
+1. **Native Zod Integration:** `drizzle-zod` provides `createInsertSchema` and
+   `createSelectSchema` out of the box
+2. **Type Safety:** Drizzle's `$inferSelect` and `$inferInsert` work seamlessly
+   with Zod
 3. **Already Integrated:** Codebase uses Drizzle extensively
 4. **Performance:** Drizzle is lighter and faster than Prisma
 5. **SQL-like API:** Better for complex queries
@@ -336,7 +359,8 @@ await db.insert(proposals).values(validated)
 1. **Week 1:** Environment validation (Phase 1) - Critical for production safety
 2. **Week 2:** Form validation (Phase 2) - High user impact
 3. **Week 3:** API response validation (Phase 3) - Prevents bugs
-4. **Week 4:** Query params + Drizzle enhancements (Phases 4-5) - Completes API layer
+4. **Week 4:** Query params + Drizzle enhancements (Phases 4-5) - Completes API
+   layer
 5. **Week 5:** Advanced features (Phase 6) - Polish and optimization
 
 ---
@@ -357,7 +381,8 @@ await db.insert(proposals).values(validated)
 
 - `apps/boardroom/src/lib/env.ts` - Environment validation
 - `apps/boardroom/src/lib/zod/stencil-validator.ts` - Dynamic stencil schemas
-- `apps/boardroom/src/lib/api/validate-response.ts` - Response validation middleware
+- `apps/boardroom/src/lib/api/validate-response.ts` - Response validation
+  middleware
 - `apps/boardroom/src/lib/api-schemas/queries.ts` - Query parameter schemas
 
 **Modified Files:**
@@ -403,15 +428,13 @@ await db.insert(proposals).values(validated)
 **Implementation:**
 
 1. Create Server Actions validation wrapper:
+
 ```typescript
 // apps/boardroom/src/lib/actions/validate-action.ts
-import { z } from 'zod/v4'
-import { ActionState } from 'next/server'
+import { z } from "zod/v4"
+import { ActionState } from "next/server"
 
-export function createValidatedAction<
-  TInput extends z.ZodTypeAny,
-  TOutput
->(
+export function createValidatedAction<TInput extends z.ZodTypeAny, TOutput>(
   inputSchema: TInput,
   handler: (input: z.infer<TInput>) => Promise<TOutput>
 ) {
@@ -422,8 +445,8 @@ export function createValidatedAction<
 
     if (!result.success) {
       return {
-        errors: result.error.issues.map(issue => ({
-          field: issue.path.join('.'),
+        errors: result.error.issues.map((issue) => ({
+          field: issue.path.join("."),
           message: issue.message,
         })),
       }
@@ -434,7 +457,9 @@ export function createValidatedAction<
       return { success: true, data: output }
     } catch (error) {
       return {
-        errors: [{ message: error instanceof Error ? error.message : 'Unknown error' }],
+        errors: [
+          { message: error instanceof Error ? error.message : "Unknown error" },
+        ],
       }
     }
   }
@@ -442,9 +467,10 @@ export function createValidatedAction<
 ```
 
 2. Update `apps/boardroom/app/actions/proposals.ts`:
+
 ```typescript
-import { createValidatedAction } from '@/src/lib/actions/validate-action'
-import { createProposalInputSchema } from '@/src/lib/api-schemas/proposals'
+import { createValidatedAction } from "@/src/lib/actions/validate-action"
+import { createProposalInputSchema } from "@/src/lib/api-schemas/proposals"
 
 export const createProposalAction = createValidatedAction(
   createProposalInputSchema,
@@ -454,7 +480,6 @@ export const createProposalAction = createValidatedAction(
   }
 )
 ```
-
 
 **Impact:** +3% Zod utilization, type-safe Server Actions, better error handling
 
@@ -467,16 +492,17 @@ export const createProposalAction = createValidatedAction(
 **Implementation:**
 
 1. Create route handler wrapper:
+
 ```typescript
 // apps/boardroom/src/lib/api/route-handler.ts
-import { z } from 'zod/v4'
-import { NextRequest, NextResponse } from 'next/server'
+import { z } from "zod/v4"
+import { NextRequest, NextResponse } from "next/server"
 
 export function createValidatedRoute<
   TParams extends z.ZodTypeAny,
   TQuery extends z.ZodTypeAny,
   TBody extends z.ZodTypeAny,
-  TResponse extends z.ZodTypeAny
+  TResponse extends z.ZodTypeAny,
 >(config: {
   params?: TParams
   query?: TQuery
@@ -488,7 +514,10 @@ export function createValidatedRoute<
     body: z.infer<TBody>
   }) => Promise<z.infer<TResponse>>
 }) {
-  return async (req: NextRequest, { params }: { params: Promise<Record<string, string>> }) => {
+  return async (
+    req: NextRequest,
+    { params }: { params: Promise<Record<string, string>> }
+  ) => {
     try {
       // Validate params
       const validatedParams = config.params
@@ -496,14 +525,16 @@ export function createValidatedRoute<
         : await params
 
       // Validate query string
-      const searchParams = Object.fromEntries(req.nextUrl.searchParams.entries())
+      const searchParams = Object.fromEntries(
+        req.nextUrl.searchParams.entries()
+      )
       const validatedQuery = config.query
         ? config.query.parse(searchParams)
         : searchParams
 
       // Validate body
       let validatedBody = {}
-      if (config.body && req.method !== 'GET') {
+      if (config.body && req.method !== "GET") {
         const rawBody = await req.json()
         validatedBody = config.body.parse(rawBody)
       }
@@ -521,12 +552,12 @@ export function createValidatedRoute<
     } catch (error) {
       if (error instanceof z.ZodError) {
         return NextResponse.json(
-          { error: 'Validation failed', issues: error.issues },
+          { error: "Validation failed", issues: error.issues },
           { status: 400 }
         )
       }
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: "Internal server error" },
         { status: 500 }
       )
     }
@@ -535,10 +566,14 @@ export function createValidatedRoute<
 ```
 
 2. Create API route with validation:
+
 ```typescript
 // apps/boardroom/app/api/proposals/route.ts
-import { createValidatedRoute } from '@/src/lib/api/route-handler'
-import { proposalQuerySchema, proposalResponseSchema } from '@/src/lib/api-schemas/proposals'
+import { createValidatedRoute } from "@/src/lib/api/route-handler"
+import {
+  proposalQuerySchema,
+  proposalResponseSchema,
+} from "@/src/lib/api-schemas/proposals"
 
 export const GET = createValidatedRoute({
   query: proposalQuerySchema,
@@ -548,7 +583,6 @@ export const GET = createValidatedRoute({
   },
 })
 ```
-
 
 **Impact:** +5% Zod utilization, type-safe API routes, automatic validation
 
@@ -561,14 +595,15 @@ export const GET = createValidatedRoute({
 **Implementation:**
 
 1. Create cache wrapper with Zod validation:
+
 ```typescript
 // apps/boardroom/src/lib/cache/validated-cache.ts
-import { z } from 'zod/v4'
-import { unstable_cache } from 'next/cache'
+import { z } from "zod/v4"
+import { unstable_cache } from "next/cache"
 
 export function createValidatedCache<
   TSchema extends z.ZodTypeAny,
-  TArgs extends readonly unknown[]
+  TArgs extends readonly unknown[],
 >(
   schema: TSchema,
   fn: (...args: TArgs) => Promise<z.infer<TSchema>>,
@@ -587,6 +622,7 @@ export function createValidatedCache<
 ```
 
 2. Use in Server Actions:
+
 ```typescript
 // apps/boardroom/app/actions/proposals.ts
 import { createValidatedCache } from '@/src/lib/cache/validated-cache'
@@ -601,7 +637,6 @@ const getCachedProposals = createValidatedCache(
 )
 ```
 
-
 **Impact:** +2% Zod utilization, ensures cache integrity
 
 ---
@@ -613,11 +648,12 @@ const getCachedProposals = createValidatedCache(
 **Implementation:**
 
 1. Create middleware with Zod validation:
+
 ```typescript
 // apps/boardroom/src/middleware.ts
-import { z } from 'zod/v4'
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { z } from "zod/v4"
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
 const requestSchema = z.object({
   headers: z.record(z.string()),
@@ -629,13 +665,15 @@ export function middleware(request: NextRequest) {
   // Validate request structure
   const validated = requestSchema.safeParse({
     headers: Object.fromEntries(request.headers.entries()),
-    cookies: Object.fromEntries(request.cookies.getAll().map(c => [c.name, c.value])),
+    cookies: Object.fromEntries(
+      request.cookies.getAll().map((c) => [c.name, c.value])
+    ),
     url: request.url,
   })
 
   if (!validated.success) {
     return NextResponse.json(
-      { error: 'Invalid request format' },
+      { error: "Invalid request format" },
       { status: 400 }
     )
   }
@@ -644,7 +682,6 @@ export function middleware(request: NextRequest) {
   return NextResponse.next()
 }
 ```
-
 
 **Impact:** +2% Zod utilization, request-level validation
 
@@ -657,37 +694,42 @@ export function middleware(request: NextRequest) {
 **Implementation:**
 
 1. Create form action wrapper:
+
 ```typescript
 // apps/boardroom/src/lib/forms/validated-form-action.ts
-import { z } from 'zod/v4'
-import { useActionState } from 'react'
-import { useFormStatus } from 'react-dom'
+import { z } from "zod/v4"
+import { useActionState } from "react"
+import { useFormStatus } from "react-dom"
 
-export function useValidatedFormAction<
-  TSchema extends z.ZodTypeAny
->(
+export function useValidatedFormAction<TSchema extends z.ZodTypeAny>(
   schema: TSchema,
-  action: (input: z.infer<TSchema>) => Promise<{ success: boolean; error?: string }>
+  action: (
+    input: z.infer<TSchema>
+  ) => Promise<{ success: boolean; error?: string }>
 ) {
-  const [state, formAction] = useActionState(async (prevState: any, formData: FormData) => {
-    const rawInput = Object.fromEntries(formData.entries())
-    const result = schema.safeParse(rawData)
+  const [state, formAction] = useActionState(
+    async (prevState: any, formData: FormData) => {
+      const rawInput = Object.fromEntries(formData.entries())
+      const result = schema.safeParse(rawData)
 
-    if (!result.success) {
-      return {
-        errors: result.error.issues,
-        success: false,
+      if (!result.success) {
+        return {
+          errors: result.error.issues,
+          success: false,
+        }
       }
-    }
 
-    return await action(result.data)
-  }, { success: false })
+      return await action(result.data)
+    },
+    { success: false }
+  )
 
   return { state, formAction }
 }
 ```
 
 2. Use in components:
+
 ```typescript
 // apps/boardroom/components/ProposalForm.tsx
 import { useValidatedFormAction } from '@/src/lib/forms/validated-form-action'
@@ -707,7 +749,6 @@ export function ProposalForm() {
   )
 }
 ```
-
 
 **Impact:** +3% Zod utilization, type-safe forms, better UX
 
@@ -776,12 +817,13 @@ export function ProposalForm() {
 **Implementation:**
 
 1. Create `useZodForm` hook:
+
 ```typescript
 // apps/boardroom/src/lib/react/use-zod-form.ts
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod/v4'
-import type { UseFormReturn } from 'react-hook-form'
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod/v4"
+import type { UseFormReturn } from "react-hook-form"
 
 export function useZodForm<TSchema extends z.ZodTypeAny>(
   schema: TSchema,
@@ -789,17 +831,18 @@ export function useZodForm<TSchema extends z.ZodTypeAny>(
 ): UseFormReturn<z.infer<TSchema>> {
   return useForm<z.infer<TSchema>>({
     resolver: zodResolver(schema),
-    mode: 'onChange', // Real-time validation
+    mode: "onChange", // Real-time validation
     ...options,
   })
 }
 ```
 
 2. Create `useZodState` hook for component state:
+
 ```typescript
 // apps/boardroom/src/lib/react/use-zod-state.ts
-import { useState, useCallback } from 'react'
-import { z } from 'zod/v4'
+import { useState, useCallback } from "react"
+import { z } from "zod/v4"
 
 export function useZodState<TSchema extends z.ZodTypeAny>(
   schema: TSchema,
@@ -808,21 +851,25 @@ export function useZodState<TSchema extends z.ZodTypeAny>(
   const [value, setValue] = useState<z.infer<TSchema> | undefined>(initialValue)
   const [error, setError] = useState<z.ZodError | null>(null)
 
-  const setValidatedValue = useCallback((newValue: unknown) => {
-    const result = schema.safeParse(newValue)
-    if (result.success) {
-      setValue(result.data)
-      setError(null)
-    } else {
-      setError(result.error)
-    }
-  }, [schema])
+  const setValidatedValue = useCallback(
+    (newValue: unknown) => {
+      const result = schema.safeParse(newValue)
+      if (result.success) {
+        setValue(result.data)
+        setError(null)
+      } else {
+        setError(result.error)
+      }
+    },
+    [schema]
+  )
 
   return [value, setValidatedValue, error] as const
 }
 ```
 
 3. Create `useZodContext` for prop validation:
+
 ```typescript
 // apps/boardroom/src/lib/react/use-zod-context.ts
 import { createContext, useContext, useMemo } from 'react'
@@ -859,7 +906,6 @@ export function createZodContext<TSchema extends z.ZodTypeAny>(
 }
 ```
 
-
 **Impact:** +4% Zod utilization, type-safe React state, better DX
 
 ---
@@ -871,6 +917,7 @@ export function createZodContext<TSchema extends z.ZodTypeAny>(
 **Implementation:**
 
 1. Create PrimeReact form field wrapper:
+
 ```typescript
 // apps/boardroom/src/lib/primereact/zod-form-field.tsx
 'use client'
@@ -993,6 +1040,7 @@ export function ZodFormField<T extends z.ZodTypeAny>({
 ```
 
 2. Create PrimeReact DataTable with Zod validation:
+
 ```typescript
 // apps/boardroom/src/lib/primereact/zod-datatable.tsx
 'use client'
@@ -1042,6 +1090,7 @@ export function ZodDataTable<TSchema extends z.ZodTypeAny>({
 ```
 
 3. Create PrimeReact Dialog with Zod form:
+
 ```typescript
 // apps/boardroom/src/lib/primereact/zod-dialog-form.tsx
 'use client'
@@ -1125,7 +1174,6 @@ export function ZodDialogForm<TSchema extends z.ZodTypeAny>({
 }
 ```
 
-
 **Impact:** +6% Zod utilization, type-safe PrimeReact forms, better UX
 
 ---
@@ -1137,32 +1185,34 @@ export function ZodDialogForm<TSchema extends z.ZodTypeAny>({
 **Implementation:**
 
 1. Create Tailwind error utility classes:
+
 ```typescript
 // apps/boardroom/src/lib/tailwind/zod-error-styles.ts
-import { z } from 'zod/v4'
-import { cn } from '@mythic/shared-utils'
+import { z } from "zod/v4"
+import { cn } from "@mythic/shared-utils"
 
 export function getZodErrorStyles(error: z.ZodError | null) {
   return {
     input: cn(
-      'border transition-all duration-300',
+      "border transition-all duration-300",
       error
-        ? 'border-ember focus:border-ember focus:ring-ember'
-        : 'border-charcoal focus:border-gold focus:ring-gold'
+        ? "border-ember focus:border-ember focus:ring-ember"
+        : "border-charcoal focus:border-gold focus:ring-gold"
     ),
     label: cn(
-      'font-serif transition-colors duration-300',
-      error ? 'text-ember' : 'text-parchment'
+      "font-serif transition-colors duration-300",
+      error ? "text-ember" : "text-parchment"
     ),
     message: error
-      ? 'text-ember text-sm mt-1 flex items-center gap-1'
-      : 'hidden',
-    icon: error ? 'text-ember' : 'text-ash',
+      ? "text-ember text-sm mt-1 flex items-center gap-1"
+      : "hidden",
+    icon: error ? "text-ember" : "text-ash",
   }
 }
 ```
 
 2. Create Zod-aware form component:
+
 ```typescript
 // apps/boardroom/src/components/forms/ZodFormField.tsx
 'use client'
@@ -1213,13 +1263,14 @@ export function ZodFormField<T extends z.ZodTypeAny>({
 ```
 
 3. Create validation state classes:
+
 ```typescript
 // apps/boardroom/src/lib/tailwind/validation-states.ts
 export const validationStates = {
-  valid: 'border-success text-success',
-  invalid: 'border-ember text-ember',
-  pending: 'border-gold text-gold',
-  untouched: 'border-charcoal text-ash',
+  valid: "border-success text-success",
+  invalid: "border-ember text-ember",
+  pending: "border-gold text-gold",
+  untouched: "border-charcoal text-ash",
 } as const
 
 export function getValidationStateClass(
@@ -1232,7 +1283,6 @@ export function getValidationStateClass(
 }
 ```
 
-
 **Impact:** +3% Zod utilization, consistent error styling, better UX
 
 ---
@@ -1244,6 +1294,7 @@ export function getValidationStateClass(
 **Implementation:**
 
 1. Create prop validation wrapper:
+
 ```typescript
 // apps/boardroom/src/lib/react/zod-props.tsx
 import { z } from 'zod/v4'
@@ -1275,6 +1326,7 @@ export function withZodProps<
 ```
 
 2. Use in components:
+
 ```typescript
 // apps/boardroom/components/PoolTable.tsx
 import { withZodProps } from '@/src/lib/react/zod-props'
@@ -1287,7 +1339,6 @@ const PoolTableBase = ({ proposals, ... }: PoolTableProps) => {
 export const PoolTable = withZodProps(PoolTableBase, poolTablePropsSchema)
 ```
 
-
 **Impact:** +2% Zod utilization, runtime prop validation, better debugging
 
 ---
@@ -1299,6 +1350,7 @@ export const PoolTable = withZodProps(PoolTableBase, poolTablePropsSchema)
 **Implementation:**
 
 1. Create validated context provider:
+
 ```typescript
 // apps/boardroom/src/lib/react/zod-context.tsx
 import { createContext, useContext, useMemo } from 'react'
@@ -1341,15 +1393,15 @@ export function createZodContext<TSchema extends z.ZodTypeAny>(
 ```
 
 2. Use for proposal context:
+
 ```typescript
 // apps/boardroom/src/lib/contexts/proposal-context.tsx
-import { createZodContext } from '@/src/lib/react/zod-context'
-import { proposalSchema } from '@mythic/shared-types/boardroom'
+import { createZodContext } from "@/src/lib/react/zod-context"
+import { proposalSchema } from "@mythic/shared-types/boardroom"
 
 export const { Provider: ProposalProvider, useZodContext: useProposal } =
-  createZodContext(proposalSchema, 'Proposal')
+  createZodContext(proposalSchema, "Proposal")
 ```
-
 
 **Impact:** +2% Zod utilization, type-safe context, prevents runtime errors
 
@@ -1360,7 +1412,6 @@ export const { Provider: ProposalProvider, useZodContext: useProposal } =
 **Synergistic Effects:**
 
 1. **Single Schema Source:** One Zod schema validates:
-
    - Form inputs (React Hook Form)
    - Component props (withZodProps)
    - Context values (createZodContext)
@@ -1368,12 +1419,12 @@ export const { Provider: ProposalProvider, useZodContext: useProposal } =
    - Tailwind error styling (getZodErrorStyles)
 
 2. **Type Safety Chain:**
+
    ```
    Zod Schema → TypeScript Types → React Props → PrimeReact Components → Tailwind Classes
    ```
 
 3. **Developer Experience:**
-
    - Write schema once, use everywhere
    - Auto-complete in IDE
    - Runtime validation in development
@@ -1381,7 +1432,6 @@ export const { Provider: ProposalProvider, useZodContext: useProposal } =
    - Visual error feedback (Tailwind)
 
 4. **Performance:**
-
    - Validation at component level (not page level)
    - Conditional Tailwind classes (minimal CSS)
    - PrimeReact optimized rendering
@@ -1465,12 +1515,15 @@ export const { Provider: ProposalProvider, useZodContext: useProposal } =
 
 ### Gap Analysis from Nexus Canon Constitution Governance
 
-**Context:** Luxury ERP requires **maximum frontend flexibility** (user customization, dynamic layouts, personalization) supported by **vanguard backend security** (encryption, immutable audit trails, RBAC).
+**Context:** Luxury ERP requires **maximum frontend flexibility** (user
+customization, dynamic layouts, personalization) supported by **vanguard backend
+security** (encryption, immutable audit trails, RBAC).
 
 **Current State:**
 
 - ✅ Basic Zod validation in place (28% utilization)
-- ❌ **CRITICAL GAP:** User/Global Config validation schemas exist but not enforced
+- ❌ **CRITICAL GAP:** User/Global Config validation schemas exist but not
+  enforced
 - ❌ **CRITICAL GAP:** Encryption operations not validated
 - ❌ **CRITICAL GAP:** RBAC permissions not validated
 - ❌ **CRITICAL GAP:** Frontend customization schemas missing
@@ -1483,97 +1536,122 @@ export const { Provider: ProposalProvider, useZodContext: useProposal } =
 
 **Current Issue:** Config schemas exist but validation not enforced at runtime
 
-**Luxury ERP Requirement:** Users must customize views, layouts, filters without breaking security
+**Luxury ERP Requirement:** Users must customize views, layouts, filters without
+breaking security
 
 **Implementation:**
 
 1. Create comprehensive config schemas:
+
 ```typescript
 // apps/boardroom/src/lib/config/user-config-schema.ts
-import { z } from 'zod/v4'
+import { z } from "zod/v4"
 
-export const userConfigSchema = z.object({
-  user_id: z.string().uuid(),
+export const userConfigSchema = z
+  .object({
+    user_id: z.string().uuid(),
 
-  // Display Preferences (Frontend Flexibility)
-  theme: z.enum(['light', 'dark', 'system']).default('system'),
-  default_view: z.enum(['pool_table', 'kanban', 'calendar']).default('pool_table'),
-  cards_per_page: z.number().int().min(5).max(100).default(20),
-  compact_mode: z.boolean().default(false),
+    // Display Preferences (Frontend Flexibility)
+    theme: z.enum(["light", "dark", "system"]).default("system"),
+    default_view: z
+      .enum(["pool_table", "kanban", "calendar"])
+      .default("pool_table"),
+    cards_per_page: z.number().int().min(5).max(100).default(20),
+    compact_mode: z.boolean().default(false),
 
-  // Notification Settings
-  email_notifications: z.boolean().default(true),
-  mention_alerts: z.enum(['instant', 'digest', 'silent']).default('instant'),
-  approval_reminders: z.boolean().default(true),
-  digest_frequency: z.enum(['daily', 'weekly']).default('daily'),
+    // Notification Settings
+    email_notifications: z.boolean().default(true),
+    mention_alerts: z.enum(["instant", "digest", "silent"]).default("instant"),
+    approval_reminders: z.boolean().default(true),
+    digest_frequency: z.enum(["daily", "weekly"]).default("daily"),
 
-  // Decision Context (Frontend Flexibility)
-  show_future_vector: z.boolean().default(true),
-  show_past_versions: z.boolean().default(true),
-  auto_collapse_comments: z.boolean().default(false),
+    // Decision Context (Frontend Flexibility)
+    show_future_vector: z.boolean().default(true),
+    show_past_versions: z.boolean().default(true),
+    auto_collapse_comments: z.boolean().default(false),
 
-  // To-Do Integration
-  link_to_dos_on_approval: z.boolean().default(false),
-  to_do_default_assignee: z.string().email().nullable().default(null),
-  to_do_default_due_days: z.number().int().min(1).max(365).default(7),
-  show_to_do_panel: z.boolean().default(true),
+    // To-Do Integration
+    link_to_dos_on_approval: z.boolean().default(false),
+    to_do_default_assignee: z.string().email().nullable().default(null),
+    to_do_default_due_days: z.number().int().min(1).max(365).default(7),
+    show_to_do_panel: z.boolean().default(true),
 
-  // Filter Defaults (Frontend Flexibility)
-  filter_by_circle: z.array(z.string().uuid()).default([]),
-  filter_by_status: z.array(z.enum(['DRAFT', 'LISTENING', 'APPROVED', 'VETOED', 'ARCHIVED'])).default([]),
-  hide_archived: z.boolean().default(true),
-  only_awaiting_my_vote: z.boolean().default(false),
+    // Filter Defaults (Frontend Flexibility)
+    filter_by_circle: z.array(z.string().uuid()).default([]),
+    filter_by_status: z
+      .array(z.enum(["DRAFT", "LISTENING", "APPROVED", "VETOED", "ARCHIVED"]))
+      .default([]),
+    hide_archived: z.boolean().default(true),
+    only_awaiting_my_vote: z.boolean().default(false),
 
-  // Proposal Stencil Defaults (Frontend Flexibility)
-  favorite_stencils: z.array(z.string()).default([]),
-  stencil_defaults: z.record(
-    z.string(), // stencil_id
-    z.record(z.string(), z.unknown()) // field defaults
-  ).default({}),
-}).describe('User configuration schema - The Manager\'s Preference')
+    // Proposal Stencil Defaults (Frontend Flexibility)
+    favorite_stencils: z.array(z.string()).default([]),
+    stencil_defaults: z
+      .record(
+        z.string(), // stencil_id
+        z.record(z.string(), z.unknown()) // field defaults
+      )
+      .default({}),
+  })
+  .describe("User configuration schema - The Manager's Preference")
 
-export const globalConfigSchema = z.object({
-  // Approval Rules (Vanguard Security)
-  approval_threshold: z.object({
-    capex_requires_board_vote: z.number().positive().describe('Amount threshold for board vote'),
-    hiring_requires_cfo_approval: z.boolean().default(true),
-    budget_expansion_auto_escalate: z.boolean().default(true),
-  }),
+export const globalConfigSchema = z
+  .object({
+    // Approval Rules (Vanguard Security)
+    approval_threshold: z.object({
+      capex_requires_board_vote: z
+        .number()
+        .positive()
+        .describe("Amount threshold for board vote"),
+      hiring_requires_cfo_approval: z.boolean().default(true),
+      budget_expansion_auto_escalate: z.boolean().default(true),
+    }),
 
-  // Data Retention (Vanguard Security)
-  archive_after_days: z.number().int().min(30).max(3650).default(365),
-  soft_delete_enabled: z.boolean().default(true),
-  audit_trail_immutable: z.literal(true).default(true), // ALWAYS true per governance
+    // Data Retention (Vanguard Security)
+    archive_after_days: z.number().int().min(30).max(3650).default(365),
+    soft_delete_enabled: z.boolean().default(true),
+    audit_trail_immutable: z.literal(true).default(true), // ALWAYS true per governance
 
-  // Security & Encryption (Vanguard Security)
-  eyes_only_encryption_required: z.boolean().default(false),
-  mandatory_2fa: z.boolean().default(true),
-  session_timeout_minutes: z.number().int().min(15).max(1440).default(480),
+    // Security & Encryption (Vanguard Security)
+    eyes_only_encryption_required: z.boolean().default(false),
+    mandatory_2fa: z.boolean().default(true),
+    session_timeout_minutes: z.number().int().min(15).max(1440).default(480),
 
-  // Notifications
-  mention_alert_enabled: z.boolean().default(true),
-  email_digest_frequency: z.enum(['realtime', 'daily', 'weekly']).default('realtime'),
-  slack_integration_enabled: z.boolean().default(false),
+    // Notifications
+    mention_alert_enabled: z.boolean().default(true),
+    email_digest_frequency: z
+      .enum(["realtime", "daily", "weekly"])
+      .default("realtime"),
+    slack_integration_enabled: z.boolean().default(false),
 
-  // ERP Vector Configuration
-  vector_refresh_interval_minutes: z.number().int().min(1).max(60).default(5),
-  vector_cache_stale_after_hours: z.number().int().min(1).max(168).default(24),
-  sap_api_enabled: z.boolean().default(false),
-  stripe_api_enabled: z.boolean().default(false),
+    // ERP Vector Configuration
+    vector_refresh_interval_minutes: z.number().int().min(1).max(60).default(5),
+    vector_cache_stale_after_hours: z
+      .number()
+      .int()
+      .min(1)
+      .max(168)
+      .default(24),
+    sap_api_enabled: z.boolean().default(false),
+    stripe_api_enabled: z.boolean().default(false),
 
-  // UI/UX Defaults (Frontend Flexibility)
-  default_sort_by: z.enum(['date_created', 'amount', 'urgency']).default('date_created'),
-  show_risk_scores: z.boolean().default(true),
-  show_approver_avatars: z.boolean().default(true),
-  theme: z.enum(['light', 'dark', 'system']).default('system'),
-}).describe('Global configuration schema - The Sovereign\'s Law')
+    // UI/UX Defaults (Frontend Flexibility)
+    default_sort_by: z
+      .enum(["date_created", "amount", "urgency"])
+      .default("date_created"),
+    show_risk_scores: z.boolean().default(true),
+    show_approver_avatars: z.boolean().default(true),
+    theme: z.enum(["light", "dark", "system"]).default("system"),
+  })
+  .describe("Global configuration schema - The Sovereign's Law")
 ```
 
 2. Create config validation service:
+
 ```typescript
 // apps/boardroom/src/lib/config/validate-config.ts
-import { z } from 'zod/v4'
-import { userConfigSchema, globalConfigSchema } from './user-config-schema'
+import { z } from "zod/v4"
+import { userConfigSchema, globalConfigSchema } from "./user-config-schema"
 
 export function validateUserConfig(config: unknown) {
   return userConfigSchema.safeParse(config)
@@ -1584,7 +1662,9 @@ export function validateGlobalConfig(config: unknown) {
 }
 
 // Enforce immutable audit_trail_immutable
-export function enforceGlobalConfigSecurity(config: z.infer<typeof globalConfigSchema>) {
+export function enforceGlobalConfigSecurity(
+  config: z.infer<typeof globalConfigSchema>
+) {
   // Vanguard Security: audit_trail_immutable MUST always be true
   return {
     ...config,
@@ -1593,8 +1673,8 @@ export function enforceGlobalConfigSecurity(config: z.infer<typeof globalConfigS
 }
 ```
 
-
-**Impact:** +5% Zod utilization, prevents invalid config, enforces security policies
+**Impact:** +5% Zod utilization, prevents invalid config, enforces security
+policies
 
 ---
 
@@ -1602,87 +1682,106 @@ export function enforceGlobalConfigSecurity(config: z.infer<typeof globalConfigS
 
 **Current Issue:** Encryption/decryption operations not validated with Zod
 
-**Luxury ERP Requirement:** "Eyes Only" documents must be validated before encryption
+**Luxury ERP Requirement:** "Eyes Only" documents must be validated before
+encryption
 
 **Implementation:**
 
 1. Create encryption schemas:
+
 ```typescript
 // apps/boardroom/src/lib/vault/encryption-schemas.ts
-import { z } from 'zod/v4'
+import { z } from "zod/v4"
 
 // Vanguard Security: Validate encryption keys
-export const encryptionKeySchema = z.object({
-  keyId: z.string().uuid(),
-  algorithm: z.literal('AES-GCM'),
-  keyLength: z.literal(256),
-  extractable: z.boolean().default(false), // Security: keys should not be extractable
-  usages: z.array(z.enum(['encrypt', 'decrypt'])).length(2),
-}).describe('Encryption key validation schema')
+export const encryptionKeySchema = z
+  .object({
+    keyId: z.string().uuid(),
+    algorithm: z.literal("AES-GCM"),
+    keyLength: z.literal(256),
+    extractable: z.boolean().default(false), // Security: keys should not be extractable
+    usages: z.array(z.enum(["encrypt", "decrypt"])).length(2),
+  })
+  .describe("Encryption key validation schema")
 
 // Vanguard Security: Validate encrypted data structure
-export const encryptedDataSchema = z.object({
-  encrypted: z.string().base64(),
-  iv: z.string().base64().length(16), // 12 bytes = 16 base64 chars
-  algorithm: z.literal('AES-GCM'),
-  keyId: z.string().uuid(),
-  authorizedUsers: z.array(z.string().uuid()).min(1).max(10), // Limit authorized users
-  createdAt: z.date(),
-  expiresAt: z.date().optional(), // Optional expiration
-}).describe('Encrypted data structure validation')
+export const encryptedDataSchema = z
+  .object({
+    encrypted: z.string().base64(),
+    iv: z.string().base64().length(16), // 12 bytes = 16 base64 chars
+    algorithm: z.literal("AES-GCM"),
+    keyId: z.string().uuid(),
+    authorizedUsers: z.array(z.string().uuid()).min(1).max(10), // Limit authorized users
+    createdAt: z.date(),
+    expiresAt: z.date().optional(), // Optional expiration
+  })
+  .describe("Encrypted data structure validation")
 
 // Vanguard Security: Validate decryption request
-export const decryptionRequestSchema = z.object({
-  encryptedDataId: z.string().uuid(),
-  requestingUserId: z.string().uuid(),
-  reason: z.string().min(10).max(500), // Require reason for audit
-}).describe('Decryption request validation')
+export const decryptionRequestSchema = z
+  .object({
+    encryptedDataId: z.string().uuid(),
+    requestingUserId: z.string().uuid(),
+    reason: z.string().min(10).max(500), // Require reason for audit
+  })
+  .describe("Decryption request validation")
 
 // Vanguard Security: Validate vault key storage
-export const vaultKeyStorageSchema = z.object({
-  keyId: z.string().uuid(),
-  encryptedKey: z.string().base64(), // Key encrypted with user's public key
-  authorizedUserIds: z.array(z.string().uuid()).min(1).max(10),
-  createdAt: z.date(),
-  lastAccessedAt: z.date().optional(),
-  accessCount: z.number().int().nonnegative().default(0),
-}).describe('Vault key storage validation')
+export const vaultKeyStorageSchema = z
+  .object({
+    keyId: z.string().uuid(),
+    encryptedKey: z.string().base64(), // Key encrypted with user's public key
+    authorizedUserIds: z.array(z.string().uuid()).min(1).max(10),
+    createdAt: z.date(),
+    lastAccessedAt: z.date().optional(),
+    accessCount: z.number().int().nonnegative().default(0),
+  })
+  .describe("Vault key storage validation")
 ```
 
 2. Create encryption service with validation:
+
 ```typescript
 // apps/boardroom/src/lib/vault/encryption-service.ts
-import { z } from 'zod/v4'
-import { encryptionKeySchema, encryptedDataSchema, decryptionRequestSchema } from './encryption-schemas'
+import { z } from "zod/v4"
+import {
+  encryptionKeySchema,
+  encryptedDataSchema,
+  decryptionRequestSchema,
+} from "./encryption-schemas"
 
 export async function encryptDocument(
   document: File,
   authorizedUsers: string[]
 ): Promise<z.infer<typeof encryptedDataSchema>> {
   // Validate authorized users
-  const validatedUsers = z.array(z.string().uuid()).min(1).max(10).parse(authorizedUsers)
+  const validatedUsers = z
+    .array(z.string().uuid())
+    .min(1)
+    .max(10)
+    .parse(authorizedUsers)
 
   // Generate key with validated schema
   const key = await crypto.subtle.generateKey(
-    { name: 'AES-GCM', length: 256 },
+    { name: "AES-GCM", length: 256 },
     false, // extractable = false for security
-    ['encrypt', 'decrypt']
+    ["encrypt", "decrypt"]
   )
 
   // Validate key structure
   const keyId = crypto.randomUUID()
   encryptionKeySchema.parse({
     keyId,
-    algorithm: 'AES-GCM',
+    algorithm: "AES-GCM",
     keyLength: 256,
     extractable: false,
-    usages: ['encrypt', 'decrypt'],
+    usages: ["encrypt", "decrypt"],
   })
 
   // Encrypt document
   const iv = crypto.getRandomValues(new Uint8Array(12))
   const encrypted = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv },
+    { name: "AES-GCM", iv },
     key,
     await document.arrayBuffer()
   )
@@ -1691,7 +1790,7 @@ export async function encryptDocument(
   return encryptedDataSchema.parse({
     encrypted: btoa(String.fromCharCode(...new Uint8Array(encrypted))),
     iv: btoa(String.fromCharCode(...iv)),
-    algorithm: 'AES-GCM',
+    algorithm: "AES-GCM",
     keyId,
     authorizedUsers: validatedUsers,
     createdAt: new Date(),
@@ -1706,8 +1805,10 @@ export async function decryptDocument(
   const validatedRequest = decryptionRequestSchema.parse(request)
 
   // Vanguard Security: Check authorization
-  if (!encryptedData.authorizedUsers.includes(validatedRequest.requestingUserId)) {
-    throw new Error('Unauthorized decryption attempt')
+  if (
+    !encryptedData.authorizedUsers.includes(validatedRequest.requestingUserId)
+  ) {
+    throw new Error("Unauthorized decryption attempt")
   }
 
   // Validate encrypted data structure
@@ -1718,8 +1819,8 @@ export async function decryptDocument(
 }
 ```
 
-
-**Impact:** +4% Zod utilization, prevents encryption vulnerabilities, enforces security policies
+**Impact:** +4% Zod utilization, prevents encryption vulnerabilities, enforces
+security policies
 
 ---
 
@@ -1732,57 +1833,69 @@ export async function decryptDocument(
 **Implementation:**
 
 1. Create RBAC schemas:
+
 ```typescript
 // apps/boardroom/src/lib/auth/rbac-schemas.ts
-import { z } from 'zod/v4'
+import { z } from "zod/v4"
 
-export const roleSchema = z.enum(['sovereign', 'council', 'observer'])
+export const roleSchema = z.enum(["sovereign", "council", "observer"])
 
 export const permissionSchema = z.enum([
-  'read_proposal',
-  'create_proposal',
-  'approve_proposal',
-  'veto_proposal',
-  'edit_proposal',
-  'delete_proposal',
-  'view_audit_trail',
-  'manage_circles',
-  'manage_stencils',
-  'manage_global_config',
-  'decrypt_eyes_only',
+  "read_proposal",
+  "create_proposal",
+  "approve_proposal",
+  "veto_proposal",
+  "edit_proposal",
+  "delete_proposal",
+  "view_audit_trail",
+  "manage_circles",
+  "manage_stencils",
+  "manage_global_config",
+  "decrypt_eyes_only",
 ])
 
-export const circleMembershipSchema = z.object({
-  circleId: z.string().uuid(),
-  userId: z.string().uuid(),
-  role: roleSchema,
-  adminHat: z.array(z.string()).optional(), // Granted capabilities
-  grantedAt: z.date(),
-  grantedBy: z.string().uuid(),
-  expiresAt: z.date().optional(), // Optional expiration
-}).describe('Circle membership validation')
+export const circleMembershipSchema = z
+  .object({
+    circleId: z.string().uuid(),
+    userId: z.string().uuid(),
+    role: roleSchema,
+    adminHat: z.array(z.string()).optional(), // Granted capabilities
+    grantedAt: z.date(),
+    grantedBy: z.string().uuid(),
+    expiresAt: z.date().optional(), // Optional expiration
+  })
+  .describe("Circle membership validation")
 
-export const permissionCheckSchema = z.object({
-  userId: z.string().uuid(),
-  resourceType: z.enum(['proposal', 'circle', 'stencil', 'config', 'vault']),
-  resourceId: z.string().uuid(),
-  action: permissionSchema,
-  context: z.record(z.string(), z.unknown()).optional(),
-}).describe('Permission check validation')
+export const permissionCheckSchema = z
+  .object({
+    userId: z.string().uuid(),
+    resourceType: z.enum(["proposal", "circle", "stencil", "config", "vault"]),
+    resourceId: z.string().uuid(),
+    action: permissionSchema,
+    context: z.record(z.string(), z.unknown()).optional(),
+  })
+  .describe("Permission check validation")
 
-export const rbacResultSchema = z.object({
-  allowed: z.boolean(),
-  reason: z.string().optional(),
-  requiredRole: roleSchema.optional(),
-  currentRole: roleSchema.optional(),
-}).describe('RBAC result validation')
+export const rbacResultSchema = z
+  .object({
+    allowed: z.boolean(),
+    reason: z.string().optional(),
+    requiredRole: roleSchema.optional(),
+    currentRole: roleSchema.optional(),
+  })
+  .describe("RBAC result validation")
 ```
 
 2. Create RBAC service with validation:
+
 ```typescript
 // apps/boardroom/src/lib/auth/rbac-service.ts
-import { z } from 'zod/v4'
-import { permissionCheckSchema, rbacResultSchema, circleMembershipSchema } from './rbac-schemas'
+import { z } from "zod/v4"
+import {
+  permissionCheckSchema,
+  rbacResultSchema,
+  circleMembershipSchema,
+} from "./rbac-schemas"
 
 export async function checkPermission(
   check: z.infer<typeof permissionCheckSchema>
@@ -1795,13 +1908,13 @@ export async function checkPermission(
 
   return rbacResultSchema.parse({
     allowed: true,
-    currentRole: 'sovereign',
+    currentRole: "sovereign",
   })
 }
 ```
 
-
-**Impact:** +3% Zod utilization, prevents unauthorized access, enforces security boundaries
+**Impact:** +3% Zod utilization, prevents unauthorized access, enforces security
+boundaries
 
 ---
 
@@ -1814,63 +1927,87 @@ export async function checkPermission(
 **Implementation:**
 
 1. Create frontend customization schemas:
+
 ```typescript
 // apps/boardroom/src/lib/frontend/customization-schemas.ts
-import { z } from 'zod/v4'
+import { z } from "zod/v4"
 
 // Frontend Flexibility: Layout customization
-export const layoutConfigSchema = z.object({
-  leftPanelWidth: z.number().int().min(300).max(800).default(600), // 60% of 1000px
-  rightPanelWidth: z.number().int().min(200).max(700).default(400), // 40% of 1000px
-  showMetrics: z.boolean().default(true),
-  metricsPosition: z.enum(['top', 'bottom', 'sidebar']).default('top'),
-  compactMode: z.boolean().default(false),
-}).describe('Layout customization schema')
+export const layoutConfigSchema = z
+  .object({
+    leftPanelWidth: z.number().int().min(300).max(800).default(600), // 60% of 1000px
+    rightPanelWidth: z.number().int().min(200).max(700).default(400), // 40% of 1000px
+    showMetrics: z.boolean().default(true),
+    metricsPosition: z.enum(["top", "bottom", "sidebar"]).default("top"),
+    compactMode: z.boolean().default(false),
+  })
+  .describe("Layout customization schema")
 
 // Frontend Flexibility: View customization
-export const viewConfigSchema = z.object({
-  viewType: z.enum(['pool_table', 'kanban', 'calendar', 'timeline']).default('pool_table'),
-  sortBy: z.enum(['date_created', 'amount', 'urgency', 'status']).default('date_created'),
-  sortOrder: z.enum(['asc', 'desc']).default('desc'),
-  groupBy: z.enum(['circle', 'status', 'stencil', 'none']).default('none'),
-  filters: z.object({
-    status: z.array(z.enum(['DRAFT', 'LISTENING', 'APPROVED', 'VETOED', 'ARCHIVED'])).default([]),
-    circleIds: z.array(z.string().uuid()).default([]),
-    dateRange: z.object({
-      start: z.date().optional(),
-      end: z.date().optional(),
-    }).optional(),
-    amountRange: z.object({
-      min: z.number().nonnegative().optional(),
-      max: z.number().nonnegative().optional(),
-    }).optional(),
-  }).default({}),
-}).describe('View customization schema')
+export const viewConfigSchema = z
+  .object({
+    viewType: z
+      .enum(["pool_table", "kanban", "calendar", "timeline"])
+      .default("pool_table"),
+    sortBy: z
+      .enum(["date_created", "amount", "urgency", "status"])
+      .default("date_created"),
+    sortOrder: z.enum(["asc", "desc"]).default("desc"),
+    groupBy: z.enum(["circle", "status", "stencil", "none"]).default("none"),
+    filters: z
+      .object({
+        status: z
+          .array(
+            z.enum(["DRAFT", "LISTENING", "APPROVED", "VETOED", "ARCHIVED"])
+          )
+          .default([]),
+        circleIds: z.array(z.string().uuid()).default([]),
+        dateRange: z
+          .object({
+            start: z.date().optional(),
+            end: z.date().optional(),
+          })
+          .optional(),
+        amountRange: z
+          .object({
+            min: z.number().nonnegative().optional(),
+            max: z.number().nonnegative().optional(),
+          })
+          .optional(),
+      })
+      .default({}),
+  })
+  .describe("View customization schema")
 
 // Frontend Flexibility: Component customization
-export const componentConfigSchema = z.object({
-  showAvatars: z.boolean().default(true),
-  showRiskScores: z.boolean().default(true),
-  showFutureVector: z.boolean().default(true),
-  showPastVersions: z.boolean().default(true),
-  autoCollapseComments: z.boolean().default(false),
-  cardsPerPage: z.number().int().min(5).max(100).default(20),
-}).describe('Component customization schema')
+export const componentConfigSchema = z
+  .object({
+    showAvatars: z.boolean().default(true),
+    showRiskScores: z.boolean().default(true),
+    showFutureVector: z.boolean().default(true),
+    showPastVersions: z.boolean().default(true),
+    autoCollapseComments: z.boolean().default(false),
+    cardsPerPage: z.number().int().min(5).max(100).default(20),
+  })
+  .describe("Component customization schema")
 
 // Combined frontend customization
-export const frontendCustomizationSchema = z.object({
-  layout: layoutConfigSchema,
-  view: viewConfigSchema,
-  components: componentConfigSchema,
-  theme: z.enum(['light', 'dark', 'system']).default('system'),
-}).describe('Complete frontend customization schema')
+export const frontendCustomizationSchema = z
+  .object({
+    layout: layoutConfigSchema,
+    view: viewConfigSchema,
+    components: componentConfigSchema,
+    theme: z.enum(["light", "dark", "system"]).default("system"),
+  })
+  .describe("Complete frontend customization schema")
 ```
 
 2. Create customization service:
+
 ```typescript
 // apps/boardroom/src/lib/frontend/customization-service.ts
-import { z } from 'zod/v4'
-import { frontendCustomizationSchema } from './customization-schemas'
+import { z } from "zod/v4"
+import { frontendCustomizationSchema } from "./customization-schemas"
 
 export function validateCustomization(
   customization: unknown
@@ -1883,7 +2020,9 @@ export function mergeCustomization(
   globalDefaults: z.infer<typeof frontendCustomizationSchema>
 ): z.infer<typeof frontendCustomizationSchema> {
   // Validate both inputs
-  const validatedUser = frontendCustomizationSchema.partial().parse(userCustomization)
+  const validatedUser = frontendCustomizationSchema
+    .partial()
+    .parse(userCustomization)
   const validatedGlobal = frontendCustomizationSchema.parse(globalDefaults)
 
   // Merge with user preferences taking precedence
@@ -1897,8 +2036,8 @@ export function mergeCustomization(
 }
 ```
 
-
-**Impact:** +4% Zod utilization, enables safe frontend customization, prevents invalid layouts
+**Impact:** +4% Zod utilization, enables safe frontend customization, prevents
+invalid layouts
 
 ---
 
@@ -1911,61 +2050,64 @@ export function mergeCustomization(
 **Implementation:**
 
 1. Create WebSocket message schemas:
+
 ```typescript
 // apps/boardroom/src/lib/realtime/websocket-schemas.ts
-import { z } from 'zod/v4'
+import { z } from "zod/v4"
 
-export const websocketMessageSchema = z.discriminatedUnion('type', [
-  z.object({
-    type: z.literal('proposal_updated'),
-    proposalId: z.string().uuid(),
-    changes: z.record(z.string(), z.unknown()),
-    timestamp: z.date(),
-  }),
-  z.object({
-    type: z.literal('comment_added'),
-    proposalId: z.string().uuid(),
-    commentId: z.string().uuid(),
-    authorId: z.string().uuid(),
-    content: z.string().min(1).max(5000),
-    mentions: z.array(z.string().uuid()).default([]),
-    timestamp: z.date(),
-  }),
-  z.object({
-    type: z.literal('presence_update'),
-    userId: z.string().uuid(),
-    proposalId: z.string().uuid().optional(),
-    status: z.enum(['viewing', 'editing', 'idle']),
-    timestamp: z.date(),
-  }),
-  z.object({
-    type: z.literal('approval_status_changed'),
-    proposalId: z.string().uuid(),
-    status: z.enum(['DRAFT', 'LISTENING', 'APPROVED', 'VETOED', 'ARCHIVED']),
-    approvedBy: z.string().uuid().optional(),
-    timestamp: z.date(),
-  }),
-]).describe('WebSocket message validation schema')
+export const websocketMessageSchema = z
+  .discriminatedUnion("type", [
+    z.object({
+      type: z.literal("proposal_updated"),
+      proposalId: z.string().uuid(),
+      changes: z.record(z.string(), z.unknown()),
+      timestamp: z.date(),
+    }),
+    z.object({
+      type: z.literal("comment_added"),
+      proposalId: z.string().uuid(),
+      commentId: z.string().uuid(),
+      authorId: z.string().uuid(),
+      content: z.string().min(1).max(5000),
+      mentions: z.array(z.string().uuid()).default([]),
+      timestamp: z.date(),
+    }),
+    z.object({
+      type: z.literal("presence_update"),
+      userId: z.string().uuid(),
+      proposalId: z.string().uuid().optional(),
+      status: z.enum(["viewing", "editing", "idle"]),
+      timestamp: z.date(),
+    }),
+    z.object({
+      type: z.literal("approval_status_changed"),
+      proposalId: z.string().uuid(),
+      status: z.enum(["DRAFT", "LISTENING", "APPROVED", "VETOED", "ARCHIVED"]),
+      approvedBy: z.string().uuid().optional(),
+      timestamp: z.date(),
+    }),
+  ])
+  .describe("WebSocket message validation schema")
 ```
 
 2. Create WebSocket handler with validation:
+
 ```typescript
 // apps/boardroom/src/lib/realtime/websocket-handler.ts
-import { z } from 'zod/v4'
-import { websocketMessageSchema } from './websocket-schemas'
+import { z } from "zod/v4"
+import { websocketMessageSchema } from "./websocket-schemas"
 
 export function validateWebSocketMessage(message: unknown) {
   return websocketMessageSchema.safeParse(message)
 }
 
-export function handleWebSocketMessage(
-  message: unknown,
-  userId: string
-) {
+export function handleWebSocketMessage(message: unknown, userId: string) {
   const result = validateWebSocketMessage(message)
   if (!result.success) {
     // Vanguard Security: Reject invalid messages
-    throw new Error(`Invalid WebSocket message: ${result.error.issues[0].message}`)
+    throw new Error(
+      `Invalid WebSocket message: ${result.error.issues[0].message}`
+    )
   }
 
   // Process validated message
@@ -1973,8 +2115,8 @@ export function handleWebSocketMessage(
 }
 ```
 
-
-**Impact:** +3% Zod utilization, prevents WebSocket attacks, ensures message integrity
+**Impact:** +3% Zod utilization, prevents WebSocket attacks, ensures message
+integrity
 
 ---
 
@@ -1987,40 +2129,47 @@ export function handleWebSocketMessage(
 **Implementation:**
 
 1. Create audit trail schemas:
+
 ```typescript
 // apps/boardroom/src/lib/audit/audit-schemas.ts
-import { z } from 'zod/v4'
+import { z } from "zod/v4"
 
 // Vanguard Security: 6W1H audit trail validation
-export const thanosEventSchema = z.object({
-  id: z.string().uuid(),
-  proposalId: z.string().uuid(),
-  who: z.string().uuid(), // Actor ID
-  what: z.string().min(1).max(50), // Action type
-  when: z.date(), // Timestamp
-  where: z.enum(['web', 'api', 'webhook', 'batch']), // Source
-  why: z.string().min(1).max(1000).optional(), // Reason
-  which: z.string().max(500).optional(), // Alternatives considered
-  how: z.enum(['UI', 'API', 'batch', 'automated']), // Method
-  metadata: z.record(z.string(), z.unknown()).optional(),
-}).describe('6W1H audit trail event validation')
+export const thanosEventSchema = z
+  .object({
+    id: z.string().uuid(),
+    proposalId: z.string().uuid(),
+    who: z.string().uuid(), // Actor ID
+    what: z.string().min(1).max(50), // Action type
+    when: z.date(), // Timestamp
+    where: z.enum(["web", "api", "webhook", "batch"]), // Source
+    why: z.string().min(1).max(1000).optional(), // Reason
+    which: z.string().max(500).optional(), // Alternatives considered
+    how: z.enum(["UI", "API", "batch", "automated"]), // Method
+    metadata: z.record(z.string(), z.unknown()).optional(),
+  })
+  .describe("6W1H audit trail event validation")
 
 // Vanguard Security: Immutable audit trail
-export const immutableAuditTrailSchema = z.object({
-  events: z.array(thanosEventSchema).min(1),
-  proposalId: z.string().uuid(),
-  createdAt: z.date(),
-  lastUpdated: z.date(),
-  // Vanguard Security: Immutability flag
-  immutable: z.literal(true).default(true),
-}).readonly().describe('Immutable audit trail validation')
+export const immutableAuditTrailSchema = z
+  .object({
+    events: z.array(thanosEventSchema).min(1),
+    proposalId: z.string().uuid(),
+    createdAt: z.date(),
+    lastUpdated: z.date(),
+    // Vanguard Security: Immutability flag
+    immutable: z.literal(true).default(true),
+  })
+  .readonly()
+  .describe("Immutable audit trail validation")
 ```
 
 2. Create audit service:
+
 ```typescript
 // apps/boardroom/src/lib/audit/audit-service.ts
-import { z } from 'zod/v4'
-import { thanosEventSchema, immutableAuditTrailSchema } from './audit-schemas'
+import { z } from "zod/v4"
+import { thanosEventSchema, immutableAuditTrailSchema } from "./audit-schemas"
 
 export async function createAuditEvent(
   event: z.infer<typeof thanosEventSchema>
@@ -2039,8 +2188,8 @@ export async function createAuditEvent(
 }
 ```
 
-
-**Impact:** +3% Zod utilization, ensures audit trail integrity, prevents tampering
+**Impact:** +3% Zod utilization, ensures audit trail integrity, prevents
+tampering
 
 ---
 
@@ -2048,15 +2197,17 @@ export async function createAuditEvent(
 
 **Current Issue:** Manual validation in codex/index.ts
 
-**Luxury ERP Requirement:** Dynamic forms must be generated from stencils with Zod validation
+**Luxury ERP Requirement:** Dynamic forms must be generated from stencils with
+Zod validation
 
 **Implementation:**
 
 1. Create dynamic form schema generator:
+
 ```typescript
 // apps/boardroom/src/lib/forms/dynamic-stencil-form.ts
-import { z } from 'zod/v4'
-import type { StencilDefinition } from '@/src/codex'
+import { z } from "zod/v4"
+import type { StencilDefinition } from "@/src/codex"
 
 export function generateStencilFormSchema(stencil: StencilDefinition) {
   const shape: z.ZodRawShape = {}
@@ -2065,19 +2216,19 @@ export function generateStencilFormSchema(stencil: StencilDefinition) {
     let fieldSchema: z.ZodTypeAny
 
     switch (field.type) {
-      case 'string':
+      case "string":
         fieldSchema = z.string().trim()
         break
-      case 'number':
+      case "number":
         fieldSchema = z.coerce.number()
         break
-      case 'date':
+      case "date":
         fieldSchema = z.coerce.date()
         break
-      case 'enum':
+      case "enum":
         fieldSchema = z.enum(field.options as [string, ...string[]])
         break
-      case 'jsonb':
+      case "jsonb":
         fieldSchema = z.record(z.string(), z.unknown())
         break
     }
@@ -2086,32 +2237,33 @@ export function generateStencilFormSchema(stencil: StencilDefinition) {
     if (field.validationRule) {
       const rules = parseValidationRule(field.validationRule)
       if (rules.min !== undefined) {
-        if (field.type === 'string') {
+        if (field.type === "string") {
           fieldSchema = (fieldSchema as z.ZodString).min(rules.min)
-        } else if (field.type === 'number') {
+        } else if (field.type === "number") {
           fieldSchema = (fieldSchema as z.ZodNumber).min(rules.min)
         }
       }
       if (rules.max !== undefined) {
-        if (field.type === 'string') {
+        if (field.type === "string") {
           fieldSchema = (fieldSchema as z.ZodString).max(rules.max)
-        } else if (field.type === 'number') {
+        } else if (field.type === "number") {
           fieldSchema = (fieldSchema as z.ZodNumber).max(rules.max)
         }
       }
     }
 
     // Apply required/optional
-    shape[field.id] = field.required
-      ? fieldSchema
-      : fieldSchema.optional()
+    shape[field.id] = field.required ? fieldSchema : fieldSchema.optional()
   }
 
-  return z.object(shape).describe(`Dynamic form schema for stencil: ${stencil.name}`)
+  return z
+    .object(shape)
+    .describe(`Dynamic form schema for stencil: ${stencil.name}`)
 }
 ```
 
 2. Create React component for dynamic forms:
+
 ```typescript
 // apps/boardroom/components/forms/DynamicStencilForm.tsx
 'use client'
@@ -2154,8 +2306,8 @@ export function DynamicStencilForm({
 }
 ```
 
-
-**Impact:** +5% Zod utilization, enables dynamic forms, replaces manual validation
+**Impact:** +5% Zod utilization, enables dynamic forms, replaces manual
+validation
 
 ---
 
@@ -2248,7 +2400,9 @@ export function DynamicStencilForm({
 
 ### Overview
 
-This section documents Cursor's capabilities and features that maximize developer experience, improve accuracy, avoid drift, and maintain consistency in the Luxury ERP codebase.
+This section documents Cursor's capabilities and features that maximize
+developer experience, improve accuracy, avoid drift, and maintain consistency in
+the Luxury ERP codebase.
 
 **Current Setup Analysis:**
 
@@ -2268,27 +2422,23 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **Rule Priority Hierarchy**
-
    - Priority 0-2: Always applied (governance, master defaults, safety)
    - Priority 3-9: Framework rules (conditional)
    - Priority 10+: Feature-specific rules (conditional)
    - **Benefit:** Prevents rule conflicts, ensures consistent application
 
 2. **Glob Pattern Matching**
-
    - Scoped rules: `globs: "*.ts,*.tsx"` for TypeScript files
    - Path-specific: `globs: "app/api/**/*.ts"` for API routes
    - **Benefit:** Rules apply only where needed, reducing overhead
 
 3. **Rule Validation Script**
-
    - Auto-fixes `alwaysApply: true` violations
    - Validates naming conventions (`[NNN]_name.mdc`)
    - Checks for missing glob patterns
    - **Benefit:** Prevents configuration drift
 
 4. **Rule References**
-
    - Cross-reference: `@rules/010_planning.mdc`
    - Documentation links: `@docs/architecture/system-overview.md`
    - **Benefit:** Maintains consistency across rules
@@ -2315,28 +2465,24 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **External Documentation Indexing**
-
    - Index framework docs (Next.js, React, TypeScript)
    - Version-specific URLs
    - Auto-updates when frameworks change
    - **Benefit:** AI uses latest framework knowledge
 
 2. **Local Documentation System**
-
    - Store in `.cursor/docs/`
    - Reference in rules: `@docs/architecture/system-overview.md`
    - Not indexed separately (referenced via rules)
    - **Benefit:** Project-specific patterns always available
 
 3. **Three-Layer Documentation Model**
-
    - Layer 1: External framework docs (always available)
    - Layer 2: Project-specific external docs (selective)
    - Layer 3: Internal project docs (referenced in rules)
    - **Benefit:** Optimal context management
 
 4. **@ Mention System**
-
    - `@Docs` - External documentation
    - `@Codebase` - Codebase search
    - `@Rules` - Cursor rules
@@ -2367,27 +2513,23 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **Incremental Indexing**
-
    - Updates on file changes
    - Focuses on frequently accessed files
    - Optimizes index size
    - **Benefit:** Fast, accurate codebase searches
 
 2. **Targeted Searches**
-
    - Use `@Codebase` for pattern discovery
    - Semantic search across codebase
    - File-type filtering
    - **Benefit:** Finds relevant code quickly
 
 3. **Index Configuration**
-
    - Include patterns: `app/**`, `components/**`, `lib/**`
    - Exclude patterns: `node_modules/**`, `.next/**`, `build/**`
    - **Benefit:** Focuses on source code, not artifacts
 
 4. **Large Codebase Optimization**
-
    - Module-based development
    - Lazy loading patterns
    - Code splitting strategies
@@ -2414,28 +2556,24 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **Ask Mode**
-
    - Quick questions, code explanations
    - Simple queries
    - Information requests
    - **Benefit:** Fast answers without tool overhead
 
 2. **Manual Mode**
-
    - Precise control over tool usage
    - For risky operations (database, deletions)
    - Step-by-step execution
    - **Benefit:** Safety for critical operations
 
 3. **Custom Mode**
-
    - Project-specific workflows
    - Repeated task patterns
    - Automated sequences
    - **Benefit:** Efficiency for common tasks
 
 4. **Planning Mode** (Current Focus)
-
    - Complex features (3+ steps)
    - Multi-file changes
    - Integration work
@@ -2445,9 +2583,9 @@ This section documents Cursor's capabilities and features that maximize develope
 
 - ✅ Planning mode guidelines in place
 - ✅ Planning templates available
-   - API endpoint plan
-   - Component plan
-   - Migration plan
+  - API endpoint plan
+  - Component plan
+  - Migration plan
 - ✅ Mode selection criteria documented
 
 **Optimization Opportunities:**
@@ -2469,34 +2607,29 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **File Operations (Preferred)**
-
    - Read, write, search files
    - Surgical edits over rewrites
    - Batch operations
    - **Benefit:** Precise code changes
 
 2. **Terminal Operations (Selective)**
-
    - Package management
    - Builds, tests, migrations
    - Not for code changes
    - **Benefit:** Appropriate tool usage
 
 3. **Browser Automation**
-
    - Web testing
    - E2E validation
    - **Benefit:** Real-world testing
 
 4. **MCP Tools**
-
    - Next.js MCP (error detection, routes)
    - GitHub integration
    - Vercel deployment
    - **Benefit:** Framework-specific capabilities
 
 5. **Context Management**
-
    - Read relevant files first
    - Point to exact file(s) and lines
    - Prefer surgical edits
@@ -2505,9 +2638,9 @@ This section documents Cursor's capabilities and features that maximize develope
 **Current Implementation:**
 
 - ✅ Tool usage rules documented
-   - File operations for code
-   - Terminal for builds/tests
-   - Browser for testing
+  - File operations for code
+  - Terminal for builds/tests
+  - Browser for testing
 - ✅ Context use guidelines in place
 
 **Optimization Opportunities:**
@@ -2530,28 +2663,24 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **Planning Discipline**
-
    - State goal in 1-2 lines
    - List smallest steps
    - Define verification method
    - **Benefit:** Clear execution path
 
 2. **Planning Templates**
-
    - API endpoint plan
    - Component plan
    - Migration plan
    - **Benefit:** Consistent planning structure
 
 3. **Plan Validation**
-
    - Reference architecture docs
    - Validate against existing patterns
    - Break down into actionable todos
    - **Benefit:** Prevents architectural drift
 
 4. **Plan Execution**
-
    - Small commits/patches
    - Verify each step
    - Maintain consistency
@@ -2584,7 +2713,6 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **@ Mention Types**
-
    - `@Docs` - External documentation
    - `@Codebase` - Codebase search
    - `@Rules` - Cursor rules
@@ -2593,14 +2721,12 @@ This section documents Cursor's capabilities and features that maximize develope
    - **Benefit:** Precise context targeting
 
 2. **Reference Format**
-
    - Include file paths: `app/api/users/route.ts`
    - Include line numbers: `app/components/UserCard.tsx:15-20`
    - Reference config blocks: `tsconfig.json` → `compilerOptions`
    - **Benefit:** Exact location targeting
 
 3. **Reference Best Practices**
-
    - Use @Docs for framework questions
    - Use @Codebase for pattern discovery
    - Use @Rules for project standards
@@ -2629,7 +2755,6 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **Available Hooks** (`.cursor/hooks/`)
-
    - `audit-command.sh` - Command auditing
    - `format-code.sh` - Code formatting
    - `log-activity.sh` - Activity logging
@@ -2638,7 +2763,6 @@ This section documents Cursor's capabilities and features that maximize develope
    - **Benefit:** Automated consistency checks
 
 2. **Hook Integration**
-
    - Pre-commit validation
    - Code formatting enforcement
    - Documentation updates
@@ -2667,14 +2791,12 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **Memory Types**
-
    - Project decisions
    - Architecture choices
    - Pattern preferences
    - **Benefit:** Context persists across sessions
 
 2. **Memory Usage**
-
    - Reference with `@Memories`
    - Auto-included in relevant contexts
    - **Benefit:** Consistent decision application
@@ -2700,19 +2822,16 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **Incremental Indexing**
-
    - Updates on file changes
    - Focuses on frequently accessed files
    - **Benefit:** Fast, efficient indexing
 
 2. **Targeted Indexing**
-
    - Include: `app/**`, `components/**`, `lib/**`, `docs/**`
    - Exclude: `node_modules/**`, `.next/**`, `build/**`, `dist/**`
    - **Benefit:** Indexes only relevant code
 
 3. **Performance Optimization**
-
    - Module-based development
    - Lazy loading patterns
    - Code splitting
@@ -2741,21 +2860,18 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **Rule Validation Script**
-
    - Auto-fixes `alwaysApply: true` violations
    - Validates naming conventions
    - Checks glob patterns
    - **Benefit:** Prevents configuration drift
 
 2. **Priority Hierarchy**
-
    - Priority 0: Rule governance (configuration control)
    - Priority 1: Master defaults (core behavior)
    - Priority 2: Core safety (safety guardrails)
    - **Benefit:** Clear rule precedence
 
 3. **Pre-commit Integration**
-
    - Validates rules before commit
    - Blocks invalid configurations
    - **Benefit:** Prevents rule drift
@@ -2782,20 +2898,17 @@ This section documents Cursor's capabilities and features that maximize develope
 **Features:**
 
 1. **External Docs (Indexed)**
-
    - Framework knowledge (Next.js, React)
    - API references
    - **Benefit:** Latest framework knowledge
 
 2. **Local Docs (Referenced)**
-
    - Architecture decisions
    - Project patterns
    - Custom conventions
    - **Benefit:** Project-specific context
 
 3. **Rules (Applied)**
-
    - Project standards
    - Conventions
    - Patterns
@@ -2911,25 +3024,21 @@ This section documents Cursor's capabilities and features that maximize develope
 **Synergistic Effects:**
 
 1. **Zod Rules + Cursor Rules:**
-
    - Cursor rules enforce Zod patterns
    - Zod schemas validated via Cursor rules
    - **Result:** Double-layer consistency
 
 2. **Documentation + Zod:**
-
    - Index Zod docs for validation patterns
    - Create local Zod pattern docs
    - **Result:** Accurate Zod implementation
 
 3. **Planning + Zod:**
-
    - Use planning mode for Zod phases
    - Create Zod-specific planning templates
    - **Result:** Structured Zod implementation
 
 4. **Memories + Zod:**
-
    - Save Zod decisions as memories
    - Reference Zod patterns consistently
    - **Result:** Persistent Zod knowledge

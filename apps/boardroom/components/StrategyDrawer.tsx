@@ -10,87 +10,105 @@
  * @see PRD Section 4.1.2
  */
 
-'use client'
+"use client"
 
-import { Card } from '@mythic/design-system'
-import { cn, intelligentRiskStyles, intelligentStatusStyles, calculateRiskStatus } from '@mythic/shared-utils'
-import { spacing, typography, tokens, buttons, borders, transitions, margins, alignment, layout } from '@/src/lib'
-import { useState, useEffect, useCallback, memo, useMemo } from 'react'
-import dynamic from 'next/dynamic'
-import { getStencil } from '@/app/actions/stencils'
-import { getVarianceData, type VarianceData } from '@/app/actions/variance'
-import { CodexStencilViewer } from './CodexStencilViewer'
-import { LoadingState } from './LoadingState'
-import { ErrorState } from './ErrorState'
-import { EmptyState } from './EmptyState'
-import type { Proposal } from '@mythic/shared-types/boardroom'
-import type { StencilDefinition } from '@/src/codex'
+import { Card } from "@mythic/tailwindcss-v4-design-system"
+import {
+  cn,
+  intelligentRiskStyles,
+  intelligentStatusStyles,
+  calculateRiskStatus,
+} from "@mythic/nextjs-shared-utils"
+import {
+  spacing,
+  typography,
+  tokens,
+  buttons,
+  borders,
+  transitions,
+  margins,
+  alignment,
+  layout,
+} from "@/src/lib"
+import { useState, useEffect, useCallback, memo, useMemo } from "react"
+import dynamic from "next/dynamic"
+import { getStencil } from "@/app/actions/stencils"
+import { getVarianceData, type VarianceData } from "@/app/actions/variance"
+import { CodexStencilViewer } from "./CodexStencilViewer"
+import { LoadingState } from "./LoadingState"
+import { ErrorState } from "./ErrorState"
+import { EmptyState } from "./EmptyState"
+import type { Proposal } from "@mythic/shared-types/boardroom"
+import type { StencilDefinition } from "@/src/codex"
 
 interface StrategyDrawerProps {
   proposal: Proposal | null
   className?: string
 }
 
-type TabId = 'trace' | 'dialog' | 'codex' | 'todos'
+type TabId = "trace" | "dialog" | "codex" | "todos"
 
-export const StrategyDrawer = memo(function StrategyDrawer({ proposal, className }: StrategyDrawerProps) {
-  const [activeTab, setActiveTab] = useState<TabId>('trace')
+export const StrategyDrawer = memo(
+  function StrategyDrawer({ proposal, className }: StrategyDrawerProps) {
+    const [activeTab, setActiveTab] = useState<TabId>("trace")
 
-  // Memoize tab change handler
-  const handleTabChange = useCallback((tabId: TabId) => {
-    setActiveTab(tabId)
-  }, [])
+    // Memoize tab change handler
+    const handleTabChange = useCallback((tabId: TabId) => {
+      setActiveTab(tabId)
+    }, [])
 
-  if (!proposal) {
+    if (!proposal) {
+      return (
+        <EmptyState
+          title="Select a proposal"
+          description="Choose a proposal from the Pool Table to view details"
+          className={className}
+        />
+      )
+    }
+
     return (
-      <EmptyState
-        title="Select a proposal"
-        description="Choose a proposal from the Pool Table to view details"
-        className={className}
-      />
+      <div className={cn("flex flex-col h-full", className)}>
+        {/* Tabs */}
+        <div className="flex border-b border-obsidian mb-4">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => handleTabChange(tab.id)}
+              className={cn(
+                "px-6 py-3 text-sm font-medium border-b-2",
+                transitions.default,
+                activeTab === tab.id
+                  ? cn(borders.accent, tokens.text.primary)
+                  : "border-transparent text-ash hover:text-parchment"
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab Content */}
+        <div className="flex-1 overflow-y-auto">
+          {activeTab === "trace" && <ThanosTrace proposal={proposal} />}
+          {activeTab === "dialog" && <BoardDialog proposal={proposal} />}
+          {activeTab === "codex" && <Codex proposal={proposal} />}
+          {activeTab === "todos" && <LinkedTodos proposal={proposal} />}
+        </div>
+      </div>
     )
+  },
+  (prevProps, nextProps) => {
+    // Only re-render if proposal changes
+    return prevProps.proposal?.id === nextProps.proposal?.id
   }
-
-  return (
-    <div className={cn('flex flex-col h-full', className)}>
-      {/* Tabs */}
-      <div className="flex border-b border-obsidian mb-4">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => handleTabChange(tab.id)}
-            className={cn(
-              'px-6 py-3 text-sm font-medium border-b-2',
-              transitions.default,
-              activeTab === tab.id
-                ? cn(borders.accent, tokens.text.primary)
-                : 'border-transparent text-ash hover:text-parchment'
-            )}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Tab Content */}
-      <div className="flex-1 overflow-y-auto">
-        {activeTab === 'trace' && <ThanosTrace proposal={proposal} />}
-        {activeTab === 'dialog' && <BoardDialog proposal={proposal} />}
-        {activeTab === 'codex' && <Codex proposal={proposal} />}
-        {activeTab === 'todos' && <LinkedTodos proposal={proposal} />}
-      </div>
-    </div>
-  )
-}, (prevProps, nextProps) => {
-  // Only re-render if proposal changes
-  return prevProps.proposal?.id === nextProps.proposal?.id
-})
+)
 
 const tabs: { id: TabId; label: string }[] = [
-  { id: 'trace', label: 'The Thanos Trace' },
-  { id: 'dialog', label: 'The BoardDialog' },
-  { id: 'codex', label: 'The Codex' },
-  { id: 'todos', label: 'Linked To-Dos' },
+  { id: "trace", label: "The Thanos Trace" },
+  { id: "dialog", label: "The BoardDialog" },
+  { id: "codex", label: "The Codex" },
+  { id: "todos", label: "Linked To-Dos" },
 ]
 
 function ThanosTrace({ proposal }: { proposal: Proposal }) {
@@ -107,7 +125,7 @@ function ThanosTrace({ proposal }: { proposal: Proposal }) {
         const data = await getVarianceData({ proposalId: proposal.id })
         setVarianceData(data)
       } catch (err) {
-        setVarianceError(err instanceof Error ? err : new Error('Failed to load variance data'))
+        setVarianceError(err instanceof Error ? err : new Error("Failed to load variance data"))
       } finally {
         setVarianceLoading(false)
       }
@@ -122,9 +140,9 @@ function ThanosTrace({ proposal }: { proposal: Proposal }) {
       return varianceData.variancePct
     }
     // Fallback: try to extract from proposal data if no variance record exists
-    if (typeof proposal.data === 'object' && proposal.data !== null) {
+    if (typeof proposal.data === "object" && proposal.data !== null) {
       const data = proposal.data as Record<string, unknown>
-      if (typeof data.amount === 'number' && typeof data.budgeted === 'number') {
+      if (typeof data.amount === "number" && typeof data.budgeted === "number") {
         const budgeted = data.budgeted as number
         const actual = data.amount as number
         if (budgeted > 0) {
@@ -137,7 +155,7 @@ function ThanosTrace({ proposal }: { proposal: Proposal }) {
 
   // Calculate risk status from variance
   const riskStatus = useMemo(() => {
-    if (variancePct === null) return 'on_track' // Default if no data
+    if (variancePct === null) return "on_track" // Default if no data
     return calculateRiskStatus(variancePct)
   }, [variancePct])
 
@@ -146,9 +164,11 @@ function ThanosTrace({ proposal }: { proposal: Proposal }) {
       {/* Past Vector - Forensic History */}
       <Card
         elevation="sm"
-        className={intelligentRiskStyles('on_track', 'past', cn(spacing.card, borders.left))}
+        className={intelligentRiskStyles("on_track", "past", cn(spacing.card, borders.left))}
       >
-        <h3 className={cn(tokens.text.accent, typography.heading.sm, margins.bottom.md)}>📋 Past Vector (Forensic)</h3>
+        <h3 className={cn(tokens.text.accent, typography.heading.sm, margins.bottom.md)}>
+          📋 Past Vector (Forensic)
+        </h3>
         <div className={cn(spacing.space.sm, typography.body.md)}>
           <div className={tokens.text.secondary}>
             Proposal submitted {new Date(proposal.created_at).toLocaleString()}
@@ -156,7 +176,7 @@ function ThanosTrace({ proposal }: { proposal: Proposal }) {
           <div className={tokens.text.secondary}>
             Last updated {new Date(proposal.updated_at).toLocaleString()}
           </div>
-          <div className={cn(tokens.text.secondary, typography.body.sm, margins.top.sm, 'italic')}>
+          <div className={cn(tokens.text.secondary, typography.body.sm, margins.top.sm, "italic")}>
             Version history feature coming soon
           </div>
         </div>
@@ -165,13 +185,15 @@ function ThanosTrace({ proposal }: { proposal: Proposal }) {
       {/* Present Vector - Real-Time Pulse */}
       <Card
         elevation="sm"
-        className={intelligentRiskStyles('on_track', 'present', cn(spacing.card, borders.left))}
+        className={intelligentRiskStyles("on_track", "present", cn(spacing.card, borders.left))}
       >
-        <h3 className={cn(tokens.text.accent, typography.heading.sm, margins.bottom.md)}>📊 Present Vector (Pulse)</h3>
+        <h3 className={cn(tokens.text.accent, typography.heading.sm, margins.bottom.md)}>
+          📊 Present Vector (Pulse)
+        </h3>
         <div className={cn(spacing.space.sm, typography.body.md, tokens.text.secondary)}>
           <div>Real-time viewers: Not available</div>
           <div>Last activity: {new Date(proposal.updated_at).toLocaleString()}</div>
-          <div className={cn(typography.body.sm, margins.top.sm, 'italic')}>
+          <div className={cn(typography.body.sm, margins.top.sm, "italic")}>
             WebSocket real-time updates coming soon
           </div>
         </div>
@@ -181,18 +203,22 @@ function ThanosTrace({ proposal }: { proposal: Proposal }) {
       <Card
         elevation="sm"
         className={intelligentRiskStyles(
-          variancePct !== null ? variancePct : 'on_track',
-          'future',
+          variancePct !== null ? variancePct : "on_track",
+          "future",
           cn(spacing.card, borders.left)
         )}
       >
-        <h3 className={cn(tokens.text.accent, typography.heading.sm, margins.bottom.md)}>🎯 Future Vector (Prediction)</h3>
+        <h3 className={cn(tokens.text.accent, typography.heading.sm, margins.bottom.md)}>
+          🎯 Future Vector (Prediction)
+        </h3>
         {varianceLoading ? (
           <LoadingState message="Loading variance analysis..." size="sm" />
         ) : varianceError ? (
           <div className={cn(typography.body.md, tokens.text.secondary)}>
             <div className={tokens.text.warning}>Error loading variance data</div>
-            <div className={cn(typography.body.sm, margins.top.sm, 'italic')}>{varianceError.message}</div>
+            <div className={cn(typography.body.sm, margins.top.sm, "italic")}>
+              {varianceError.message}
+            </div>
           </div>
         ) : varianceData ? (
           <div className={cn(spacing.space.sm, typography.body.md)}>
@@ -214,29 +240,19 @@ function ThanosTrace({ proposal }: { proposal: Proposal }) {
             {variancePct !== null && (
               <div className={cn(layout.flexCenter, spacing.gap.sm, margins.top.sm)}>
                 <span className={tokens.text.secondary}>Risk Score:</span>
-                <span
-                  className={intelligentRiskStyles(
-                    riskStatus,
-                    'future',
-                    buttons.badge
-                  )}
-                >
-                  {riskStatus.toUpperCase().replace('_', ' ')}
+                <span className={intelligentRiskStyles(riskStatus, "future", buttons.badge)}>
+                  {riskStatus.toUpperCase().replace("_", " ")}
                 </span>
-                <span
-                  className={intelligentRiskStyles(
-                    variancePct,
-                    'future',
-                    typography.mono.sm
-                  )}
-                >
-                  ({variancePct > 0 ? '+' : ''}
+                <span className={intelligentRiskStyles(variancePct, "future", typography.mono.sm)}>
+                  ({variancePct > 0 ? "+" : ""}
                   {variancePct.toFixed(1)}%)
                 </span>
               </div>
             )}
             {varianceData.varianceReason && (
-              <div className={cn(typography.body.sm, tokens.text.secondary, margins.top.sm, 'italic')}>
+              <div
+                className={cn(typography.body.sm, tokens.text.secondary, margins.top.sm, "italic")}
+              >
                 Reason: {varianceData.varianceReason}
               </div>
             )}
@@ -249,7 +265,7 @@ function ThanosTrace({ proposal }: { proposal: Proposal }) {
         ) : (
           <div className={cn(spacing.space.sm, typography.body.md, tokens.text.secondary)}>
             <div>No variance data available</div>
-            <div className={cn(typography.body.sm, margins.top.sm, 'italic')}>
+            <div className={cn(typography.body.sm, margins.top.sm, "italic")}>
               Variance tracking will be available once budget data is recorded
             </div>
           </div>
@@ -263,7 +279,9 @@ function BoardDialog({ proposal }: { proposal: Proposal }) {
   return (
     <div className={spacing.space.md}>
       <Card elevation="sm" className={spacing.card}>
-        <div className={cn(typography.body.md, tokens.text.secondary, margins.bottom.md)}>Comment thread for proposal discussion</div>
+        <div className={cn(typography.body.md, tokens.text.secondary, margins.bottom.md)}>
+          Comment thread for proposal discussion
+        </div>
         <div className={spacing.space.sm}>
           <EmptyState
             title="No comments yet"
@@ -282,15 +300,11 @@ function BoardDialog({ proposal }: { proposal: Proposal }) {
           disabled
           aria-label="Comment input (coming soon)"
         />
-        <button
-          className={buttons.primary}
-          disabled
-          aria-label="Post comment (coming soon)"
-        >
+        <button className={buttons.primary} disabled aria-label="Post comment (coming soon)">
           POST
         </button>
       </div>
-      <div className={cn(typography.body.sm, tokens.text.secondary, 'italic')}>
+      <div className={cn(typography.body.sm, tokens.text.secondary, "italic")}>
         Commenting feature coming soon
       </div>
     </div>
@@ -310,7 +324,7 @@ function Codex({ proposal }: { proposal: Proposal }) {
         const loadedStencil = await getStencil({ stencilId: proposal.stencil_id })
         setStencil(loadedStencil)
       } catch (err) {
-        setError(err instanceof Error ? err : new Error('Failed to load stencil'))
+        setError(err instanceof Error ? err : new Error("Failed to load stencil"))
       } finally {
         setLoading(false)
       }
@@ -368,11 +382,7 @@ function LinkedTodos({ proposal }: { proposal: Proposal }) {
       <Card elevation="sm" className={spacing.card}>
         <div className={cn(layout.flexBetween, margins.bottom.md)}>
           <h3 className={cn(tokens.text.accent, typography.heading.sm)}>Linked To-Dos</h3>
-          <button
-            className={buttons.small}
-            disabled
-            aria-label="Create to-do (coming soon)"
-          >
+          <button className={buttons.small} disabled aria-label="Create to-do (coming soon)">
             + Create To-Do
           </button>
         </div>
@@ -383,7 +393,7 @@ function LinkedTodos({ proposal }: { proposal: Proposal }) {
             variant="info"
             className={spacing.card}
           />
-          <div className={cn(typography.body.sm, tokens.text.secondary, 'italic mt-2')}>
+          <div className={cn(typography.body.sm, tokens.text.secondary, "italic mt-2")}>
             To-do integration coming soon
           </div>
         </div>

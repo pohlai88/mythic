@@ -1,15 +1,17 @@
 # Nextra 4: Dynamic Head Tags Migration Guide
 
-**Date**: 2025-01-27
-**Status**: ✅ **Migrated - Using Next.js Metadata API**
+**Date**: 2025-01-27 **Status**: ✅ **Migrated - Using Next.js Metadata API**
 
-**Reference**: [Next.js Metadata API](https://nextjs.org/docs/app/getting-started/metadata-and-og-images)
+**Reference**:
+[Next.js Metadata API](https://nextjs.org/docs/app/getting-started/metadata-and-og-images)
 
 ---
 
 ## Overview
 
-Nextra 4 migrates from the `head` theme config option to **Next.js Metadata API** for dynamic `<head>` tags. This provides better SEO, type safety, and integration with Next.js App Router.
+Nextra 4 migrates from the `head` theme config option to **Next.js Metadata
+API** for dynamic `<head>` tags. This provides better SEO, type safety, and
+integration with Next.js App Router.
 
 ---
 
@@ -18,6 +20,7 @@ Nextra 4 migrates from the `head` theme config option to **Next.js Metadata API*
 ### ❌ Removed in Nextra 4
 
 **Nextra 3** (deprecated):
+
 ```javascript
 // ❌ NO LONGER SUPPORTED
 const withNextra = nextra({
@@ -27,28 +30,29 @@ const withNextra = nextra({
         <title>My Site</title>
         <meta name="description" content="..." />
       </>
-    )
-  }
+    ),
+  },
 })
 ```
 
 ### ✅ New Approach in Nextra 4
 
 **Nextra 4** (current):
+
 ```tsx
 // ✅ Use Next.js Metadata API
 export const metadata = {
   title: {
-    default: 'NexusCanon Documentation',
-    template: '%s | NexusCanon'
+    default: "NexusCanon Documentation",
+    template: "%s | NexusCanon",
   },
-  description: 'Comprehensive governance and documentation',
+  description: "Comprehensive governance and documentation",
   openGraph: {
-    url: 'https://nexuscanon.dev',
-    siteName: 'NexusCanon',
-    locale: 'en_US',
-    type: 'website'
-  }
+    url: "https://nexuscanon.dev",
+    siteName: "NexusCanon",
+    locale: "en_US",
+    type: "website",
+  },
 }
 ```
 
@@ -65,30 +69,37 @@ export const metadata = {
 ```tsx
 export const metadata = {
   title: {
-    default: 'NexusCanon Documentation',
-    template: '%s | NexusCanon',
+    default: "NexusCanon Documentation",
+    template: "%s | NexusCanon",
   },
-  description: 'Comprehensive governance and documentation powered by Nextra',
-  keywords: ['documentation', 'nextra', 'next.js', 'mdx', 'governance', 'nexuscanon'],
-  authors: [{ name: 'NexusCanon' }],
+  description: "Comprehensive governance and documentation powered by Nextra",
+  keywords: [
+    "documentation",
+    "nextra",
+    "next.js",
+    "mdx",
+    "governance",
+    "nexuscanon",
+  ],
+  authors: [{ name: "NexusCanon" }],
   openGraph: {
-    title: 'NexusCanon Documentation',
-    description: 'Comprehensive governance and documentation powered by Nextra',
-    type: 'website',
-    images: ['/og-image.png'],
-    url: 'https://nexuscanon.dev',
+    title: "NexusCanon Documentation",
+    description: "Comprehensive governance and documentation powered by Nextra",
+    type: "website",
+    images: ["/og-image.png"],
+    url: "https://nexuscanon.dev",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'NexusCanon Documentation',
-    description: 'Comprehensive governance and documentation powered by Nextra',
-    images: ['/og-image.png'],
+    card: "summary_large_image",
+    title: "NexusCanon Documentation",
+    description: "Comprehensive governance and documentation powered by Nextra",
+    images: ["/og-image.png"],
   },
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
-  themeColor: '#000000',
+  themeColor: "#000000",
 }
 ```
 
@@ -103,6 +114,7 @@ export const metadata = {
 Nextra 4 automatically extracts metadata from MDX front matter:
 
 **MDX File** (`app/page.mdx`):
+
 ```mdx
 ---
 title: Hello Nextra 4
@@ -113,12 +125,19 @@ description: Make beautiful websites with Next.js & MDX.
 ```
 
 **Generated HTML**:
+
 ```html
 <head>
   <title>Hello Nextra 4 | NexusCanon</title>
   <meta property="og:title" content="Hello Nextra 4 | NexusCanon" />
-  <meta name="description" content="Make beautiful websites with Next.js &amp; MDX." />
-  <meta property="og:description" content="Make beautiful websites with Next.js &amp; MDX." />
+  <meta
+    name="description"
+    content="Make beautiful websites with Next.js &amp; MDX."
+  />
+  <meta
+    property="og:description"
+    content="Make beautiful websites with Next.js &amp; MDX."
+  />
 </head>
 ```
 
@@ -129,7 +148,9 @@ description: Make beautiful websites with Next.js & MDX.
 **Status**: ✅ **USING NEXTRA'S IMPORT PAGE API**
 
 ```tsx
-export async function generateMetadata(props: { params: Promise<{ mdxPath?: string[] }> }) {
+export async function generateMetadata(props: {
+  params: Promise<{ mdxPath?: string[] }>
+}) {
   const params = await props.params
   const { metadata } = await importPage(params.mdxPath)
   return metadata
@@ -137,9 +158,11 @@ export async function generateMetadata(props: { params: Promise<{ mdxPath?: stri
 ```
 
 **How It Works**:
+
 1. Nextra's `importPage()` extracts front matter from MDX
 2. Front matter `title` → `<title>` and `<meta property="og:title">`
-3. Front matter `description` → `<meta name="description">` and `<meta property="og:description">`
+3. Front matter `description` → `<meta name="description">` and
+   `<meta property="og:description">`
 4. First `<h1>` heading used if no `title` in front matter
 
 **Verification**: ✅ **PASS** - Using Nextra's metadata extraction
@@ -154,18 +177,22 @@ export async function generateMetadata(props: { params: Promise<{ mdxPath?: stri
 
 ```mdx
 ---
-title: 'Page File Convention Documentation'
-description: 'Complete guide to using Page File Convention in Nextra v4'
+title: "Page File Convention Documentation"
+description: "Complete guide to using Page File Convention in Nextra v4"
 ---
 
 # Page File Convention Guide
 ```
 
 **Generated Metadata**:
+
 - `<title>`: "Page File Convention Documentation | NexusCanon"
-- `<meta name="description">`: "Complete guide to using Page File Convention in Nextra v4"
-- `<meta property="og:title">`: "Page File Convention Documentation | NexusCanon"
-- `<meta property="og:description">`: "Complete guide to using Page File Convention in Nextra v4"
+- `<meta name="description">`: "Complete guide to using Page File Convention in
+  Nextra v4"
+- `<meta property="og:title">`: "Page File Convention Documentation |
+  NexusCanon"
+- `<meta property="og:description">`: "Complete guide to using Page File
+  Convention in Nextra v4"
 
 **Verification**: ✅ **PASS** - Front matter correctly formatted
 
@@ -214,17 +241,19 @@ title: {
 
 ### Nextra's Head Component
 
-**Current Usage**: ✅ Using Nextra's `<Head>` component for theme-specific head tags
+**Current Usage**: ✅ Using Nextra's `<Head>` component for theme-specific head
+tags
 
 **File**: `app/layout.tsx`
 
 ```tsx
-import { Head } from 'nextra/components'
+import { Head } from "nextra/components"
 
-<Head backgroundColor={{ dark: '#0f172a', light: '#fefce8' }} />
+;<Head backgroundColor={{ dark: "#0f172a", light: "#fefce8" }} />
 ```
 
 **Purpose**:
+
 - Theme-specific head tags (background colors, etc.)
 - Complements Next.js Metadata API
 - Not for general metadata (use Metadata API instead)
@@ -303,8 +332,8 @@ $ grep -r "generateMetadata" app/
 
 ```yaml
 ---
-title: 'Page Title'           # Sets <title> and og:title
-description: 'Page description' # Sets meta description and og:description
+title: "Page Title" # Sets <title> and og:title
+description: "Page description" # Sets meta description and og:description
 ---
 ```
 
@@ -312,22 +341,23 @@ description: 'Page description' # Sets meta description and og:description
 
 ```yaml
 ---
-title: 'Page Title'
-description: 'Page description'
-author: 'Author Name'
-date: '2025-01-27'
-tags: ['tag1', 'tag2']
+title: "Page Title"
+description: "Page description"
+author: "Author Name"
+date: "2025-01-27"
+tags: ["tag1", "tag2"]
 ---
 ```
 
-**Note**: Nextra extracts `title` and `description` automatically. Other fields may be used by custom components.
+**Note**: Nextra extracts `title` and `description` automatically. Other fields
+may be used by custom components.
 
 ---
 
 ## Comparison: Nextra 3 vs Nextra 4
 
-| Feature            | Nextra 3               | Nextra 4                    | Status       |
-| ------------------ | ---------------------- | --------------------------- | ------------ |
+| Feature            | Nextra 3               | Nextra 4                    | Status        |
+| ------------------ | ---------------------- | --------------------------- | ------------- |
 | **Head Config**    | `head` in theme.config | Removed                     | ✅ Migrated   |
 | **Metadata**       | Manual `<head>` tags   | Metadata API                | ✅ Migrated   |
 | **Title Template** | Manual                 | `metadata.title.template`   | ✅ Configured |
@@ -369,5 +399,5 @@ tags: ['tag1', 'tag2']
 
 ---
 
-**Last Updated**: 2025-01-27
-**Status**: ✅ **FULLY MIGRATED** - Using Next.js Metadata API
+**Last Updated**: 2025-01-27 **Status**: ✅ **FULLY MIGRATED** - Using Next.js
+Metadata API

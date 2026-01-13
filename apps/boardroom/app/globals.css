@@ -8,11 +8,14 @@
 /* Step 1: Import Tailwind CSS (processes first) */
 @import "tailwindcss";
 
-/* Step 2: Import shared design tokens */
-@import "@mythic/design-system/tokens/theme.css";
+/* Step 2: Import shared design tokens (SINGLE SOURCE OF TRUTH) */
+@import "@mythic/design-system/tokens/axis-theme.css";
+
+/* Step 2.5: Import base styles and utilities */
+@import "@mythic/design-system/tokens/axis-base.css";
 
 /* Step 3: Scan shared packages for utilities */
-@source "../../packages/design-system";
+@source "../../packages/TailwindCSS-V4/Design-System";
 
 /**
  * ============================================================================
@@ -21,11 +24,10 @@
  */
 
 @theme {
-  /* Domain-specific font overrides (BoardRoom uses custom fonts) */
-  /* Tailwind v4: Use --font-* naming (not --font-family-*) */
-  --font-serif: 'Cormorant Garamond', serif;
-  --font-sans: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Domain-specific font overrides (BoardRoom uses custom serif font) */
+  /* ⚠️ CONSTITUTION: Only override fonts not in axis-theme.css */
+  /* Note: --font-sans and --font-mono come from axis-theme.css */
+  --font-serif: "Cormorant Garamond", serif;
 
   /* Domain-specific transition duration */
   --duration-1618: 1618ms;
@@ -72,12 +74,19 @@
   }
 
   /* ⭐ ELITE: Editorial Authority (Headings) */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif font-bold text-parchment;
   }
 
   /* ⭐ ELITE: Forensic Data (Code, Numbers) */
-  code, pre, .font-mono {
+  code,
+  pre,
+  .font-mono {
     @apply font-mono;
     font-weight: 400;
   }

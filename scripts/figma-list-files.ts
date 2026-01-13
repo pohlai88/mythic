@@ -13,22 +13,22 @@
  * List Figma files via API
  */
 async function listFigmaFiles(): Promise<void> {
-  console.log('\n📁 Listing Figma Files\n')
+  console.log("\n📁 Listing Figma Files\n")
 
   const apiToken = process.env.FIGMA_API_TOKEN
 
   if (!apiToken) {
-    console.error('❌ Missing FIGMA_API_TOKEN environment variable')
-    console.log('\nSet it in .env.local:')
-    console.log('FIGMA_API_TOKEN=your_figma_token_here')
+    console.error("❌ Missing FIGMA_API_TOKEN environment variable")
+    console.log("\nSet it in .env.local:")
+    console.log("FIGMA_API_TOKEN=your_figma_token_here")
     process.exit(1)
   }
 
   try {
     // Get user's teams
-    const teamsResponse = await fetch('https://api.figma.com/v1/teams', {
+    const teamsResponse = await fetch("https://api.figma.com/v1/teams", {
       headers: {
-        'X-Figma-Token': apiToken,
+        "X-Figma-Token": apiToken,
       },
     })
 
@@ -41,7 +41,7 @@ async function listFigmaFiles(): Promise<void> {
     const teams = teamsData.teams || []
 
     if (teams.length === 0) {
-      console.log('⚠️  No teams found')
+      console.log("⚠️  No teams found")
       return
     }
 
@@ -50,17 +50,14 @@ async function listFigmaFiles(): Promise<void> {
     // Get files for each team
     for (const team of teams) {
       console.log(`\n📦 Team: ${team.name} (${team.id})`)
-      console.log('─'.repeat(50))
+      console.log("─".repeat(50))
 
       try {
-        const projectsResponse = await fetch(
-          `https://api.figma.com/v1/teams/${team.id}/projects`,
-          {
-            headers: {
-              'X-Figma-Token': apiToken,
-            },
-          }
-        )
+        const projectsResponse = await fetch(`https://api.figma.com/v1/teams/${team.id}/projects`, {
+          headers: {
+            "X-Figma-Token": apiToken,
+          },
+        })
 
         if (projectsResponse.ok) {
           const projectsData = await projectsResponse.json()
@@ -73,7 +70,7 @@ async function listFigmaFiles(): Promise<void> {
               `https://api.figma.com/v1/projects/${project.id}/files`,
               {
                 headers: {
-                  'X-Figma-Token': apiToken,
+                  "X-Figma-Token": apiToken,
                 },
               }
             )
@@ -95,9 +92,9 @@ async function listFigmaFiles(): Promise<void> {
       }
     }
 
-    console.log('\n✅ File listing complete!')
+    console.log("\n✅ File listing complete!")
   } catch (error) {
-    console.error('\n❌ Failed to list files:', error)
+    console.error("\n❌ Failed to list files:", error)
     process.exit(1)
   }
 }
@@ -106,7 +103,7 @@ async function main() {
   try {
     await listFigmaFiles()
   } catch (error) {
-    console.error('List files error:', error)
+    console.error("List files error:", error)
     process.exit(1)
   }
 }

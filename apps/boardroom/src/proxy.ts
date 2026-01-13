@@ -8,14 +8,14 @@
  * reflect its purpose as a network boundary in front of the app.
  */
 
-import { z as z4 } from 'zod/v4'
-import { NextResponse } from 'next/server'
-import type { NextRequest, NextFetchEvent } from 'next/server'
-import { createDomainProxy } from '@mythic/domain-core/proxy'
-import { env } from '@/src/lib/env'
-import { analyticsEventSchema, createAnalyticsEvent } from '@/src/lib/analytics/service'
-import { hashIPSync } from '@/src/lib/analytics/privacy'
-import { extractProposalId, extractUserId, getIPAddress } from '@/src/lib/analytics/utils'
+import { z as z4 } from "zod/v4"
+import { NextResponse } from "next/server"
+import type { NextRequest, NextFetchEvent } from "next/server"
+import { createDomainProxy } from "@mythic/domain-core/proxy"
+import { env } from "@/src/lib/env"
+import { analyticsEventSchema, createAnalyticsEvent } from "@/src/lib/analytics/service"
+import { hashIPSync } from "@/src/lib/analytics/privacy"
+import { extractProposalId, extractUserId, getIPAddress } from "@/src/lib/analytics/utils"
 
 /**
  * Request validation schema
@@ -24,11 +24,13 @@ import { extractProposalId, extractUserId, getIPAddress } from '@/src/lib/analyt
  * Following Next.js best practices for proxy validation.
  */
 const requestSchema = z4.object({
-  headers: z4.record(z4.string(), z4.string()).describe('Request headers'),
-  cookies: z4.record(z4.string(), z4.string()).describe('Request cookies'),
-  url: z4.string().url().describe('Request URL'),
-  method: z4.enum(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS']).describe('HTTP method'),
-  pathname: z4.string().describe('Request pathname'),
+  headers: z4.record(z4.string(), z4.string()).describe("Request headers"),
+  cookies: z4.record(z4.string(), z4.string()).describe("Request cookies"),
+  url: z4.string().url().describe("Request URL"),
+  method: z4
+    .enum(["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"])
+    .describe("HTTP method"),
+  pathname: z4.string().describe("Request pathname"),
 })
 
 /**
@@ -52,11 +54,11 @@ export function proxy(request: NextRequest, event?: NextFetchEvent) {
 
   // Skip validation for Next.js internals (extra safety)
   if (
-    pathname.startsWith('/_next/') ||
-    pathname.startsWith('/api/') ||
-    pathname === '/favicon.ico' ||
-    pathname === '/robots.txt' ||
-    pathname === '/sitemap.xml'
+    pathname.startsWith("/_next/") ||
+    pathname.startsWith("/api/") ||
+    pathname === "/favicon.ico" ||
+    pathname === "/robots.txt" ||
+    pathname === "/sitemap.xml"
   ) {
     return NextResponse.next()
   }
@@ -64,9 +66,7 @@ export function proxy(request: NextRequest, event?: NextFetchEvent) {
   // Validate request structure
   const validationResult = requestSchema.safeParse({
     headers: Object.fromEntries(request.headers.entries()),
-    cookies: Object.fromEntries(
-      request.cookies.getAll().map((c) => [c.name, c.value])
-    ),
+    cookies: Object.fromEntries(request.cookies.getAll().map((c) => [c.name, c.value])),
     url: request.url,
     method: request.method,
     pathname: request.nextUrl.pathname,
@@ -74,13 +74,13 @@ export function proxy(request: NextRequest, event?: NextFetchEvent) {
 
   if (!validationResult.success) {
     // Invalid request structure - reject early
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('Invalid request structure:', validationResult.error.issues)
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Invalid request structure:", validationResult.error.issues)
     }
 
     return NextResponse.json(
       {
-        error: 'Invalid request format',
+        error: "Invalid request format",
         issues: validationResult.error.issues,
       },
       { status: 400 }
@@ -91,8 +91,8 @@ export function proxy(request: NextRequest, event?: NextFetchEvent) {
   // Following Next.js best practice: Set request headers for downstream handlers
   const requestHeaders = new Headers(request.headers)
   const requestId = crypto.randomUUID()
-  requestHeaders.set('x-validated-by-proxy', 'true')
-  requestHeaders.set('x-request-id', requestId)
+  requestHeaders.set("x-validated-by-proxy", "true")
+  requestHeaders.set("x-request-id", requestId)
 
   // Background tasks using waitUntil (non-blocking)
   // Following Next.js best practice: Use waitUntil for analytics/logging
@@ -116,9 +116,16 @@ export function proxy(request: NextRequest, event?: NextFetchEvent) {
           const analyticsEvent = createAnalyticsEvent({
             requestId,
             pathname,
-            method: request.method as 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'OPTIONS',
+            method: request.method as
+              | "GET"
+              | "POST"
+              | "PUT"
+              | "PATCH"
+              | "DELETE"
+              | "HEAD"
+              | "OPTIONS",
             timestamp: new Date().toISOString(),
-            userAgent: request.headers.get('user-agent') || undefined,
+            userAgent: request.headers.get("user-agent") || undefined,
             ipHash,
             isValidRequest: true, // Always true here (validation passed)
             validationErrors,
@@ -129,16 +136,16 @@ export function proxy(request: NextRequest, event?: NextFetchEvent) {
           // Validate with Zod schema (contract-first)
           const eventResult = analyticsEventSchema.safeParse(analyticsEvent)
           if (!eventResult.success) {
-            console.error('Analytics event validation failed:', eventResult.error.issues)
+            console.error("Analytics event validation failed:", eventResult.error.issues)
             return // Don't send invalid events
           }
           const validatedEvent = eventResult.data
 
           // Send to self-hosted analytics endpoint
           await fetch(env.ANALYTICS_ENDPOINT, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
               ...(env.ANALYTICS_API_KEY && {
                 Authorization: `Bearer ${env.ANALYTICS_API_KEY}`,
               }),
@@ -147,8 +154,8 @@ export function proxy(request: NextRequest, event?: NextFetchEvent) {
           })
         } catch (error) {
           // Don't throw - background task failures shouldn't affect response
-          if (env.NODE_ENV === 'development') {
-            console.error('Analytics logging failed:', error)
+          if (env.NODE_ENV === "development") {
+            console.error("Analytics logging failed:", error)
           }
         }
       })()
@@ -166,8 +173,8 @@ export function proxy(request: NextRequest, event?: NextFetchEvent) {
 
   // Set response headers (available to client)
   // Following Next.js best practice: Set response headers for client
-  response.headers.set('x-proxy-validated', 'true')
-  response.headers.set('x-request-id', requestHeaders.get('x-request-id')!)
+  response.headers.set("x-proxy-validated", "true")
+  response.headers.set("x-request-id", requestHeaders.get("x-request-id")!)
 
   return response
 }
@@ -195,6 +202,6 @@ export const config = {
      * - _next/data (Next.js data routes - excluded for security)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
      */
-    '/((?!api|_next/static|_next/image|_next/data|favicon.ico|sitemap.xml|robots.txt).*)',
+    "/((?!api|_next/static|_next/image|_next/data|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 }

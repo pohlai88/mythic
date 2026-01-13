@@ -10,8 +10,8 @@
  * Provides fallback strategy if validation fails.
  */
 
-import { readFileSync, existsSync } from 'fs'
-import { join, resolve } from 'path'
+import { readFileSync, existsSync } from "fs"
+import { join, resolve } from "path"
 
 interface TokenValidation {
   valid: boolean
@@ -25,29 +25,21 @@ interface TokenValidation {
   }[]
 }
 
-const REQUIRED_TOKENS = [
-  'void',
-  'obsidian',
-  'parchment',
-  'ash',
-  'gold',
-  'ember',
-  'charcoal',
-]
+const REQUIRED_TOKENS = ["void", "obsidian", "parchment", "ash", "gold", "ember", "charcoal"]
 
 // Resolve paths relative to project root
 // __dirname in ES modules: use import.meta.url
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
+import { fileURLToPath } from "url"
+import { dirname } from "path"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 // Resolve paths relative to project root (scripts directory is in root)
-const PROJECT_ROOT = resolve(__dirname, '..')
-const TOKEN_FILE = resolve(PROJECT_ROOT, 'packages/design-system/src/tokens/handoff-colors.ts')
-const FALLBACK_FILE = resolve(PROJECT_ROOT, 'packages/design-system/src/tokens/fallback.ts')
-const CSS_FILE = resolve(PROJECT_ROOT, 'packages/design-system/src/tokens/theme.css')
+const PROJECT_ROOT = resolve(__dirname, "..")
+const TOKEN_FILE = resolve(PROJECT_ROOT, "packages/TailwindCSS-V4/Design-System/src/tokens/handoff-colors.ts")
+const FALLBACK_FILE = resolve(PROJECT_ROOT, "packages/TailwindCSS-V4/Design-System/src/tokens/fallback.ts")
+const CSS_FILE = resolve(PROJECT_ROOT, "packages/TailwindCSS-V4/Design-System/src/tokens/theme.css")
 
 function loadTokens(filePath: string): Record<string, string> | null {
   if (!existsSync(filePath)) {
@@ -55,7 +47,7 @@ function loadTokens(filePath: string): Record<string, string> | null {
   }
 
   try {
-    const content = readFileSync(filePath, 'utf-8')
+    const content = readFileSync(filePath, "utf-8")
     const tokens: Record<string, string> = {}
 
     // Match Handoff format: void: { value: '#0a0a0b', description: '...' }
@@ -78,7 +70,7 @@ function extractCSSVars(cssPath: string): Set<string> {
   }
 
   try {
-    const content = readFileSync(cssPath, 'utf-8')
+    const content = readFileSync(cssPath, "utf-8")
     const vars = new Set<string>()
 
     // Match CSS variable definitions: --color-primary-50: 210 40% 98%;
@@ -98,10 +90,10 @@ function extractCSSVars(cssPath: string): Set<string> {
 function validateTokenFormat(value: string): { valid: boolean; error?: string } {
   // Handoff provides HEX format (#0a0a0b)
   // We validate HEX format here, conversion to HSL happens in update-css script
-  if (!value.startsWith('#')) {
+  if (!value.startsWith("#")) {
     return {
       valid: false,
-      error: 'Handoff token must be in HEX format: #RRGGBB',
+      error: "Handoff token must be in HEX format: #RRGGBB",
     }
   }
 
@@ -110,7 +102,7 @@ function validateTokenFormat(value: string): { valid: boolean; error?: string } 
   if (!hexRegex.test(value)) {
     return {
       valid: false,
-      error: 'Invalid HEX format. Expected: #RRGGBB (6 hex digits)',
+      error: "Invalid HEX format. Expected: #RRGGBB (6 hex digits)",
     }
   }
 
@@ -122,7 +114,7 @@ function validateHandoffTokens(): TokenValidation {
   const cssVars = extractCSSVars(CSS_FILE)
   const errors: string[] = []
   const warnings: string[] = []
-  const tokenResults: TokenValidation['tokens'] = []
+  const tokenResults: TokenValidation["tokens"] = []
 
   if (!tokens) {
     errors.push(`Token file not found: ${TOKEN_FILE}`)
@@ -183,63 +175,69 @@ function checkFallback(): boolean {
 }
 
 async function main() {
-  console.log('\n🎨 Handoff Token Validation\n')
+  console.log("\n🎨 Handoff Token Validation\n")
 
   const validation = validateHandoffTokens()
   const hasFallback = checkFallback()
 
   // Show relative paths for readability
-  const relativeTokenFile = TOKEN_FILE.replace(PROJECT_ROOT + '\\', '').replace(PROJECT_ROOT + '/', '')
-  const relativeCssFile = CSS_FILE.replace(PROJECT_ROOT + '\\', '').replace(PROJECT_ROOT + '/', '')
-  const relativeFallbackFile = FALLBACK_FILE.replace(PROJECT_ROOT + '\\', '').replace(PROJECT_ROOT + '/', '')
+  const relativeTokenFile = TOKEN_FILE.replace(PROJECT_ROOT + "\\", "").replace(
+    PROJECT_ROOT + "/",
+    ""
+  )
+  const relativeCssFile = CSS_FILE.replace(PROJECT_ROOT + "\\", "").replace(PROJECT_ROOT + "/", "")
+  const relativeFallbackFile = FALLBACK_FILE.replace(PROJECT_ROOT + "\\", "").replace(
+    PROJECT_ROOT + "/",
+    ""
+  )
 
   console.log(`Token File: ${relativeTokenFile}`)
   console.log(`CSS File: ${relativeCssFile}`)
-  console.log(`Fallback File: ${hasFallback ? '✅ Exists' : '❌ Missing'}\n`)
+  console.log(`Fallback File: ${hasFallback ? "✅ Exists" : "❌ Missing"}\n`)
 
   if (validation.errors.length > 0) {
-    console.log('❌ Validation Errors:\n')
-    validation.errors.forEach(error => {
+    console.log("❌ Validation Errors:\n")
+    validation.errors.forEach((error) => {
       console.log(`  - ${error}`)
     })
-    console.log('')
+    console.log("")
   }
 
   if (validation.warnings.length > 0) {
-    console.log('⚠️  Warnings:\n')
-    validation.warnings.forEach(warning => {
+    console.log("⚠️  Warnings:\n")
+    validation.warnings.forEach((warning) => {
       console.log(`  - ${warning}`)
     })
-    console.log('')
+    console.log("")
   }
 
   console.log(`Tokens Validated: ${validation.tokens.length}`)
-  console.log(`Valid Tokens: ${validation.tokens.filter(t => t.valid).length}`)
-  console.log(`Invalid Tokens: ${validation.tokens.filter(t => !t.valid).length}\n`)
+  console.log(`Valid Tokens: ${validation.tokens.filter((t) => t.valid).length}`)
+  console.log(`Invalid Tokens: ${validation.tokens.filter((t) => !t.valid).length}\n`)
 
   if (validation.valid) {
-    console.log('✅ Token validation passed\n')
+    console.log("✅ Token validation passed\n")
 
     if (!hasFallback) {
-      console.log('⚠️  Warning: Fallback tokens file not found')
-      console.log('   Consider creating fallback tokens for failure containment\n')
+      console.log("⚠️  Warning: Fallback tokens file not found")
+      console.log("   Consider creating fallback tokens for failure containment\n")
     }
 
     process.exit(0)
   } else {
-    console.log('❌ Token validation failed\n')
+    console.log("❌ Token validation failed\n")
 
     if (hasFallback) {
-      console.log('💡 Fallback tokens available - using fallback strategy\n')
+      console.log("💡 Fallback tokens available - using fallback strategy\n")
     } else {
-      console.log('⚠️  No fallback tokens available - build may fail\n')
+      console.log("⚠️  No fallback tokens available - build may fail\n")
     }
 
     process.exit(1)
   }
 }
 
-main().catch(error => {
-  console.error('Validation error:', error)
+main().catch((error) => {
+  console.error("Validation error:", error)
   process.exit(1)
 })

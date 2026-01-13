@@ -1,13 +1,13 @@
 # Nextra CLI Guide
 
-**Date:** 2024-12-19
-**Question:** Is there a Nextra CLI available?
+**Date:** 2024-12-19 **Question:** Is there a Nextra CLI available?
 
 ---
 
 ## 🎯 Quick Answer
 
-**No dedicated Nextra CLI exists**, but there are several ways to create and manage Nextra projects:
+**No dedicated Nextra CLI exists**, but there are several ways to create and
+manage Nextra projects:
 
 1. ✅ **Template Repository** (Recommended)
 2. ✅ **create-next-app with Nextra example**
@@ -328,7 +328,8 @@ pnpm analyze
    - Best for: Documentation sites
 
 2. **Next.js with Nextra Example**
-   - Repository: https://github.com/vercel/next.js/tree/canary/examples/with-nextra
+   - Repository:
+     https://github.com/vercel/next.js/tree/canary/examples/with-nextra
    - Status: ✅ Official example
    - Best for: Custom Next.js apps
 
@@ -465,6 +466,5 @@ pnpm type-check
 
 ---
 
-**Last Updated:** 2024-12-19
-**Answer:** ❌ **No dedicated Nextra CLI**, but template approach is recommended
-**Status:** ✅ Your current setup is optimal
+**Last Updated:** 2024-12-19 **Answer:** ❌ **No dedicated Nextra CLI**, but
+template approach is recommended **Status:** ✅ Your current setup is optimal

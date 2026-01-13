@@ -5,13 +5,17 @@
  * Supports @mentions and parent/child relationships.
  */
 
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { broadcastComments, insertBroadcastCommentSchema, selectBroadcastCommentSchema } from '@/src/db/schema'
-import { eq, and, desc } from 'drizzle-orm'
-import { z as z4 } from 'zod/v4'
-import { validateActionInput } from '@/src/lib/actions/validate-action'
+import { db } from "@/src/db"
+import {
+  broadcastComments,
+  insertBroadcastCommentSchema,
+  selectBroadcastCommentSchema,
+} from "@/src/db/schema"
+import { eq, and, desc } from "drizzle-orm"
+import { z as z4 } from "zod/v4"
+import { validateActionInput } from "@/src/lib/actions/validate-action"
 
 /**
  * Input schema for creating broadcast comment
@@ -20,7 +24,7 @@ const createBroadcastCommentInputSchema = z4.object({
   broadcastId: z4.string().uuid(),
   userId: z4.string().uuid(),
   content: z4.string().min(1).max(5000),
-  mode: z4.enum(['open_floor', 'sovereign_consultation']).default('open_floor'),
+  mode: z4.enum(["open_floor", "sovereign_consultation"]).default("open_floor"),
   mentionedUserId: z4.string().uuid().optional(),
   parentCommentId: z4.string().uuid().optional(),
 })
@@ -55,7 +59,7 @@ export interface BroadcastCommentData {
   broadcastId: string
   userId: string
   content: string
-  mode: 'open_floor' | 'sovereign_consultation'
+  mode: "open_floor" | "sovereign_consultation"
   mentionedUserId: string | null
   parentCommentId: string | null
   createdAt: Date
@@ -71,7 +75,7 @@ export async function createBroadcastComment(
 ): Promise<{ success: boolean; commentId?: string; error?: string }> {
   const inputResult = validateActionInput(input, createBroadcastCommentInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { broadcastId, userId, content, mode, mentionedUserId, parentCommentId } = inputResult.data
@@ -83,20 +87,20 @@ export async function createBroadcastComment(
         broadcastId,
         userId,
         content,
-        mode: mode || 'open_floor',
+        mode: mode || "open_floor",
         mentionedUserId: mentionedUserId || null,
         parentCommentId: parentCommentId || null,
       })
       .returning()
 
     if (!comment) {
-      return { success: false, error: 'Failed to create comment' }
+      return { success: false, error: "Failed to create comment" }
     }
 
     return { success: true, commentId: comment.id }
   } catch (error) {
-    console.error('Error creating broadcast comment:', error)
-    return { success: false, error: 'Failed to create comment' }
+    console.error("Error creating broadcast comment:", error)
+    return { success: false, error: "Failed to create comment" }
   }
 }
 
@@ -108,7 +112,7 @@ export async function getBroadcastComments(
 ): Promise<{ comments: BroadcastCommentData[]; error?: string }> {
   const inputResult = validateActionInput(input, getBroadcastCommentsInputSchema)
   if (!inputResult.success) {
-    return { comments: [], error: 'Invalid input' }
+    return { comments: [], error: "Invalid input" }
   }
 
   const { broadcastId } = inputResult.data
@@ -127,7 +131,7 @@ export async function getBroadcastComments(
       broadcastId: c.broadcastId,
       userId: c.userId,
       content: c.content,
-      mode: c.mode as 'open_floor' | 'sovereign_consultation',
+      mode: c.mode as "open_floor" | "sovereign_consultation",
       mentionedUserId: c.mentionedUserId,
       parentCommentId: c.parentCommentId,
       createdAt: c.createdAt,
@@ -161,8 +165,8 @@ export async function getBroadcastComments(
 
     return { comments: rootComments }
   } catch (error) {
-    console.error('Error fetching broadcast comments:', error)
-    return { comments: [], error: 'Failed to fetch comments' }
+    console.error("Error fetching broadcast comments:", error)
+    return { comments: [], error: "Failed to fetch comments" }
   }
 }
 
@@ -174,14 +178,14 @@ export async function updateBroadcastComment(
 ): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, updateBroadcastCommentInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { commentId, content } = inputResult.data
 
   try {
     if (!content) {
-      return { success: false, error: 'Content is required' }
+      return { success: false, error: "Content is required" }
     }
 
     await db
@@ -194,8 +198,8 @@ export async function updateBroadcastComment(
 
     return { success: true }
   } catch (error) {
-    console.error('Error updating broadcast comment:', error)
-    return { success: false, error: 'Failed to update comment' }
+    console.error("Error updating broadcast comment:", error)
+    return { success: false, error: "Failed to update comment" }
   }
 }
 
@@ -207,7 +211,7 @@ export async function deleteBroadcastComment(
 ): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, deleteBroadcastCommentInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { commentId } = inputResult.data
@@ -221,7 +225,7 @@ export async function deleteBroadcastComment(
       .limit(1)
 
     if (!comment) {
-      return { success: false, error: 'Comment not found' }
+      return { success: false, error: "Comment not found" }
     }
 
     // Check for replies
@@ -236,7 +240,7 @@ export async function deleteBroadcastComment(
       await db
         .update(broadcastComments)
         .set({
-          content: '[Comment deleted]',
+          content: "[Comment deleted]",
           updatedAt: new Date(),
         })
         .where(eq(broadcastComments.id, commentId))
@@ -247,7 +251,7 @@ export async function deleteBroadcastComment(
 
     return { success: true }
   } catch (error) {
-    console.error('Error deleting broadcast comment:', error)
-    return { success: false, error: 'Failed to delete comment' }
+    console.error("Error deleting broadcast comment:", error)
+    return { success: false, error: "Failed to delete comment" }
   }
 }

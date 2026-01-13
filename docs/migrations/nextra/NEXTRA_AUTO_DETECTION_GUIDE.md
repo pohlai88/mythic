@@ -30,7 +30,8 @@
 
 ## Solution: Auto-Generate `_meta.json`
 
-We've created a script that **automatically generates** `_meta.json` files from your file structure!
+We've created a script that **automatically generates** `_meta.json` files from
+your file structure!
 
 ### Quick Start
 
@@ -56,6 +57,7 @@ pnpm docs:generate
 ### Example
 
 **Before (Manual):**
+
 ```json
 // pages/_meta.json (manually created)
 {
@@ -66,6 +68,7 @@ pnpm docs:generate
 ```
 
 **After (Auto-Generated):**
+
 ```json
 // pages/_meta.json (auto-generated)
 {
@@ -109,6 +112,7 @@ pages/
 ```
 
 **Generated `guides/_meta.json`:**
+
 ```json
 {
   "getting-started": "Getting Started",
@@ -148,6 +152,7 @@ pages/
 ### Option 3: Pre-commit Hook (Advanced)
 
 Add to `.husky/pre-commit`:
+
 ```bash
 #!/bin/sh
 pnpm generate:meta
@@ -164,7 +169,7 @@ The script generates sensible defaults, but you can customize:
 
 ```json
 {
-  "api-example": "API Reference",  // Generated: "API Example"
+  "api-example": "API Reference", // Generated: "API Example"
   "features": "Features Showcase"
 }
 ```
@@ -188,7 +193,7 @@ The script generates sensible defaults, but you can customize:
 {
   "guides": {
     "title": "Documentation",
-    "type": "menu"  // Collapsible folder
+    "type": "menu" // Collapsible folder
   }
 }
 ```
@@ -248,7 +253,8 @@ This creates `/api-docs` page with interactive Swagger UI.
 ### Custom Titles Not Working?
 
 - Edit `_meta.json` manually after generation
-- Script preserves manual customizations (doesn't overwrite if you edit carefully)
+- Script preserves manual customizations (doesn't overwrite if you edit
+  carefully)
 - Or use `_meta.js` for dynamic generation
 
 ---
@@ -265,8 +271,8 @@ This creates `/api-docs` page with interactive Swagger UI.
 
 ## Summary
 
-| Feature            | Status           | How It Works                     |
-| ------------------ | ---------------- | -------------------------------- |
+| Feature            | Status            | How It Works                     |
+| ------------------ | ----------------- | -------------------------------- |
 | **File → Route**   | ✅ Automatic      | Next.js file-based routing       |
 | **File Detection** | ✅ Automatic      | Next.js dev server watches files |
 | **Navigation**     | ⚙️ Auto-Generated | Run `pnpm generate:meta`         |
@@ -274,6 +280,7 @@ This creates `/api-docs` page with interactive Swagger UI.
 | **Hot Reload**     | ✅ Automatic      | Next.js Fast Refresh             |
 
 **Bottom Line:**
+
 - Files are **automatically detected** as routes
 - Navigation is **auto-generated** with our script
 - You just need to **run the generator** when adding new pages
@@ -301,6 +308,7 @@ pnpm docs:generate
 ## VS Code Integration
 
 **For complete VS Code setup and automation, see:**
+
 - `VSCODE_NEXTRA_INTEGRATION.md` - Complete VS Code integration guide
 - `.vscode/tasks.json` - Pre-configured VS Code tasks
 

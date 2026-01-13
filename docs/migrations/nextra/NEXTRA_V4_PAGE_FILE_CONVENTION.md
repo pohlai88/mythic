@@ -2,7 +2,8 @@
 
 ## ✅ Implementation Complete
 
-This document describes the **Page File Convention** implementation for Nextra v4, following the official migration guide.
+This document describes the **Page File Convention** implementation for Nextra
+v4, following the official migration guide.
 
 ## Overview
 
@@ -50,8 +51,8 @@ mythic/
 
 ```yaml
 ---
-title: 'Page Title'
-description: 'Page description'
+title: "Page Title"
+description: "Page description"
 ---
 ```
 
@@ -59,24 +60,27 @@ description: 'Page description'
 
 ```typescript
 export const metadata = {
-  title: 'Page Title',
-  description: 'Page description',
+  title: "Page Title",
+  description: "Page description",
 }
 ```
 
 ## Example Pages Created
 
 ### 1. `/example-page-convention`
+
 - **File**: `app/example-page-convention/page.mdx`
 - **Purpose**: Basic example of Page File Convention
 - **Metadata**: Exported via frontmatter
 
 ### 2. `/guides/getting-started`
+
 - **File**: `app/guides/getting-started/page.mdx`
 - **Purpose**: Guide page using Page File Convention
 - **Metadata**: Exported via frontmatter
 
 ### 3. `/docs/page-file-convention`
+
 - **File**: `app/docs/page-file-convention/page.mdx`
 - **Purpose**: Complete documentation of Page File Convention
 - **Metadata**: Exported via frontmatter
@@ -84,6 +88,7 @@ export const metadata = {
 ## Benefits of Page File Convention
 
 ### ✅ Colocation
+
 Keep assets with pages:
 
 ```
@@ -96,30 +101,33 @@ app/
 ```
 
 ### ✅ Faster Compilation
+
 - Each page compiles independently
 - No need to process all files at once
 - Better for large projects
 
 ### ✅ Better Organization
+
 - Organize by feature or section
 - Clear file structure
 - Easy to navigate
 
 ## Trade-offs Comparison
 
-| Aspect | Page File Convention | Content Directory Convention |
-|--------|---------------------|----------------------------|
-| **Compilation** | ✅ Faster (per-page) | ⚠️ Slower (all files) |
-| **Colocation** | ✅ Excellent | ❌ Limited |
-| **Organization** | ✅ Flexible | ✅ Simple |
-| **Setup** | ⚠️ More files | ✅ Single catch-all |
-| **Hot Reload** | ✅ Works | ✅ Works |
-| **Import Statements** | ✅ Works | ✅ Works |
-| **Static Images** | ✅ Works | ✅ Works |
+| Aspect                | Page File Convention | Content Directory Convention |
+| --------------------- | -------------------- | ---------------------------- |
+| **Compilation**       | ✅ Faster (per-page) | ⚠️ Slower (all files)        |
+| **Colocation**        | ✅ Excellent         | ❌ Limited                   |
+| **Organization**      | ✅ Flexible          | ✅ Simple                    |
+| **Setup**             | ⚠️ More files        | ✅ Single catch-all          |
+| **Hot Reload**        | ✅ Works             | ✅ Works                     |
+| **Import Statements** | ✅ Works             | ✅ Works                     |
+| **Static Images**     | ✅ Works             | ✅ Works                     |
 
 ## When to Use Each Convention
 
 ### Use Page File Convention When:
+
 - ✅ Complex pages with many assets
 - ✅ Pages that need custom layouts
 - ✅ Pages with specific routing needs
@@ -127,6 +135,7 @@ app/
 - ✅ Need faster compilation times
 
 ### Use Content Directory Convention When:
+
 - ✅ Simple documentation sites
 - ✅ Many similar pages
 - ✅ Quick setup needed
@@ -143,20 +152,21 @@ app/
 ## Official Examples
 
 - [Nextra Website](https://nextra.site) - Uses Page File Convention
-- [Nextra Blog Example](https://github.com/shuding/nextra/tree/main/examples/blog) - Page File Convention
+- [Nextra Blog Example](https://github.com/shuding/nextra/tree/main/examples/blog) -
+  Page File Convention
 
 ## Verification
 
-✅ All example pages created with metadata exports
-✅ TypeScript validation passes
-✅ Both conventions configured
-✅ Layout supports both approaches
+✅ All example pages created with metadata exports ✅ TypeScript validation
+passes ✅ Both conventions configured ✅ Layout supports both approaches
 
 ## Next Steps
 
-1. **Test the pages**: Visit `/example-page-convention`, `/guides/getting-started`, `/docs/page-file-convention`
+1. **Test the pages**: Visit `/example-page-convention`,
+   `/guides/getting-started`, `/docs/page-file-convention`
 2. **Create new pages**: Use `app/your-route/page.mdx` format
-3. **Export metadata**: Always include frontmatter with `title` and `description`
+3. **Export metadata**: Always include frontmatter with `title` and
+   `description`
 4. **Colocate assets**: Keep related files in the same directory
 
 ## Migration Path

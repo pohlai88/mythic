@@ -1,7 +1,7 @@
 # Turbo Remote Cache Setup Guide
 
-**Status**: ✅ Active | **Last Updated**: 2026-01-11
-**Purpose**: Step-by-step guide to get Turbo token and team for remote cache
+**Status**: ✅ Active | **Last Updated**: 2026-01-11 **Purpose**: Step-by-step
+guide to get Turbo token and team for remote cache
 
 ---
 
@@ -26,12 +26,14 @@ pnpm turbo login
 ```
 
 **What happens**:
+
 1. Opens browser to Vercel login page
 2. Sign in with GitHub (or create Vercel account)
 3. Authorizes Turbo CLI
 4. Returns to terminal with success message
 
 **Expected output**:
+
 ```
 ✓ Successfully authenticated
 ```
@@ -45,12 +47,14 @@ pnpm turbo link
 ```
 
 **What happens**:
+
 1. Asks if you want to link to Vercel (type `y`)
 2. Asks which Vercel account/team to use
 3. Links your local repo to Vercel Turbo
 4. Shows your team name and token info
 
 **Expected output**:
+
 ```
 ? Set up remote caching? (Y/n) y
 ? Which Vercel account/team? [Select your account]
@@ -71,6 +75,7 @@ After linking, you'll see:
 ```
 
 **Save these values**:
+
 - `TURBO_TEAM` = `your-team-name` (shown in output)
 - `TURBO_TOKEN` = `tur_xxxxxxxxxxxxx` (shown in output)
 
@@ -78,7 +83,9 @@ After linking, you'll see:
 
 ## Alternative: Get Token from Vercel Dashboard
 
-**Note**: Vercel MCP (Model Context Protocol) does NOT provide Turbo tokens. These are Turborepo-specific and must be obtained via Turbo CLI or Vercel dashboard.
+**Note**: Vercel MCP (Model Context Protocol) does NOT provide Turbo tokens.
+These are Turborepo-specific and must be obtained via Turbo CLI or Vercel
+dashboard.
 
 If you didn't save the token from `turbo link`, you can get it from Vercel:
 
@@ -154,6 +161,7 @@ pnpm turbo:summary
 ### Check in CI/CD
 
 After pushing to GitHub:
+
 1. Check GitHub Actions workflow
 2. Look for "Remote cache hit" messages
 3. Builds should be faster (70-95% faster on cache hits)
@@ -165,6 +173,7 @@ After pushing to GitHub:
 ### Issue: "turbo login" fails
 
 **Solution**:
+
 ```bash
 # Try with explicit browser
 pnpm turbo login --browser
@@ -176,6 +185,7 @@ export TURBO_TOKEN=tur_xxxxxxxxxxxxx
 ### Issue: "turbo link" says "already linked"
 
 **Solution**:
+
 ```bash
 # Unlink first
 pnpm turbo unlink
@@ -187,6 +197,7 @@ pnpm turbo link
 ### Issue: Can't find team name
 
 **Solution**:
+
 1. Go to https://vercel.com/teams
 2. Your team name is shown there
 3. Or check Vercel dashboard (top right corner)
@@ -194,6 +205,7 @@ pnpm turbo link
 ### Issue: Token not working in CI/CD
 
 **Solution**:
+
 1. Verify token in GitHub Secrets (Settings → Secrets)
 2. Check token format: Should start with `tur_`
 3. Ensure `TURBO_TEAM` is also set
@@ -235,10 +247,9 @@ TURBO_TEAM=your-team-name
 
 ## Benefits After Setup
 
-✅ **Faster CI/CD builds** (70-95% faster on cache hits)
-✅ **Shared cache** across team members
-✅ **Consistent artifacts** across environments
-✅ **Reduced build times** for unchanged code
+✅ **Faster CI/CD builds** (70-95% faster on cache hits) ✅ **Shared cache**
+across team members ✅ **Consistent artifacts** across environments ✅ **Reduced
+build times** for unchanged code
 
 ---
 
@@ -250,10 +261,8 @@ TURBO_TEAM=your-team-name
 4. **Add to GitHub Secrets**: `TURBO_TOKEN` and `TURBO_TEAM`
 5. **Add to .env**: For local development (optional)
 
-**Time**: ~5 minutes
-**Result**: Remote cache enabled, faster builds
+**Time**: ~5 minutes **Result**: Remote cache enabled, faster builds
 
 ---
 
-**Last Updated**: 2026-01-11
-**Status**: ✅ Active Guide
+**Last Updated**: 2026-01-11 **Status**: ✅ Active Guide

@@ -1,7 +1,6 @@
 # Nextra 4: Built-In Search Component Guide
 
-**Date**: 2025-01-27
-**Status**: ✅ **Implemented Correctly**
+**Date**: 2025-01-27 **Status**: ✅ **Implemented Correctly**
 
 **Reference**: Nextra 4 Blog Theme Migration Guide
 
@@ -9,7 +8,9 @@
 
 ## Overview
 
-Nextra 4 introduces built-in `<Search>` component support for both `nextra-theme-docs` and `nextra-theme-blog`. This guide documents the implementation and usage.
+Nextra 4 introduces built-in `<Search>` component support for both
+`nextra-theme-docs` and `nextra-theme-blog`. This guide documents the
+implementation and usage.
 
 ---
 
@@ -40,22 +41,23 @@ import { Navbar } from 'nextra-theme-docs'
 
 ## Blog Theme (Reference Only)
 
-**Note**: This project uses `nextra-theme-docs`, not `nextra-theme-blog`. The following is for reference.
+**Note**: This project uses `nextra-theme-docs`, not `nextra-theme-blog`. The
+following is for reference.
 
 ### Blog Theme Example
 
 **File**: `app/layout.jsx` (blog theme)
 
 ```tsx
-import { Footer, Layout, Navbar, ThemeSwitch } from 'nextra-theme-blog'
-import { Banner, Head, Search } from 'nextra/components'
-import { getPageMap } from 'nextra/page-map'
-import 'nextra-theme-blog/style.css'
+import { Footer, Layout, Navbar, ThemeSwitch } from "nextra-theme-blog"
+import { Banner, Head, Search } from "nextra/components"
+import { getPageMap } from "nextra/page-map"
+import "nextra-theme-blog/style.css"
 
 export default async function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head backgroundColor={{ dark: '#0f172a', light: '#fefce8' }} />
+      <Head backgroundColor={{ dark: "#0f172a", light: "#fefce8" }} />
       <body>
         <Layout banner={banner}>
           <Navbar pageMap={await getPageMap()}>
@@ -80,7 +82,7 @@ export default async function RootLayout({ children }) {
 ### Import
 
 ```tsx
-import { Search } from 'nextra/components'
+import { Search } from "nextra/components"
 ```
 
 ### Placement
@@ -99,7 +101,7 @@ import { Search } from 'nextra/components'
 ```tsx
 // ❌ Wrong
 <Layout>
-  <Search />  {/* Don't do this */}
+  <Search /> {/* Don't do this */}
   <Navbar>...</Navbar>
 </Layout>
 ```
@@ -194,19 +196,20 @@ const withNextra = nextra({
 })
 ```
 
-**Current**: ✅ **CONFIGURED** - Code blocks search disabled (can enable if needed)
+**Current**: ✅ **CONFIGURED** - Code blocks search disabled (can enable if
+needed)
 
 ---
 
 ## Comparison: Docs vs Blog Theme
 
-| Feature              | Docs Theme          | Blog Theme          | Status         |
-| -------------------- | ------------------- | ------------------- | -------------- |
-| **Search Component** | ✅ Supported         | ✅ Supported (v4)    | ✅ Both support |
+| Feature              | Docs Theme          | Blog Theme          | Status          |
+| -------------------- | ------------------- | ------------------- | --------------- |
+| **Search Component** | ✅ Supported        | ✅ Supported (v4)   | ✅ Both support |
 | **Import Path**      | `nextra/components` | `nextra/components` | ✅ Same         |
 | **Placement**        | Child of `<Navbar>` | Child of `<Navbar>` | ✅ Same         |
-| **Pagefind**         | ✅ Required          | ✅ Required          | ✅ Same         |
-| **Postbuild Script** | ✅ Required          | ✅ Required          | ✅ Same         |
+| **Pagefind**         | ✅ Required         | ✅ Required         | ✅ Same         |
+| **Postbuild Script** | ✅ Required         | ✅ Required         | ✅ Same         |
 
 ---
 
@@ -214,15 +217,14 @@ const withNextra = nextra({
 
 ### Docs Theme
 
-**Nextra 3**: Search was always built-in
-**Nextra 4**: Same pattern, enhanced with Pagefind
+**Nextra 3**: Search was always built-in **Nextra 4**: Same pattern, enhanced
+with Pagefind
 
 **Status**: ✅ **No migration needed** - Already using correct pattern
 
 ### Blog Theme
 
-**Nextra 3**: No built-in search
-**Nextra 4**: Built-in search added
+**Nextra 3**: No built-in search **Nextra 4**: Built-in search added
 
 **Migration Steps** (for blog theme users):
 
@@ -242,10 +244,10 @@ const withNextra = nextra({
 
 ```tsx
 // ✅ Correct import
-import { Search } from 'nextra/components'
+import { Search } from "nextra/components"
 
 // ✅ Correct placement
-<Navbar>
+;<Navbar>
   <Search />
   <ThemeSwitch />
 </Navbar>
@@ -357,5 +359,5 @@ If using i18n, pass translated strings:
 
 ---
 
-**Last Updated**: 2025-01-27
-**Status**: ✅ **IMPLEMENTED CORRECTLY** - Using built-in Search component
+**Last Updated**: 2025-01-27 **Status**: ✅ **IMPLEMENTED CORRECTLY** - Using
+built-in Search component

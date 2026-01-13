@@ -5,19 +5,19 @@
  * Supports @mentions and reply functionality.
  */
 
-'use client'
+"use client"
 
-import { Card } from '@mythic/design-system'
-import { cn, intelligentButtonStyles, intelligentInputStyles } from '@mythic/shared-utils'
-import { useState, useEffect, useCallback, memo } from 'react'
+import { Card } from "@mythic/tailwindcss-v4-design-system"
+import { cn, intelligentButtonStyles, intelligentInputStyles } from "@mythic/nextjs-shared-utils"
+import { useState, useEffect, useCallback, memo } from "react"
 import {
   getBroadcastComments,
   createBroadcastComment,
   updateBroadcastComment,
   deleteBroadcastComment,
   type BroadcastCommentData,
-} from '@/app/actions/broadcast-comments'
-import { getCurrentUserIdAction } from '@/app/actions/session'
+} from "@/app/actions/broadcast-comments"
+import { getCurrentUserIdAction } from "@/app/actions/session"
 
 interface BroadcastCommentsProps {
   broadcastId: string
@@ -59,13 +59,13 @@ const CommentItem = memo(function CommentItem({
         // Reload comments (parent will handle this)
       }
     } catch (error) {
-      console.error('Error updating comment:', error)
+      console.error("Error updating comment:", error)
     }
   }, [comment.id, comment.userId, editContent, userId])
 
   const handleDelete = useCallback(async () => {
     if (!userId || userId !== comment.userId) return
-    if (!confirm('Are you sure you want to delete this comment?')) return
+    if (!confirm("Are you sure you want to delete this comment?")) return
 
     setIsDeleting(true)
     try {
@@ -74,7 +74,7 @@ const CommentItem = memo(function CommentItem({
         onDelete(comment.id)
       }
     } catch (error) {
-      console.error('Error deleting comment:', error)
+      console.error("Error deleting comment:", error)
     } finally {
       setIsDeleting(false)
     }
@@ -84,18 +84,16 @@ const CommentItem = memo(function CommentItem({
   const maxDepth = 3 // Limit nesting depth
 
   return (
-    <div className={cn('space-y-2', depth > 0 && 'ml-6 border-l-2 border-charcoal pl-4')}>
+    <div className={cn("space-y-2", depth > 0 && "ml-6 border-l-2 border-charcoal pl-4")}>
       <Card elevation="sm" className="p-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs text-ash font-mono">
-                User {comment.userId.slice(0, 8)}
-              </span>
+              <span className="text-xs text-ash font-mono">User {comment.userId.slice(0, 8)}</span>
               <span className="text-xs text-ash">
                 {new Date(comment.createdAt).toLocaleString()}
               </span>
-              {comment.mode === 'sovereign_consultation' && (
+              {comment.mode === "sovereign_consultation" && (
                 <span className="text-xs text-gold font-mono">SOVEREIGN</span>
               )}
             </div>
@@ -108,10 +106,7 @@ const CommentItem = memo(function CommentItem({
                   rows={3}
                 />
                 <div className="flex gap-2">
-                  <button
-                    onClick={handleEdit}
-                    className={intelligentButtonStyles('primary', 'sm')}
-                  >
+                  <button onClick={handleEdit} className={intelligentButtonStyles("primary", "sm")}>
                     Save
                   </button>
                   <button
@@ -119,16 +114,14 @@ const CommentItem = memo(function CommentItem({
                       setIsEditing(false)
                       setEditContent(comment.content)
                     }}
-                    className={intelligentButtonStyles('secondary', 'sm')}
+                    className={intelligentButtonStyles("secondary", "sm")}
                   >
                     Cancel
                   </button>
                 </div>
               </div>
             ) : (
-              <div className="text-sm text-parchment whitespace-pre-wrap">
-                {comment.content}
-              </div>
+              <div className="text-sm text-parchment whitespace-pre-wrap">{comment.content}</div>
             )}
             {comment.mentionedUserId && (
               <div className="text-xs text-gold mt-1">
@@ -151,7 +144,7 @@ const CommentItem = memo(function CommentItem({
                 className="text-xs text-ash hover:text-ember transition-hover-intelligent disabled:opacity-50"
                 aria-label="Delete comment"
               >
-                {isDeleting ? 'Deleting...' : 'Delete'}
+                {isDeleting ? "Deleting..." : "Delete"}
               </button>
             </div>
           )}
@@ -192,7 +185,7 @@ export const BroadcastComments = memo(function BroadcastComments({
   const [loading, setLoading] = useState(true)
   const [userId, setUserId] = useState<string | null>(null)
   const [replyingTo, setReplyingTo] = useState<string | null>(null)
-  const [newComment, setNewComment] = useState('')
+  const [newComment, setNewComment] = useState("")
   const [submitting, setSubmitting] = useState(false)
 
   // Load comments
@@ -208,7 +201,7 @@ export const BroadcastComments = memo(function BroadcastComments({
           setComments(result.comments)
         }
       } catch (error) {
-        console.error('Error loading comments:', error)
+        console.error("Error loading comments:", error)
       } finally {
         setLoading(false)
       }
@@ -225,7 +218,7 @@ export const BroadcastComments = memo(function BroadcastComments({
         setComments(result.comments)
       }
     } catch (error) {
-      console.error('Error reloading comments:', error)
+      console.error("Error reloading comments:", error)
     }
   }, [broadcastId])
 
@@ -235,9 +228,12 @@ export const BroadcastComments = memo(function BroadcastComments({
   }, [])
 
   // Handle edit
-  const handleEdit = useCallback(async (commentId: string, content: string) => {
-    await reloadComments()
-  }, [reloadComments])
+  const handleEdit = useCallback(
+    async (commentId: string, content: string) => {
+      await reloadComments()
+    },
+    [reloadComments]
+  )
 
   // Handle delete
   const handleDelete = useCallback(
@@ -272,12 +268,12 @@ export const BroadcastComments = memo(function BroadcastComments({
         })
 
         if (result.success) {
-          setNewComment('')
+          setNewComment("")
           setReplyingTo(null)
           await reloadComments()
         }
       } catch (error) {
-        console.error('Error creating comment:', error)
+        console.error("Error creating comment:", error)
       } finally {
         setSubmitting(false)
       }
@@ -287,14 +283,14 @@ export const BroadcastComments = memo(function BroadcastComments({
 
   if (loading) {
     return (
-      <Card elevation="sm" className={cn('p-4', className)}>
+      <Card elevation="sm" className={cn("p-4", className)}>
         <div className="text-ash text-sm">Loading comments...</div>
       </Card>
     )
   }
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn("space-y-4", className)}>
       <div className="flex items-center justify-between">
         <h3 className="font-serif text-lg text-parchment">Comments</h3>
         <span className="text-sm text-ash">{comments.length} comment(s)</span>
@@ -305,7 +301,7 @@ export const BroadcastComments = memo(function BroadcastComments({
         <form onSubmit={handleSubmit} className="space-y-2">
           {replyingTo && (
             <div className="text-xs text-ash mb-2">
-              Replying to comment{' '}
+              Replying to comment{" "}
               <button
                 type="button"
                 onClick={() => setReplyingTo(null)}
@@ -327,9 +323,13 @@ export const BroadcastComments = memo(function BroadcastComments({
             <button
               type="submit"
               disabled={!newComment.trim() || submitting || !userId}
-              className={intelligentButtonStyles('primary', 'md', 'disabled:opacity-50 disabled:cursor-not-allowed')}
+              className={intelligentButtonStyles(
+                "primary",
+                "md",
+                "disabled:opacity-50 disabled:cursor-not-allowed"
+              )}
             >
-              {submitting ? 'Posting...' : 'Post Comment'}
+              {submitting ? "Posting..." : "Post Comment"}
             </button>
           </div>
         </form>
@@ -338,7 +338,9 @@ export const BroadcastComments = memo(function BroadcastComments({
       {/* Comments list */}
       {comments.length === 0 ? (
         <Card elevation="sm" className="p-4">
-          <div className="text-ash text-sm text-center">No comments yet. Be the first to comment!</div>
+          <div className="text-ash text-sm text-center">
+            No comments yet. Be the first to comment!
+          </div>
         </Card>
       ) : (
         <div className="space-y-3">

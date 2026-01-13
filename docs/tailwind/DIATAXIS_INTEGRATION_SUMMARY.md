@@ -12,15 +12,15 @@ related_docs:
 
 # Diátaxis + Tailwind CSS Integration: Complete Summary
 
-**Status**: ✅ **IMPLEMENTATION COMPLETE**
-**Version**: 1.0.0
-**Last Updated**: 2026-01-11
+**Status**: ✅ **IMPLEMENTATION COMPLETE** **Version**: 1.0.0 **Last Updated**:
+2026-01-11
 
 ---
 
 ## What Was Built
 
-A complete synergistic integration of **Diátaxis documentation framework**, **Tailwind CSS v4**, and **Nextra 4** in the `apps/docs` application.
+A complete synergistic integration of **Diátaxis documentation framework**,
+**Tailwind CSS v4**, and **Nextra 4** in the `apps/docs` application.
 
 ---
 
@@ -35,9 +35,10 @@ A complete synergistic integration of **Diátaxis documentation framework**, **T
 - ✅ **ReferenceTable** - Clean table component for reference docs
 - ✅ **ExplanationBox** - Box component for explanations
 
-### 2. Tailwind Utilities (`packages/design-system/src/tokens/input.css`)
+### 2. Tailwind Utilities (`packages/TailwindCSS-V4/Design-System/src/tokens/input.css`)
 
 Added Diátaxis-specific utilities:
+
 - ✅ `diataxis-tutorial` - Tutorial styling
 - ✅ `diataxis-howto` - How-To styling
 - ✅ `diataxis-reference` - Reference styling
@@ -52,7 +53,8 @@ All Diátaxis components are now available in MDX files.
 ### 4. Documentation
 
 - ✅ Integration guide (`docs/guides/DIATAXIS_TAILWIND_NEXTRA_INTEGRATION.md`)
-- ✅ Example tutorial (`apps/docs/content/tutorials/tailwind-diataxis-integration.mdx`)
+- ✅ Example tutorial
+  (`apps/docs/content/tutorials/tailwind-diataxis-integration.mdx`)
 - ✅ This summary document
 
 ---
@@ -106,7 +108,7 @@ type: tutorial
 ## File Locations
 
 - **Components**: `apps/docs/components/diataxis/`
-- **Utilities**: `packages/design-system/src/tokens/input.css`
+- **Utilities**: `packages/TailwindCSS-V4/Design-System/src/tokens/input.css`
 - **MDX Registry**: `apps/docs/mdx-components.tsx`
 - **Documentation**: `docs/guides/DIATAXIS_TAILWIND_NEXTRA_INTEGRATION.md`
 - **Example**: `apps/docs/content/tutorials/tailwind-diataxis-integration.mdx`
@@ -130,6 +132,4 @@ type: tutorial
 
 ---
 
-**Status**: ✅ Production Ready
-**Version**: 1.0.0
-**Last Updated**: 2026-01-11
+**Status**: ✅ Production Ready **Version**: 1.0.0 **Last Updated**: 2026-01-11

@@ -8,9 +8,11 @@
 
 ## Overview
 
-This guide covers syncing design tokens **FROM your codebase TO Figma**. This is the reverse direction of the Handoff/MCP sync (which goes Figma → Code).
+This guide covers syncing design tokens **FROM your codebase TO Figma**. This is
+the reverse direction of the Handoff/MCP sync (which goes Figma → Code).
 
-**Use Case**: When your Figma file is empty or you want to push your codebase tokens to Figma.
+**Use Case**: When your Figma file is empty or you want to push your codebase
+tokens to Figma.
 
 ---
 
@@ -19,11 +21,13 @@ This guide covers syncing design tokens **FROM your codebase TO Figma**. This is
 ### Sync Direction
 
 **Code → Figma**:
+
 ```
 handoff-colors.ts → sync-tokens-to-figma.ts → Figma API → Figma Variables
 ```
 
 **Figma → Code** (existing):
+
 ```
 Figma Variables → Handoff/MCP → handoff-colors.ts → input.css
 ```
@@ -34,7 +38,8 @@ Figma Variables → Handoff/MCP → handoff-colors.ts → input.css
 
 1. **Figma API Token**: Get from Figma → Account Settings
 2. **Figma File Key**: Extract from Figma file URL
-3. **Design Tokens**: Must exist in `packages/design-system/src/tokens/handoff-colors.ts`
+3. **Design Tokens**: Must exist in
+   `packages/TailwindCSS-V4/Design-System/src/tokens/handoff-colors.ts`
 
 ---
 
@@ -52,11 +57,13 @@ Figma Variables → Handoff/MCP → handoff-colors.ts → input.css
 FIGMA_API_TOKEN=your_figma_token_here
 ```
 
-**Important**: The token **must** have the `file_variables:write` scope enabled, otherwise you'll get a 403 error.
+**Important**: The token **must** have the `file_variables:write` scope enabled,
+otherwise you'll get a 403 error.
 
 ### 2. Get Figma File Key
 
 From your Figma file URL:
+
 ```
 https://www.figma.com/file/FILE_KEY/file-name
 ```
@@ -74,6 +81,7 @@ pnpm tokens:sync-to-figma --file-key=<your-figma-file-key>
 ```
 
 **What it does**:
+
 1. Extracts tokens from `handoff-colors.ts`
 2. Gets existing variables from Figma
 3. Creates new variables or updates existing ones
@@ -95,15 +103,15 @@ pnpm tokens:sync-to-figma --file-key=abc123xyz789
 
 The script syncs these tokens to Figma:
 
-| Token Name | HEX Value | Description |
-|------------|-----------|-------------|
-| `void` | `#0a0a0b` | Absence / Authority |
-| `obsidian` | `#141416` | Surface / Weight |
-| `parchment` | `#f8f5f0` | Knowledge |
-| `ash` | `#d4cfc4` | Commentary |
-| `gold` | `#c9a961` | Ratified Authority |
-| `ember` | `#9d7a4a` | Consequence |
-| `charcoal` | `#2a2a2c` | Border / Divider |
+| Token Name  | HEX Value | Description         |
+| ----------- | --------- | ------------------- |
+| `void`      | `#0a0a0b` | Absence / Authority |
+| `obsidian`  | `#141416` | Surface / Weight    |
+| `parchment` | `#f8f5f0` | Knowledge           |
+| `ash`       | `#d4cfc4` | Commentary          |
+| `gold`      | `#c9a961` | Ratified Authority  |
+| `ember`     | `#9d7a4a` | Consequence         |
+| `charcoal`  | `#2a2a2c` | Border / Divider    |
 
 ---
 
@@ -112,6 +120,7 @@ The script syncs these tokens to Figma:
 ### 1. Extract Tokens
 
 Reads `handoff-colors.ts` and extracts:
+
 - Token names
 - HEX color values
 - Descriptions
@@ -119,6 +128,7 @@ Reads `handoff-colors.ts` and extracts:
 ### 2. Get Existing Variables
 
 Fetches existing variables from Figma to check:
+
 - Which variables already exist
 - Which need to be created
 
@@ -130,6 +140,7 @@ Fetches existing variables from Figma to check:
 ### 4. Color Conversion
 
 Converts HEX → RGB (0-1 range) for Figma API:
+
 ```typescript
 // HEX: #c9a961
 // RGB: { r: 0.788, g: 0.663, b: 0.380 }
@@ -144,6 +155,7 @@ Converts HEX → RGB (0-1 range) for Figma API:
 **Endpoint**: `POST /v1/files/{file_key}/variables`
 
 **Payload**:
+
 ```json
 {
   "name": "gold",
@@ -152,7 +164,7 @@ Converts HEX → RGB (0-1 range) for Figma API:
     "Default": {
       "r": 0.788,
       "g": 0.663,
-      "b": 0.380,
+      "b": 0.38,
       "a": 1
     }
   },
@@ -166,13 +178,14 @@ Converts HEX → RGB (0-1 range) for Figma API:
 **Endpoint**: `PUT /v1/files/{file_key}/variables/{variable_id}`
 
 **Payload**:
+
 ```json
 {
   "valuesByMode": {
     "Default": {
       "r": 0.788,
       "g": 0.663,
-      "b": 0.380,
+      "b": 0.38,
       "a": 1
     }
   },
@@ -200,11 +213,13 @@ pnpm tokens:full-sync
 ### Regular Workflow
 
 **Option A: Code → Figma** (when code changes)
+
 ```bash
 pnpm tokens:sync-to-figma --file-key=<file-key>
 ```
 
 **Option B: Figma → Code** (when Figma changes)
+
 ```bash
 pnpm tokens:full-sync
 ```
@@ -218,6 +233,7 @@ pnpm tokens:full-sync
 **Error**: `401 Unauthorized`
 
 **Solution**:
+
 1. Verify `FIGMA_API_TOKEN` is set correctly
 2. Check token hasn't expired
 3. Regenerate token if needed
@@ -227,6 +243,7 @@ pnpm tokens:full-sync
 **Error**: `404 Not Found`
 
 **Solution**:
+
 1. Verify file key is correct
 2. Check you have access to the file
 3. Ensure file exists
@@ -236,15 +253,18 @@ pnpm tokens:full-sync
 **Error**: `Variable already exists` or similar
 
 **Solution**:
+
 - Script handles this automatically (updates existing)
 - If issues persist, check variable names in Figma
 - Ensure variable names match exactly: `void`, `obsidian`, etc.
 
 ### Permission Issues
 
-**Error**: `403 Forbidden` - "Invalid scope(s)... This endpoint requires the file_variables:write scope"
+**Error**: `403 Forbidden` - "Invalid scope(s)... This endpoint requires the
+file_variables:write scope"
 
 **Solution**:
+
 1. **Regenerate your Figma API token with the correct scope**:
    - Go to Figma → Account Settings → Personal Access Tokens
    - Create a new token or edit existing token
@@ -262,8 +282,10 @@ pnpm tokens:full-sync
    - Verify file sharing settings allow your account
 
 **Required Scopes for Variables API**:
+
 - `file_variables:write` - **Required** for creating/updating variables
-- `file_variables:read` - Required for reading variables (optional if only writing)
+- `file_variables:read` - Required for reading variables (optional if only
+  writing)
 
 ---
 
@@ -272,8 +294,9 @@ pnpm tokens:full-sync
 ### 1. Version Control
 
 Commit token changes before syncing:
+
 ```bash
-git add packages/design-system/src/tokens/handoff-colors.ts
+git add packages/TailwindCSS-V4/Design-System/src/tokens/handoff-colors.ts
 git commit -m "chore: update design tokens"
 pnpm tokens:sync-to-figma --file-key=<file-key>
 ```
@@ -281,9 +304,10 @@ pnpm tokens:sync-to-figma --file-key=<file-key>
 ### 2. Verify Before Sync
 
 Check tokens are correct:
+
 ```bash
 # View tokens
-cat packages/design-system/src/tokens/handoff-colors.ts
+cat packages/TailwindCSS-V4/Design-System/src/tokens/handoff-colors.ts
 
 # Validate format
 pnpm tokens:validate
@@ -292,6 +316,7 @@ pnpm tokens:validate
 ### 3. Document Changes
 
 When syncing, document what changed:
+
 ```bash
 # Sync
 pnpm tokens:sync-to-figma --file-key=<file-key>
@@ -306,13 +331,15 @@ git commit -m "chore: sync tokens to Figma - updated gold color"
 
 - [Handoff Integration](./HANDOFF_INTEGRATION.md) - Figma → Code sync
 - [Figma MCP Integration](./FIGMA_MCP_INTEGRATION.md) - MCP-based sync
-- [Design Tokens Reference](../reference/TAILWIND_DESIGN_TOKENS.md) - Token usage
+- [Design Tokens Reference](../reference/TAILWIND_DESIGN_TOKENS.md) - Token
+  usage
 
 ---
 
 ## Support
 
 For issues:
+
 1. Check Figma API documentation: https://www.figma.com/developers/api
 2. Verify environment variables
 3. Check file permissions

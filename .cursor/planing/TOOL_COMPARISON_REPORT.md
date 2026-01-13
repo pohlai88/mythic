@@ -2,11 +2,9 @@
 
 ## Practical Assessment Against NexusCanon-AXIS Requirements
 
-**Document ID:** ARCH-COMP-002
-**Status:** Analysis Report
-**Date:** 2026-01-10
-**Authority:** System Architect Office
-**Source:** GitHub MCP Search + Web Research + Template Analysis
+**Document ID:** ARCH-COMP-002 **Status:** Analysis Report **Date:** 2026-01-10
+**Authority:** System Architect Office **Source:** GitHub MCP Search + Web
+Research + Template Analysis
 
 ---
 
@@ -43,7 +41,8 @@
 
 **Resolution Strategy:**
 
-- **Nextra:** Build custom MDX components (`<SealedDocument>`, `<HashVerification>`)
+- **Nextra:** Build custom MDX components (`<SealedDocument>`,
+  `<HashVerification>`)
 - **Docusaurus:** Build custom React components (same approach)
 - **Where:** `components/governance/` directory
 - **Effort:** 8-10 hours (same for both)
@@ -63,7 +62,8 @@
 
 **Resolution Strategy:**
 
-- **Nextra:** Create directory structure manually, use `_meta.json` for navigation
+- **Nextra:** Create directory structure manually, use `_meta.json` for
+  navigation
 - **Docusaurus:** Create directory structure, use `sidebars.js` for navigation
 - **Where:** `pages/` or `docs/` directory
 - **Effort:** 2 hours (same for both)
@@ -88,7 +88,8 @@
 - **Where:** Custom components + frontmatter metadata
 - **Effort:** 6-8 hours (Nextra) vs 4-6 hours (Docusaurus - plugins help)
 
-**Verdict:** ⚠️ **Docusaurus slightly better** - Plugin ecosystem helps, but still custom work
+**Verdict:** ⚠️ **Docusaurus slightly better** - Plugin ecosystem helps, but
+still custom work
 
 ---
 
@@ -229,7 +230,8 @@
 - **Where:** Components directory + theme config
 - **Effort:** Similar for governance-specific features
 
-**Verdict:** ⚠️ **Docusaurus better** - More plugins, but governance features still custom
+**Verdict:** ⚠️ **Docusaurus better** - More plugins, but governance features
+still custom
 
 ---
 
@@ -297,27 +299,24 @@
 **Reasons:**
 
 1. **Monorepo Integration (Critical)**
-
    - Native Next.js = seamless Turborepo integration
    - Shared components work out-of-the-box
    - **Saves 1.5 hours** vs Docusaurus
 
 2. **Vercel Optimization (Important)**
-
    - Zero-config deployment
    - Faster builds
    - **Saves 1 hour** vs Docusaurus
 
 3. **Governance Features (60% of work)**
-
    - **Same customization effort for both tools**
    - All governance-specific features need custom development
    - Nextra's simplicity = easier customization
 
 4. **Versioning Trade-off**
-
    - Docusaurus has built-in versioning UI
-   - **But:** File-system versioning (Nextra approach) aligns better with sealed documents
+   - **But:** File-system versioning (Nextra approach) aligns better with sealed
+     documents
    - Governance structure (L0/L1/L2) doesn't need version dropdowns
 
 5. **Search Trade-off**
@@ -339,7 +338,8 @@
 
 **Net Difference: 4.5 hours** (6% more effort for Nextra)
 
-**But:** Nextra's advantages (monorepo, Vercel, simplicity) outweigh the 4.5-hour difference.
+**But:** Nextra's advantages (monorepo, Vercel, simplicity) outweigh the
+4.5-hour difference.
 
 ---
 
@@ -347,10 +347,8 @@
 
 ### 1. Seal Status Indicators
 
-**Status:** ❌ Not available in either tool
-**Resolution:** Pure customization
-**Where:** `components/governance/SealStatus.tsx`
-**How:**
+**Status:** ❌ Not available in either tool **Resolution:** Pure customization
+**Where:** `components/governance/SealStatus.tsx` **How:**
 
 ```tsx
 // Nextra: Custom MDX component
@@ -365,10 +363,8 @@
 
 ### 2. Amendment Tracking
 
-**Status:** ❌ Not available in either tool
-**Resolution:** Pure customization
-**Where:** `components/governance/AmendmentHistory.tsx`
-**How:**
+**Status:** ❌ Not available in either tool **Resolution:** Pure customization
+**Where:** `components/governance/AmendmentHistory.tsx` **How:**
 
 - Build React component
 - Parse frontmatter metadata
@@ -380,10 +376,8 @@
 
 ### 3. Hash Verification
 
-**Status:** ❌ Not available in either tool
-**Resolution:** Pure customization
-**Where:** `components/governance/HashVerification.tsx` + build script
-**How:**
+**Status:** ❌ Not available in either tool **Resolution:** Pure customization
+**Where:** `components/governance/HashVerification.tsx` + build script **How:**
 
 - Component: Display hash + copy button
 - Script: Compute SHA-256 on build
@@ -395,10 +389,8 @@
 
 ### 4. Ledger Integration
 
-**Status:** ❌ Not available in either tool
-**Resolution:** Custom API integration
-**Where:** `lib/ledger-api.ts` + components
-**How:**
+**Status:** ❌ Not available in either tool **Resolution:** Custom API
+integration **Where:** `lib/ledger-api.ts` + components **How:**
 
 - Create API client
 - Fetch ledger entries
@@ -410,10 +402,8 @@
 
 ### 5. Sealing Workflow
 
-**Status:** ❌ Not available in either tool
-**Resolution:** Custom Git hooks + scripts
-**Where:** `.git/hooks/pre-commit` + `scripts/seal-document.ts`
-**How:**
+**Status:** ❌ Not available in either tool **Resolution:** Custom Git hooks +
+scripts **Where:** `.git/hooks/pre-commit` + `scripts/seal-document.ts` **How:**
 
 - Pre-commit hook: Check sealed docs not modified
 - Script: Compute hash, update frontmatter
@@ -425,10 +415,8 @@
 
 ### 6. Versioning (Nextra Specific)
 
-**Status:** ⚠️ Manual in Nextra
-**Resolution:** Directory structure + navigation
-**Where:** `pages/sealed/nexus-canon-constitution/v1.0/`
-**How:**
+**Status:** ⚠️ Manual in Nextra **Resolution:** Directory structure + navigation
+**Where:** `pages/sealed/nexus-canon-constitution/v1.0/` **How:**
 
 - Create version directories
 - Update `_meta.json` for navigation
@@ -442,10 +430,8 @@
 
 ### 7. Search (Nextra Specific)
 
-**Status:** ⚠️ Manual in Nextra
-**Resolution:** Third-party integration
-**Where:** `lib/search.ts` + search component
-**Options:**
+**Status:** ⚠️ Manual in Nextra **Resolution:** Third-party integration
+**Where:** `lib/search.ts` + search component **Options:**
 
 - **Pagefind:** Static search (recommended)
 - **Algolia:** Full-text search (paid)

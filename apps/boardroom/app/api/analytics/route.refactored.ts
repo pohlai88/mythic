@@ -8,22 +8,22 @@
  * Refactored: Using createValidatedRoute from @mythic/domain-core
  */
 
-import { NextRequest, NextResponse } from 'next/server'
-import { createValidatedRoute } from '@mythic/domain-core/route-handler'
-import { z as z4 } from 'zod/v4'
-import { analyticsEventSchema } from '@/src/lib/analytics/service'
-import { db } from '@/src/db'
-import { analyticsEvents } from '@/src/db/schema'
-import { env } from '@/src/lib/env'
-import { eq } from 'drizzle-orm'
+import { NextRequest, NextResponse } from "next/server"
+import { createValidatedRoute } from "@mythic/domain-core/route-handler"
+import { z as z4 } from "zod/v4"
+import { analyticsEventSchema } from "@/src/lib/analytics/service"
+import { db } from "@/src/db"
+import { analyticsEvents } from "@/src/db/schema"
+import { env } from "@/src/lib/env"
+import { eq } from "drizzle-orm"
 
 /**
  * Route Segment Config (Next.js 16.1.1 Best Practice)
  */
-export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
+export const dynamic = "force-dynamic"
+export const runtime = "nodejs"
 export const maxDuration = 10
-export const fetchCache = 'force-no-store'
+export const fetchCache = "force-no-store"
 
 /**
  * Route Handler Schema
@@ -45,23 +45,23 @@ const routeSchema = {
 export const POST = createValidatedRoute(routeSchema, async ({ body, request }) => {
   // Validate API key if configured (before processing)
   if (env.ANALYTICS_API_KEY) {
-    const authHeader = request.headers.get('authorization')
+    const authHeader = request.headers.get("authorization")
     const expectedAuth = `Bearer ${env.ANALYTICS_API_KEY}`
 
     if (!authHeader || authHeader !== expectedAuth) {
       // Return error response (domain-core will handle it)
       return NextResponse.json(
-        { error: 'Unauthorized', message: 'Invalid or missing API key' },
+        { error: "Unauthorized", message: "Invalid or missing API key" },
         { status: 401 }
       )
     }
   }
 
   // Check request body size (prevent DoS)
-  const contentLength = request.headers.get('content-length')
+  const contentLength = request.headers.get("content-length")
   if (contentLength && Number.parseInt(contentLength, 10) > 100 * 1024) {
     return NextResponse.json(
-      { error: 'Payload too large', message: 'Request body exceeds 100KB limit' },
+      { error: "Payload too large", message: "Request body exceeds 100KB limit" },
       { status: 413 }
     )
   }
@@ -79,7 +79,7 @@ export const POST = createValidatedRoute(routeSchema, async ({ body, request }) 
     // Duplicate requestId - return success (idempotent)
     return {
       success: true,
-      message: 'Analytics event already stored (deduplicated)',
+      message: "Analytics event already stored (deduplicated)",
     }
   }
 
@@ -103,7 +103,7 @@ export const POST = createValidatedRoute(routeSchema, async ({ body, request }) 
 
   return {
     success: true,
-    message: 'Analytics event stored',
+    message: "Analytics event stored",
   }
 })
 
@@ -117,8 +117,8 @@ export const revalidate = 60
 export async function GET() {
   return Response.json(
     {
-      service: 'analytics',
-      status: 'operational',
+      service: "analytics",
+      status: "operational",
       enabled: env.ANALYTICS_ENABLED,
       endpoint: env.ANALYTICS_ENDPOINT,
       retentionDays: env.ANALYTICS_RETENTION_DAYS,
@@ -128,7 +128,7 @@ export async function GET() {
     {
       status: 200,
       headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
       },
     }
   )

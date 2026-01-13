@@ -13,19 +13,21 @@ related_docs:
 
 # Turborepo Advanced Features & Optimization
 
-**Optimization Date**: 2026-01-10
-**Turborepo Version**: 2.3.3
-**Status**: ✅ **FULLY OPTIMIZED**
+**Optimization Date**: 2026-01-10 **Turborepo Version**: 2.3.3 **Status**: ✅
+**FULLY OPTIMIZED**
 
 ---
 
 ## Executive Summary
 
-This document details the comprehensive optimization of Turborepo configuration to maximize functionality, performance, and developer experience. All advanced features have been enabled and configured for optimal monorepo management.
+This document details the comprehensive optimization of Turborepo configuration
+to maximize functionality, performance, and developer experience. All advanced
+features have been enabled and configured for optimal monorepo management.
 
 ### Key Optimizations
 
 ✅ **Advanced Features Enabled**:
+
 - Enhanced task dependencies and parallelization
 - Comprehensive environment variable tracking
 - Output filtering and optimization
@@ -36,6 +38,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 - Filtering capabilities
 
 ✅ **Performance Improvements**:
+
 - Intelligent task scheduling
 - Optimized cache invalidation
 - Parallel execution maximized
@@ -48,6 +51,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ### 1.1 Global Dependencies
 
 **Optimized Tracking**:
+
 ```json
 "globalDependencies": [
   "package.json",
@@ -64,6 +68,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ```
 
 **Benefits**:
+
 - ✅ Tracks all configuration files
 - ✅ Environment file changes invalidate cache appropriately
 - ✅ Prevents stale builds from config drift
@@ -73,6 +78,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ### 1.2 Global Environment Variables
 
 **Comprehensive Tracking**:
+
 ```json
 "globalEnv": [
   "NODE_ENV",
@@ -86,6 +92,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ```
 
 **Benefits**:
+
 - ✅ Environment-aware caching
 - ✅ CI/CD optimization
 - ✅ Platform-specific builds (Vercel)
@@ -98,6 +105,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ### 2.1 Build Task Optimization
 
 **Before**:
+
 ```json
 "build": {
   "dependsOn": ["^build"],
@@ -108,6 +116,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ```
 
 **After** (Optimized):
+
 ```json
 "build": {
   "dependsOn": ["^build"],
@@ -119,6 +128,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ```
 
 **Improvements**:
+
 - ✅ Expanded output patterns for all build types
 - ✅ Added ANALYZE env var for bundle analysis
 - ✅ Explicit persistent flag (prevents dev server confusion)
@@ -128,6 +138,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ### 2.2 Test Task Integration
 
 **New Test Tasks**:
+
 ```json
 "test": {
   "dependsOn": ["^build"],
@@ -152,6 +163,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ```
 
 **Benefits**:
+
 - ✅ Test results cached (faster CI)
 - ✅ Coverage reports tracked
 - ✅ Watch mode for development
@@ -162,6 +174,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ### 2.3 Enhanced Task Dependencies
 
 **Optimized Dependency Chain**:
+
 ```json
 {
   "lint": { "dependsOn": ["^build"] },
@@ -172,6 +185,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ```
 
 **Benefits**:
+
 - ✅ Ensures dependencies built before checks
 - ✅ Parallel execution where possible
 - ✅ Correct execution order guaranteed
@@ -183,6 +197,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ### 3.1 Remote Cache Configuration
 
 **Configuration**:
+
 ```json
 "remoteCache": {
   "enabled": false,
@@ -193,12 +208,14 @@ This document details the comprehensive optimization of Turborepo configuration 
 **Status**: Ready for activation
 
 **Setup Steps**:
+
 1. Create Vercel account (or use self-hosted)
 2. Link Turborepo: `pnpm turbo login`
 3. Link repository: `pnpm turbo link`
 4. Enable in `turbo.json`: `"enabled": true`
 
 **Benefits**:
+
 - ✅ Team-wide cache sharing
 - ✅ CI/CD speed improvements (70-95% faster)
 - ✅ Consistent builds across machines
@@ -209,6 +226,7 @@ This document details the comprehensive optimization of Turborepo configuration 
 ### 3.2 Task Graph Visualization
 
 **Commands Available**:
+
 ```bash
 # Visualize task graph
 pnpm turbo:graph
@@ -221,6 +239,7 @@ turbo run build --graph=graph.html
 ```
 
 **Benefits**:
+
 - ✅ Understand task relationships
 - ✅ Identify optimization opportunities
 - ✅ Debug dependency issues
@@ -233,6 +252,7 @@ turbo run build --graph=graph.html
 **Filtering Capabilities**:
 
 #### By Package Name
+
 ```bash
 # Build specific package
 pnpm build:filter @mythic/web
@@ -245,6 +265,7 @@ pnpm build:filter ...@mythic/web
 ```
 
 #### By Directory
+
 ```bash
 # Build all packages in apps/
 turbo run build --filter="./apps/*"
@@ -254,6 +275,7 @@ turbo run build --filter="./packages/*"
 ```
 
 #### By Git Changes
+
 ```bash
 # Build only changed packages
 pnpm build:changed
@@ -266,6 +288,7 @@ pnpm lint:changed
 ```
 
 #### Complex Filters
+
 ```bash
 # Build changed packages and their dependencies
 turbo run build --filter=[HEAD^1]...
@@ -278,6 +301,7 @@ turbo run build --filter=@mythic/web --filter=@mythic/api
 ```
 
 **Benefits**:
+
 - ✅ Faster local development
 - ✅ Targeted CI/CD runs
 - ✅ Reduced build times
@@ -298,6 +322,7 @@ turbo run build --filter=@mythic/web --filter=@mythic/api
 ```
 
 **Usage**:
+
 ```bash
 # Standard build (all packages)
 pnpm build
@@ -323,6 +348,7 @@ pnpm build:changed
 ```
 
 **Usage**:
+
 ```bash
 # Run all tests
 pnpm test
@@ -352,6 +378,7 @@ pnpm test:changed
 ```
 
 **Usage**:
+
 ```bash
 # Visualize task graph
 pnpm turbo:graph
@@ -384,6 +411,7 @@ pnpm clean:cache
 ```
 
 **Benefits**:
+
 - ✅ Faster pre-commit hooks
 - ✅ Quick validation before push
 - ✅ Focused CI/CD runs
@@ -396,12 +424,14 @@ pnpm clean:cache
 ### 5.1 Cache Hit Rate Optimization
 
 **Strategies Applied**:
+
 1. ✅ Comprehensive output patterns
 2. ✅ Environment variable tracking
 3. ✅ Global dependency tracking
 4. ✅ Proper task dependencies
 
 **Expected Results**:
+
 - **Cold Build**: 2-3 minutes (baseline)
 - **Cached Build** (no changes): 5-10 seconds (95% faster)
 - **Partial Build** (source changes): 30-60 seconds (70% faster)
@@ -412,12 +442,14 @@ pnpm clean:cache
 ### 5.2 Parallel Execution
 
 **Optimization**:
+
 - ✅ Independent tasks run in parallel
 - ✅ Dependency-aware scheduling
 - ✅ Maximum CPU utilization
 - ✅ Task graph optimization
 
 **Example**:
+
 ```bash
 # These run in parallel:
 turbo run lint type-check format:check
@@ -431,6 +463,7 @@ turbo run build test verify
 ### 5.3 Incremental Builds
 
 **Features**:
+
 - ✅ Only changed packages rebuild
 - ✅ Dependencies automatically detected
 - ✅ Cache reuse for unchanged packages
@@ -489,6 +522,7 @@ pnpm clean:cache            # Clear cache
 ```
 
 **Benefits**:
+
 - ✅ Faster CI runs (80-90% faster)
 - ✅ Focused on actual changes
 - ✅ Reduced resource usage
@@ -501,6 +535,7 @@ pnpm clean:cache            # Clear cache
 ### 7.1 Cache Analysis
 
 **Commands**:
+
 ```bash
 # View cache summary
 pnpm turbo:summary
@@ -518,6 +553,7 @@ pnpm turbo:summary
 ### 7.2 Task Graph Analysis
 
 **Commands**:
+
 ```bash
 # Visualize graph
 pnpm turbo:graph
@@ -534,6 +570,7 @@ turbo run build --graph | dot -Tsvg > graph.svg
 ### 7.3 Dry Run
 
 **Command**:
+
 ```bash
 pnpm turbo:dry-run
 
@@ -553,22 +590,26 @@ pnpm turbo:dry-run
 **Setup Steps**:
 
 1. **Create Vercel Account**:
+
    ```bash
    # Visit https://vercel.com
    # Sign up / Login
    ```
 
 2. **Link Turborepo**:
+
    ```bash
    pnpm turbo login
    ```
 
 3. **Link Repository**:
+
    ```bash
    pnpm turbo link
    ```
 
 4. **Enable Remote Cache**:
+
    ```json
    // turbo.json
    "remoteCache": {
@@ -584,6 +625,7 @@ pnpm turbo:dry-run
    ```
 
 **Benefits**:
+
 - ✅ Team-wide cache sharing
 - ✅ CI/CD uses same cache
 - ✅ 70-95% faster builds
@@ -596,6 +638,7 @@ pnpm turbo:dry-run
 **Alternative**: Use self-hosted cache server
 
 **Configuration**:
+
 ```json
 "remoteCache": {
   "enabled": true,
@@ -611,12 +654,14 @@ pnpm turbo:dry-run
 ### 9.1 Task Configuration
 
 ✅ **DO**:
+
 - Use `dependsOn: ["^build"]` for tasks that need dependencies
 - Specify all outputs for proper caching
 - Track environment variables that affect builds
 - Use `persistent: true` only for dev servers
 
 ❌ **DON'T**:
+
 - Cache file-modifying tasks (format, fix)
 - Skip output patterns
 - Ignore environment variables
@@ -627,11 +672,13 @@ pnpm turbo:dry-run
 ### 9.2 Filtering Strategy
 
 ✅ **DO**:
+
 - Use `--filter=[HEAD^1]` for CI/CD
 - Target specific packages during development
 - Include dependencies when needed (`...`)
 
 ❌ **DON'T**:
+
 - Build everything when only one package changed
 - Skip dependency builds when needed
 - Use filters unnecessarily
@@ -641,12 +688,14 @@ pnpm turbo:dry-run
 ### 9.3 Cache Management
 
 ✅ **DO**:
+
 - Monitor cache hit rates
 - Clear cache when needed (`clean:cache`)
 - Use remote cache for teams
 - Track cache effectiveness
 
 ❌ **DON'T**:
+
 - Ignore cache misses
 - Keep stale cache
 - Share cache without signatures
@@ -699,6 +748,7 @@ pnpm turbo:dry-run
 **Symptoms**: Builds always take full time
 
 **Solutions**:
+
 1. Check `turbo.json` exists and is valid
 2. Verify `turbo` is installed: `pnpm list turbo`
 3. Check file permissions
@@ -712,6 +762,7 @@ pnpm turbo:dry-run
 **Symptoms**: Dependencies not built before dependents
 
 **Solutions**:
+
 1. Check `dependsOn` configuration
 2. Use `dependsOn: ["^build"]` for dependency builds
 3. Verify task graph: `pnpm turbo:graph`
@@ -724,6 +775,7 @@ pnpm turbo:dry-run
 **Symptoms**: Filter command affects wrong packages
 
 **Solutions**:
+
 1. Verify package names in `package.json`
 2. Check workspace configuration
 3. Use `--filter` with correct syntax
@@ -736,6 +788,7 @@ pnpm turbo:dry-run
 **Symptoms**: Cache not shared across machines
 
 **Solutions**:
+
 1. Verify remote cache enabled
 2. Check authentication: `pnpm turbo login`
 3. Verify team/repo linked: `pnpm turbo link`
@@ -754,6 +807,5 @@ pnpm turbo:dry-run
 
 ---
 
-**Status**: ✅ **FULLY OPTIMIZED**
-**Last Updated**: 2026-01-10
-**Next Review**: After remote cache activation
+**Status**: ✅ **FULLY OPTIMIZED** **Last Updated**: 2026-01-10 **Next Review**:
+After remote cache activation

@@ -12,25 +12,27 @@ related_docs:
 
 # Tailwind CSS v4 Design System - Figma-Compatible
 
-**Optimization Date**: 2026-01-10
-**Tailwind CSS Version**: 4.0+
-**Design System**: Figma-Compatible Structure
-**Status**: ✅ **FULLY OPTIMIZED**
+**Optimization Date**: 2026-01-10 **Tailwind CSS Version**: 4.0+ **Design
+System**: Figma-Compatible Structure **Status**: ✅ **FULLY OPTIMIZED**
 
 ---
 
 ## Executive Summary
 
-This document details the comprehensive Tailwind CSS v4 design system setup, structured to be compatible with Figma's design system approach. All design tokens are defined using CSS-first configuration with TypeScript support.
+This document details the comprehensive Tailwind CSS v4 design system setup,
+structured to be compatible with Figma's design system approach. All design
+tokens are defined using CSS-first configuration with TypeScript support.
 
 ### Key Features
 
 ✅ **Tailwind CSS v4**:
+
 - CSS-first configuration via `@theme` directive
 - Design tokens in `styles/tailwind.css`
 - TypeScript token exports in `lib/design-system/tokens.ts`
 
 ✅ **Figma-Compatible Structure**:
+
 - Semantic color system (50-950 scale)
 - Typography scale with consistent sizing
 - Spacing system (4px base unit)
@@ -39,6 +41,7 @@ This document details the comprehensive Tailwind CSS v4 design system setup, str
 - Transition system
 
 ✅ **Non-Tailwind CSS Marked**:
+
 - Legacy CSS files documented
 - Migration path identified
 - Compatibility maintained
@@ -65,28 +68,34 @@ mythic/
 ### 1.2 Design Token Categories
 
 **Colors**: Semantic color system with 50-950 scale
+
 - Primary, Secondary, Success, Warning, Error, Neutral
 - Semantic aliases (background, surface, text, border)
 - Dark mode support
 
 **Typography**: Complete type scale
+
 - Font families (sans, serif, mono)
 - Font sizes (xs to 9xl)
 - Font weights (thin to black)
 - Line heights and letter spacing
 
 **Spacing**: 4px base unit system
+
 - Consistent spacing scale (0-96)
 - Figma-compatible spacing tokens
 
 **Shadows**: Elevation system
+
 - 8 elevation levels (xs to 2xl)
 - Colored shadows for semantic states
 
 **Border Radius**: Consistent rounding
+
 - 8 radius levels (none to full)
 
 **Transitions**: Animation system
+
 - Timing functions
 - Duration scale
 - Property-specific transitions
@@ -114,7 +123,7 @@ mythic/
 ### 2.2 In TypeScript/React
 
 ```typescript
-import { colors, spacing, typography } from '@/lib/design-system/tokens'
+import { colors, spacing, typography } from "@/lib/design-system/tokens"
 
 // Type-safe token access
 const primaryColor = colors.primary[500]
@@ -145,7 +154,7 @@ const fontSize = typography.fontSize.lg
 Each color has a 50-950 scale (Figma standard):
 
 ```typescript
-colors.primary[50]   // Lightest
+colors.primary[50] // Lightest
 colors.primary[500] // Base/Main
 colors.primary[950] // Darkest
 ```
@@ -268,7 +277,8 @@ colors.primary[950] // Darkest
 
 ```tsx
 // Using design tokens
-<button className="
+<button
+  className="
   bg-primary-600
   hover:bg-primary-700
   text-white
@@ -277,7 +287,8 @@ colors.primary[950] // Darkest
   shadow-xs
   transition-colors
   font-medium
-">
+"
+>
   Button
 </button>
 ```
@@ -287,7 +298,8 @@ colors.primary[950] // Darkest
 ### 7.2 Card Component
 
 ```tsx
-<div className="
+<div
+  className="
   bg-surface
   border border-border
   rounded-xl
@@ -295,13 +307,10 @@ colors.primary[950] // Darkest
   shadow-base
   hover:shadow-md
   transition-shadow
-">
-  <h3 className="text-xl font-semibold text-text-primary mb-2">
-    Card Title
-  </h3>
-  <p className="text-text-secondary">
-    Card content
-  </p>
+"
+>
+  <h3 className="text-xl font-semibold text-text-primary mb-2">Card Title</h3>
+  <p className="text-text-secondary">Card content</p>
 </div>
 ```
 
@@ -335,6 +344,7 @@ colors.primary[950] // Darkest
 ### 8.1 Marked Files
 
 **⚠️ `styles/globals.css`**:
+
 - Contains Nextra-specific styles
 - KaTeX math styles
 - Code block enhancements
@@ -342,6 +352,7 @@ colors.primary[950] // Darkest
 - **Status**: Marked for migration to Tailwind where possible
 
 **⚠️ `components/counters.module.css`**:
+
 - CSS Modules file
 - **Status**: Consider migrating to Tailwind utilities
 
@@ -350,15 +361,18 @@ colors.primary[950] // Darkest
 ### 8.2 Migration Strategy
 
 **Phase 1**: Identify all non-Tailwind CSS
+
 - ✅ `styles/globals.css` - Marked
 - ✅ `components/counters.module.css` - Marked
 
 **Phase 2**: Migrate to Tailwind
+
 - Convert CSS Modules to Tailwind classes
 - Replace custom CSS with design tokens
 - Use Tailwind utilities where possible
 
 **Phase 3**: Remove legacy CSS
+
 - Delete migrated CSS files
 - Update imports
 - Verify functionality
@@ -419,9 +433,7 @@ Dark mode tokens are automatically applied via `prefers-color-scheme`:
 For manual dark mode toggle, use Tailwind's `dark:` prefix:
 
 ```tsx
-<div className="bg-surface dark:bg-dark-surface">
-  Content
-</div>
+<div className="bg-surface dark:bg-dark-surface">Content</div>
 ```
 
 ---
@@ -431,12 +443,14 @@ For manual dark mode toggle, use Tailwind's `dark:` prefix:
 ### 11.1 Token Usage
 
 ✅ **DO**:
+
 - Use semantic tokens (`bg-surface`, `text-primary`)
 - Use design system tokens consistently
 - Reference tokens from TypeScript when needed
 - Follow the 4px spacing base unit
 
 ❌ **DON'T**:
+
 - Don't use arbitrary values (`p-[13px]`)
 - Don't create custom colors outside the system
 - Don't mix design systems
@@ -447,12 +461,14 @@ For manual dark mode toggle, use Tailwind's `dark:` prefix:
 ### 11.2 Component Development
 
 ✅ **DO**:
+
 - Use Tailwind utilities
 - Reference design tokens
 - Follow component patterns
 - Use TypeScript types from tokens
 
 ❌ **DON'T**:
+
 - Don't write custom CSS
 - Don't use CSS Modules (use Tailwind)
 - Don't hardcode colors/spacing
@@ -501,11 +517,11 @@ pnpm add -D tailwindcss@next
 
 ```typescript
 // Before
-import '../styles/globals.css'
+import "../styles/globals.css"
 
 // After
-import '../styles/tailwind.css'
-import '../styles/globals.css' // Keep for non-Tailwind styles
+import "../styles/tailwind.css"
+import "../styles/globals.css" // Keep for non-Tailwind styles
 ```
 
 ---
@@ -519,6 +535,5 @@ import '../styles/globals.css' // Keep for non-Tailwind styles
 
 ---
 
-**Status**: ✅ **FULLY OPTIMIZED**
-**Last Updated**: 2026-01-10
-**Next Review**: After Tailwind v4 installation
+**Status**: ✅ **FULLY OPTIMIZED** **Last Updated**: 2026-01-10 **Next Review**:
+After Tailwind v4 installation

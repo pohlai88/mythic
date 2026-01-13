@@ -8,13 +8,16 @@
 
 ## Overview
 
-Handoff is a design token synchronization tool that enables seamless Figma → Code workflow. This guide covers the complete integration setup and usage for the AXIS Luxury Business Operating System.
+Handoff is a design token synchronization tool that enables seamless Figma →
+Code workflow. This guide covers the complete integration setup and usage for
+the AXIS Luxury Business Operating System.
 
 ---
 
 ## What is Handoff?
 
-Handoff syncs design tokens from Figma to your codebase, ensuring design and code stay in sync. It supports:
+Handoff syncs design tokens from Figma to your codebase, ensuring design and
+code stay in sync. It supports:
 
 - **Design Tokens**: Colors, typography, spacing, shadows
 - **Components**: Component documentation and specs
@@ -28,7 +31,8 @@ Handoff syncs design tokens from Figma to your codebase, ensuring design and cod
 
 ### Design System Philosophy
 
-**KISS Principle**: Only theme colors are synced via Handoff. Everything else uses Tailwind defaults.
+**KISS Principle**: Only theme colors are synced via Handoff. Everything else
+uses Tailwind defaults.
 
 - ✅ **Theme Colors**: Handoff tokens (Figma → Code)
 - ✅ **Spacing**: Tailwind defaults
@@ -39,7 +43,7 @@ Handoff syncs design tokens from Figma to your codebase, ensuring design and cod
 ### File Structure
 
 ```
-packages/design-system/src/tokens/
+packages/TailwindCSS-V4/Design-System/src/tokens/
 ├── handoff-colors.ts      # Handoff-compatible color tokens (synced from Figma)
 ├── fallback.ts            # Fallback tokens (used when sync fails)
 ├── input.css              # Tailwind v4 @theme configuration (manually maintained)
@@ -74,11 +78,13 @@ handoff --version
 ### 1. Figma Setup
 
 **Requirements**:
+
 - Figma file with design tokens
 - Figma API token
 - Access to the design file
 
 **Get Figma API Token**:
+
 1. Go to Figma → Account Settings
 2. Generate a personal access token
 3. Store securely (use environment variables)
@@ -102,7 +108,7 @@ Create `handoff.config.js` in project root:
 ```javascript
 /**
  * Handoff Configuration
- * 
+ *
  * Configures Handoff CLI for syncing design tokens from Figma
  */
 
@@ -117,19 +123,34 @@ module.exports = {
   output: {
     // TypeScript color tokens
     colors: {
-      path: 'packages/design-system/src/tokens/handoff-colors.ts',
-      format: 'typescript',
+      path: "packages/TailwindCSS-V4/Design-System/src/tokens/handoff-colors.ts",
+      format: "typescript",
       transform: (tokens) => {
         // Transform Figma tokens to our structure
         return {
           handoffColors: {
-            void: { value: tokens.colors.void, description: 'Absence / Authority' },
-            obsidian: { value: tokens.colors.obsidian, description: 'Surface / Weight' },
-            parchment: { value: tokens.colors.parchment, description: 'Knowledge' },
-            ash: { value: tokens.colors.ash, description: 'Commentary' },
-            gold: { value: tokens.colors.gold, description: 'Ratified Authority' },
-            ember: { value: tokens.colors.ember, description: 'Consequence' },
-            charcoal: { value: tokens.colors.charcoal, description: 'Border / Divider' },
+            void: {
+              value: tokens.colors.void,
+              description: "Absence / Authority",
+            },
+            obsidian: {
+              value: tokens.colors.obsidian,
+              description: "Surface / Weight",
+            },
+            parchment: {
+              value: tokens.colors.parchment,
+              description: "Knowledge",
+            },
+            ash: { value: tokens.colors.ash, description: "Commentary" },
+            gold: {
+              value: tokens.colors.gold,
+              description: "Ratified Authority",
+            },
+            ember: { value: tokens.colors.ember, description: "Consequence" },
+            charcoal: {
+              value: tokens.colors.charcoal,
+              description: "Border / Divider",
+            },
           },
         }
       },
@@ -138,7 +159,15 @@ module.exports = {
 
   // Validation
   validate: {
-    requiredTokens: ['void', 'obsidian', 'parchment', 'ash', 'gold', 'ember', 'charcoal'],
+    requiredTokens: [
+      "void",
+      "obsidian",
+      "parchment",
+      "ash",
+      "gold",
+      "ember",
+      "charcoal",
+    ],
     validateFormat: true,
   },
 }
@@ -157,7 +186,7 @@ module.exports = {
 handoff sync
 
 # Or with explicit file key
-handoff sync --figma-file=your_file_key --output=packages/design-system/src/tokens/handoff-colors.ts
+handoff sync --figma-file=your_file_key --output=packages/TailwindCSS-V4/Design-System/src/tokens/handoff-colors.ts
 ```
 
 #### Using npm Scripts
@@ -190,21 +219,25 @@ pnpm tokens:update-css
 ### Manual Sync Workflow
 
 1. **Sync from Figma**:
+
    ```bash
-   handoff sync --figma-file=xxx --output=packages/design-system/src/tokens/handoff-colors.ts
+   handoff sync --figma-file=xxx --output=packages/TailwindCSS-V4/Design-System/src/tokens/handoff-colors.ts
    ```
 
 2. **Validate Tokens**:
+
    ```bash
    pnpm tokens:validate
    ```
 
 3. **Update CSS** (if needed):
+
    ```bash
    pnpm tokens:update-css
    ```
 
 4. **Rebuild CSS**:
+
    ```bash
    cd packages/design-system && pnpm build:css
    ```
@@ -221,17 +254,17 @@ pnpm tokens:update-css
 
 ### Handoff Color Tokens
 
-**File**: `packages/design-system/src/tokens/handoff-colors.ts`
+**File**: `packages/TailwindCSS-V4/Design-System/src/tokens/handoff-colors.ts`
 
 ```typescript
 export const handoffColors = {
   void: {
-    value: '#0a0a0b',
-    description: 'Absence / Authority - Deepest black',
+    value: "#0a0a0b",
+    description: "Absence / Authority - Deepest black",
   },
   obsidian: {
-    value: '#141416',
-    description: 'Surface / Weight - Dark surface',
+    value: "#141416",
+    description: "Surface / Weight - Dark surface",
   },
   // ... more colors
 } as const
@@ -241,19 +274,20 @@ export const handoffColors = {
 
 Handoff tokens (HEX format) are converted to HSL format for Tailwind v4:
 
-**File**: `packages/design-system/src/tokens/input.css`
+**File**: `packages/TailwindCSS-V4/Design-System/src/tokens/input.css`
 
 ```css
 @theme {
   /* Converted from Handoff HEX to HSL */
-  --color-void: 240 10% 4%;        /* From #0a0a0b */
-  --color-obsidian: 240 8% 8%;     /* From #141416 */
-  --color-parchment: 40 20% 96%;    /* From #f8f5f0 */
+  --color-void: 240 10% 4%; /* From #0a0a0b */
+  --color-obsidian: 240 8% 8%; /* From #141416 */
+  --color-parchment: 40 20% 96%; /* From #f8f5f0 */
   /* ... */
 }
 ```
 
 **Why HSL?**
+
 - Enables opacity modifiers (`bg-void/50`)
 - Better color manipulation
 - Tailwind v4 best practice
@@ -272,7 +306,7 @@ name: Sync Design Tokens
 on:
   schedule:
     # Sync daily at 2 AM UTC
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
   workflow_dispatch: # Manual trigger
 
 jobs:
@@ -280,39 +314,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-      
+          node-version: "18"
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Install Handoff CLI
         run: npm install -g @handoff/cli
-      
+
       - name: Sync tokens from Figma
         env:
           FIGMA_API_TOKEN: ${{ secrets.FIGMA_API_TOKEN }}
           FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
         run: pnpm tokens:sync
-      
+
       - name: Validate tokens
         run: pnpm tokens:validate
-      
+
       - name: Update CSS
         run: pnpm tokens:update-css
-      
+
       - name: Rebuild CSS
         run: cd packages/design-system && pnpm build:css
-      
+
       - name: Create PR if changes
         uses: peter-evans/create-pull-request@v5
         with:
-          commit-message: 'chore: sync design tokens from Figma'
-          title: 'Sync Design Tokens from Figma'
-          body: 'Automated sync of design tokens from Figma'
+          commit-message: "chore: sync design tokens from Figma"
+          title: "Sync Design Tokens from Figma"
+          body: "Automated sync of design tokens from Figma"
           branch: sync/design-tokens
 ```
 
@@ -325,6 +359,7 @@ jobs:
 **File**: `scripts/validate-handoff-tokens.ts`
 
 Validates:
+
 - ✅ All required tokens present
 - ✅ Token format correct
 - ✅ Values match expected structure
@@ -359,6 +394,7 @@ Handoff provides HEX colors, but Tailwind v4 requires HSL format.
 **Automated Conversion Script**: `scripts/update-css-from-handoff.ts`
 
 This script:
+
 1. Reads `handoff-colors.ts`
 2. Converts HEX → HSL
 3. Updates `input.css` with new values
@@ -378,29 +414,37 @@ If needed, convert manually:
 // HEX to HSL conversion
 function hexToHsl(hex: string): string {
   // Remove # if present
-  hex = hex.replace('#', '')
-  
+  hex = hex.replace("#", "")
+
   // Convert to RGB
   const r = parseInt(hex.substring(0, 2), 16) / 255
   const g = parseInt(hex.substring(2, 4), 16) / 255
   const b = parseInt(hex.substring(4, 6), 16) / 255
-  
+
   // Convert to HSL
   const max = Math.max(r, g, b)
   const min = Math.min(r, g, b)
-  let h = 0, s = 0, l = (max + min) / 2
-  
+  let h = 0,
+    s = 0,
+    l = (max + min) / 2
+
   if (max !== min) {
     const d = max - min
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-    
+
     switch (max) {
-      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break
-      case g: h = ((b - r) / d + 2) / 6; break
-      case b: h = ((r - g) / d + 4) / 6; break
+      case r:
+        h = ((g - b) / d + (g < b ? 6 : 0)) / 6
+        break
+      case g:
+        h = ((b - r) / d + 2) / 6
+        break
+      case b:
+        h = ((r - g) / d + 4) / 6
+        break
     }
   }
-  
+
   // Format as space-separated HSL (Tailwind v4 format)
   return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`
 }
@@ -434,6 +478,7 @@ function hexToHsl(hex: string): string {
 **Problem**: `handoff sync` fails with authentication error
 
 **Solution**:
+
 1. Verify `FIGMA_API_TOKEN` is set correctly
 2. Check token hasn't expired
 3. Verify file key is correct
@@ -444,6 +489,7 @@ function hexToHsl(hex: string): string {
 **Problem**: Some tokens not synced from Figma
 
 **Solution**:
+
 1. Verify tokens exist in Figma file
 2. Check token naming matches expected format
 3. Review Handoff configuration
@@ -454,6 +500,7 @@ function hexToHsl(hex: string): string {
 **Problem**: CSS build fails after token sync
 
 **Solution**:
+
 1. Verify HEX → HSL conversion correct
 2. Check `input.css` syntax
 3. Validate all required tokens present
@@ -464,6 +511,7 @@ function hexToHsl(hex: string): string {
 **Problem**: TypeScript errors after sync
 
 **Solution**:
+
 1. Run `pnpm type-check`
 2. Verify token structure matches types
 3. Check `handoff-colors.ts` format
@@ -475,7 +523,8 @@ function hexToHsl(hex: string): string {
 
 ### Auto-Generated Utilities
 
-After syncing tokens and updating CSS, Tailwind v4 automatically generates utilities:
+After syncing tokens and updating CSS, Tailwind v4 automatically generates
+utilities:
 
 ```tsx
 // These utilities are auto-generated from @theme
@@ -535,6 +584,7 @@ pnpm test
 ## Support
 
 For issues or questions:
+
 1. Check Handoff documentation: https://www.handoff.com/docs
 2. Review token validation errors
 3. Check Figma file structure

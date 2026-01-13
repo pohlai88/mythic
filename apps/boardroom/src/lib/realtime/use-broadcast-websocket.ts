@@ -5,11 +5,11 @@
  * Provides real-time updates for broadcast creation, updates, and reads.
  */
 
-'use client'
+"use client"
 
-import { useEffect, useRef, useCallback } from 'react'
-import type { WebSocketMessage } from './websocket-schemas'
-import type { BroadcastData } from '@/app/actions/broadcasts'
+import { useEffect, useRef, useCallback } from "react"
+import type { WebSocketMessage } from "./websocket-schemas"
+import type { BroadcastData } from "@/app/actions/broadcasts"
 
 interface UseBroadcastWebSocketOptions {
   userId: string | null
@@ -55,7 +55,7 @@ export function useBroadcastWebSocket({
       const message = JSON.parse(event.data) as WebSocketMessage
 
       switch (message.type) {
-        case 'broadcast_created':
+        case "broadcast_created":
           if (callbacksRef.current.onBroadcastCreated) {
             // Convert WebSocket message format to BroadcastData
             const broadcast: BroadcastData = {
@@ -81,7 +81,7 @@ export function useBroadcastWebSocket({
           }
           break
 
-        case 'broadcast_updated':
+        case "broadcast_updated":
           if (callbacksRef.current.onBroadcastUpdated) {
             callbacksRef.current.onBroadcastUpdated(
               message.broadcastId,
@@ -90,7 +90,7 @@ export function useBroadcastWebSocket({
           }
           break
 
-        case 'broadcast_read':
+        case "broadcast_read":
           if (callbacksRef.current.onBroadcastRead) {
             callbacksRef.current.onBroadcastRead(message.broadcastId, message.userId)
           }
@@ -101,7 +101,7 @@ export function useBroadcastWebSocket({
           break
       }
     } catch (error) {
-      console.error('Error parsing WebSocket message:', error)
+      console.error("Error parsing WebSocket message:", error)
     }
   }, [])
 
@@ -155,7 +155,7 @@ export function useBroadcastWebSocket({
     */
 
     // Placeholder: Log that WebSocket would be connected
-    console.log('📡 Broadcast WebSocket (placeholder): Would connect for user', userId)
+    console.log("📡 Broadcast WebSocket (placeholder): Would connect for user", userId)
 
     return () => {
       // Cleanup placeholder

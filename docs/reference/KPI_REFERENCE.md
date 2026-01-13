@@ -1,10 +1,14 @@
 # KPI Reference - Single Source of Truth
 
-> **Purpose**: This document serves as the authoritative source for all Key Performance Indicators (KPIs), targets, and measurement methods. All other documentation references this file to maintain consistency and avoid duplication.
+> **Purpose**: This document serves as the authoritative source for all Key
+> Performance Indicators (KPIs), targets, and measurement methods. All other
+> documentation references this file to maintain consistency and avoid
+> duplication.
 
 ## Overview
 
-This reference defines all KPIs used to measure the quality, performance, and reliability of the Nextra documentation site. KPIs are categorized by:
+This reference defines all KPIs used to measure the quality, performance, and
+reliability of the Nextra documentation site. KPIs are categorized by:
 
 - **Gate Type**: Fail (hard gate), Warn (threshold), Trend (monitoring)
 - **Source**: CI (synthetic), Field (real users), Hybrid
@@ -31,7 +35,8 @@ This reference defines all KPIs used to measure the quality, performance, and re
 - **Collection Method**: `tsc --noEmit` exit code and error output
 - **Gate Type**: Fail (hard gate)
 - **Measurement Frequency**: Per-run
-- **Official Reference**: [Next.js TypeScript Configuration](https://nextjs.org/docs/app/api-reference/config/typescript)
+- **Official Reference**:
+  [Next.js TypeScript Configuration](https://nextjs.org/docs/app/api-reference/config/typescript)
 - **Notes**: Warnings are acceptable if documented in `tsconfig.json`
 
 ### 3. ESLint Error Count
@@ -41,8 +46,10 @@ This reference defines all KPIs used to measure the quality, performance, and re
 - **Collection Method**: `next lint` exit code and error output
 - **Gate Type**: Fail (hard gate)
 - **Measurement Frequency**: Per-run
-- **Official Reference**: [Next.js ESLint Configuration](https://nextjs.org/docs/app/api-reference/config/eslint)
-- **Notes**: Configure ESLint to distinguish errors from warnings. Warnings threshold configurable.
+- **Official Reference**:
+  [Next.js ESLint Configuration](https://nextjs.org/docs/app/api-reference/config/eslint)
+- **Notes**: Configure ESLint to distinguish errors from warnings. Warnings
+  threshold configurable.
 
 ### 4. Build Time (Cold)
 
@@ -51,7 +58,8 @@ This reference defines all KPIs used to measure the quality, performance, and re
 - **Collection Method**: Timestamp difference before/after `pnpm build`
 - **Gate Type**: Trend (alert if consistently high)
 - **Measurement Frequency**: Per-run (cold builds only)
-- **Official Reference**: Internal benchmark (Next.js typical: 2-4 min for docs sites)
+- **Official Reference**: Internal benchmark (Next.js typical: 2-4 min for docs
+  sites)
 - **Notes**: Cold = no cache hit. Cached builds should be < 2 min.
 
 ### 5. Build Time (Cached)
@@ -61,18 +69,22 @@ This reference defines all KPIs used to measure the quality, performance, and re
 - **Collection Method**: Timestamp difference when cache restored
 - **Gate Type**: Trend (alert if consistently high)
 - **Measurement Frequency**: Per-run (cached builds only)
-- **Official Reference**: [Next.js CI Build Caching](https://nextjs.org/docs/app/guides/ci-build-caching)
+- **Official Reference**:
+  [Next.js CI Build Caching](https://nextjs.org/docs/app/guides/ci-build-caching)
 - **Notes**: Indicates cache effectiveness.
 
 ### 6. Cache Hit Rate (Rolling)
 
 - **Target**: ≥ 70%
 - **Source**: CI (computed from `cache-hit` booleans across runs)
-- **Collection Method**: Aggregate `cache-hit: true` / total runs over last N runs
+- **Collection Method**: Aggregate `cache-hit: true` / total runs over last N
+  runs
 - **Gate Type**: Trend (alert if < 70% over last 20 runs)
 - **Measurement Frequency**: Rolling (computed weekly)
-- **Official Reference**: [Next.js CI Build Caching](https://nextjs.org/docs/app/guides/ci-build-caching)
-- **Notes**: GitHub Actions cache outputs boolean per run; percentage must be computed across runs.
+- **Official Reference**:
+  [Next.js CI Build Caching](https://nextjs.org/docs/app/guides/ci-build-caching)
+- **Notes**: GitHub Actions cache outputs boolean per run; percentage must be
+  computed across runs.
 
 ---
 
@@ -85,8 +97,10 @@ This reference defines all KPIs used to measure the quality, performance, and re
 - **Collection Method**: `@lhci/cli` or GitHub Actions Lighthouse action
 - **Gate Type**: Fail (hard gate)
 - **Measurement Frequency**: Per-run (on main branch)
-- **Official Reference**: [Next.js Production Checklist](https://nextjs.org/docs/app/guides/production-checklist)
-- **Notes**: Elite practice threshold. All categories (Performance, Accessibility, SEO, Best Practices) must meet threshold.
+- **Official Reference**:
+  [Next.js Production Checklist](https://nextjs.org/docs/app/guides/production-checklist)
+- **Notes**: Elite practice threshold. All categories (Performance,
+  Accessibility, SEO, Best Practices) must meet threshold.
 
 ### 8. Lighthouse Accessibility Score
 
@@ -95,8 +109,10 @@ This reference defines all KPIs used to measure the quality, performance, and re
 - **Collection Method**: `@lhci/cli` or GitHub Actions Lighthouse action
 - **Gate Type**: Fail (hard gate)
 - **Measurement Frequency**: Per-run (on main branch)
-- **Official Reference**: [Next.js Production Checklist](https://nextjs.org/docs/app/guides/production-checklist)
-- **Notes**: Part of Lighthouse suite. Enforces WCAG AA + 0 critical violations (see accessibility note in Section 6).
+- **Official Reference**:
+  [Next.js Production Checklist](https://nextjs.org/docs/app/guides/production-checklist)
+- **Notes**: Part of Lighthouse suite. Enforces WCAG AA + 0 critical violations
+  (see accessibility note in Section 6).
 
 ### 9. Lighthouse SEO Score
 
@@ -105,7 +121,8 @@ This reference defines all KPIs used to measure the quality, performance, and re
 - **Collection Method**: `@lhci/cli` or GitHub Actions Lighthouse action
 - **Gate Type**: Fail (hard gate)
 - **Measurement Frequency**: Per-run (on main branch)
-- **Official Reference**: [Next.js Production Checklist](https://nextjs.org/docs/app/guides/production-checklist)
+- **Official Reference**:
+  [Next.js Production Checklist](https://nextjs.org/docs/app/guides/production-checklist)
 - **Notes**: Part of Lighthouse suite.
 
 ### 10. Lighthouse Best Practices Score
@@ -115,7 +132,8 @@ This reference defines all KPIs used to measure the quality, performance, and re
 - **Collection Method**: `@lhci/cli` or GitHub Actions Lighthouse action
 - **Gate Type**: Fail (hard gate)
 - **Measurement Frequency**: Per-run (on main branch)
-- **Official Reference**: [Next.js Production Checklist](https://nextjs.org/docs/app/guides/production-checklist)
+- **Official Reference**:
+  [Next.js Production Checklist](https://nextjs.org/docs/app/guides/production-checklist)
 - **Notes**: Part of Lighthouse suite.
 
 ---
@@ -129,7 +147,8 @@ This reference defines all KPIs used to measure the quality, performance, and re
 - **Collection Method**: Speed Insights dashboard / API
 - **Gate Type**: Trend (alert if worsens week-over-week)
 - **Measurement Frequency**: Weekly aggregation
-- **Official Reference**: [Web Vitals Thresholds](https://web.dev/articles/defining-core-web-vitals-thresholds)
+- **Official Reference**:
+  [Web Vitals Thresholds](https://web.dev/articles/defining-core-web-vitals-thresholds)
 - **Notes**: Field metrics preferred over synthetic. Track 75th percentile.
 
 ### 12. CLS (Cumulative Layout Shift)
@@ -139,7 +158,8 @@ This reference defines all KPIs used to measure the quality, performance, and re
 - **Collection Method**: Speed Insights dashboard / API
 - **Gate Type**: Trend (alert if worsens week-over-week)
 - **Measurement Frequency**: Weekly aggregation
-- **Official Reference**: [Web Vitals Thresholds](https://web.dev/articles/defining-core-web-vitals-thresholds)
+- **Official Reference**:
+  [Web Vitals Thresholds](https://web.dev/articles/defining-core-web-vitals-thresholds)
 - **Notes**: Track 75th percentile. Lower is better.
 
 ### 13. INP (Interaction to Next Paint)
@@ -149,8 +169,12 @@ This reference defines all KPIs used to measure the quality, performance, and re
 - **Collection Method**: Speed Insights dashboard / API
 - **Gate Type**: Trend (alert if worsens week-over-week)
 - **Measurement Frequency**: Weekly aggregation
-- **Official Reference**: [Web Vitals Thresholds](https://web.dev/articles/defining-core-web-vitals-thresholds) - **Replaces deprecated FID**
-- **Notes**: Track 75th percentile. Measures responsiveness to user interactions. **FID was deprecated in March 2024; INP is the current Core Web Vital for responsiveness.**
+- **Official Reference**:
+  [Web Vitals Thresholds](https://web.dev/articles/defining-core-web-vitals-thresholds) -
+  **Replaces deprecated FID**
+- **Notes**: Track 75th percentile. Measures responsiveness to user
+  interactions. **FID was deprecated in March 2024; INP is the current Core Web
+  Vital for responsiveness.**
 
 ---
 
@@ -208,6 +232,5 @@ This reference defines all KPIs used to measure the quality, performance, and re
 
 ---
 
-**Last Updated**: 2024-12-19
-**Next.js Version**: 16.1.1+
-**Plan Version**: 2.0 (Enhanced with Elite Practices & DRY)
+**Last Updated**: 2024-12-19 **Next.js Version**: 16.1.1+ **Plan Version**: 2.0
+(Enhanced with Elite Practices & DRY)

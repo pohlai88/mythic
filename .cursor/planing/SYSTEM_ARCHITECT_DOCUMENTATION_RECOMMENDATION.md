@@ -2,11 +2,9 @@
 
 ## NexusCanon-AXIS Governance Documentation System
 
-**Document ID:** ARCH-DOC-001
-**Status:** Active Planning Document (L2)
-**Authority:** System Architect Office
-**Date:** 2026-01-10
-**Derived From:** LBOS Origin Paper (Sealed), NexusCanon Constitution v1.0
+**Document ID:** ARCH-DOC-001 **Status:** Active Planning Document (L2)
+**Authority:** System Architect Office **Date:** 2026-01-10 **Derived From:**
+LBOS Origin Paper (Sealed), NexusCanon Constitution v1.0
 
 ---
 
@@ -14,7 +12,8 @@
 
 **PRIMARY RECOMMENDATION: Nextra**
 
-Nextra is the optimal documentation tool for NexusCanon-AXIS governance documentation, providing:
+Nextra is the optimal documentation tool for NexusCanon-AXIS governance
+documentation, providing:
 
 - Native Next.js 16 compatibility
 - Vercel deployment optimization
@@ -106,13 +105,11 @@ apps/docs/
 **Documentation Site Requirements:**
 
 1. **Seal Status Indicators**
-
    - Visual badges for sealed/ratified/draft status
    - Read-only enforcement for sealed documents
    - Canonical hash display for verification
 
 2. **Version Navigation**
-
    - Clear version indicators
    - Amendment history tracking
    - Cross-version reference support
@@ -127,13 +124,11 @@ apps/docs/
 **Enforcement Requirements:**
 
 1. **Git-Based Immutability**
-
    - Sealed documents in read-only branches
    - Hash verification on deployment
    - No runtime mutation of sealed content
 
 2. **Frontmatter Validation**
-
    - Required fields: status, layer, seal_date
    - Seal status validation
    - Amendment ID tracking
@@ -315,13 +310,18 @@ apps/docs/
 
 - **Nextra:** https://nextra.site/
 - **Vercel Template:** https://vercel.com/templates?type=documentation
-- **Next.js Example:** https://github.com/vercel/next.js/tree/canary/examples/with-nextra
+- **Next.js Example:**
+  https://github.com/vercel/next.js/tree/canary/examples/with-nextra
 
 ### Governance Documents
 
 - **LBOS Origin Paper:** `.cursor/planing/.lbos_origin_paper_sealed.md` (Sealed)
-- **NexusCanon Constitution v1.0:** `.cursor/planing/.nexus_canon_constitution_v_1_governance_pack_v_1.md` (Ratified)
-- **Planning Playbook v2:** `.cursor/planing/0.axis_governance_planning_tracking_playbook_with_reference_benchmarks_V2.md` (Active)
+- **NexusCanon Constitution v1.0:**
+  `.cursor/planing/.nexus_canon_constitution_v_1_governance_pack_v_1.md`
+  (Ratified)
+- **Planning Playbook v2:**
+  `.cursor/planing/0.axis_governance_planning_tracking_playbook_with_reference_benchmarks_V2.md`
+  (Active)
 
 ### Related Recommendations
 

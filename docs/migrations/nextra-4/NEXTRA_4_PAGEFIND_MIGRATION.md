@@ -1,11 +1,12 @@
 # Nextra 4: Pagefind Search Engine Migration
 
-**Status**: ✅ Migrated and Configured
-**Date**: 2025-01-27
+**Status**: ✅ Migrated and Configured **Date**: 2025-01-27
 
 ## Overview
 
-Nextra 4 migrates from **FlexSearch** (JavaScript) to **Pagefind** (Rust-powered) search engine. Pagefind provides significantly faster search and superior results.
+Nextra 4 migrates from **FlexSearch** (JavaScript) to **Pagefind**
+(Rust-powered) search engine. Pagefind provides significantly faster search and
+superior results.
 
 ## What Changed
 
@@ -49,6 +50,7 @@ Pagefind can index content that FlexSearch couldn't:
 ### ✅ Search Configuration
 
 **next.config.mjs**:
+
 ```javascript
 const withNextra = nextra({
   search: {
@@ -60,10 +62,11 @@ const withNextra = nextra({
 ### ✅ Search Component
 
 **app/layout.tsx**:
-```tsx
-import { Search } from 'nextra/components'
 
-<Navbar>
+```tsx
+import { Search } from "nextra/components"
+
+;<Navbar>
   <Search />
   <ThemeSwitch />
 </Navbar>
@@ -78,18 +81,19 @@ import { Search } from 'nextra/components'
 Pagefind can index content from async components:
 
 **Example: `content/example.mdx`**
+
 ```mdx
-import { Callout } from 'nextra/components'
+import { Callout } from "nextra/components"
 
 export async function Stars() {
-  const response = await fetch('https://api.github.com/repos/shuding/nextra')
+  const response = await fetch("https://api.github.com/repos/shuding/nextra")
   const repo = await response.json()
   const stars = repo.stargazers_count
   return <b>{stars}</b>
 }
 
 export async function getUpdatedAt() {
-  const response = await fetch('https://api.github.com/repos/shuding/nextra')
+  const response = await fetch("https://api.github.com/repos/shuding/nextra")
   const repo = await response.json()
   const updatedAt = repo.updated_at
   return new Date(updatedAt).toLocaleDateString()
@@ -99,21 +103,23 @@ export async function getUpdatedAt() {
   {/* Stars count will be indexed 🎉 */}
   Nextra has <Stars /> stars on GitHub!
 
-  {/* Last update time will be indexed 🎉 */}
-  Last repository update _{await getUpdatedAt()}_.
+{/* Last update time will be indexed 🎉 */} Last repository update _{await
+getUpdatedAt()}_.
+
 </Callout>
 ```
 
-**Result**: Both `Stars` and `getUpdatedAt()` content will be indexed and searchable!
+**Result**: Both `Stars` and `getUpdatedAt()` content will be indexed and
+searchable!
 
 ### 2. Indexing Dynamic Content
 
 Pagefind indexes dynamic content written in Markdown/MDX:
 
 **Example: `content/copyright.mdx`**
+
 ```mdx
-{/* Current year will be indexed 🎉 */}
-MIT {new Date().getFullYear()} © Nextra.
+{/* Current year will be indexed 🎉 */} MIT {new Date().getFullYear()} © Nextra.
 ```
 
 **Result**: The current year value will be indexed and searchable!
@@ -123,6 +129,7 @@ MIT {new Date().getFullYear()} © Nextra.
 Pagefind can index content from imported JavaScript or MDX files:
 
 **File: `components/reused-js-component.js`**
+
 ```javascript
 export function ReusedJsComponent() {
   return <strong>My content will be indexed</strong>
@@ -130,14 +137,16 @@ export function ReusedJsComponent() {
 ```
 
 **File: `components/reused-mdx-component.mdx`**
+
 ```mdx
 **My content will be indexed as well**
 ```
 
 **File: `content/page.mdx`**
+
 ```mdx
-import { ReusedJsComponent } from '../components/reused-js-component.js'
-import ReusedMdxComponent from '../components/reused-mdx-component.mdx'
+import { ReusedJsComponent } from "../components/reused-js-component.js"
+import ReusedMdxComponent from "../components/reused-mdx-component.mdx"
 
 <ReusedJsComponent />
 <ReusedMdxComponent />
@@ -150,6 +159,7 @@ import ReusedMdxComponent from '../components/reused-mdx-component.mdx'
 For JavaScript/TypeScript pages, add `data-pagefind-body` attribute:
 
 **Example: `app/about/page.tsx`**
+
 ```tsx
 export default function AboutPage() {
   return (
@@ -163,13 +173,15 @@ export default function AboutPage() {
 }
 ```
 
-**Result**: Content inside `data-pagefind-body` will be indexed, but content with `data-pagefind-ignore` will be excluded.
+**Result**: Content inside `data-pagefind-body` will be indexed, but content
+with `data-pagefind-ignore` will be excluded.
 
 ### 5. Ignoring Content
 
 Use `data-pagefind-ignore` to exclude content from search:
 
 **Example:**
+
 ```mdx
 <div data-pagefind-body>
   <p>This will be indexed</p>
@@ -184,6 +196,7 @@ Use `data-pagefind-ignore` to exclude content from search:
 ### Search Configuration
 
 **next.config.mjs**:
+
 ```javascript
 const withNextra = nextra({
   search: {
@@ -193,12 +206,14 @@ const withNextra = nextra({
 ```
 
 **Options**:
+
 - `codeblocks: true` - Include code blocks in search
 - `codeblocks: false` - Exclude code blocks from search (default)
 
 ### MDX Pages (Automatic)
 
-**No configuration needed** for MDX pages when using `nextra-theme-docs` or `nextra-theme-blog` - Pagefind automatically indexes MDX content!
+**No configuration needed** for MDX pages when using `nextra-theme-docs` or
+`nextra-theme-blog` - Pagefind automatically indexes MDX content!
 
 ### Static Pages (Manual)
 
@@ -206,11 +221,7 @@ Add `data-pagefind-body` to the main content area:
 
 ```tsx
 export default function Page() {
-  return (
-    <main data-pagefind-body>
-      {/* Content will be indexed */}
-    </main>
-  )
+  return <main data-pagefind-body>{/* Content will be indexed */}</main>
 }
 ```
 
@@ -219,11 +230,13 @@ export default function Page() {
 ### If You Had FlexSearch Configuration
 
 **Old (Nextra 3)**:
+
 ```javascript
 // No longer needed - FlexSearch was automatic
 ```
 
 **New (Nextra 4)**:
+
 ```javascript
 // Pagefind is automatic - just configure search options
 const withNextra = nextra({
@@ -245,9 +258,10 @@ const withNextra = nextra({
 ### Example 1: Dynamic Copyright
 
 **File: `content/copyright.mdx`**
+
 ```mdx
 ---
-title: 'Copyright'
+title: "Copyright"
 ---
 
 MIT {new Date().getFullYear()} © Nextra.
@@ -258,13 +272,14 @@ MIT {new Date().getFullYear()} © Nextra.
 ### Example 2: API Data
 
 **File: `content/stats.mdx`**
+
 ```mdx
 ---
-title: 'Statistics'
+title: "Statistics"
 ---
 
 export async function RepoStats() {
-  const res = await fetch('https://api.github.com/repos/shuding/nextra')
+  const res = await fetch("https://api.github.com/repos/shuding/nextra")
   const data = await res.json()
   return (
     <div>
@@ -282,6 +297,7 @@ export async function RepoStats() {
 ### Example 3: Imported Components
 
 **File: `components/feature-list.tsx`**
+
 ```tsx
 export function FeatureList() {
   return (
@@ -295,8 +311,9 @@ export function FeatureList() {
 ```
 
 **File: `content/features.mdx`**
+
 ```mdx
-import { FeatureList } from '../components/feature-list'
+import { FeatureList } from "../components/feature-list"
 
 <FeatureList />
 
@@ -306,6 +323,7 @@ import { FeatureList } from '../components/feature-list'
 ### Example 4: Excluding Navigation
 
 **File: `app/about/page.tsx`**
+
 ```tsx
 export default function AboutPage() {
   return (
@@ -331,9 +349,7 @@ export default function AboutPage() {
 Always wrap main content in a tag with `data-pagefind-body`:
 
 ```tsx
-<main data-pagefind-body>
-  {/* Main content */}
-</main>
+<main data-pagefind-body>{/* Main content */}</main>
 ```
 
 ### 2. Exclude Navigation and UI Elements
@@ -341,9 +357,7 @@ Always wrap main content in a tag with `data-pagefind-body`:
 Use `data-pagefind-ignore` for navigation, headers, footers:
 
 ```tsx
-<nav data-pagefind-ignore>
-  {/* Navigation won't be indexed */}
-</nav>
+<nav data-pagefind-ignore>{/* Navigation won't be indexed */}</nav>
 ```
 
 ### 3. Enable Code Block Search When Needed
@@ -365,6 +379,7 @@ Use async components for dynamic content - Pagefind will index it automatically!
 ### Search Not Working
 
 **Check**:
+
 1. `<Search />` component is in `app/layout.tsx`
 2. Search configuration in `next.config.mjs`
 3. Build completes successfully (Pagefind indexes during build)
@@ -374,11 +389,13 @@ Use async components for dynamic content - Pagefind will index it automatically!
 ### Content Not Indexed
 
 **For MDX pages**:
+
 - ✅ Automatic - no action needed
 - ✅ Works with imported components
 - ✅ Works with dynamic content
 
 **For static pages**:
+
 - ⚠️ Must add `data-pagefind-body` attribute
 - ⚠️ Content without attribute won't be indexed
 
@@ -414,14 +431,13 @@ Use async components for dynamic content - Pagefind will index it automatically!
 
 ## Summary
 
-✅ **Migration Complete**: Pagefind is configured and working
-✅ **Better Performance**: Faster search than FlexSearch
-✅ **More Features**: Indexes remote/dynamic content
-✅ **No Breaking Changes**: Search component works the same
+✅ **Migration Complete**: Pagefind is configured and working ✅ **Better
+Performance**: Faster search than FlexSearch ✅ **More Features**: Indexes
+remote/dynamic content ✅ **No Breaking Changes**: Search component works the
+same
 
 **Status**: ✅ Production Ready
 
 ---
 
-**Last Updated**: 2025-01-27
-**Next Review**: After Pagefind updates
+**Last Updated**: 2025-01-27 **Next Review**: After Pagefind updates

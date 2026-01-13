@@ -14,7 +14,9 @@ related_docs:
 
 **Organized using Diátaxis Framework**
 
-This documentation is organized according to the [Diátaxis documentation framework](https://diataxis.fr/), which structures documentation into four distinct types based on user needs:
+This documentation is organized according to the
+[Diátaxis documentation framework](https://diataxis.fr/), which structures
+documentation into four distinct types based on user needs:
 
 ---
 
@@ -22,7 +24,8 @@ This documentation is organized according to the [Diátaxis documentation framew
 
 ### 🎓 Tutorials (Learning-Oriented)
 
-**Purpose**: Take you through a series of steps to accomplish something that you have never done before.
+**Purpose**: Take you through a series of steps to accomplish something that you
+have never done before.
 
 - [Building Your First Component with Tailwind CSS v4](./tutorials/01-building-first-component.md)
 - [Creating Intelligence-Driven Styling](./tutorials/02-intelligence-driven-styling.md)
@@ -43,13 +46,15 @@ This documentation is organized according to the [Diátaxis documentation framew
 - [How to Use Dark Mode](./how-to/05-use-dark-mode.md)
 - [How to Optimize Tailwind Build Performance](./how-to/06-optimize-build-performance.md)
 
-**When to use**: You know what you want to do, but need guidance on how to do it.
+**When to use**: You know what you want to do, but need guidance on how to do
+it.
 
 ---
 
 ### 📖 Reference (Information-Oriented)
 
-**Purpose**: Describe the machinery - how it works, what it does, and what features it has.
+**Purpose**: Describe the machinery - how it works, what it does, and what
+features it has.
 
 - [Design Tokens Reference](./reference/design-tokens.md)
 - [Intelligence-Driven Utilities Reference](./reference/intelligence-utilities.md)
@@ -57,13 +62,15 @@ This documentation is organized according to the [Diátaxis documentation framew
 - [CLI & IntelliSense Reference](./reference/cli-intellisense.md)
 - [API Reference](./reference/api-reference.md)
 
-**When to use**: You need to look up specific information about how something works.
+**When to use**: You need to look up specific information about how something
+works.
 
 ---
 
 ### 💡 Explanation (Understanding-Oriented)
 
-**Purpose**: Explain and clarify - provide background, context, and understanding.
+**Purpose**: Explain and clarify - provide background, context, and
+understanding.
 
 - [Understanding Tailwind CSS v4 Architecture](./explanation/01-architecture.md)
 - [Understanding the Design System Philosophy](./explanation/02-design-system-philosophy.md)
@@ -79,23 +86,23 @@ This documentation is organized according to the [Diátaxis documentation framew
 
 ### I want to...
 
-**Learn Tailwind CSS v4 from scratch**
-→ Start with [Tutorial: Building Your First Component](./tutorials/01-building-first-component.md)
+**Learn Tailwind CSS v4 from scratch** → Start with
+[Tutorial: Building Your First Component](./tutorials/01-building-first-component.md)
 
-**Style a component with intelligence-driven utilities**
-→ See [How-to: Style Components with Intelligence](./how-to/01-style-with-intelligence.md)
+**Style a component with intelligence-driven utilities** → See
+[How-to: Style Components with Intelligence](./how-to/01-style-with-intelligence.md)
 
-**Look up available design tokens**
-→ Check [Reference: Design Tokens](./reference/design-tokens.md)
+**Look up available design tokens** → Check
+[Reference: Design Tokens](./reference/design-tokens.md)
 
-**Understand why we use CSS-first configuration**
-→ Read [Explanation: Tailwind CSS v4 Architecture](./explanation/01-architecture.md)
+**Understand why we use CSS-first configuration** → Read
+[Explanation: Tailwind CSS v4 Architecture](./explanation/01-architecture.md)
 
-**Sync tokens from Figma**
-→ Follow [How-to: Sync Design Tokens from Figma](./how-to/02-sync-figma-tokens.md)
+**Sync tokens from Figma** → Follow
+[How-to: Sync Design Tokens from Figma](./how-to/02-sync-figma-tokens.md)
 
-**Understand the design system philosophy**
-→ Read [Explanation: Design System Philosophy](./explanation/02-design-system-philosophy.md)
+**Understand the design system philosophy** → Read
+[Explanation: Design System Philosophy](./explanation/02-design-system-philosophy.md)
 
 ---
 
@@ -121,5 +128,4 @@ Each document type serves a different purpose and answers different questions.
 
 ---
 
-**Last Updated**: 2026-01-11
-**Maintained By**: Architecture Team
+**Last Updated**: 2026-01-11 **Maintained By**: Architecture Team

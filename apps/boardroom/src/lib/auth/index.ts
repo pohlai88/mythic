@@ -15,18 +15,14 @@ export {
   type CircleMembership,
   type PermissionCheck,
   type RBACResult,
-} from './rbac-schemas'
+} from "./rbac-schemas"
 
 export {
   checkPermission,
   validatePermissionCheck,
   validateRBACResult,
   validateCircleMembership,
-} from './rbac-service'
+} from "./rbac-service"
 
 // Session Management
-export {
-  getCurrentUser,
-  getCurrentUserId,
-  type Session,
-} from './session'
+export { getCurrentUser, getCurrentUserId, type Session } from "./session"

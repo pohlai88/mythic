@@ -10,11 +10,11 @@
  *   pnpm organize-docs --dry-run   # Preview changes without applying
  */
 
-import { existsSync } from 'node:fs'
-import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
-import { basename, dirname, join } from 'node:path'
-import chalk from 'chalk'
-import { glob } from 'glob'
+import { existsSync } from "node:fs"
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises"
+import { basename, dirname, join } from "node:path"
+import chalk from "chalk"
+import { glob } from "glob"
 
 interface FileMove {
   from: string
@@ -31,7 +31,7 @@ interface OrganizationStats {
 }
 
 // Files to keep in root
-const ROOT_KEEP_FILES = ['README.md', 'QUICK_START.md', 'QUICK_REFERENCE.md']
+const ROOT_KEEP_FILES = ["README.md"]
 
 // Categorization rules: pattern → { category, destination }
 const CATEGORIZATION_RULES: Array<{
@@ -43,208 +43,208 @@ const CATEGORIZATION_RULES: Array<{
   // Nextra 4 migrations
   {
     pattern: /^NEXTRA_4_/i,
-    category: 'migration',
-    destination: 'docs/migrations/nextra-4',
-    reason: 'Nextra 4 migration documentation',
+    category: "migration",
+    destination: "docs/migrations/nextra-4",
+    reason: "Nextra 4 migration documentation",
   },
   {
     pattern: /^NEXTRA_(?!4_)/i,
-    category: 'migration',
-    destination: 'docs/migrations/nextra',
-    reason: 'Nextra migration documentation',
+    category: "migration",
+    destination: "docs/migrations/nextra",
+    reason: "Nextra migration documentation",
   },
   // Zod migrations
   {
     pattern: /^ZOD_/i,
-    category: 'migration',
-    destination: 'docs/migrations/zod-v4',
-    reason: 'Zod v4 migration documentation',
+    category: "migration",
+    destination: "docs/migrations/zod-v4",
+    reason: "Zod v4 migration documentation",
   },
   // Validation migrations
   {
     pattern: /^VALIDATION_/i,
-    category: 'migration',
-    destination: 'docs/migrations/validation',
-    reason: 'Validation migration documentation',
+    category: "migration",
+    destination: "docs/migrations/validation",
+    reason: "Validation migration documentation",
   },
   // Implementation summaries
   {
     pattern: /_SUMMARY\.md$/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Implementation summary',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Implementation summary",
   },
   {
     pattern: /_COMPLETE\.md$/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Completion summary',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Completion summary",
   },
   // Guides
   {
     pattern: /_GUIDE\.md$/i,
-    category: 'guide',
-    destination: 'docs/guides',
-    reason: 'How-to guide',
+    category: "guide",
+    destination: "docs/guides",
+    reason: "How-to guide",
   },
   {
     pattern: /^POST_CLONE_SETUP\.md$/i,
-    category: 'guide',
-    destination: 'docs/guides',
-    reason: 'Setup guide',
+    category: "guide",
+    destination: "docs/guides",
+    reason: "Setup guide",
   },
   // API documentation
   {
     pattern: /^API_/i,
-    category: 'api',
-    destination: 'docs/api',
-    reason: 'API documentation',
+    category: "api",
+    destination: "docs/api",
+    reason: "API documentation",
   },
   // Reference documentation
   {
     pattern: /_REFERENCE\.md$/i,
-    category: 'reference',
-    destination: 'docs/reference',
-    reason: 'Reference documentation',
+    category: "reference",
+    destination: "docs/reference",
+    reason: "Reference documentation",
   },
   {
     pattern: /^KPI_REFERENCE\.md$/i,
-    category: 'reference',
-    destination: 'docs/reference',
-    reason: 'KPI reference',
+    category: "reference",
+    destination: "docs/reference",
+    reason: "KPI reference",
   },
   // Architecture
   {
     pattern: /^CONSISTENCY_/i,
-    category: 'architecture',
-    destination: 'docs/architecture',
-    reason: 'Architecture documentation',
+    category: "architecture",
+    destination: "docs/architecture",
+    reason: "Architecture documentation",
   },
   {
     pattern: /^GOVERNANCE_/i,
-    category: 'architecture',
-    destination: 'docs/architecture',
-    reason: 'Governance documentation',
+    category: "architecture",
+    destination: "docs/architecture",
+    reason: "Governance documentation",
   },
   // Turbopack/Turborepo
   {
     pattern: /^TURBOPACK_/i,
-    category: 'reference',
-    destination: 'docs/reference',
-    reason: 'Turbopack reference',
+    category: "reference",
+    destination: "docs/reference",
+    reason: "Turbopack reference",
   },
   {
     pattern: /^TURBOREPO_/i,
-    category: 'reference',
-    destination: 'docs/reference',
-    reason: 'Turborepo reference',
+    category: "reference",
+    destination: "docs/reference",
+    reason: "Turborepo reference",
   },
   // Node version management
   {
     pattern: /^NODE_VERSION_/i,
-    category: 'reference',
-    destination: 'docs/reference',
-    reason: 'Node version reference',
+    category: "reference",
+    destination: "docs/reference",
+    reason: "Node version reference",
   },
   // VS Code integration
   {
     pattern: /^VSCODE_/i,
-    category: 'reference',
-    destination: 'docs/reference',
-    reason: 'VS Code integration reference',
+    category: "reference",
+    destination: "docs/reference",
+    reason: "VS Code integration reference",
   },
   // Feature checklists
   {
     pattern: /^FEATURES_/i,
-    category: 'reference',
-    destination: 'docs/reference',
-    reason: 'Features checklist',
+    category: "reference",
+    destination: "docs/reference",
+    reason: "Features checklist",
   },
   // Best practices reports
   {
     pattern: /_BEST_PRACTICES.*\.md$/i,
-    category: 'reference',
-    destination: 'docs/reference',
-    reason: 'Best practices documentation',
+    category: "reference",
+    destination: "docs/reference",
+    reason: "Best practices documentation",
   },
   // Implementation reports
   {
     pattern: /^IMPLEMENTATION_/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Implementation report',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Implementation report",
   },
   {
     pattern: /^CUSTOMIZATION_/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Customization report',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Customization report",
   },
   {
     pattern: /^AUTO_DETECTION_/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Auto-detection report',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Auto-detection report",
   },
   {
     pattern: /^DOCUMENT_EVALUATION\.md$/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Document evaluation',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Document evaluation",
   },
   {
     pattern: /^WORKSPACE_OPTIMIZATION_/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Workspace optimization',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Workspace optimization",
   },
   {
     pattern: /^EXTERNAL_DEPS?_.*\.md$/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Dependency solution',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Dependency solution",
   },
   {
     pattern: /^DEPENDENCY_FIX\.md$/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Dependency fix',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Dependency fix",
   },
   {
     pattern: /^REACT_VERSION_/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'React version compatibility',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "React version compatibility",
   },
   {
     pattern: /^PAGE_FILE_CONVENTION_/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Page file convention review',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Page file convention review",
   },
   {
     pattern: /^OPTIMIZATION_/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Optimization summary',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Optimization summary",
   },
   {
     pattern: /^V3_ENHANCEMENTS_/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'V3 enhancements',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "V3 enhancements",
   },
   {
     pattern: /^PAGEFIND_SETUP_/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Pagefind setup',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Pagefind setup",
   },
   {
     pattern: /^THEME_FEATURES_/i,
-    category: 'changelog',
-    destination: 'docs/changelog/2025-01',
-    reason: 'Theme features summary',
+    category: "changelog",
+    destination: "docs/changelog/2025-01",
+    reason: "Theme features summary",
   },
 ]
 
@@ -254,25 +254,25 @@ async function findMarkdownFiles(rootDir: string): Promise<string[]> {
   // Pattern '*.md' matches files in root only (no '**' prefix means current directory)
   // According to VS Code glob patterns: patterns are evaluated relative to workspace folder
   // glob v11 returns Promise<string[]>
-  const fileArray = await glob('*.md', {
+  const fileArray = await glob("*.md", {
     cwd: rootDir,
     absolute: true, // Return absolute paths directly
     ignore: [
-      'node_modules/**',
-      '.git/**',
-      '.next/**',
-      '**/node_modules/**',
-      '.cursor/**', // Exclude .cursor directory
+      "node_modules/**",
+      ".git/**",
+      ".next/**",
+      "**/node_modules/**",
+      ".cursor/**", // Exclude .cursor directory
     ],
   })
 
   // Filter to ensure files are in root directory only
   // Normalize paths using '/' separator (VS Code glob pattern requirement)
-  const normalizedRootDir = rootDir.replace(/\\/g, '/').toLowerCase()
+  const normalizedRootDir = rootDir.replace(/\\/g, "/").toLowerCase()
 
   return fileArray.filter((file) => {
     // Normalize file path to use '/' separator (VS Code requirement)
-    const normalizedFile = file.replace(/\\/g, '/')
+    const normalizedFile = file.replace(/\\/g, "/")
     const fileDir = dirname(normalizedFile).toLowerCase()
 
     // Only include files directly in root (not in subdirectories)
@@ -318,26 +318,26 @@ async function _updateInternalLinks(
   newPath: string
 ): Promise<void> {
   try {
-    const content = await readFile(filePath, 'utf-8')
-    const relativeOldPath = oldPath.replace(process.cwd(), '').replace(/\\/g, '/')
-    const relativeNewPath = newPath.replace(process.cwd(), '').replace(/\\/g, '/')
+    const content = await readFile(filePath, "utf-8")
+    const relativeOldPath = oldPath.replace(process.cwd(), "").replace(/\\/g, "/")
+    const relativeNewPath = newPath.replace(process.cwd(), "").replace(/\\/g, "/")
 
     // Update markdown links
     const updatedContent = content
       .replace(
         new RegExp(
-          `\\[([^\\]]+)\\]\\(${relativeOldPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\)`,
-          'g'
+          `\\[([^\\]]+)\\]\\(${relativeOldPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\)`,
+          "g"
         ),
         `[$1](${relativeNewPath})`
       )
       .replace(
-        new RegExp(`\\[([^\\]]+)\\]\\(\./${basename(oldPath)}\\)`, 'g'),
+        new RegExp(`\\[([^\\]]+)\\]\\(\./${basename(oldPath)}\\)`, "g"),
         `[$1](${relativeNewPath})`
       )
 
     if (updatedContent !== content) {
-      await writeFile(filePath, updatedContent, 'utf-8')
+      await writeFile(filePath, updatedContent, "utf-8")
       console.log(chalk.gray(`  Updated links in: ${filePath}`))
     }
   } catch (error) {
@@ -346,10 +346,10 @@ async function _updateInternalLinks(
 }
 
 async function organizeDocuments(dryRun = false): Promise<void> {
-  console.log(chalk.blue.bold('\n📚 Document Organization Script\n'))
+  console.log(chalk.blue.bold("\n📚 Document Organization Script\n"))
   console.log(
     chalk.gray(
-      `Mode: ${dryRun ? 'DRY RUN (no changes will be made)' : 'LIVE (changes will be applied)'}\n`
+      `Mode: ${dryRun ? "DRY RUN (no changes will be made)" : "LIVE (changes will be applied)"}\n`
     )
   )
 
@@ -397,12 +397,12 @@ async function organizeDocuments(dryRun = false): Promise<void> {
   }
 
   // Display plan
-  console.log(chalk.blue.bold('\n📋 Organization Plan:\n'))
+  console.log(chalk.blue.bold("\n📋 Organization Plan:\n"))
   for (const [category, moves] of byCategory.entries()) {
     console.log(chalk.cyan.bold(`\n${category.toUpperCase()} (${moves.length} files):`))
     for (const move of moves) {
-      const relativeFrom = move.from.replace(rootDir, '.').replace(/\\/g, '/')
-      const relativeTo = move.to.replace(rootDir, '.').replace(/\\/g, '/')
+      const relativeFrom = move.from.replace(rootDir, ".").replace(/\\/g, "/")
+      const relativeTo = move.to.replace(rootDir, ".").replace(/\\/g, "/")
       console.log(`  ${chalk.gray(relativeFrom)}`)
       console.log(`    → ${chalk.green(relativeTo)}`)
       console.log(`    ${chalk.dim(move.reason)}`)
@@ -410,14 +410,14 @@ async function organizeDocuments(dryRun = false): Promise<void> {
   }
 
   if (dryRun) {
-    console.log(chalk.yellow.bold('\n\n🔍 DRY RUN - No changes made\n'))
+    console.log(chalk.yellow.bold("\n\n🔍 DRY RUN - No changes made\n"))
     console.log(`Would move: ${filesToMove.length} files`)
     console.log(`Would skip: ${stats.skipped} files`)
     return
   }
 
   // Execute moves
-  console.log(chalk.blue.bold('\n\n🚀 Executing moves...\n'))
+  console.log(chalk.blue.bold("\n\n🚀 Executing moves...\n"))
 
   for (const move of filesToMove) {
     try {
@@ -439,26 +439,26 @@ async function organizeDocuments(dryRun = false): Promise<void> {
   }
 
   // Summary
-  console.log(chalk.blue.bold('\n\n📊 Summary:\n'))
+  console.log(chalk.blue.bold("\n\n📊 Summary:\n"))
   console.log(`Total files:     ${chalk.cyan(stats.total)}`)
   console.log(`Moved:          ${chalk.green(stats.moved)}`)
   console.log(`Skipped:        ${chalk.yellow(stats.skipped)}`)
   console.log(`Errors:         ${chalk.red(stats.errors)}`)
 
   if (stats.moved > 0) {
-    console.log(chalk.green.bold('\n✅ Organization complete!\n'))
-    console.log(chalk.yellow('Next steps:'))
-    console.log('  1. Review moved files')
-    console.log('  2. Update any remaining internal links')
-    console.log('  3. Run: pnpm validate-docs')
-    console.log('  4. Run: pnpm generate-docs-index')
+    console.log(chalk.green.bold("\n✅ Organization complete!\n"))
+    console.log(chalk.yellow("Next steps:"))
+    console.log("  1. Review moved files")
+    console.log("  2. Update any remaining internal links")
+    console.log("  3. Run: pnpm validate-docs")
+    console.log("  4. Run: pnpm generate-docs-index")
   }
 }
 
 // Main execution
-const dryRun: boolean = process.argv.includes('--dry-run') || process.argv.includes('-d')
+const dryRun: boolean = process.argv.includes("--dry-run") || process.argv.includes("-d")
 
 organizeDocuments(dryRun).catch((error) => {
-  console.error(chalk.red.bold('\n❌ Fatal error:'), error)
+  console.error(chalk.red.bold("\n❌ Fatal error:"), error)
   process.exit(1)
 })

@@ -5,15 +5,15 @@
  * Handles connection pooling and cleanup.
  */
 
-import { beforeAll, afterAll, beforeEach, afterEach } from 'vitest'
-import { cleanupAllTestConnections, clearTestEnv } from './helpers'
+import { beforeAll, afterAll, beforeEach, afterEach } from "vitest"
+import { cleanupAllTestConnections, clearTestEnv } from "./helpers"
 
 /**
  * Global setup - runs once before all tests
  */
 beforeAll(() => {
   // Set test environment
-  process.env.NODE_ENV = 'test'
+  process.env.NODE_ENV = "test"
 })
 
 /**
@@ -22,7 +22,7 @@ beforeAll(() => {
 afterAll(() => {
   // Clean up all test connections
   cleanupAllTestConnections()
-  
+
   // Clear test environment
   clearTestEnv()
 })

@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "drizzle": {
+      "command": "tsx",
+      "args": ["scripts/drizzle-mcp-server.ts"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}",
+        "DB_HOST": "${DB_HOST}",
+        "DB_PORT": "${DB_PORT}",
+        "DB_USER": "${DB_USER}",
+        "DB_PASSWORD": "${DB_PASSWORD}",
+        "DB_NAME": "${DB_NAME}",
+        "DB_SSL": "${DB_SSL}"
+      }
+    }
+  }
+}

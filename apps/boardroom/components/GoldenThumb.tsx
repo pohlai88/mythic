@@ -9,13 +9,13 @@
  * @see PRD Section 4.2
  */
 
-'use client'
+"use client"
 
-import { Button } from '@mythic/design-system'
-import { intelligentInputStyles } from '@mythic/shared-utils'
-import { getCommitmentTransition, getHoverTransition } from '@mythic/design-system/lib/motion'
-import { useState } from 'react'
-import type { Proposal } from '@mythic/shared-types/boardroom'
+import { Button } from "@mythic/tailwindcss-v4-design-system"
+import { intelligentInputStyles } from "@mythic/nextjs-shared-utils"
+import { getCommitmentTransition, getHoverTransition } from "@mythic/design-system/lib/motion"
+import { useState } from "react"
+import type { Proposal } from "@mythic/shared-types/boardroom"
 
 interface GoldenThumbProps {
   proposal: Proposal | null
@@ -24,17 +24,12 @@ interface GoldenThumbProps {
   onConsult: (proposalId: string, assignTo: string) => Promise<void>
 }
 
-export function GoldenThumb({
-  proposal,
-  onApprove,
-  onVeto,
-  onConsult,
-}: GoldenThumbProps) {
+export function GoldenThumb({ proposal, onApprove, onVeto, onConsult }: GoldenThumbProps) {
   const [isProcessing, setIsProcessing] = useState(false)
   const [showVetoDialog, setShowVetoDialog] = useState(false)
-  const [vetoReason, setVetoReason] = useState('')
+  const [vetoReason, setVetoReason] = useState("")
 
-  if (!proposal || proposal.status !== 'LISTENING') {
+  if (!proposal || proposal.status !== "LISTENING") {
     return null // Only show for proposals in LISTENING state
   }
 
@@ -46,7 +41,7 @@ export function GoldenThumb({
       // Server-side: Async persistence
       await onApprove(proposal.id)
     } catch (error) {
-      console.error('Approval failed:', error)
+      console.error("Approval failed:", error)
       // UI will roll back on error
     } finally {
       setIsProcessing(false)
@@ -59,9 +54,9 @@ export function GoldenThumb({
     try {
       await onVeto(proposal.id, vetoReason)
       setShowVetoDialog(false)
-      setVetoReason('')
+      setVetoReason("")
     } catch (error) {
-      console.error('Veto failed:', error)
+      console.error("Veto failed:", error)
     } finally {
       setIsProcessing(false)
     }
@@ -78,7 +73,7 @@ export function GoldenThumb({
           disabled={isProcessing}
           className="min-w-48"
         >
-          {isProcessing ? 'SIGNING...' : 'APPROVE'}
+          {isProcessing ? "SIGNING..." : "APPROVE"}
         </Button>
 
         <Button
@@ -100,9 +95,9 @@ export function GoldenThumb({
             try {
               // TODO(issue-consult-dialog): Implement consult dialog UI - See https://github.com/mythic/monorepo/issues/consult-dialog
               // For now, using default assignee
-              await onConsult(proposal.id, 'default-assignee')
+              await onConsult(proposal.id, "default-assignee")
             } catch (error) {
-              console.error('Consult action failed:', error)
+              console.error("Consult action failed:", error)
             } finally {
               setIsProcessing(false)
             }
@@ -120,20 +115,21 @@ export function GoldenThumb({
           <div className="bg-obsidian border border-gold rounded-lg p-6 max-w-md w-full">
             <h3 className="text-gold font-serif text-xl mb-4">Veto Proposal</h3>
             <p className="text-ash text-sm mb-4">
-              Please provide a reason for vetoing this proposal. This will be recorded in the audit trail.
+              Please provide a reason for vetoing this proposal. This will be recorded in the audit
+              trail.
             </p>
             <textarea
               value={vetoReason}
               onChange={(e) => setVetoReason(e.target.value)}
               placeholder="Enter veto reason..."
-              className={intelligentInputStyles('w-full min-h-24 mb-4 resize-y')}
+              className={intelligentInputStyles("w-full min-h-24 mb-4 resize-y")}
             />
             <div className="flex gap-3 justify-end">
               <Button
                 variant="ghost"
                 onClick={() => {
                   setShowVetoDialog(false)
-                  setVetoReason('')
+                  setVetoReason("")
                 }}
               >
                 Cancel

@@ -1,0 +1,111 @@
+/**
+ * Design System Tokens - Axis Theme CSS
+ *
+ * Axis Visual Canon — NexusCanon (Void / Obsidian / Gold / Parchment)
+ * Tailwind CSS v4 CSS-first configuration
+ *
+ * ⚠️ SINGLE SOURCE OF TRUTH - Visual Design Tokens
+ * This file is the ONLY source for design tokens.
+ * Apps import this file directly: @import "@mythic/design-system/tokens/axis-theme.css"
+ *
+ * CONSTITUTION RULE: Any conflict, duplicate, or overlay will flag errors as breaking the TRUTH.
+ *
+ * Updated: 2026-01-12 - Finalized with Axis Visual Canon
+ */
+
+/* Motion/Easing Tokens (CSS Custom Properties) */
+
+/* ============================================================================
+ * ROOT VARIABLES (Native CSS Properties)
+ * ============================================================================ */
+:root {
+  /* Motion Physics - "Heavy, mechanical movement" */
+  --ease-gravity: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================================
+ * TAILWIND v4 THEME CONFIGURATION
+ * ============================================================================ */
+@theme {
+  /* --------------------------------------------------------------------------
+   * TYPOGRAPHY: The Forensic Stack
+   * -------------------------------------------------------------------------- */
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+
+  /* --------------------------------------------------------------------------
+   * COLOR PALETTE: Axis Visual Canon (HSL Channels)
+   * -------------------------------------------------------------------------- */
+
+  /* The Void (Backgrounds) */
+  --color-void: 240 5% 4%; /* #0a0a0b - Main Background */
+  --color-obsidian: 240 5% 8%; /* #141416 - Card Surface */
+  --color-obsidian-hover: 240 6% 9%; /* #161619 - Interactive Surface */
+  --color-charcoal: 240 3% 12%; /* #1f1f23 - Deep UI Elements */
+
+  /* The Signal (Text & Accents) */
+  --color-gold: 42 49% 58%; /* #c9a961 - Authority / Accent */
+  --color-parchment: 38 36% 96%; /* #f8f5f0 - Primary Text */
+  --color-ash: 218 11% 65%; /* #9ca3af - Muted / Metadata */
+  --color-ember: 15 70% 50%; /* #d97706 - Critical / Error */
+  --color-signal: 60 20% 99%; /* #fdfdfc - High-Gain White (Headings) */
+
+  /* Structure */
+  --color-border: 240 4% 15%; /* #252528 - Borders */
+
+  /* Semantic Aliases (Mapped to Palette) */
+  --color-bg: var(--color-void);
+  --color-surface: var(--color-obsidian);
+  --color-text: var(--color-parchment);
+  --color-muted: var(--color-ash);
+  --color-accent: var(--color-gold);
+  --color-divider: var(--color-border);
+
+  /* --------------------------------------------------------------------------
+   * TYPE SCALE & TRACKING (Forensic Layout)
+   * Fluid Typography - No Breakpoint Snapping
+   * -------------------------------------------------------------------------- */
+
+  /* Fluid Type Scale - adapts pixel-by-pixel to viewport */
+  --text-h1: clamp(2.5rem, 4vw + 1rem, 3.5rem); /* 40px → 56px */
+  --text-h2: clamp(1.75rem, 2.5vw + 0.75rem, 2.25rem); /* 28px → 36px */
+  --text-h3: clamp(1rem, 1.5vw + 0.5rem, 1.25rem); /* 16px → 20px */
+  --text-body: clamp(0.8rem, 0.5vw + 0.7rem, 0.9rem); /* 12.8px → 14.4px */
+  --text-micro: 0.6rem; /* 9.6px (System Status) - fixed for precision */
+  --text-meta: 0.7rem; /* 11.2px (Card Labels) - fixed for precision */
+  --text-btn: 0.65rem; /* 10.4px (Buttons) - fixed for precision */
+
+  /* Leading */
+  --leading-h1: 1; /* Tight */
+  --leading-body: 1.6; /* Readable */
+
+  /* Tracking (Letter Spacing) */
+  --tracking-axis: -0.03em; /* Canonical Heading (-3%) */
+  --tracking-h3: -0.02em; /* Subheading (-2%) */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-widest: 0.1em; /* Caps */
+  --tracking-ultra: 0.25em; /* Status Indicators */
+
+  /* --------------------------------------------------------------------------
+   * SPACING & LAYOUT
+   * -------------------------------------------------------------------------- */
+
+  /* Fluid Spacing - adapts to viewport */
+  --space-section: clamp(3rem, 5vw + 1rem, 5rem); /* Section gaps */
+  --space-block: clamp(1.5rem, 2vw + 0.5rem, 2.5rem); /* Block gaps */
+
+  /* Container Widths - CLOSED SET (no escape hatches) */
+  --container-axis: 920px; /* Product shell width */
+  --container-prose: 640px; /* Reading width */
+  --container-narrow: 480px; /* Centered system pages (404, etc.) */
+  --container-wide: 1024px; /* Wide content layouts */
+
+  /* Border Radius */
+  --radius-card: 0px; /* Brutalist/Sharp */
+}

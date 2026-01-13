@@ -1,6 +1,7 @@
 ---
 name: Workspace Optimizer
-description: Comprehensive workspace optimization using Cursor's full capability stack
+description:
+  Comprehensive workspace optimization using Cursor's full capability stack
 version: 1.0.0
 author: AI System Architect
 tags: [optimization, automation, documentation, quality]
@@ -10,83 +11,104 @@ tags: [optimization, automation, documentation, quality]
 
 ## Overview
 
-This skill leverages Cursor's complete capability stack to optimize workspace quality, maintainability, and developer productivity through automated workflows, intelligent documentation, and proactive code quality management.
+This skill leverages Cursor's complete capability stack to optimize workspace
+quality, maintainability, and developer productivity through automated
+workflows, intelligent documentation, and proactive code quality management.
 
 ## Capabilities
 
 ### 1. **Intelligent Documentation Management**
+
 Automatically maintains documentation consistency with codebase changes.
 
 **Commands:**
+
 - `/optimize-docs` - Audit and update all documentation
 - `/generate-api-docs` - Generate API documentation from code
 - `/sync-docs` - Sync documentation with code changes
 
-**Evidence:** Uses hooks (afterFileEdit) to detect code changes and trigger documentation updates.
+**Evidence:** Uses hooks (afterFileEdit) to detect code changes and trigger
+documentation updates.
 
 ### 2. **Code Quality Automation**
+
 Proactive code quality management with automated reviews and validation.
 
 **Commands:**
+
 - `/review-code` - Comprehensive code review with BugBot
 - `/validate-workspace` - Run all quality checks
 - `/fix-lints` - Auto-fix linting issues
 
-**Evidence:** Integrates with BugBot for automated code review and uses pre-commit hooks for validation.
+**Evidence:** Integrates with BugBot for automated code review and uses
+pre-commit hooks for validation.
 
 ### 3. **Architecture Compliance**
+
 Enforces architectural patterns and best practices across the workspace.
 
 **Commands:**
+
 - `/check-architecture` - Validate against architecture rules
 - `/suggest-refactor` - Suggest refactoring opportunities
 - `/validate-patterns` - Check code patterns compliance
 
-**Evidence:** Uses 32 specialized rules covering Next.js, TypeScript, security, and performance patterns.
+**Evidence:** Uses 32 specialized rules covering Next.js, TypeScript, security,
+and performance patterns.
 
 ### 4. **Security & Safety Automation**
+
 Automated security scanning and secret management.
 
 **Commands:**
+
 - `/scan-security` - Run security audit
 - `/check-secrets` - Scan for exposed secrets
 - `/validate-deps` - Check dependency vulnerabilities
 
-**Evidence:** Uses security rules (013_security.mdc, 060_security-secrets.mdc) and hook-based secret scanning.
+**Evidence:** Uses security rules (013_security.mdc, 060_security-secrets.mdc)
+and hook-based secret scanning.
 
 ### 5. **Performance Optimization**
+
 Automated performance analysis and optimization suggestions.
 
 **Commands:**
+
 - `/analyze-performance` - Analyze bundle size and performance
 - `/optimize-imports` - Optimize import statements
 - `/check-indexing` - Validate codebase indexing efficiency
 
-**Evidence:** Uses codebase indexing configuration and large-codebase optimization rules.
+**Evidence:** Uses codebase indexing configuration and large-codebase
+optimization rules.
 
 ## Implementation Details
 
 ### Hook Integration
 
 **afterFileEdit Hook:**
+
 ```bash
 # Triggers: format-code.sh, update-docs.sh
 # Purpose: Auto-format and update docs on file changes
 ```
 
 **beforeShellExecution Hook:**
+
 ```bash
 # Triggers: audit-command.sh
 # Purpose: Log and validate shell commands
 ```
 
 **beforeSubmitPrompt Hook:**
+
 ```bash
 # Triggers: validate-prompt.sh
 # Purpose: Validate prompts for quality and security
 ```
 
 **afterAgentResponse Hook:**
+
 ```bash
 # Triggers: log-activity.sh
 # Purpose: Log agent actions for audit trail
@@ -106,6 +128,7 @@ Automated performance analysis and optimization suggestions.
 ## Usage Examples
 
 ### Example 1: Optimize Documentation
+
 ```
 User: /optimize-docs
 
@@ -120,6 +143,7 @@ Result: All documentation synced with codebase
 ```
 
 ### Example 2: Comprehensive Code Review
+
 ```
 User: /review-code
 
@@ -135,6 +159,7 @@ Result: Comprehensive review report with fix suggestions
 ```
 
 ### Example 3: Security Audit
+
 ```
 User: /scan-security
 
@@ -160,16 +185,19 @@ Result: Security audit report with risk assessment
 ## Integration with Cursor Features
 
 ### Agent Modes
+
 - **Agent Mode**: Full automation with all tools
 - **Plan Mode**: Design before implementation
 - **Ask Mode**: Quick questions without changes
 
 ### Context Management
+
 - **@docs/**: Reference local documentation
 - **@rules/**: Reference Cursor rules
 - **@.cursor/**: Reference Cursor configuration
 
 ### MCP Integration
+
 - **filesystem-cell**: Advanced file operations
 - **next-devtools**: Next.js development tools
 - **vercel**: Deployment automation
@@ -183,6 +211,5 @@ Result: Security audit report with risk assessment
 
 ---
 
-**Status**: ✅ Production Ready
-**Last Updated**: 2026-01-06
-**Maintainer**: AI System Architect
+**Status**: ✅ Production Ready **Last Updated**: 2026-01-06 **Maintainer**: AI
+System Architect

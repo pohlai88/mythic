@@ -1,7 +1,7 @@
 # Neon Database Connection String Validation
 
-**Status**: ✅ Validated | **Last Updated**: 2026-01-11
-**Purpose**: Validate Neon database connection string format
+**Status**: ✅ Validated | **Last Updated**: 2026-01-11 **Purpose**: Validate
+Neon database connection string format
 
 ---
 
@@ -18,18 +18,21 @@ NEON_DATABASE=postgresql://neondb_owner:npg_1wpavUmJIdV8@ep-hidden-mountain-a1ck
 ### ✅ Format is Valid
 
 **PostgreSQL Connection String Format**:
+
 ```
 postgresql://[user]:[password]@[host]:[port]/[database]?[parameters]
 ```
 
 **Your String Breakdown**:
+
 - ✅ **Protocol**: `postgresql://` (correct)
 - ✅ **User**: `neondb_owner` (valid)
 - ✅ **Password**: `npg_1wpavUmJIdV8` (valid)
-- ✅ **Host**: `ep-hidden-mountain-a1ckcj1m-pooler.ap-southeast-1.aws.neon.tech` (valid Neon pooler hostname)
+- ✅ **Host**: `ep-hidden-mountain-a1ckcj1m-pooler.ap-southeast-1.aws.neon.tech`
+  (valid Neon pooler hostname)
 - ✅ **Port**: Not specified (defaults to `5432` - correct for Neon)
 - ✅ **Database**: `neondb` (valid)
-- ✅ **Parameters**: 
+- ✅ **Parameters**:
   - `sslmode=require` ✅ (required for Neon)
   - `channel_binding=require` ✅ (Neon security requirement)
 
@@ -44,7 +47,8 @@ postgresql://[user]:[password]@[host]:[port]/[database]?[parameters]
 
 ### Impact
 
-The codebase **will not use** `NEON_DATABASE`. All database connections look for `DATABASE_URL`:
+The codebase **will not use** `NEON_DATABASE`. All database connections look for
+`DATABASE_URL`:
 
 - ❌ `apps/boardroom/src/db/index.ts` → `process.env.DATABASE_URL`
 - ❌ `drizzle.config.ts` → `process.env.DATABASE_URL`
@@ -75,28 +79,30 @@ DATABASE_URL=postgresql://neondb_owner:npg_1wpavUmJIdV8@ep-hidden-mountain-a1ckc
 
 ## Validation Checklist
 
-| Component | Status | Value |
-|-----------|--------|-------|
-| Protocol | ✅ Valid | `postgresql://` |
-| Username | ✅ Valid | `neondb_owner` |
-| Password | ✅ Valid | `npg_1wpavUmJIdV8` |
-| Host | ✅ Valid | Neon pooler hostname |
-| Port | ✅ Valid | Default (5432) |
-| Database | ✅ Valid | `neondb` |
-| SSL Mode | ✅ Valid | `require` (required for Neon) |
-| Channel Binding | ✅ Valid | `require` (Neon security) |
-| **Variable Name** | ❌ **Wrong** | Should be `DATABASE_URL` |
+| Component         | Status       | Value                         |
+| ----------------- | ------------ | ----------------------------- |
+| Protocol          | ✅ Valid     | `postgresql://`               |
+| Username          | ✅ Valid     | `neondb_owner`                |
+| Password          | ✅ Valid     | `npg_1wpavUmJIdV8`            |
+| Host              | ✅ Valid     | Neon pooler hostname          |
+| Port              | ✅ Valid     | Default (5432)                |
+| Database          | ✅ Valid     | `neondb`                      |
+| SSL Mode          | ✅ Valid     | `require` (required for Neon) |
+| Channel Binding   | ✅ Valid     | `require` (Neon security)     |
+| **Variable Name** | ❌ **Wrong** | Should be `DATABASE_URL`      |
 
 ---
 
 ## Quick Fix
 
 **Change this**:
+
 ```env
 NEON_DATABASE=postgresql://neondb_owner:npg_1wpavUmJIdV8@ep-hidden-mountain-a1ckcj1m-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 ```
 
 **To this**:
+
 ```env
 DATABASE_URL=postgresql://neondb_owner:npg_1wpavUmJIdV8@ep-hidden-mountain-a1ckcj1m-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 ```
@@ -121,12 +127,13 @@ pnpm db:setup
 
 ✅ **Format**: Valid PostgreSQL connection string  
 ✅ **Components**: All components are correctly formatted  
-✅ **Neon Requirements**: `sslmode=require` and `channel_binding=require` are present  
+✅ **Neon Requirements**: `sslmode=require` and `channel_binding=require` are
+present  
 ❌ **Variable Name**: Must be `DATABASE_URL`, not `NEON_DATABASE`
 
 **Action**: Rename `NEON_DATABASE` → `DATABASE_URL` in your `.env` file.
 
 ---
 
-**Last Updated**: 2026-01-11
-**Status**: ✅ Format Valid, Variable Name Needs Fix
+**Last Updated**: 2026-01-11 **Status**: ✅ Format Valid, Variable Name Needs
+Fix

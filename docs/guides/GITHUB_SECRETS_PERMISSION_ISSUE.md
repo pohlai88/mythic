@@ -1,7 +1,7 @@
 # GitHub Secrets - Permission Issue
 
-**Status**: ⚠️ Permission Required | **Last Updated**: 2026-01-11
-**Issue**: GitHub CLI token doesn't have access to secrets
+**Status**: ⚠️ Permission Required | **Last Updated**: 2026-01-11 **Issue**:
+GitHub CLI token doesn't have access to secrets
 
 ---
 
@@ -9,7 +9,8 @@
 
 **Error**: `HTTP 403: Resource not accessible by personal access token`
 
-**Cause**: Your GitHub token doesn't have the required permissions to manage repository secrets.
+**Cause**: Your GitHub token doesn't have the required permissions to manage
+repository secrets.
 
 ---
 
@@ -56,6 +57,7 @@
 ## Required Permissions
 
 To manage secrets via CLI, your token needs:
+
 - ✅ `repo` scope (full control)
 - ✅ `workflow` scope (for Actions)
 
@@ -90,15 +92,15 @@ gh secret list
 
 ## Summary
 
-| Method | Status | Action Needed |
-|--------|--------|---------------|
-| **GitHub CLI** | ⚠️ Needs permissions | Update token or use web |
-| **Web Interface** | ✅ Works | Just visit the URL |
-| **GitHub API** | ⚠️ Needs permissions | Same as CLI |
+| Method            | Status               | Action Needed           |
+| ----------------- | -------------------- | ----------------------- |
+| **GitHub CLI**    | ⚠️ Needs permissions | Update token or use web |
+| **Web Interface** | ✅ Works             | Just visit the URL      |
+| **GitHub API**    | ⚠️ Needs permissions | Same as CLI             |
 
-**Recommendation**: Use web interface for now (fastest), or update token permissions for CLI.
+**Recommendation**: Use web interface for now (fastest), or update token
+permissions for CLI.
 
 ---
 
-**Last Updated**: 2026-01-11
-**Status**: ⚠️ Permission Issue - Use Web Interface
+**Last Updated**: 2026-01-11 **Status**: ⚠️ Permission Issue - Use Web Interface

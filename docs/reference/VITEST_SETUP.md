@@ -2,7 +2,8 @@
 
 ## Overview
 
-Vitest has been successfully configured for the monorepo. This document provides information about the setup, configuration, and usage.
+Vitest has been successfully configured for the monorepo. This document provides
+information about the setup, configuration, and usage.
 
 ## Installation
 
@@ -21,18 +22,21 @@ The following packages have been installed at the root level:
 ### Root Configuration
 
 **`vitest.config.ts`** - Main Vitest configuration at repository root:
+
 - Environment: `jsdom` for browser-like testing
 - Setup file: `vitest.setup.ts` for global test configuration
 - Path aliases configured for all workspace packages
 - Coverage configuration with v8 provider
 
 **`vitest.setup.ts`** - Global test setup:
+
 - Imports `@testing-library/jest-dom` for DOM matchers
 - Configures cleanup after each test
 
 ### App-Specific Configuration
 
 **`apps/boardroom/vitest.config.ts`** - Boardroom app configuration:
+
 - Extends root configuration
 - Includes app-specific path aliases (`@/`, `@/components`, etc.)
 - Same environment and setup as root
@@ -66,6 +70,7 @@ The following packages have been installed at the root level:
 ### Running Tests
 
 **Option 1: Via pnpm scripts (Recommended)**
+
 ```bash
 # Run all tests in watch mode (from root)
 pnpm test:watch
@@ -85,6 +90,7 @@ pnpm test:coverage
 ```
 
 **Option 2: Via npx (No global install needed)**
+
 ```bash
 # Run tests in watch mode
 npx vitest
@@ -100,6 +106,7 @@ npx vitest run --coverage
 ```
 
 **Option 3: Via global CLI (Already installed)**
+
 ```bash
 # Run tests in watch mode
 vitest
@@ -114,7 +121,9 @@ vitest --ui
 vitest run --coverage
 ```
 
-> **Note**: Vitest is installed globally, so you can use `vitest` directly from any directory. The global installation is optional - you can also use `pnpm test` or `npx vitest` which work without global installation.
+> **Note**: Vitest is installed globally, so you can use `vitest` directly from
+> any directory. The global installation is optional - you can also use
+> `pnpm test` or `npx vitest` which work without global installation.
 
 ### Writing Tests
 
@@ -123,10 +132,10 @@ vitest run --coverage
 Create test files with `.test.ts` or `.spec.ts` extension:
 
 ```typescript
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect } from "vitest"
 
-describe('MyFunction', () => {
-  it('should do something', () => {
+describe("MyFunction", () => {
+  it("should do something", () => {
     expect(true).toBe(true)
   })
 })
@@ -153,22 +162,25 @@ describe('MyComponent', () => {
 
 Two example test files have been created:
 
-1. **`apps/boardroom/src/lib/env.test.ts`** - Tests for environment variable validation
-2. **`apps/boardroom/components/__tests__/example.test.tsx`** - Example React component test
+1. **`apps/boardroom/src/lib/env.test.ts`** - Tests for environment variable
+   validation
+2. **`apps/boardroom/components/__tests__/example.test.tsx`** - Example React
+   component test
 
 ## Path Aliases
 
 The following path aliases are configured and available in tests:
 
-- `@mythic/shared-utils` → `packages/shared-utils/src`
-- `@mythic/shared-types` → `packages/shared-types/src`
-- `@mythic/design-system` → `packages/design-system/src`
+- `@mythic/shared-utils` → `packages/NextJS/Shared-Utils/src`
+- `@mythic/shared-types` → `packages/TypeScript/Shared-Types/src`
+- `@mythic/design-system` → `packages/TailwindCSS-V4/Design-System/src`
 - `@mythic/axis-theme` → `packages/axis-theme/src`
-- `@mythic/domain-core` → `packages/domain-core/src`
-- `@mythic/performance` → `packages/performance/src`
-- `@mythic/monitoring` → `packages/monitoring/src`
+- `@mythic/domain-core` → `packages/NextJS/Domain-Core/src`
+- `@mythic/performance` → `packages/NodeJS/Performance/src`
+- `@mythic/monitoring` → `packages/NodeJS/Monitoring/src`
 
 App-specific aliases (in boardroom):
+
 - `@/` → `apps/boardroom/`
 - `@/components` → `apps/boardroom/components`
 - `@/lib` → `apps/boardroom/src/lib`
@@ -184,6 +196,7 @@ Coverage reports are generated using the v8 provider and include:
 - HTML report for detailed viewing
 
 Coverage excludes:
+
 - `node_modules/`
 - Config files
 - Build outputs (`.next`, `dist`, `.turbo`)
@@ -219,16 +232,20 @@ Install the official Vitest extension for VS Code:
 3. Install the extension
 
 Or install via CLI:
+
 ```bash
 code --install-extension ZixuanChen.vitest-explorer
 ```
 
 **Alternative**: Vitest by Anthony Fu (official maintainer)
+
 ```bash
 code --install-extension antfu.vitest-explorer
 ```
 
-> **Note**: The extension is already added to `.vscode/extensions.json` as a recommended extension. VS Code will prompt you to install it when you open the workspace.
+> **Note**: The extension is already added to `.vscode/extensions.json` as a
+> recommended extension. VS Code will prompt you to install it when you open the
+> workspace.
 
 ### Features
 
@@ -483,4 +500,5 @@ vitest run --coverage --coverage.lines=80 --coverage.functions=80
 - [Vitest CLI Reference](https://vitest.dev/guide/cli.html)
 - [Vitest VS Code Extension](https://marketplace.visualstudio.com/items?itemName=ZixuanChen.vitest-explorer)
 - [React Testing Library](https://testing-library.com/react)
-- [Vitest Browser Mode](https://vitest.dev/guide/browser/) - For testing in real browsers
+- [Vitest Browser Mode](https://vitest.dev/guide/browser/) - For testing in real
+  browsers

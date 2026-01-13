@@ -87,7 +87,7 @@ turbo run build --dry-run
 ```json
 {
   "build": {
-    "dependsOn": ["^build"],  // Build deps first
+    "dependsOn": ["^build"], // Build deps first
     "outputs": [".next/**"],
     "cache": true
   },
@@ -155,7 +155,7 @@ turbo run build --filter=[origin/main...]
     "build": {
       "outputs": [
         ".next/**",
-        "!.next/cache/**",  // Exclude cache
+        "!.next/cache/**", // Exclude cache
         "dist/**"
       ]
     }
@@ -234,4 +234,5 @@ find . -name "tsconfig.tsbuildinfo" -delete
 
 ---
 
-**Quick Tip**: Use `turbo run build --summarize` to see build performance and cache hits.
+**Quick Tip**: Use `turbo run build --summarize` to see build performance and
+cache hits.

@@ -1,8 +1,8 @@
 # Workspace Optimization Plan - Next.js & NextUI
 
-**Date:** 2024-12-19
-**Current State:** Next.js 13.0.6 (outdated), basic configuration
-**Target State:** Next.js 16+ with modern optimizations, NextUI integration ready
+**Date:** 2024-12-19 **Current State:** Next.js 13.0.6 (outdated), basic
+configuration **Target State:** Next.js 16+ with modern optimizations, NextUI
+integration ready
 
 ---
 
@@ -11,26 +11,22 @@
 ### Critical Issues Identified
 
 1. **Outdated Next.js Version**
-
    - Current: `^13.0.6`
    - Target: `^16.1.1+` (latest stable)
    - Impact: Missing performance improvements, security updates, new features
 
 2. **Basic Configuration**
-
    - `next.config.js` lacks production optimizations
    - No image optimization
    - No security headers
    - No performance monitoring
 
 3. **TypeScript Configuration**
-
    - `strict: false` (should be `true`)
    - Outdated module resolution
    - Missing modern TypeScript features
 
 4. **Missing Modern Features**
-
    - No App Router structure
    - No React Server Components optimization
    - No Vercel Speed Insights
@@ -72,9 +68,9 @@ pnpm add next@latest react@latest react-dom@latest
 const withNextra = require("nextra")({
   theme: "nextra-theme-docs",
   themeConfig: "./theme.config.tsx",
-});
+})
 
-module.exports = withNextra();
+module.exports = withNextra()
 ```
 
 **Optimized:**
@@ -87,7 +83,7 @@ const withNextra = require("nextra")({
     remarkPlugins: [],
     rehypePlugins: [],
   },
-});
+})
 
 module.exports = withNextra({
   // Performance
@@ -141,7 +137,7 @@ module.exports = withNextra({
   experimental: {
     optimizePackageImports: ["nextra", "nextra-theme-docs"],
   },
-});
+})
 ```
 
 #### 1.3 Modernize TypeScript Configuration
@@ -203,7 +199,7 @@ pnpm add @vercel/speed-insights
 **Add to pages/\_app.tsx or app/layout.tsx:**
 
 ```tsx
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function App({ Component, pageProps }) {
   return (
@@ -211,7 +207,7 @@ export default function App({ Component, pageProps }) {
       <Component {...pageProps} />
       <SpeedInsights />
     </>
-  );
+  )
 }
 ```
 
@@ -254,17 +250,17 @@ module.exports = withBundleAnalyzer(withNextra({...}))
 **Optimized:**
 
 ```tsx
-"use client";
+"use client"
 
-import { useState, useCallback } from "react";
-import styles from "./counters.module.css";
+import { useState, useCallback } from "react"
+import styles from "./counters.module.css"
 
 function MyButton() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
   const handleClick = useCallback(() => {
-    setCount((prev) => prev + 1);
-  }, []);
+    setCount((prev) => prev + 1)
+  }, [])
 
   return (
     <div>
@@ -272,11 +268,11 @@ function MyButton() {
         Clicked {count} times
       </button>
     </div>
-  );
+  )
 }
 
 export default function MyApp() {
-  return <MyButton />;
+  return <MyButton />
 }
 ```
 
@@ -295,20 +291,20 @@ pnpm add @nextui-org/react framer-motion
 **Create `components/providers.tsx`:**
 
 ```tsx
-"use client";
+"use client"
 
-import { NextUIProvider } from "@nextui-org/react";
+import { NextUIProvider } from "@nextui-org/react"
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <NextUIProvider>{children}</NextUIProvider>;
+  return <NextUIProvider>{children}</NextUIProvider>
 }
 ```
 
 **Update pages/\_app.tsx:**
 
 ```tsx
-import { Providers } from "@/components/providers";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Providers } from "@/components/providers"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function App({ Component, pageProps }) {
   return (
@@ -316,7 +312,7 @@ export default function App({ Component, pageProps }) {
       <Component {...pageProps} />
       <SpeedInsights />
     </Providers>
-  );
+  )
 }
 ```
 
@@ -325,7 +321,7 @@ export default function App({ Component, pageProps }) {
 **Create/update `tailwind.config.js`:**
 
 ```javascript
-const { nextui } = require("@nextui-org/react");
+const { nextui } = require("@nextui-org/react")
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -339,7 +335,7 @@ module.exports = {
   },
   darkMode: "class",
   plugins: [nextui()],
-};
+}
 ```
 
 **Install Tailwind (v4):**
@@ -380,7 +376,7 @@ npx @tailwindcss/cli -i input.css -o output.css
 **Create `pages/_document.tsx`:**
 
 ```tsx
-import { Html, Head, Main, NextScript } from "next/document";
+import { Html, Head, Main, NextScript } from "next/document"
 
 export default function Document() {
   return (
@@ -395,7 +391,7 @@ export default function Document() {
         <NextScript />
       </body>
     </Html>
-  );
+  )
 }
 ```
 
@@ -625,5 +621,4 @@ npx lint-staged
 
 ---
 
-**Last Updated:** 2024-12-19
-**Next Review:** After Phase 1 implementation
+**Last Updated:** 2024-12-19 **Next Review:** After Phase 1 implementation

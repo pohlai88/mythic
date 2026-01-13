@@ -1,0 +1,94 @@
+---
+title: KPI Dictionary
+description: Key Performance Indicator definitions and reporting logic
+audience: business
+type: reference
+published: true
+last_updated: 2026-01-13
+---
+
+# KPI Dictionary
+
+> Canonical definitions for all Key Performance Indicators tracked in
+> NexusCanon.
+
+## Overview
+
+This dictionary defines the standard KPIs used across all business surfaces.
+Each KPI includes:
+
+- **Definition**: What the metric measures
+- **Formula**: How the metric is calculated
+- **Source**: Where the data originates
+- **Frequency**: How often the metric is updated
+
+## Financial KPIs
+
+### Revenue Metrics
+
+| KPI           | Definition                      | Formula                              | Source     | Frequency |
+| ------------- | ------------------------------- | ------------------------------------ | ---------- | --------- |
+| Gross Revenue | Total revenue before deductions | Sum(Invoice.Amount)                  | Accounting | Daily     |
+| Net Revenue   | Revenue after returns/discounts | Gross Revenue - Returns - Discounts  | Accounting | Daily     |
+| MRR           | Monthly Recurring Revenue       | Sum(ActiveSubscription.MonthlyValue) | Billing    | Monthly   |
+
+### Profitability Metrics
+
+| KPI              | Definition                                                  | Formula                             | Source     | Frequency |
+| ---------------- | ----------------------------------------------------------- | ----------------------------------- | ---------- | --------- |
+| Gross Margin     | Revenue minus COGS                                          | (Revenue - COGS) / Revenue          | Accounting | Monthly   |
+| Operating Margin | Operating income ratio                                      | Operating Income / Revenue          | Accounting | Monthly   |
+| EBITDA           | Earnings before interest, taxes, depreciation, amortization | Net Income + Interest + Taxes + D&A | Accounting | Monthly   |
+
+## Operational KPIs
+
+### Process Efficiency
+
+| KPI              | Definition                        | Formula                             | Source        | Frequency |
+| ---------------- | --------------------------------- | ----------------------------------- | ------------- | --------- |
+| Cycle Time       | Time from order to delivery       | Avg(DeliveryDate - OrderDate)       | Supply Chain  | Weekly    |
+| On-Time Delivery | Orders delivered by promised date | (OnTimeOrders / TotalOrders) × 100  | Supply Chain  | Weekly    |
+| First Pass Yield | Products passing QC first time    | (PassedFirst / TotalProduced) × 100 | Manufacturing | Daily     |
+
+### Customer Metrics
+
+| KPI        | Definition                  | Formula                                | Source | Frequency |
+| ---------- | --------------------------- | -------------------------------------- | ------ | --------- |
+| NPS        | Net Promoter Score          | %Promoters - %Detractors               | CRM    | Quarterly |
+| CSAT       | Customer Satisfaction Score | (Satisfied / TotalResponses) × 100     | CRM    | Monthly   |
+| Churn Rate | Customer attrition rate     | (LostCustomers / StartCustomers) × 100 | CRM    | Monthly   |
+
+## Governance KPIs
+
+### Decision Metrics
+
+| KPI               | Definition                       | Formula                                   | Source    | Frequency |
+| ----------------- | -------------------------------- | ----------------------------------------- | --------- | --------- |
+| Decision Velocity | Average time to ratify proposals | Avg(RatifiedDate - SubmittedDate)         | BoardRoom | Weekly    |
+| Approval Rate     | Proposals approved vs submitted  | (Approved / Submitted) × 100              | BoardRoom | Monthly   |
+| Compliance Score  | Audit findings addressed         | (AddressedFindings / TotalFindings) × 100 | Audit     | Quarterly |
+
+## Reporting Logic
+
+### Data Refresh Schedule
+
+| Source        | Refresh Frequency  | Latency      |
+| ------------- | ------------------ | ------------ |
+| Accounting    | Daily at 02:00 UTC | < 4 hours    |
+| BoardRoom     | Real-time          | < 1 minute   |
+| CRM           | Daily at 06:00 UTC | < 2 hours    |
+| Manufacturing | Hourly             | < 15 minutes |
+| Supply Chain  | Daily at 04:00 UTC | < 3 hours    |
+
+### Data Quality Rules
+
+1. **Completeness**: All required fields must be populated
+2. **Accuracy**: Values must match source system within 0.01%
+3. **Timeliness**: Data must be available within stated latency
+4. **Consistency**: Same calculation across all reports
+
+## Related
+
+- [Compliance](/business/compliance) — Audit and regulatory requirements
+- [Process Flows](/business/process-flows) — Operational workflows
+- [Overview](/business/overview) — System overview

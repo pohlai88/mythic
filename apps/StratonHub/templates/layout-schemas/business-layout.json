@@ -1,8 +1,21 @@
 {
+  "$schema": "https://json-schema.org/draft-07/schema#",
   "name": "Business Layout",
   "version": "1.0.0",
-  "description": "Layout wireframe for business stakeholders documentation section",
+  "description": "Layout wireframe for business stakeholders documentation section. Follows Next.js App Router conventions and Tailwind CSS v4 design system tokens.",
   "audience": "business",
+  "designSystem": {
+    "tokens": "@mythic/tailwindcss-v4-design-system/tokens/axis-theme.css",
+    "colors": {
+      "background": "bg-obsidian",
+      "border": "border-charcoal",
+      "text": "text-parchment"
+    },
+    "spacing": {
+      "container": "max-w-axis",
+      "padding": "p-8"
+    }
+  },
   "components": [
     {
       "type": "Navbar",
@@ -16,7 +29,8 @@
       "styling": {
         "background": "bg-obsidian",
         "border": "border-b border-charcoal",
-        "height": "h-16"
+        "height": "h-16",
+        "zIndex": "z-50"
       }
     },
     {
@@ -30,27 +44,46 @@
       },
       "styling": {
         "margin": "mx-auto",
-        "maxWidth": "max-w-5xl"
+        "maxWidth": "max-w-axis",
+        "responsive": {
+          "mobile": "max-w-full px-4",
+          "tablet": "max-w-axis px-6",
+          "desktop": "max-w-axis px-8"
+        }
       }
     }
   ],
   "responsive": {
     "mobile": {
       "layout": "centered",
-      "content": "full-width"
+      "content": "full-width",
+      "breakpoint": "sm"
     },
     "tablet": {
       "layout": "centered",
-      "content": "adaptive"
+      "content": "adaptive",
+      "breakpoint": "md"
     },
     "desktop": {
       "layout": "centered",
-      "content": "max-width"
+      "content": "max-width",
+      "breakpoint": "lg"
     }
   },
   "breakpoints": {
-    "mobile": "640px",
-    "tablet": "768px",
-    "desktop": "1024px"
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
+    "2xl": "1536px",
+    "note": "Tailwind CSS v4 default breakpoints - use design system tokens for custom breakpoints"
+  },
+  "nextjs": {
+    "appRouter": true,
+    "serverComponents": true,
+    "metadata": {
+      "title": "Business Documentation",
+      "description": "Documentation for business stakeholders"
+    }
   }
 }

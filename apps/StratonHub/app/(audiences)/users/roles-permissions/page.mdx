@@ -1,0 +1,137 @@
+---
+title: Roles & Permissions
+description: Role definitions and permission matrix for operators
+audience: users
+type: reference
+published: true
+last_updated: 2026-01-13
+---
+
+# Roles & Permissions
+
+> Understand your access level and what actions you can perform.
+
+## Overview
+
+NexusCanon uses Role-Based Access Control (RBAC). Your role determines:
+
+- What surfaces you can access
+- What actions you can perform
+- What data you can view
+
+## Standard Roles
+
+### Viewer
+
+**Purpose**: Read-only access for monitoring and reporting.
+
+| Surface       | View | Create | Edit | Delete | Approve |
+| ------------- | ---- | ------ | ---- | ------ | ------- |
+| BoardRoom     | ✓    | —      | —    | —      | —       |
+| Accounting    | ✓    | —      | —    | —      | —       |
+| CRM           | ✓    | —      | —    | —      | —       |
+| Manufacturing | ✓    | —      | —    | —      | —       |
+| Supply Chain  | ✓    | —      | —    | —      | —       |
+
+### Operator
+
+**Purpose**: Day-to-day transaction processing.
+
+| Surface       | View | Create | Edit | Delete | Approve |
+| ------------- | ---- | ------ | ---- | ------ | ------- |
+| BoardRoom     | ✓    | ✓      | Own  | —      | —       |
+| Accounting    | ✓    | ✓      | Own  | —      | —       |
+| CRM           | ✓    | ✓      | Own  | —      | —       |
+| Manufacturing | ✓    | ✓      | Own  | —      | —       |
+| Supply Chain  | ✓    | ✓      | Own  | —      | —       |
+
+### Approver
+
+**Purpose**: Review and approve submissions.
+
+| Surface       | View | Create | Edit | Delete | Approve |
+| ------------- | ---- | ------ | ---- | ------ | ------- |
+| BoardRoom     | ✓    | ✓      | Own  | —      | ✓       |
+| Accounting    | ✓    | ✓      | Own  | —      | ✓       |
+| CRM           | ✓    | ✓      | Own  | —      | ✓       |
+| Manufacturing | ✓    | ✓      | Own  | —      | ✓       |
+| Supply Chain  | ✓    | ✓      | Own  | —      | ✓       |
+
+### Administrator
+
+**Purpose**: Full control over a surface.
+
+| Surface          | View | Create | Edit | Delete | Approve |
+| ---------------- | ---- | ------ | ---- | ------ | ------- |
+| Assigned Surface | ✓    | ✓      | All  | ✓      | ✓       |
+| Other Surfaces   | ✓    | —      | —    | —      | —       |
+
+### Super Admin
+
+**Purpose**: System-wide administration (restricted).
+
+| Surface       | View | Create | Edit | Delete | Approve |
+| ------------- | ---- | ------ | ---- | ------ | ------- |
+| All Surfaces  | ✓    | ✓      | All  | ✓      | ✓       |
+| System Config | ✓    | ✓      | ✓    | ✓      | ✓       |
+
+## Permission Definitions
+
+| Permission     | Description                     |
+| -------------- | ------------------------------- |
+| **View**       | Can see records and reports     |
+| **Create**     | Can create new records          |
+| **Edit (Own)** | Can modify records they created |
+| **Edit (All)** | Can modify any record           |
+| **Delete**     | Can remove records              |
+| **Approve**    | Can approve/reject submissions  |
+
+## Requesting Access Changes
+
+### Escalation Path
+
+1. Submit request to your direct manager
+2. Manager approves and forwards to IT Security
+3. IT Security validates and provisions access
+4. You receive confirmation email
+
+### Temporary Elevation
+
+For time-limited elevated access:
+
+1. Submit elevation request with business justification
+2. Security review (SLA: 4 hours)
+3. Access granted with automatic expiry
+4. Audit log created
+
+## Session & Security
+
+### Session Timeout
+
+| Activity Level   | Timeout          |
+| ---------------- | ---------------- |
+| Active use       | 8 hours          |
+| Idle             | 30 minutes       |
+| Sensitive action | Re-auth required |
+
+### Multi-Factor Authentication
+
+Required for:
+
+- All Approver and above roles
+- Access to sensitive data
+- Administrative actions
+
+## Audit Trail
+
+All permission-related actions are logged:
+
+- Login/logout events
+- Permission changes
+- Access denials
+- Elevation requests
+
+## Related
+
+- [Training](/users/training) — Onboarding and certification
+- [BoardRoom Guide](/users/boardroom) — Using the decision engine

@@ -22,6 +22,7 @@ pnpm install
 ```
 
 This installs all required packages including:
+
 - `@trpc/client` - tRPC client for type-safe APIs
 - `@trpc/react-query` - React Query integration for tRPC
 - `@trpc/server` - tRPC server (already installed)
@@ -44,17 +45,21 @@ You should see both packages listed.
 ### 2.1 Install PostgreSQL
 
 **Windows:**
-- Download from [PostgreSQL Downloads](https://www.postgresql.org/download/windows/)
+
+- Download from
+  [PostgreSQL Downloads](https://www.postgresql.org/download/windows/)
 - Install with default settings
 - Note the password you set for the `postgres` user
 
 **macOS:**
+
 ```bash
 brew install postgresql@15
 brew services start postgresql@15
 ```
 
 **Linux (Ubuntu/Debian):**
+
 ```bash
 sudo apt-get update
 sudo apt-get install postgresql-15
@@ -107,6 +112,7 @@ pnpm tsx scripts/setup-database.ts
 ```
 
 This script will:
+
 - ✅ Check database connection
 - ✅ Verify schema exists
 - ✅ List current tables
@@ -125,7 +131,9 @@ pnpm drizzle-kit migrate
 ```
 
 **Expected Output:**
-- Tables created: `users`, `proposals`, `proposal_stencils`, `thanos_events`, etc.
+
+- Tables created: `users`, `proposals`, `proposal_stencils`, `thanos_events`,
+  etc.
 
 ---
 
@@ -150,6 +158,7 @@ Navigate to: **http://localhost:3000/apex**
 ### 4.1 Check API Endpoints
 
 Test tRPC API:
+
 ```bash
 curl http://localhost:3000/api/trpc/getUser?input=%7B%22id%22%3A1%7D
 ```
@@ -165,6 +174,7 @@ You should see all tables listed.
 ### 4.3 Check Application Logs
 
 Look for:
+
 - ✅ Database connection successful
 - ✅ tRPC router initialized
 - ✅ Next.js server running
@@ -176,6 +186,7 @@ Look for:
 ### Issue: "Cannot find module '@trpc/client'"
 
 **Solution:**
+
 ```bash
 pnpm install @trpc/client @trpc/react-query
 ```
@@ -183,11 +194,13 @@ pnpm install @trpc/client @trpc/react-query
 ### Issue: "Database connection failed"
 
 **Solutions:**
+
 1. Verify PostgreSQL is running:
+
    ```bash
    # Windows
    services.msc (check PostgreSQL service)
-   
+
    # macOS/Linux
    pg_isready
    ```
@@ -202,6 +215,7 @@ pnpm install @trpc/client @trpc/react-query
 ### Issue: "Schema not found"
 
 **Solution:**
+
 ```bash
 # Regenerate and push schema
 pnpm drizzle-kit generate
@@ -211,12 +225,14 @@ pnpm drizzle-kit push
 ### Issue: "/apex route not found"
 
 **Solution:**
+
 - Ensure `app/apex/page.tsx` exists
 - Restart dev server: `pnpm dev`
 
 ### Issue: "Type errors in tRPC"
 
 **Solution:**
+
 ```bash
 # Regenerate types
 pnpm type-check
@@ -270,6 +286,7 @@ open http://localhost:3000/apex
 ## Support
 
 For issues or questions:
+
 1. Check this guide
 2. Review PRD: `/content/product/PRD_Decision_BoardRoom_MVP.md`
 3. Check database logs
@@ -277,5 +294,4 @@ For issues or questions:
 
 ---
 
-**Status**: ✅ Setup Guide Complete
-**Last Updated**: 2026-01-10
+**Status**: ✅ Setup Guide Complete **Last Updated**: 2026-01-10

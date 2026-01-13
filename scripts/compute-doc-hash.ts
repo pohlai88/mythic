@@ -7,14 +7,14 @@
  *   pnpm tsx scripts/compute-doc-hash.ts <file-path>
  */
 
-import { createHash } from 'crypto'
-import { readFileSync, existsSync } from 'fs'
-import { join } from 'path'
+import { createHash } from "crypto"
+import { readFileSync, existsSync } from "fs"
+import { join } from "path"
 
 const filePath = process.argv[2]
 
 if (!filePath) {
-  console.error('Usage: pnpm tsx scripts/compute-doc-hash.ts <file-path>')
+  console.error("Usage: pnpm tsx scripts/compute-doc-hash.ts <file-path>")
   process.exit(1)
 }
 
@@ -26,8 +26,8 @@ if (!existsSync(fullPath)) {
 }
 
 try {
-  const content = readFileSync(fullPath, 'utf-8')
-  const hash = createHash('sha256').update(content).digest('hex')
+  const content = readFileSync(fullPath, "utf-8")
+  const hash = createHash("sha256").update(content).digest("hex")
 
   console.log(`SHA-256 Hash: ${hash}`)
   console.log(`File: ${filePath}`)

@@ -1,0 +1,30 @@
+{
+  "name": "@mythic/registry-admin",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack --port 4000",
+    "build": "next build",
+    "start": "next start --port 4000",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mythic/tailwindcss-v4-design-system": "workspace:*",
+    "@mythic/nextjs-shared-utils": "workspace:*",
+    "@tanstack/react-query": "^5.56.0",
+    "@tanstack/react-query-devtools": "^5.56.0",
+    "next": "^16.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "postcss": "^8.4.47",
+    "typescript": "^5.3.3"
+  }
+}

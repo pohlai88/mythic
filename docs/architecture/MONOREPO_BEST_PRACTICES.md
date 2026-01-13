@@ -2,9 +2,11 @@
 
 **Enterprise-Grade Optimization for Maximum Performance & Developer Experience**
 
-> **Status**: ✅ Production-Ready | **Version**: 2.0.0 | **Last Updated**: 2026-01-11
+> **Status**: ✅ Production-Ready | **Version**: 2.0.0 | **Last Updated**:
+> 2026-01-11
 >
-> This guide combines **best practices** with **elite optimizations** for the ultimate Monorepo + TurboRepo + Next.js stack.
+> This guide combines **best practices** with **elite optimizations** for the
+> ultimate Monorepo + TurboRepo + Next.js stack.
 
 ---
 
@@ -15,8 +17,10 @@
 3. [Turborepo Best Practices](#3-turborepo-best-practices)
 4. [Elite Optimizations](#4-elite-optimizations) ⭐ **NEW**
 5. [Advanced TurboRepo Patterns](#5-advanced-turborepo-patterns) ⭐ **NEW**
-6. [Next.js Monorepo-Specific Optimizations](#6-nextjs-monorepo-specific-optimizations) ⭐ **NEW**
-7. [Performance Benchmarks & Metrics](#7-performance-benchmarks--metrics) ⭐ **NEW**
+6. [Next.js Monorepo-Specific Optimizations](#6-nextjs-monorepo-specific-optimizations)
+   ⭐ **NEW**
+7. [Performance Benchmarks & Metrics](#7-performance-benchmarks--metrics) ⭐
+   **NEW**
 8. [CI/CD Elite Practices](#8-cicd-elite-practices) ⭐ **NEW**
 9. [Monitoring & Observability](#9-monitoring--observability) ⭐ **NEW**
 10. [Sustainable Combination Strategy](#10-sustainable-combination-strategy)
@@ -50,6 +54,7 @@ mythic/
 ```
 
 **❌ DON'T: Mix Concerns**
+
 - Don't put apps in packages/
 - Don't put packages in apps/
 - Don't create deep nesting (max 3-4 levels)
@@ -68,6 +73,7 @@ mythic/
 ```
 
 **Benefits:**
+
 - Clear ownership
 - Prevents naming conflicts
 - Easy to identify workspace packages
@@ -111,6 +117,7 @@ mythic/
 ```
 
 **Strategy:**
+
 - Use same major versions across packages
 - Use `workspace:*` for internal dependencies
 - Pin external dependencies at root when possible
@@ -128,6 +135,7 @@ packages/
 ```
 
 **Rules:**
+
 - **Packages should be framework-agnostic when possible**
 - **Design system can depend on React**
 - **Utils should have zero dependencies on frameworks**
@@ -177,22 +185,23 @@ apps/boardroom/
       "@/*": ["./*"],
       "@/components/*": ["./components/*"],
       "@/lib/*": ["./lib/*"],
-      "@mythic/shared-utils": ["../../packages/shared-utils/src"],
-      "@mythic/design-system": ["../../packages/design-system/src"]
+      "@mythic/shared-utils": ["../../packages/NextJS/Shared-Utils/src"],
+      "@mythic/design-system": ["../../packages/TailwindCSS-V4/Design-System/src"]
     }
   }
 }
 ```
 
 **Usage:**
+
 ```typescript
 // ✅ GOOD
-import { cn } from '@mythic/shared-utils'
-import { Button } from '@mythic/design-system'
-import { Proposal } from '@mythic/shared-types/boardroom'
+import { cn } from "@mythic/nextjs-shared-utils"
+import { Button } from "@mythic/tailwindcss-v4-design-system"
+import { Proposal } from "@mythic/shared-types/boardroom"
 
 // ❌ BAD
-import { cn } from '../../../packages/shared-utils/src'
+import { cn } from "../../../packages/NextJS/Shared-Utils/src"
 ```
 
 ### 2.3 Server Components vs Client Components
@@ -211,9 +220,9 @@ export default async function BoardRoomPage() {
 
 ```typescript
 // components/BoardRoomClient.tsx (Client Component)
-'use client'
+"use client"
 
-import { useState } from 'react'
+import { useState } from "react"
 
 export function BoardRoomClient({ initialProposals }) {
   // Client-side interactivity
@@ -221,6 +230,7 @@ export function BoardRoomClient({ initialProposals }) {
 ```
 
 **Rules:**
+
 - **Default to Server Components**
 - **Add 'use client' only when needed** (hooks, event handlers, browser APIs)
 - **Keep data fetching in Server Components**
@@ -231,23 +241,24 @@ export function BoardRoomClient({ initialProposals }) {
 
 ```typescript
 // app/actions/proposals.ts
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { revalidatePath } from 'next/cache'
+import { db } from "@/src/db"
+import { revalidatePath } from "next/cache"
 
 export async function approveProposal(id: string) {
   // Database mutation
-  await db.update(proposals).set({ status: 'APPROVED' })
+  await db.update(proposals).set({ status: "APPROVED" })
 
   // Revalidate cache
-  revalidatePath('/boardroom')
+  revalidatePath("/boardroom")
 
   return { success: true }
 }
 ```
 
 **Benefits:**
+
 - Type-safe
 - No API routes needed
 - Automatic revalidation
@@ -273,6 +284,7 @@ const nextConfig = {
 ```
 
 **Rules:**
+
 - **`NEXT_PUBLIC_*`** - Exposed to browser
 - **No prefix** - Server-only
 - **`.env.local`** - Local development (gitignored)
@@ -286,15 +298,16 @@ const nextConfig = {
 const nextConfig = {
   experimental: {
     optimizePackageImports: [
-      '@mythic/design-system',
-      '@radix-ui/react-accordion',
-      'lucide-react',
+      "@mythic/design-system",
+      "@radix-ui/react-accordion",
+      "lucide-react",
     ],
   },
 }
 ```
 
 **Benefits:**
+
 - Tree-shaking
 - Smaller bundle sizes
 - Faster builds
@@ -312,7 +325,7 @@ const nextConfig = {
 {
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],  // Build dependencies first
+      "dependsOn": ["^build"], // Build dependencies first
       "outputs": [".next/**", "!.next/cache/**"],
       "cache": true
     },
@@ -331,6 +344,7 @@ const nextConfig = {
 ```
 
 **Key Concepts:**
+
 - **`^build`** - Build dependencies first
 - **`outputs`** - Files to cache
 - **`cache`** - Enable caching
@@ -345,9 +359,9 @@ const nextConfig = {
   "tasks": {
     "build": {
       "outputs": [
-        ".next/**",           // Next.js build output
-        "!.next/cache/**",    // Exclude cache
-        "dist/**"             // Package dist
+        ".next/**", // Next.js build output
+        "!.next/cache/**", // Exclude cache
+        "dist/**" // Package dist
       ],
       "cache": true
     }
@@ -356,6 +370,7 @@ const nextConfig = {
 ```
 
 **Rules:**
+
 - **Cache build outputs** (`.next/`, `dist/`)
 - **Don't cache** dev server, test results (unless needed)
 - **Exclude** cache directories, node_modules
@@ -377,6 +392,7 @@ const nextConfig = {
 ```
 
 **Purpose:**
+
 - Invalidate cache when configs change
 - Ensure consistency across packages
 
@@ -388,19 +404,20 @@ const nextConfig = {
 {
   "tasks": {
     "build": {
-      "dependsOn": ["^build"]  // Parallel after deps
+      "dependsOn": ["^build"] // Parallel after deps
     },
     "lint": {
-      "dependsOn": []  // Fully parallel
+      "dependsOn": [] // Fully parallel
     },
     "test": {
-      "dependsOn": ["build"]  // Sequential
+      "dependsOn": ["build"] // Sequential
     }
   }
 }
 ```
 
 **Strategy:**
+
 - **Parallel when possible** (lint, type-check)
 - **Sequential when needed** (test after build)
 - **Dependencies first** (`^build`)
@@ -419,11 +436,13 @@ const nextConfig = {
 ```
 
 **Benefits:**
+
 - Share cache across team
 - Faster CI/CD
 - Consistent builds
 
 **Setup:**
+
 ```bash
 # Login to Vercel (or custom remote cache)
 npx turbo login
@@ -464,6 +483,7 @@ npx turbo link
 ```
 
 **Benefits:**
+
 - ✅ Separate cache keys per environment
 - ✅ Faster CI/CD with environment-aware caching
 - ✅ Reduced cache invalidation
@@ -479,26 +499,26 @@ const nextConfig = {
     // ⭐ ELITE: Optimize all workspace packages
     optimizePackageImports: [
       // Workspace packages
-      '@mythic/design-system',
-      '@mythic/shared-utils',
-      '@mythic/shared-types',
+      "@mythic/design-system",
+      "@mythic/shared-utils",
+      "@mythic/shared-types",
       // External packages
-      '@radix-ui/react-accordion',
-      '@radix-ui/react-dialog',
-      'lucide-react',
-      'primereact',
-      'recharts',
+      "@radix-ui/react-accordion",
+      "@radix-ui/react-dialog",
+      "lucide-react",
+      "primereact",
+      "recharts",
     ],
     // ⭐ ELITE: Server Actions optimization
     serverActions: {
-      bodySizeLimit: '2mb',
-      allowedOrigins: ['localhost:3000', '*.vercel.app'],
+      bodySizeLimit: "2mb",
+      allowedOrigins: ["localhost:3000", "*.vercel.app"],
     },
     // ⭐ ELITE: Turbopack for dev (Next.js 16+)
     turbo: {
       resolveAlias: {
-        '@mythic/shared-utils': './packages/shared-utils/src',
-        '@mythic/design-system': './packages/design-system/src',
+        "@mythic/shared-utils": "./packages/NextJS/Shared-Utils/src",
+        "@mythic/design-system": "./packages/TailwindCSS-V4/Design-System/src",
       },
     },
   },
@@ -506,6 +526,7 @@ const nextConfig = {
 ```
 
 **Performance Impact:**
+
 - 🚀 **40-60% smaller bundles** with optimized imports
 - 🚀 **30-50% faster builds** with Turbopack
 - 🚀 **20-30% faster HMR** in development
@@ -520,7 +541,7 @@ const nextConfig = {
     "build": {
       "outputs": [
         ".next/**",
-        "!.next/cache/**",      // Exclude Next.js cache
+        "!.next/cache/**", // Exclude Next.js cache
         "!.next/static/chunks/**", // Exclude dynamic chunks
         "dist/**"
       ],
@@ -540,6 +561,7 @@ const nextConfig = {
 ```
 
 **Cache Hit Rate Targets:**
+
 - 🎯 **Build**: 85-95% hit rate (unchanged code)
 - 🎯 **Type-check**: 90-98% hit rate
 - 🎯 **Lint**: 95-99% hit rate
@@ -553,21 +575,21 @@ const nextConfig = {
   "tasks": {
     // ⭐ ELITE: Fully parallel tasks (no dependencies)
     "lint": {
-      "dependsOn": [],  // No dependencies = maximum parallel
+      "dependsOn": [], // No dependencies = maximum parallel
       "cache": true
     },
     "format:check": {
-      "dependsOn": [],  // Independent task
+      "dependsOn": [], // Independent task
       "cache": true
     },
     // ⭐ ELITE: Sequential only when necessary
     "test": {
-      "dependsOn": ["build"],  // Must build first
+      "dependsOn": ["build"], // Must build first
       "cache": true
     },
     // ⭐ ELITE: Dependency-first parallelization
     "build": {
-      "dependsOn": ["^build"],  // Build deps, then parallel apps
+      "dependsOn": ["^build"], // Build deps, then parallel apps
       "cache": true
     }
   }
@@ -575,6 +597,7 @@ const nextConfig = {
 ```
 
 **Performance:**
+
 - ⚡ **3-5x faster** with full parallelization
 - ⚡ **50-70% time reduction** for independent tasks
 
@@ -601,12 +624,13 @@ export TURBO_TEAM=${{ secrets.TURBO_TEAM }}
 {
   "remoteCache": {
     "enabled": true,
-    "signature": true  // ⭐ ELITE: Secure cache signatures
+    "signature": true // ⭐ ELITE: Secure cache signatures
   }
 }
 ```
 
 **Benefits:**
+
 - 🚀 **90-95% faster CI builds** with shared cache
 - 🚀 **Consistent builds** across team
 - 🚀 **Zero cache misses** for unchanged code
@@ -633,6 +657,7 @@ turbo run build --filter='!@mythic/docs'
 ```
 
 **Use Cases:**
+
 - 🔍 **PR builds**: `--filter=[origin/main...]`
 - 🔍 **Feature work**: `--filter=@mythic/boardroom^...`
 - 🔍 **Package changes**: `--filter=...@mythic/shared-utils`
@@ -653,6 +678,7 @@ turbo run build --dry-run
 ```
 
 **Optimization Targets:**
+
 - 🎯 **Maximize parallel tasks** (reduce dependencies)
 - 🎯 **Minimize critical path** (longest dependency chain)
 - 🎯 **Cache everything possible** (high hit rates)
@@ -665,13 +691,7 @@ turbo run build --dry-run
 {
   "tasks": {
     "build": {
-      "env": [
-        "NODE_ENV",
-        "NEXT_PUBLIC_*",
-        "VERCEL",
-        "VERCEL_ENV",
-        "ANALYZE"
-      ],
+      "env": ["NODE_ENV", "NEXT_PUBLIC_*", "VERCEL", "VERCEL_ENV", "ANALYZE"],
       // ⭐ ELITE: Different cache per environment
       "cache": true
     },
@@ -700,22 +720,23 @@ turbo run build --dry-run
 **✅ ELITE: Design System Integration**
 
 ```typescript
-// packages/design-system/src/index.ts
-export { Button } from './components/Button'
-export { Card } from './components/Card'
-export { tokens } from './tokens'
+// packages/TailwindCSS-V4/Design-System/src/index.ts
+export { Button } from "./components/Button"
+export { Card } from "./components/Card"
+export { tokens } from "./tokens"
 
 // apps/boardroom/app/page.tsx
-import { Button, Card } from '@mythic/design-system'
+import { Button, Card } from "@mythic/tailwindcss-v4-design-system"
 // ⭐ ELITE: Tree-shaken imports (only used components)
 
 // next.config.mjs
 experimental: {
-  optimizePackageImports: ['@mythic/design-system']
+  optimizePackageImports: ["@mythic/design-system"]
 }
 ```
 
 **Benefits:**
+
 - 🚀 **60-80% smaller bundles** (tree-shaking)
 - 🚀 **Faster builds** (shared compilation)
 - 🚀 **Type-safe** (TypeScript project references)
@@ -753,6 +774,7 @@ export const getCachedProposals = cache(async () => {
 ```
 
 **Performance:**
+
 - 🚀 **Zero client-side data fetching**
 - 🚀 **Better SEO** (server-rendered)
 - 🚀 **Smaller bundles** (no fetch logic)
@@ -764,12 +786,12 @@ export const getCachedProposals = cache(async () => {
 ```typescript
 // ⭐ ELITE: Server Actions with Zod validation
 // app/actions/proposals.ts
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { revalidatePath } from 'next/cache'
-import { z } from 'zod'
-import { ProposalSchema } from '@mythic/shared-types/boardroom'
+import { db } from "@/src/db"
+import { revalidatePath } from "next/cache"
+import { z } from "zod"
+import { ProposalSchema } from "@mythic/shared-types/boardroom"
 
 const ApproveProposalSchema = z.object({
   id: z.string().uuid(),
@@ -784,11 +806,11 @@ export async function approveProposal(
 
   await db
     .update(proposals)
-    .set({ status: 'APPROVED', approvedAt: new Date() })
+    .set({ status: "APPROVED", approvedAt: new Date() })
     .where(eq(proposals.id, validated.id))
 
   // ⭐ ELITE: Targeted revalidation
-  revalidatePath('/boardroom')
+  revalidatePath("/boardroom")
   revalidatePath(`/boardroom/${validated.id}`)
 
   return { success: true }
@@ -796,6 +818,7 @@ export async function approveProposal(
 ```
 
 **Benefits:**
+
 - ✅ **Type-safe** (end-to-end)
 - ✅ **No API routes** needed
 - ✅ **Progressive enhancement**
@@ -835,6 +858,7 @@ export default function Dashboard() {
 ```
 
 **Bundle Size Impact:**
+
 - 📦 **30-50% smaller** initial bundle
 - 📦 **Faster page loads** (code splitting)
 - 📦 **Better Core Web Vitals**
@@ -847,15 +871,15 @@ export default function Dashboard() {
 // next.config.mjs
 const nextConfig = {
   images: {
-    formats: ['image/avif', 'image/webp'],  // ⭐ ELITE: Modern formats
+    formats: ["image/avif", "image/webp"], // ⭐ ELITE: Modern formats
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60,
     // ⭐ ELITE: Remote image optimization
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'cdn.example.com',
+        protocol: "https",
+        hostname: "cdn.example.com",
       },
     ],
   },
@@ -864,7 +888,7 @@ const nextConfig = {
 
 ```tsx
 // ⭐ ELITE: Optimized Image component
-import Image from 'next/image'
+import Image from "next/image"
 
 export function OptimizedImage({ src, alt }) {
   return (
@@ -873,8 +897,8 @@ export function OptimizedImage({ src, alt }) {
       alt={alt}
       width={800}
       height={600}
-      placeholder="blur"  // ⭐ ELITE: Blur placeholder
-      priority={false}     // ⭐ ELITE: Lazy load by default
+      placeholder="blur" // ⭐ ELITE: Blur placeholder
+      priority={false} // ⭐ ELITE: Lazy load by default
     />
   )
 }
@@ -949,7 +973,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2  # ⭐ ELITE: Shallow clone for Turbo filtering
+          fetch-depth: 2 # ⭐ ELITE: Shallow clone for Turbo filtering
 
       - uses: pnpm/action-setup@v2
         with:
@@ -958,7 +982,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -982,6 +1006,7 @@ jobs:
 ```
 
 **Optimizations:**
+
 - ⚡ **Shallow clone** (faster checkout)
 - ⚡ **pnpm cache** (faster installs)
 - ⚡ **Remote cache** (90-95% faster builds)
@@ -1003,6 +1028,7 @@ jobs:
 ```
 
 **Benefits:**
+
 - 🚀 **Only builds changed apps**
 - 🚀 **Shared Turbo cache** across deployments
 - 🚀 **Faster deployments** (70-90% time reduction)
@@ -1194,6 +1220,7 @@ packages/shared-utils
 ```
 
 **Rules:**
+
 - **No circular dependencies**
 - **Packages can depend on other packages**
 - **Apps depend on packages, not other apps**
@@ -1208,9 +1235,9 @@ packages/shared-utils
   "compilerOptions": {
     "composite": true,
     "paths": {
-      "@mythic/shared-utils": ["./packages/shared-utils/src"],
-      "@mythic/shared-types": ["./packages/shared-types/src"],
-      "@mythic/design-system": ["./packages/design-system/src"]
+      "@mythic/shared-utils": ["./packages/NextJS/Shared-Utils/src"],
+      "@mythic/shared-types": ["./packages/TypeScript/Shared-Types/src"],
+      "@mythic/design-system": ["./packages/TailwindCSS-V4/Design-System/src"]
     }
   },
   "references": [
@@ -1224,6 +1251,7 @@ packages/shared-utils
 ```
 
 **Benefits:**
+
 - Faster type checking
 - Incremental builds
 - Better IDE support
@@ -1247,7 +1275,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - run: pnpm install
       - run: pnpm build
@@ -1257,6 +1285,7 @@ jobs:
 ```
 
 **Optimization:**
+
 ```yaml
 # Use Turborepo remote cache
 - run: pnpm build
@@ -1281,6 +1310,7 @@ turbo run build --dry-run
 ```
 
 **Metrics to Monitor:**
+
 - Build time per package
 - Cache hit rate
 - Task dependencies
@@ -1392,6 +1422,7 @@ mythic/
 3. **Turborepo**: Caching, parallelization, task dependencies
 
 **Result:**
+
 - ✅ Fast development (parallel dev servers)
 - ✅ Fast builds (caching, parallelization)
 - ✅ Type safety (TypeScript project references)
@@ -1462,7 +1493,7 @@ mythic/
 // ❌ BAD: Caching dev servers
 {
   "dev": {
-    "cache": true  // ❌ Dev servers should never be cached
+    "cache": true // ❌ Dev servers should never be cached
   }
 }
 ```
@@ -1471,8 +1502,8 @@ mythic/
 
 ```typescript
 // ❌ BAD: Server code in client component
-'use client'
-import { db } from '@/src/db'  // ❌ Can't use in client
+"use client"
+import { db } from "@/src/db" // ❌ Can't use in client
 ```
 
 ### ❌ Don't: Skip Package Optimization
@@ -1488,7 +1519,7 @@ const nextConfig = {
 
 ```typescript
 // ❌ BAD: Relative paths
-import { cn } from '../../../packages/shared-utils/src'
+import { cn } from "../../../packages/NextJS/Shared-Utils/src"
 ```
 
 ### ❌ Don't: Ignore Cache Hit Rates
@@ -1561,9 +1592,11 @@ pnpm analyze
 
 ### Related Documents
 
-- [Next.js Monorepo Patterns](./NEXTJS_MONOREPO_PATTERNS.md) - Patterns & anti-patterns
+- [Next.js Monorepo Patterns](./NEXTJS_MONOREPO_PATTERNS.md) - Patterns &
+  anti-patterns
 - [Turborepo Quick Reference](./TURBOREPO_QUICK_REFERENCE.md) - Daily commands
-- [Turborepo Optimization](../reference/TURBOREPO_OPTIMIZATION.md) - Advanced features
+- [Turborepo Optimization](../reference/TURBOREPO_OPTIMIZATION.md) - Advanced
+  features
 
 ### Performance Tools
 
@@ -1573,6 +1606,5 @@ pnpm analyze
 
 ---
 
-**Last Updated**: 2026-01-11
-**Version**: 2.0.0 (Elite Edition)
-**Status**: ✅ Production-Ready
+**Last Updated**: 2026-01-11 **Version**: 2.0.0 (Elite Edition) **Status**: ✅
+Production-Ready

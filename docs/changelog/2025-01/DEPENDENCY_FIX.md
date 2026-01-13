@@ -1,7 +1,6 @@
 # Dependency Version Fix
 
-**Date:** 2024-12-19
-**Issue:** `remark-callouts@^3.0.0` version mismatch
+**Date:** 2024-12-19 **Issue:** `remark-callouts@^3.0.0` version mismatch
 **Status:** ✅ Fixed
 
 ---
@@ -68,5 +67,4 @@ According to npm registry:
 
 ---
 
-**Last Updated:** 2024-12-19
-**Status:** ✅ **Fixed and Verified**
+**Last Updated:** 2024-12-19 **Status:** ✅ **Fixed and Verified**

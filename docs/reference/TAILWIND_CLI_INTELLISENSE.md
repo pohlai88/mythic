@@ -1,8 +1,7 @@
 # Tailwind CSS CLI & IntelliSense Setup
 
-**Status**: ✅ Configured and Ready
-**Tailwind Version**: v4.1.18
-**Last Updated**: 2026-01-11
+**Status**: ✅ Configured and Ready **Tailwind Version**: v4.1.18 **Last
+Updated**: 2026-01-11
 
 ---
 
@@ -10,13 +9,17 @@
 
 ### IntelliSense (VS Code)
 
-✅ **Already Configured** - Tailwind IntelliSense extension is set up and ready to use.
+✅ **Already Configured** - Tailwind IntelliSense extension is set up and ready
+to use.
 
-**Extension**: `bradlc.vscode-tailwindcss` (recommended in `.vscode/extensions.json`)
+**Extension**: `bradlc.vscode-tailwindcss` (recommended in
+`.vscode/extensions.json`)
 
 **Features Enabled**:
+
 - ✅ Autocomplete for Tailwind classes
-- ✅ Class name suggestions in `className`, `cn()`, `cva()`, `twMerge()`, `clsx()`
+- ✅ Class name suggestions in `className`, `cn()`, `cva()`, `twMerge()`,
+  `clsx()`
 - ✅ Hover previews showing CSS output
 - ✅ CSS validation and linting
 - ✅ Emmet completions for Tailwind classes
@@ -64,12 +67,14 @@ npx @tailwindcss/cli -i ./apps/styles/globals.css -o ./dist/tailwind.css --minif
 ### App-Specific CLI Usage
 
 **BoardRoom App**:
+
 ```bash
 cd apps/boardroom
 npx @tailwindcss/cli -i ./styles/globals.css -o ./dist/tailwind.css --watch
 ```
 
 **Docs App**:
+
 ```bash
 cd apps/docs
 npx @tailwindcss/cli -i ./styles/globals.css -o ./dist/tailwind.css --watch
@@ -124,6 +129,7 @@ npx @tailwindcss/cli -i ./styles/globals.css -o ./dist/tailwind.css --watch
 ### Supported Patterns
 
 IntelliSense works in:
+
 - ✅ `className="..."`
 - ✅ `cn(...)`
 - ✅ `cva(...)`
@@ -139,12 +145,14 @@ IntelliSense works in:
 ### IntelliSense Not Working
 
 1. **Check Extension Installation**:
+
    ```bash
    code --list-extensions | grep tailwind
    # Should show: bradlc.vscode-tailwindcss
    ```
 
 2. **Install Missing Extension**:
+
    ```bash
    code --install-extension bradlc.vscode-tailwindcss
    ```
@@ -156,15 +164,18 @@ IntelliSense works in:
 
 4. **Check Config File Detection**:
    - IntelliSense auto-detects `tailwind.config.ts` files
-   - If not working, check that config files exist in workspace root or app directories
+   - If not working, check that config files exist in workspace root or app
+     directories
 
 5. **Verify CSS File Association**:
-   - VS Code settings should have: `"files.associations": { "*.css": "tailwindcss" }`
+   - VS Code settings should have:
+     `"files.associations": { "*.css": "tailwindcss" }`
    - ✅ Already configured in `.vscode/settings.json`
 
 ### CLI Not Working
 
 1. **Check Installation**:
+
    ```bash
    pnpm list @tailwindcss/cli
    # Should show: @tailwindcss/cli@^4.1.18
@@ -183,7 +194,8 @@ IntelliSense works in:
 ## 📚 Additional Resources
 
 - **Tailwind CSS v4 Docs**: https://tailwindcss.com/docs/v4-beta
-- **IntelliSense Extension**: https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss
+- **IntelliSense Extension**:
+  https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss
 - **CLI Documentation**: https://tailwindcss.com/docs/cli
 
 ---
@@ -201,5 +213,4 @@ IntelliSense works in:
 
 ---
 
-**Status**: Production Ready
-**Maintained By**: Development Team
+**Status**: Production Ready **Maintained By**: Development Team

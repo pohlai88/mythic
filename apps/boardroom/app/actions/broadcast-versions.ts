@@ -5,14 +5,14 @@
  * Provides audit trail for compliance purposes.
  */
 
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { broadcastVersions, insertBroadcastVersionSchema } from '@/src/db/schema'
-import { broadcasts } from '@/src/db/schema'
-import { eq, desc } from 'drizzle-orm'
-import { z as z4 } from 'zod/v4'
-import { validateActionInput } from '@/src/lib/actions/validate-action'
+import { db } from "@/src/db"
+import { broadcastVersions, insertBroadcastVersionSchema } from "@/src/db/schema"
+import { broadcasts } from "@/src/db/schema"
+import { eq, desc } from "drizzle-orm"
+import { z as z4 } from "zod/v4"
+import { validateActionInput } from "@/src/lib/actions/validate-action"
 
 /**
  * Input schema for getting broadcast versions
@@ -59,7 +59,7 @@ export async function createBroadcastVersion(
 ): Promise<{ success: boolean; versionId?: string; error?: string }> {
   const inputResult = validateActionInput(input, createBroadcastVersionInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { broadcastId, changedBy, changeReason } = inputResult.data
@@ -73,7 +73,7 @@ export async function createBroadcastVersion(
       .limit(1)
 
     if (!broadcast) {
-      return { success: false, error: 'Broadcast not found' }
+      return { success: false, error: "Broadcast not found" }
     }
 
     // Get current max version number
@@ -84,9 +84,8 @@ export async function createBroadcastVersion(
       .orderBy(desc(broadcastVersions.versionNumber))
       .limit(1)
 
-    const nextVersionNumber = existingVersions.length > 0
-      ? Number(existingVersions[0].versionNumber) + 1
-      : 1
+    const nextVersionNumber =
+      existingVersions.length > 0 ? Number(existingVersions[0].versionNumber) + 1 : 1
 
     // Create version snapshot
     const [version] = await db
@@ -107,13 +106,13 @@ export async function createBroadcastVersion(
       .returning()
 
     if (!version) {
-      return { success: false, error: 'Failed to create version' }
+      return { success: false, error: "Failed to create version" }
     }
 
     return { success: true, versionId: version.id }
   } catch (error) {
-    console.error('Error creating broadcast version:', error)
-    return { success: false, error: 'Failed to create version' }
+    console.error("Error creating broadcast version:", error)
+    return { success: false, error: "Failed to create version" }
   }
 }
 
@@ -125,7 +124,7 @@ export async function getBroadcastVersions(
 ): Promise<{ versions: BroadcastVersionData[]; error?: string }> {
   const inputResult = validateActionInput(input, getBroadcastVersionsInputSchema)
   if (!inputResult.success) {
-    return { versions: [], error: 'Invalid input' }
+    return { versions: [], error: "Invalid input" }
   }
 
   const { broadcastId } = inputResult.data
@@ -155,8 +154,8 @@ export async function getBroadcastVersions(
 
     return { versions: versionsData }
   } catch (error) {
-    console.error('Error fetching broadcast versions:', error)
-    return { versions: [], error: 'Failed to fetch versions' }
+    console.error("Error fetching broadcast versions:", error)
+    return { versions: [], error: "Failed to fetch versions" }
   }
 }
 
@@ -199,7 +198,7 @@ export async function getBroadcastVersion(
       changeReason: version.changeReason,
     }
   } catch (error) {
-    console.error('Error fetching broadcast version:', error)
+    console.error("Error fetching broadcast version:", error)
     return null
   }
 }

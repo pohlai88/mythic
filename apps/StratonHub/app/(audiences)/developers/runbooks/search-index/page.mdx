@@ -1,0 +1,187 @@
+---
+title: Search Index Pipeline
+description: How to build and deploy the search index
+audience: developers
+type: how-to
+published: true
+last_updated: 2026-01-13
+---
+
+# Search Index Pipeline
+
+> Build, validate, and deploy the StratonHub search index.
+
+## Purpose
+
+The search index enables the Command Palette (`Cmd+K`) and search API to find
+documentation. This runbook covers:
+
+1. How the index is built
+2. When to rebuild
+3. How to troubleshoot failures
+
+## Prerequisites
+
+- Node.js 20.11+ installed
+- pnpm 8.15+ installed
+- Working directory: `apps/StratonHub`
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ MDX Files                                               │
+│ app/(audiences)/**/*.mdx                                │
+└───────────────────────────┬─────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│ Index Builder                                           │
+│ lib/search/index-builder.ts                             │
+│ - Extracts frontmatter (YAML)                           │
+│ - Extracts content text                                 │
+│ - Generates route from file path                        │
+└───────────────────────────┬─────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│ Search Index                                            │
+│ public/search-index.json                                │
+└───────────────────────────┬─────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│ Runtime                                                 │
+│ - CommandPalette loads index                            │
+│ - Search API queries with Fuse.js                       │
+└─────────────────────────────────────────────────────────┘
+```
+
+## Steps
+
+### 1. Build the Index
+
+```bash
+cd apps/StratonHub
+pnpm search:build-index
+```
+
+Expected output:
+
+```
+🔍 Building search index...
+
+📄 Found 15 documents to index
+⏱️  Index building took 42ms
+
+✅ Search index built successfully!
+   📊 Indexed 15 documents
+   💾 Saved to: public/search-index.json
+   ⏱️  Total time: 68ms
+
+📈 Index Statistics:
+   👥 Audiences: 3 (developers, users, business)
+   🏢 Surfaces: 1 (boardroom)
+   📚 Document Types: 4 (tutorial, how-to, reference, explanation)
+```
+
+### 2. Verify the Index
+
+Check the index file exists and has content:
+
+```bash
+ls -la public/search-index.json
+cat public/search-index.json | jq '. | length'
+```
+
+### 3. Test Search Locally
+
+1. Start the dev server: `pnpm dev`
+2. Open `http://localhost:3000`
+3. Press `Cmd+K` to open Command Palette
+4. Search for a known term (e.g., "BoardRoom")
+5. Verify results appear
+
+## Verification
+
+| Check           | Expected       | Command                                            |
+| --------------- | -------------- | -------------------------------------------------- |
+| Index exists    | File present   | `ls public/search-index.json`                      |
+| Index not empty | > 0 documents  | `cat public/search-index.json \| jq '. \| length'` |
+| Search works    | Results return | Manual test with Cmd+K                             |
+
+## Troubleshooting
+
+### "No documents found to index"
+
+**Cause**: No MDX files with valid frontmatter in `app/(audiences)/`
+
+**Solution**:
+
+1. Check MDX files exist: `find app -name "*.mdx"`
+2. Verify frontmatter is valid YAML
+3. Ensure required fields: `title`, `audience`, `type`
+
+### "Skipping (non-canonical frontmatter)"
+
+**Cause**: MDX file missing required frontmatter fields
+
+**Solution**:
+
+1. Check the file path in the warning
+2. Add missing fields to frontmatter
+3. Required: `title`, `audience` (developers/users/business), `type`
+   (tutorial/how-to/reference/explanation)
+
+### Search returns empty results
+
+**Cause**: Index not generated or not deployed
+
+**Solution**:
+
+1. Check `public/search-index.json` exists
+2. Rebuild: `pnpm search:build-index`
+3. Restart dev server
+
+### Index outdated after adding pages
+
+**Cause**: Index not rebuilt after content changes
+
+**Solution**:
+
+1. Index is rebuilt automatically during `pnpm build`
+2. For dev: manually run `pnpm search:build-index`
+
+## Rollback
+
+If the index is corrupted:
+
+```bash
+# Remove corrupted index
+rm public/search-index.json
+
+# Rebuild from scratch
+pnpm search:build-index
+```
+
+## Automation
+
+The index is built automatically:
+
+- **CI/CD**: `pnpm build` runs `pnpm search:build-index` first
+- **Pre-commit**: Consider adding to pre-commit hook for dev experience
+
+## Files Referenced
+
+| File                                 | Purpose             |
+| ------------------------------------ | ------------------- |
+| `scripts/build-search-index.ts`      | CLI entry point     |
+| `lib/search/index-builder.ts`        | Core indexing logic |
+| `lib/search/types.ts`                | TypeScript types    |
+| `app/api/search/route.ts`            | Runtime search API  |
+| `components/docs/CommandPalette.tsx` | Search UI           |
+
+## Related
+
+- [Getting Started](/developers/getting-started) — Development setup
+- [Architecture](/developers/architecture) — System design

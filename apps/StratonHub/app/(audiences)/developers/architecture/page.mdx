@@ -1,0 +1,108 @@
+---
+title: Architecture
+description: System architecture, boundaries, and design principles
+audience: developers
+type: explanation
+published: true
+---
+
+# Architecture
+
+> System boundaries, invariants, and architectural decisions
+
+## Overview
+
+This section documents the architectural foundations of NexusCanon.
+Understanding these principles is essential for maintaining system integrity.
+
+## Core Principles
+
+### 1. Boundary Enforcement
+
+Every domain has explicit boundaries:
+
+- **Data boundaries**: What data each domain owns
+- **API boundaries**: How domains communicate
+- **Event boundaries**: What events each domain emits
+
+### 2. Invariant Protection
+
+System invariants that must never be violated:
+
+- **Audit trail completeness**: Every action must be traced
+- **Authorization consistency**: Permissions are never bypassed
+- **Data integrity**: Referential integrity is maintained
+
+### 3. Trade-off Documentation
+
+Every architectural decision documents:
+
+- What we gained
+- What we sacrificed
+- Why this trade-off was acceptable
+
+## System Structure
+
+### Domain Organization
+
+```
+NexusCanon/
+├── domains/
+│   ├── boardroom/       # Executive decisions
+│   ├── accounting/      # Financial records
+│   ├── crm/             # Customer relations
+│   ├── manufacturing/   # Production
+│   └── supply-chain/    # Logistics
+├── shared/
+│   ├── auth/            # Authentication
+│   ├── audit/           # Audit logging
+│   └── events/          # Event bus
+└── infrastructure/
+    ├── database/        # Data layer
+    ├── cache/           # Caching layer
+    └── queue/           # Message queue
+```
+
+### Communication Patterns
+
+| Pattern      | Use Case          | Example               |
+| ------------ | ----------------- | --------------------- |
+| Sync API     | Real-time queries | Get proposal status   |
+| Async Events | State changes     | Proposal approved     |
+| Saga         | Multi-domain ops  | Cross-domain approval |
+
+## Guarantees
+
+### What is Guaranteed
+
+- **Consistency**: Eventually consistent within 5 seconds
+- **Durability**: All committed data is persisted
+- **Auditability**: Complete trace for all operations
+
+### What is Optional
+
+- **Real-time sync**: Not guaranteed for cross-domain queries
+- **Order preservation**: Events may arrive out of order
+- **Exactly-once**: At-least-once delivery (idempotency required)
+
+## Decision Records
+
+Key architectural decisions are documented in ADRs:
+
+- [ADR-001: Event-Driven Architecture](/developers/architecture/adrs/001) —
+  Primary communication pattern between domains
+- [ADR-002: Domain Boundary Definition](/developers/architecture/adrs/002) —
+  Explicit contracts and data ownership
+- [ADR-003: Saga Pattern](/developers/architecture/adrs/003) — Cross-domain
+  operation coordination
+
+> **Source of Truth**: ADR files are maintained in `docs/governance/decisions/`
+
+## Related Documentation
+
+- [API Reference](/developers/api) - Interface contracts
+- [Execution Guides](/developers/guides) - Implementation guides
+
+---
+
+**Last Updated**: 2026-01-13

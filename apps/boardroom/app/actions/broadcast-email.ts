@@ -5,11 +5,11 @@
  * Supports HTML emails with intelligence-driven styling.
  */
 
-'use server'
+"use server"
 
-import { z as z4 } from 'zod/v4'
-import { validateActionInput } from '@/src/lib/actions/validate-action'
-import type { BroadcastData } from './broadcasts'
+import { z as z4 } from "zod/v4"
+import { validateActionInput } from "@/src/lib/actions/validate-action"
+import type { BroadcastData } from "./broadcasts"
 
 /**
  * Input schema for sending broadcast email
@@ -22,28 +22,25 @@ const sendBroadcastEmailInputSchema = z4.object({
 /**
  * Email template for broadcast
  */
-function generateBroadcastEmailHTML(
-  broadcast: BroadcastData,
-  unsubscribeUrl?: string
-): string {
+function generateBroadcastEmailHTML(broadcast: BroadcastData, unsubscribeUrl?: string): string {
   const typeColors = {
-    approval: '#10b981', // emerald
-    veto: '#ef4444', // red
-    announcement: '#f59e0b', // amber
-    poll: '#3b82f6', // blue
-    emergency: '#dc2626', // dark red
+    approval: "#10b981", // emerald
+    veto: "#ef4444", // red
+    announcement: "#f59e0b", // amber
+    poll: "#3b82f6", // blue
+    emergency: "#dc2626", // dark red
   }
 
   const typeIcons = {
-    approval: '✅',
-    veto: '❌',
-    announcement: '📢',
-    poll: '🗳️',
-    emergency: '🚨',
+    approval: "✅",
+    veto: "❌",
+    announcement: "📢",
+    poll: "🗳️",
+    emergency: "🚨",
   }
 
-  const color = typeColors[broadcast.type] || '#6b7280'
-  const icon = typeIcons[broadcast.type] || '📢'
+  const color = typeColors[broadcast.type] || "#6b7280"
+  const icon = typeIcons[broadcast.type] || "📢"
 
   return `
 <!DOCTYPE html>
@@ -66,28 +63,40 @@ function generateBroadcastEmailHTML(
       ${broadcast.title}
     </h1>
 
-    ${broadcast.message ? `
+    ${
+      broadcast.message
+        ? `
     <div style="color: #d4cfc4; font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-      ${broadcast.message.replace(/\n/g, '<br />')}
+      ${broadcast.message.replace(/\n/g, "<br />")}
     </div>
-    ` : ''}
+    `
+        : ""
+    }
 
-    ${broadcast.proposalId ? `
+    ${
+      broadcast.proposalId
+        ? `
     <div style="margin: 16px 0; padding: 12px; background-color: #0a0a0b; border-left: 3px solid ${color};">
       <div style="font-size: 12px; color: #9ca3af; margin-bottom: 4px;">Related Proposal</div>
       <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #f8f5f0;">
         ${broadcast.caseNumber || broadcast.proposalId.slice(0, 8)}
       </div>
     </div>
-    ` : ''}
+    `
+        : ""
+    }
 
     <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #1f2937; font-size: 12px; color: #9ca3af;">
       <div>Sent: ${new Date(broadcast.createdAt).toLocaleString()}</div>
-      ${unsubscribeUrl ? `
+      ${
+        unsubscribeUrl
+          ? `
       <div style="margin-top: 8px;">
         <a href="${unsubscribeUrl}" style="color: ${color}; text-decoration: none;">Unsubscribe from broadcast emails</a>
       </div>
-      ` : ''}
+      `
+          : ""
+      }
     </div>
   </div>
 </body>
@@ -106,7 +115,7 @@ export async function sendBroadcastEmail(
 ): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, sendBroadcastEmailInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { broadcastId, recipientEmails } = inputResult.data
@@ -114,7 +123,7 @@ export async function sendBroadcastEmail(
   try {
     // TODO: In production, integrate with email service
     // For now, this is a placeholder that logs the email
-    console.log('📧 Broadcast Email Notification:', {
+    console.log("📧 Broadcast Email Notification:", {
       broadcastId,
       recipients: recipientEmails,
       timestamp: new Date().toISOString(),
@@ -128,18 +137,15 @@ export async function sendBroadcastEmail(
 
     return { success: true }
   } catch (error) {
-    console.error('Error sending broadcast email:', error)
-    return { success: false, error: 'Failed to send email' }
+    console.error("Error sending broadcast email:", error)
+    return { success: false, error: "Failed to send email" }
   }
 }
 
 /**
  * Generate email HTML from broadcast data
  */
-export function generateEmailHTML(
-  broadcast: BroadcastData,
-  unsubscribeUrl?: string
-): string {
+export function generateEmailHTML(broadcast: BroadcastData, unsubscribeUrl?: string): string {
   return generateBroadcastEmailHTML(broadcast, unsubscribeUrl)
 }
 
@@ -151,24 +157,24 @@ export function generateEmailHTML(
 export async function getEmailRecipients(
   audience: string,
   userCircles?: string[],
-  userRole?: 'sovereign' | 'council' | 'observer'
+  userRole?: "sovereign" | "council" | "observer"
 ): Promise<string[]> {
   // TODO: In production, fetch actual user emails from database
   // For now, return empty array as placeholder
 
-  if (audience === 'all') {
+  if (audience === "all") {
     // Return all user emails
     return []
   }
 
-  if (audience.startsWith('circle:')) {
-    const circleId = audience.replace('circle:', '')
+  if (audience.startsWith("circle:")) {
+    const circleId = audience.replace("circle:", "")
     // Return emails of users in this circle
     return []
   }
 
-  if (audience.startsWith('role:')) {
-    const role = audience.replace('role:', '')
+  if (audience.startsWith("role:")) {
+    const role = audience.replace("role:", "")
     // Return emails of users with this role
     return []
   }

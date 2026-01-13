@@ -98,9 +98,10 @@ Purpose: Work-in-progress, drafts, experiments
 ```
 Priority 1 (Highest): This master rule
 Priority 2: Critical safety (001_core-safety)
-Priority 3: Documentation governance (022)
-Priority 4: Framework-specific (010_nextjs, 020_typescript)
-Priority 5+: All other rules (conditional loading)
+Priority 3: Token budget enforcement (099_token-budget-documentation-block)
+Priority 4: Documentation governance (022)
+Priority 5: Framework-specific (010_nextjs, 020_typescript)
+Priority 6+: All other rules (conditional loading)
 ```
 
 ### Rule Loading Logic:
@@ -108,10 +109,19 @@ Priority 5+: All other rules (conditional loading)
 // Cursor loads rules in this order:
 1. Always: Master rule (000_master-cursor-defaults.mdc)
 2. Always: Core safety (001_core-safety.mdc)
-3. On .md files: Documentation governance (022_documentation-governance.mdc)
-4. On .ts/.tsx files: TypeScript standards (020_typescript-standards.mdc)
-5. On .ts/.tsx files: Next.js architecture (010_nextjs-architecture.mdc)
+3. Always: Token budget enforcement (099_token-budget-documentation-block.mdc)
+4. On .md files: Documentation governance (022_documentation-governance.mdc)
+5. On .ts/.tsx files: TypeScript standards (020_typescript-standards.mdc)
+6. On .ts/.tsx files: Next.js architecture (010_nextjs-architecture.mdc)
 // Other rules: Load ONLY when glob patterns match
+```
+
+### Token Budget Management:
+```
+CRITICAL: Default to diffs only, no automatic documentation generation
+- @rules/099_token-budget-documentation-block.mdc - Enforces token budget
+- Saves ~89% tokens by blocking unnecessary documentation
+- Only generate docs when explicitly requested by user
 ```
 
 ---
@@ -228,6 +238,8 @@ Cursor AI enforces these rules:
 - Leave temp docs in .temp-docs/ > 7 days (auto-deleted)
 - Expose secrets (will be blocked)
 - Skip pre-commit validation (enforced)
+- **Generate documentation automatically** (token budget enforcement)
+- **Create summary/audit/report files** for code changes (diffs only by default)
 
 ### 📋 Document Naming Quick Guide:
 ```bash
@@ -282,6 +294,7 @@ v1_guide.md                   ❌ Invalid version format
 ---
 
 **For detailed enforcement, see:**
+- @.cursor/rules/099_token-budget-documentation-block.mdc - Token budget enforcement (MANDATORY)
 - @.cursor/rules/022_documentation-governance.mdc - Full documentation rules
 - @.cursor/rules/001_core-safety.mdc - Core safety rules
 - @scripts/validate-docs-naming.ts - Naming validation script

@@ -196,23 +196,27 @@ Specialized: 11 additional rules  ✅ Active
 ### Quick Setup (20 minutes total)
 
 **1. Index External Docs** ⏱️ 5 min
+
 ```
 Settings > Features > Docs
 Add: Next.js, React, Supabase (3-5 max)
 ```
 
 **2. Make Hooks Executable** ⏱️ 1 min
+
 ```bash
 chmod +x .cursor/hooks/*.sh  # Unix only
 ```
 
 **3. Configure MCP Servers** ⏱️ 10 min
+
 ```
 Edit: .cursor/mcp-config.json
 Add your server configurations
 ```
 
 **4. Test Agent Commands** ⏱️ 5 min
+
 ```
 Try: /optimize-docs
 Try: /review-code
@@ -225,6 +229,7 @@ Try: /review-code
 **Detailed Report:** `OPTIMIZATION_ROUND_REPORT.md`
 
 Includes:
+
 - Complete scan results
 - Evidence-based metrics
 - Architecture validation
@@ -323,6 +328,7 @@ Recent Commit Message:
 
 ---
 
-**Your Cursor optimization system is complete, tested, and ready to deliver measurable results!** 🎉
+**Your Cursor optimization system is complete, tested, and ready to deliver
+measurable results!** 🎉
 
 **Start with:** `OPTIMIZATION_ROUND_REPORT.md` for full details!

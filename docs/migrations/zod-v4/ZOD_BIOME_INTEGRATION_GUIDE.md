@@ -2,7 +2,8 @@
 
 ## 🎯 Overview
 
-This guide explains how Biome is integrated with Zod mandatory enforcement to catch violations at development time.
+This guide explains how Biome is integrated with Zod mandatory enforcement to
+catch violations at development time.
 
 ---
 
@@ -13,7 +14,8 @@ This guide explains how Biome is integrated with Zod mandatory enforcement to ca
 Biome is configured in `biome.json` with:
 
 1. **General Rules**: Applied to all files
-2. **Schema-Specific Overrides**: Stricter rules for `src/lib/api-schemas/**` and `src/lib/zod/**`
+2. **Schema-Specific Overrides**: Stricter rules for `src/lib/api-schemas/**`
+   and `src/lib/zod/**`
 
 ### Schema File Overrides
 
@@ -86,10 +88,10 @@ pnpm zod:migrate
 
 ```typescript
 // ❌ Biome Error
-import { z } from 'zod'
+import { z } from "zod"
 
 // ✅ Correct
-import { z } from 'zod/v4'
+import { z } from "zod/v4"
 ```
 
 **Biome Rule**: `style.useImportType` (enforced for schema files)
@@ -280,6 +282,7 @@ Add Biome checks to your CI/CD pipeline for automated validation.
 **Issue**: Biome not detecting Zod import violations
 
 **Solution**:
+
 1. Check `biome.json` includes schema files
 2. Verify override rules are correct
 3. Run `pnpm check` with verbose output
@@ -289,6 +292,7 @@ Add Biome checks to your CI/CD pipeline for automated validation.
 **Issue**: Biome flags correct code
 
 **Solution**:
+
 1. Review Biome rule configuration
 2. Add exceptions in `biome.json` overrides
 3. Use inline comments to disable specific rules
@@ -298,6 +302,7 @@ Add Biome checks to your CI/CD pipeline for automated validation.
 **Issue**: Biome check is slow
 
 **Solution**:
+
 1. Use `--staged` for staged files only
 2. Use `--changed` for changed files only
 3. Exclude large directories in `biome.json`
@@ -313,6 +318,5 @@ Add Biome checks to your CI/CD pipeline for automated validation.
 
 ---
 
-**Last Updated**: 2024-12-19
-**Biome Version**: 1.9.4
-**Integration Status**: Active
+**Last Updated**: 2024-12-19 **Biome Version**: 1.9.4 **Integration Status**:
+Active

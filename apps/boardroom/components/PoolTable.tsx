@@ -7,14 +7,23 @@
  * @see PRD Section 4.1.1
  */
 
-'use client'
+"use client"
 
-import { Card } from '@mythic/design-system'
-import { cn, intelligentStatusStyles, intelligentStyles } from '@mythic/shared-utils'
-import { useMemo, memo, useCallback } from 'react'
-import { gridCols, spacing, typography, tokens, margins, alignment, layout, buttons } from '@/src/lib'
-import { EmptyState } from './EmptyState'
-import type { Proposal } from '@mythic/shared-types/boardroom'
+import { Card } from "@mythic/tailwindcss-v4-design-system"
+import { cn, intelligentStatusStyles, intelligentStyles } from "@mythic/nextjs-shared-utils"
+import { useMemo, memo, useCallback } from "react"
+import {
+  gridCols,
+  spacing,
+  typography,
+  tokens,
+  margins,
+  alignment,
+  layout,
+  buttons,
+} from "@/src/lib"
+import { EmptyState } from "./EmptyState"
+import type { Proposal } from "@mythic/shared-types/boardroom"
 
 interface PoolTableProps {
   proposals: Proposal[]
@@ -45,13 +54,12 @@ export function PoolTable({
 
     // Calculate average decision time
     const approvedProposals = proposals.filter(
-      (p) => p.status === 'APPROVED' && p.approved_at && p.created_at
+      (p) => p.status === "APPROVED" && p.approved_at && p.created_at
     )
     let avgDecisionTime = 0
     if (approvedProposals.length > 0) {
       const totalTime = approvedProposals.reduce((sum, p) => {
-        const decisionTime =
-          new Date(p.approved_at!).getTime() - new Date(p.created_at).getTime()
+        const decisionTime = new Date(p.approved_at!).getTime() - new Date(p.created_at).getTime()
         return sum + decisionTime
       }, 0)
       const avgMs = totalTime / approvedProposals.length
@@ -59,17 +67,14 @@ export function PoolTable({
     }
 
     return {
-      totalPending: proposals.filter((p) => p.status === 'LISTENING').length,
-      awaitingYourVote: proposals.filter((p) => p.status === 'LISTENING').length, // Will be filtered by user in server component
+      totalPending: proposals.filter((p) => p.status === "LISTENING").length,
+      awaitingYourVote: proposals.filter((p) => p.status === "LISTENING").length, // Will be filtered by user in server component
       avgDecisionTime,
       thisWeekApprovals: proposals.filter(
-        (p) =>
-          p.status === 'APPROVED' &&
-          p.approved_at &&
-          new Date(p.approved_at) >= weekAgo
+        (p) => p.status === "APPROVED" && p.approved_at && new Date(p.approved_at) >= weekAgo
       ).length,
       atRiskProposals: proposals.filter((p) => {
-        if (p.status !== 'LISTENING') return false
+        if (p.status !== "LISTENING") return false
         const timeSinceSubmission = now.getTime() - new Date(p.created_at).getTime()
         return timeSinceSubmission > slaThreshold
       }).length,
@@ -88,9 +93,9 @@ export function PoolTable({
   }
 
   return (
-    <div className={cn(layout.flexCol, 'h-full', className)}>
+    <div className={cn(layout.flexCol, "h-full", className)}>
       {/* Dashboard Metrics Header */}
-      <div className={cn('grid', gridCols[5], spacing.gap.md, margins.bottom.lg)}>
+      <div className={cn("grid", gridCols[5], spacing.gap.md, margins.bottom.lg)}>
         <MetricCard label="Total Pending" value={metrics.totalPending} />
         <MetricCard label="Awaiting Your Vote" value={metrics.awaitingYourVote} />
         <MetricCard label="Avg Decision Time" value={`${metrics.avgDecisionTime}d`} />
@@ -118,15 +123,15 @@ export function PoolTable({
 const MetricCard = memo(function MetricCard({
   label,
   value,
-  variant = 'default',
+  variant = "default",
 }: {
   label: string
   value: string | number
-  variant?: 'default' | 'warning'
+  variant?: "default" | "warning"
 }) {
   // Use intelligence-driven styling for warning variant
   const valueStyles = useMemo(() => {
-    if (variant === 'warning') {
+    if (variant === "warning") {
       return intelligentStyles({
         isUrgent: true,
         className: cn(typography.mono.lg, tokens.text.warning),
@@ -143,84 +148,84 @@ const MetricCard = memo(function MetricCard({
   )
 })
 
-const ProposalRow = memo(function ProposalRow({
-  proposal,
-  isSelected,
-  onSelect,
-}: {
-  proposal: Proposal
-  isSelected: boolean
-  onSelect: (proposalId: string) => void
-}) {
-  const handleClick = useCallback(() => {
-    onSelect(proposal.id)
-  }, [proposal.id, onSelect])
-
-  // Extract title once
-  const title = useMemo(() => {
-    if (typeof proposal.data === 'object' && proposal.data !== null) {
-      return (proposal.data as { title?: string }).title || 'Untitled Proposal'
-    }
-    return 'Untitled Proposal'
-  }, [proposal.data])
-
-  // Format date once
-  const formattedDate = useMemo(() => {
-    return new Date(proposal.created_at).toLocaleDateString()
-  }, [proposal.created_at])
-
-  // Calculate if proposal is at risk (exceeds SLA threshold)
-  const isAtRisk = useMemo(() => {
-    if (proposal.status !== 'LISTENING') return false
-    const now = new Date()
-    const timeSinceSubmission = now.getTime() - new Date(proposal.created_at).getTime()
-    const slaThreshold = 48 * 60 * 60 * 1000 // 48 hours
-    return timeSinceSubmission > slaThreshold
-  }, [proposal.status, proposal.created_at])
-
-  // Use intelligence-driven styling
-  const cardStyles = intelligentStyles({
-    status: proposal.status,
+const ProposalRow = memo(
+  function ProposalRow({
+    proposal,
     isSelected,
-    isUrgent: isAtRisk,
-    className: cn(spacing.card, 'cursor-pointer transition-illuminate'),
-  })
+    onSelect,
+  }: {
+    proposal: Proposal
+    isSelected: boolean
+    onSelect: (proposalId: string) => void
+  }) {
+    const handleClick = useCallback(() => {
+      onSelect(proposal.id)
+    }, [proposal.id, onSelect])
 
-  return (
-    <Card
-      elevation={isSelected ? 'md' : 'sm'}
-      className={cardStyles}
-      hover
-      onClick={handleClick}
-    >
-      <div className={layout.flexBetween}>
-        <div className="flex-1">
-          <div className={cn(layout.flexCenter, spacing.gap.md, margins.bottom.sm)}>
-            <span className={cn(typography.mono.md, tokens.text.secondary)}>{proposal.case_number}</span>
-            <span
-              className={intelligentStatusStyles(proposal.status, 'badge', buttons.badge)}
-            >
-              {proposal.status}
-            </span>
-            {isAtRisk && (
-              <span className={cn(typography.body.sm, tokens.text.warning, 'animate-pulse')}>⚠️ At Risk</span>
-            )}
+    // Extract title once
+    const title = useMemo(() => {
+      if (typeof proposal.data === "object" && proposal.data !== null) {
+        return (proposal.data as { title?: string }).title || "Untitled Proposal"
+      }
+      return "Untitled Proposal"
+    }, [proposal.data])
+
+    // Format date once
+    const formattedDate = useMemo(() => {
+      return new Date(proposal.created_at).toLocaleDateString()
+    }, [proposal.created_at])
+
+    // Calculate if proposal is at risk (exceeds SLA threshold)
+    const isAtRisk = useMemo(() => {
+      if (proposal.status !== "LISTENING") return false
+      const now = new Date()
+      const timeSinceSubmission = now.getTime() - new Date(proposal.created_at).getTime()
+      const slaThreshold = 48 * 60 * 60 * 1000 // 48 hours
+      return timeSinceSubmission > slaThreshold
+    }, [proposal.status, proposal.created_at])
+
+    // Use intelligence-driven styling
+    const cardStyles = intelligentStyles({
+      status: proposal.status,
+      isSelected,
+      isUrgent: isAtRisk,
+      className: cn(spacing.card, "cursor-pointer transition-illuminate"),
+    })
+
+    return (
+      <Card elevation={isSelected ? "md" : "sm"} className={cardStyles} hover onClick={handleClick}>
+        <div className={layout.flexBetween}>
+          <div className="flex-1">
+            <div className={cn(layout.flexCenter, spacing.gap.md, margins.bottom.sm)}>
+              <span className={cn(typography.mono.md, tokens.text.secondary)}>
+                {proposal.case_number}
+              </span>
+              <span className={intelligentStatusStyles(proposal.status, "badge", buttons.badge)}>
+                {proposal.status}
+              </span>
+              {isAtRisk && (
+                <span className={cn(typography.body.sm, tokens.text.warning, "animate-pulse")}>
+                  ⚠️ At Risk
+                </span>
+              )}
+            </div>
+            <div className={cn(tokens.text.primary, typography.heading.sm)}>{title}</div>
           </div>
-          <div className={cn(tokens.text.primary, typography.heading.sm)}>{title}</div>
+          <div className={alignment.right}>
+            <div className={cn(typography.body.md, tokens.text.secondary)}>{formattedDate}</div>
+          </div>
         </div>
-        <div className={alignment.right}>
-          <div className={cn(typography.body.md, tokens.text.secondary)}>{formattedDate}</div>
-        </div>
-      </div>
-    </Card>
-  )
-}, (prevProps, nextProps) => {
-  // Custom comparison: only re-render if proposal data or selection changed
-  return (
-    prevProps.proposal.id === nextProps.proposal.id &&
-    prevProps.proposal.status === nextProps.proposal.status &&
-    prevProps.proposal.data === nextProps.proposal.data &&
-    prevProps.proposal.created_at === nextProps.proposal.created_at &&
-    prevProps.isSelected === nextProps.isSelected
-  )
-})
+      </Card>
+    )
+  },
+  (prevProps, nextProps) => {
+    // Custom comparison: only re-render if proposal data or selection changed
+    return (
+      prevProps.proposal.id === nextProps.proposal.id &&
+      prevProps.proposal.status === nextProps.proposal.status &&
+      prevProps.proposal.data === nextProps.proposal.data &&
+      prevProps.proposal.created_at === nextProps.proposal.created_at &&
+      prevProps.isSelected === nextProps.isSelected
+    )
+  }
+)

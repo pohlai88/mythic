@@ -15,7 +15,7 @@ export {
   type DecryptionRequest,
   type VaultKeyStorage,
   type EncryptionRequest,
-} from './encryption-schemas'
+} from "./encryption-schemas"
 
 export {
   encryptDocument,
@@ -23,4 +23,4 @@ export {
   validateEncryptionKey,
   validateEncryptedData,
   validateDecryptionRequest,
-} from './encryption-service'
+} from "./encryption-service"

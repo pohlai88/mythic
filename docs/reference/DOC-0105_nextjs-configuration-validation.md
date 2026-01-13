@@ -13,7 +13,9 @@ migrated_from: NEXTJS_CONFIGURATION_VALIDATION.md
 
 ## ✅ Configuration Status
 
-This document validates that your Next.js project is properly configured to maximize features for documentation and app building with automatic type generation.
+This document validates that your Next.js project is properly configured to
+maximize features for documentation and app building with automatic type
+generation.
 
 ---
 
@@ -24,7 +26,8 @@ This document validates that your Next.js project is properly configured to maxi
 All types are automatically generated, not manual:
 
 - **Zod Types**: Auto-inferred from Zod schemas using `z.infer<typeof schema>`
-- **Drizzle Types**: Auto-generated from database schema using `drizzle-kit generate:types`
+- **Drizzle Types**: Auto-generated from database schema using
+  `drizzle-kit generate:types`
 - **GraphQL Types**: Auto-generated using GraphQL Code Generator
 - **tRPC Types**: Auto-inferred from router definitions
 
@@ -55,7 +58,7 @@ pnpm graphql:codegen   # GraphQL types
 ### Example Usage:
 
 ```typescript
-import { z } from 'zod'
+import { z } from "zod"
 
 // Schema definition
 const userSchema = z.object({
@@ -106,13 +109,13 @@ pnpm db:types       # Generate TypeScript types
 ### Example Schema:
 
 ```typescript
-import { pgTable, serial, varchar } from 'drizzle-orm/pg-core'
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
-import { z } from 'zod'
+import { pgTable, serial, varchar } from "drizzle-orm/pg-core"
+import { createInsertSchema, createSelectSchema } from "drizzle-zod"
+import { z } from "zod"
 
-export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
-  email: varchar('email').notNull().unique(),
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  email: varchar("email").notNull().unique(),
 })
 
 // Auto-generated Zod schemas
@@ -138,7 +141,7 @@ export type NewUser = typeof users.$inferInsert
 
 ```css
 /* styles/globals.css */
-@import 'tailwindcss';
+@import "tailwindcss";
 ```
 
 ### Features:
@@ -169,9 +172,11 @@ export type NewUser = typeof users.$inferInsert
 ```typescript
 // Server-side (automatic type inference)
 export const appRouter = router({
-  getUser: publicProcedure.input(z.object({ id: z.number() })).query(async ({ input }) => {
-    // input is fully typed
-  }),
+  getUser: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ input }) => {
+      // input is fully typed
+    }),
 })
 
 // Client-side (automatic type inference)
@@ -253,7 +258,7 @@ pnpm graphql:codegen:watch  # Watch mode
 
 ```typescript
 // Auto-generated types
-import { useGetUsersQuery } from '@/generated/graphql'
+import { useGetUsersQuery } from "@/generated/graphql"
 
 // Fully typed hook
 const { data, loading } = useGetUsersQuery()
@@ -309,7 +314,7 @@ pnpm dlx shadcn@latest add card
 
 3. **Use Types** (automatic):
    ```typescript
-   import { User, NewUser } from '@/db/schema'
+   import { User, NewUser } from "@/db/schema"
    // Types are automatically available
    ```
 
@@ -425,4 +430,5 @@ Required variables:
 
 **Configuration Status**: ✅ **ALL REQUIREMENTS MET**
 
-All 8 requirements are properly configured with automatic type generation. No manual type definitions needed!
+All 8 requirements are properly configured with automatic type generation. No
+manual type definitions needed!

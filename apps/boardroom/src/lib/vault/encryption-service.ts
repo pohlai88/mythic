@@ -5,7 +5,7 @@
  * Vanguard Security: All encryption operations validated
  */
 
-import { z as z4 } from 'zod/v4'
+import { z as z4 } from "zod/v4"
 import {
   encryptionKeySchema,
   encryptedDataSchema,
@@ -15,7 +15,7 @@ import {
   type EncryptedData,
   type DecryptionRequest,
   type EncryptionRequest,
-} from './encryption-schemas'
+} from "./encryption-schemas"
 
 /**
  * Encrypt a document
@@ -29,7 +29,9 @@ export async function encryptDocument(
   // Validate encryption request
   const requestResult = encryptionRequestSchema.safeParse(request)
   if (!requestResult.success) {
-    throw new Error(`Invalid encryption request: ${requestResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid encryption request: ${requestResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   const validatedRequest = requestResult.data
 
@@ -40,50 +42,45 @@ export async function encryptDocument(
     .max(10)
     .safeParse(validatedRequest.authorizedUsers)
   if (!usersResult.success) {
-    throw new Error(`Invalid authorized users: ${usersResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid authorized users: ${usersResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   const validatedUsers = usersResult.data
 
   // Generate key with validated schema
   const key = await crypto.subtle.generateKey(
-    { name: 'AES-GCM', length: 256 },
+    { name: "AES-GCM", length: 256 },
     false, // extractable = false for security
-    ['encrypt', 'decrypt']
+    ["encrypt", "decrypt"]
   )
 
   // Validate key structure
   const keyId = crypto.randomUUID()
   encryptionKeySchema.parse({
     keyId,
-    algorithm: 'AES-GCM',
+    algorithm: "AES-GCM",
     keyLength: 256,
     extractable: false,
-    usages: ['encrypt', 'decrypt'],
+    usages: ["encrypt", "decrypt"],
   })
 
   // Get document buffer
-  const documentBuffer =
-    document instanceof File ? await document.arrayBuffer() : document
+  const documentBuffer = document instanceof File ? await document.arrayBuffer() : document
 
   // Encrypt document
   const iv = crypto.getRandomValues(new Uint8Array(12))
-  const encrypted = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv },
-    key,
-    documentBuffer
-  )
+  const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, documentBuffer)
 
   // Convert to base64
-  const encryptedBase64 = btoa(
-    String.fromCharCode(...new Uint8Array(encrypted))
-  )
+  const encryptedBase64 = btoa(String.fromCharCode(...new Uint8Array(encrypted)))
   const ivBase64 = btoa(String.fromCharCode(...iv))
 
   // Return validated encrypted data
   return encryptedDataSchema.parse({
     encrypted: encryptedBase64,
     iv: ivBase64,
-    algorithm: 'AES-GCM',
+    algorithm: "AES-GCM",
     keyId,
     authorizedUsers: validatedUsers,
     createdAt: new Date(),
@@ -103,35 +100,34 @@ export async function decryptDocument(
   // Validate decryption request
   const requestResult = decryptionRequestSchema.safeParse(request)
   if (!requestResult.success) {
-    throw new Error(`Invalid decryption request: ${requestResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid decryption request: ${requestResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   const validatedRequest = requestResult.data
 
   // Validate encrypted data structure
   const dataResult = encryptedDataSchema.safeParse(encryptedData)
   if (!dataResult.success) {
-    throw new Error(`Invalid encrypted data: ${dataResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid encrypted data: ${dataResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   const validatedData = dataResult.data
 
   // Vanguard Security: Check authorization
   if (!validatedData.authorizedUsers.includes(validatedRequest.requestingUserId)) {
-    throw new Error('Unauthorized decryption attempt')
+    throw new Error("Unauthorized decryption attempt")
   }
 
   // Check expiration if set
   if (validatedData.expiresAt && validatedData.expiresAt < new Date()) {
-    throw new Error('Encrypted data has expired')
+    throw new Error("Encrypted data has expired")
   }
 
   // Convert base64 to ArrayBuffer
-  const encryptedBuffer = Uint8Array.from(
-    atob(validatedData.encrypted),
-    (c) => c.charCodeAt(0)
-  )
-  const ivBuffer = Uint8Array.from(atob(validatedData.iv), (c) =>
-    c.charCodeAt(0)
-  )
+  const encryptedBuffer = Uint8Array.from(atob(validatedData.encrypted), (c) => c.charCodeAt(0))
+  const ivBuffer = Uint8Array.from(atob(validatedData.iv), (c) => c.charCodeAt(0))
 
   // Note: In a real implementation, you would:
   // 1. Retrieve the encryption key from secure storage using keyId
@@ -140,7 +136,7 @@ export async function decryptDocument(
 
   // For now, return a placeholder
   // This would be implemented with actual key retrieval and decryption
-  throw new Error('Decryption implementation requires key storage system')
+  throw new Error("Decryption implementation requires key storage system")
 }
 
 /**
@@ -160,8 +156,6 @@ export function validateEncryptedData(data: unknown): EncryptedData {
 /**
  * Validate decryption request
  */
-export function validateDecryptionRequest(
-  request: unknown
-): DecryptionRequest {
+export function validateDecryptionRequest(request: unknown): DecryptionRequest {
   return decryptionRequestSchema.parse(request)
 }

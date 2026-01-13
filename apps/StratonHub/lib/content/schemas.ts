@@ -1,91 +1,243 @@
 /**
- * Content Frontmatter Schemas
+ * Content Frontmatter Schemas — StratonHub
  *
- * Zod schemas for content metadata validation
- * Follows Drizzle Zod pattern structure for consistency (file-based content)
- * Reference: apps/boardroom/src/db/schema/proposals.ts (for pattern reference)
+ * Zod v4 schemas for content metadata validation (file-based content).
  *
- * Note: For file-based content (not database tables), we use plain Zod schemas
- * but follow the same naming and structure pattern as Drizzle Zod schemas.
+ * Performance Optimizations:
+ * - Pre-compiled regex patterns
+ * - Reusable enum constants
+ * - Efficient schema composition
+ *
+ * Canon enforcement:
+ * - Audience is required
+ * - Diataxis type is required
+ * - Surface (optional) replaces legacy "ERP module"
+ * - last_updated (snake_case) is canonical in MDX frontmatter
  */
 
-import { z as z4 } from 'zod/v4'
+import { z as z4 } from "zod/v4"
+
+// ============================================================================
+// Constants
+// ============================================================================
 
 /**
- * ERP Modules Enum
+ * Pre-compiled regex for date validation (YYYY-MM-DD format)
+ * Extracted for performance and reusability
  */
-export const erpModuleSchema = z4.enum([
-  'boardroom',
-  'accounting',
-  'finance',
-  'crm',
-  'manufacturing',
-  'supply-chain',
-  'procurement',
-  'marketing',
-  'investor-relations',
-  'global-config',
-  'individual-config',
-])
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
 
 /**
- * Audience Enum
+ * Surface/Domain values (formerly "ERP Modules")
+ * Keep values stable; rename the concept to remove legacy drift.
  */
-export const audienceSchema = z4.enum(['developers', 'users', 'business'])
+const SURFACE_VALUES = [
+  "boardroom",
+  "accounting",
+  "finance",
+  "crm",
+  "manufacturing",
+  "supply-chain",
+  "procurement",
+  "marketing",
+  "investor-relations",
+  "global-config",
+  "individual-config",
+] as const
 
 /**
- * Diataxis Document Type Enum
+ * Audience values
  */
-export const diataxisTypeSchema = z4.enum([
-  'tutorial',
-  'how-to',
-  'reference',
-  'explanation',
-])
+const AUDIENCE_VALUES = ["developers", "users", "business"] as const
 
 /**
- * Content Metadata Structure
- * This is a virtual schema (not a database table) but uses Drizzle pattern
+ * Diataxis Document Type values (REQUIRED)
+ */
+const DIATAXIS_TYPE_VALUES = ["tutorial", "how-to", "reference", "explanation"] as const
+
+/**
+ * Publication status values
+ */
+const STATUS_VALUES = ["DRAFT", "CANONICAL", "DEPRECATED"] as const
+
+// ============================================================================
+// Schema Definitions
+// ============================================================================
+
+/**
+ * Surfaces / Domains Enum Schema
+ *
+ * @example
+ * ```ts
+ * const result = surfaceSchema.safeParse("boardroom")
+ * ```
+ */
+export const surfaceSchema = z4.enum(SURFACE_VALUES)
+
+/**
+ * Audience Enum Schema
+ *
+ * @example
+ * ```ts
+ * const result = audienceSchema.safeParse("developers")
+ * ```
+ */
+export const audienceSchema = z4.enum(AUDIENCE_VALUES)
+
+/**
+ * Diataxis Document Type Enum Schema (REQUIRED)
+ *
+ * @example
+ * ```ts
+ * const result = diataxisTypeSchema.safeParse("tutorial")
+ * ```
+ */
+export const diataxisTypeSchema = z4.enum(DIATAXIS_TYPE_VALUES)
+
+/**
+ * Canonical publication status schema (recommended)
+ *
+ * @example
+ * ```ts
+ * const result = statusSchema.safeParse("CANONICAL")
+ * ```
+ */
+export const statusSchema = z4.enum(STATUS_VALUES)
+
+/**
+ * Content Metadata Structure (Frontmatter)
+ *
+ * Canonical frontmatter keys:
+ * - last_updated (snake_case) - YYYY-MM-DD format
+ *
+ * Required fields:
+ * - title: Document title (1-255 characters)
+ * - audience: Target audience (developers, users, business)
+ * - type: Diataxis document type (tutorial, how-to, reference, explanation)
+ *
+ * Optional fields:
+ * - description: Document description (1-500 characters)
+ * - surface: Surface/domain this document covers
+ * - published: Whether document is published (default: true)
+ * - status: Lifecycle status (default: CANONICAL)
+ * - last_updated: Last updated date in YYYY-MM-DD format
  */
 const contentMetadataDefinition = {
-  title: z4.string().min(1).max(255).describe('Document title'),
-  description: z4.string().min(1).max(500).optional().describe('Document description'),
-  audience: audienceSchema.describe('Target audience'),
-  module: erpModuleSchema.optional().describe('ERP module this document covers'),
-  type: diataxisTypeSchema.optional().describe('Diataxis document type'),
-  published: z4.boolean().default(true).describe('Whether document is published'),
-  lastUpdated: z4.string().datetime().optional().describe('Last update timestamp'),
+  title: z4
+    .string()
+    .min(1, "Title must be at least 1 character")
+    .max(255, "Title must be at most 255 characters")
+    .describe("Document title"),
+
+  description: z4
+    .string()
+    .min(1, "Description must be at least 1 character")
+    .max(500, "Description must be at most 500 characters")
+    .optional()
+    .describe("Document description"),
+
+  // StratonHub laws (required)
+  audience: audienceSchema.describe("Target audience"),
+
+  type: diataxisTypeSchema.describe("Diataxis document type"),
+
+  // Optional classification
+  surface: surfaceSchema.optional().describe("Surface/domain this document covers"),
+
+  // Publication controls
+  published: z4.boolean().default(true).describe("Whether document is published"),
+
+  status: statusSchema.default("CANONICAL").describe("Lifecycle status"),
+
+  // Canonical date key (matches your MDX templates)
+  last_updated: z4
+    .string()
+    .regex(DATE_REGEX, "Date must be in YYYY-MM-DD format")
+    .optional()
+    .describe("Last updated date (YYYY-MM-DD)"),
 }
 
 /**
- * Create a virtual table-like structure for Drizzle pattern
- * Since we're using file-based content, we create a schema object
+ * Main frontmatter schema
+ *
+ * Note: For file-based content, insert/select are effectively the same.
+ * Uses `.strict()` to prevent unknown properties.
+ *
+ * @example
+ * ```ts
+ * const result = frontmatterSchema.safeParse({
+ *   title: "My Document",
+ *   audience: "developers",
+ *   type: "tutorial"
+ * })
+ * ```
  */
-const contentMetadataSchema = z4.object(contentMetadataDefinition)
-
-/**
- * Insert Schema (for creating/validating new content)
- * Follows Drizzle pattern structure: insert schema (allows optional fields for creation)
- * Note: For file-based content, we use plain Zod (drizzle-zod requires database tables)
- */
-export const frontmatterInsertSchema = z4
+export const frontmatterSchema = z4
   .object(contentMetadataDefinition)
-  .describe('Content frontmatter insert schema for validation')
+  .strict()
+  .describe("StratonHub frontmatter schema")
 
 /**
- * Select Schema (for reading/validating existing content)
- * Follows Drizzle pattern structure: select schema (all fields required as defined)
- * Note: For file-based content, we use plain Zod (drizzle-zod requires database tables)
+ * Frontmatter insert schema
+ *
+ * Alias for frontmatterSchema with descriptive name for insert operations.
+ * In practice, insert and select are the same for file-based content.
  */
-export const frontmatterSelectSchema = z4
-  .object(contentMetadataDefinition)
-  .describe('Content frontmatter select schema for validation')
+export const frontmatterInsertSchema = frontmatterSchema.describe("Frontmatter insert schema")
 
 /**
- * TypeScript Types
+ * Frontmatter select schema
+ *
+ * Alias for frontmatterSchema with descriptive name for select operations.
+ * In practice, insert and select are the same for file-based content.
+ *
+ * This is the primary schema used for validation in loadContentFile().
+ */
+export const frontmatterSelectSchema = frontmatterSchema.describe("Frontmatter select schema")
+
+// ============================================================================
+// Type Exports
+// ============================================================================
+
+/**
+ * Inferred TypeScript types from Zod schemas
+ *
+ * These types are automatically generated from the schemas above,
+ * ensuring type safety and consistency between runtime validation and compile-time types.
+ */
+
+/**
+ * Frontmatter type for insert operations
  */
 export type FrontmatterInsert = z4.infer<typeof frontmatterInsertSchema>
+
+/**
+ * Frontmatter type for select operations
+ */
 export type FrontmatterSelect = z4.infer<typeof frontmatterSelectSchema>
-export type ERPModule = z4.infer<typeof erpModuleSchema>
+
+/**
+ * Surface/Domain type
+ */
+export type Surface = z4.infer<typeof surfaceSchema>
+
+/**
+ * Audience type
+ *
+ * Note: This type is also defined in @/lib/search/types.ts.
+ * Consider consolidating to avoid duplication.
+ */
 export type Audience = z4.infer<typeof audienceSchema>
+
+/**
+ * Diataxis document type
+ *
+ * Note: This type is also defined in @/lib/search/types.ts.
+ * Consider consolidating to avoid duplication.
+ */
 export type DiataxisType = z4.infer<typeof diataxisTypeSchema>
+
+/**
+ * Document status type
+ */
+export type DocStatus = z4.infer<typeof statusSchema>

@@ -11,8 +11,7 @@ migrated_from: DOCUMENTATION_ORGANIZATION_QUICK_START.md
 
 # Documentation Organization - Quick Start Guide
 
-**Status**: Ready to Execute
-**Time Required**: 15-20 minutes
+**Status**: Ready to Execute **Time Required**: 15-20 minutes
 
 ---
 
@@ -57,6 +56,7 @@ pnpm install
 ```
 
 This will install:
+
 - `chalk` - Terminal colors for scripts
 - `glob` - File pattern matching
 - `markdownlint-cli2` - Markdown linting
@@ -88,6 +88,7 @@ pnpm organize-docs
 ```
 
 This will:
+
 - Create necessary directories
 - Move files to appropriate locations
 - Generate a migration report
@@ -99,6 +100,7 @@ pnpm validate-docs
 ```
 
 This checks:
+
 - Markdown syntax
 - Internal link validity
 - Consistent formatting
@@ -144,6 +146,7 @@ git commit -m "chore: organize documentation structure
 | `TURBOREPO_*`    | `docs/reference/`             |
 
 **Files kept in root:**
+
 - `README.md`
 - `QUICK_START.md`
 - `QUICK_REFERENCE.md`
@@ -153,12 +156,15 @@ git commit -m "chore: organize documentation structure
 ## 🛡️ Protection Mechanisms
 
 ### Pre-commit Hook
+
 Prevents committing markdown files to root directory (except allowed ones).
 
 ### CI/CD Check
+
 GitHub Actions workflow validates documentation on every PR.
 
 ### Validation Script
+
 Checks markdown syntax, links, and formatting.
 
 ---
@@ -192,7 +198,8 @@ pnpm docs:lint:fix               # Auto-fix linting issues
 
 ## ⚠️ Important Notes
 
-1. **Backup First**: Consider committing current state before running organization
+1. **Backup First**: Consider committing current state before running
+   organization
 2. **Review Dry-Run**: Always review dry-run output before executing
 3. **Update Links**: Some internal links may need manual updates
 4. **Team Communication**: Inform team about new structure
@@ -202,6 +209,7 @@ pnpm docs:lint:fix               # Auto-fix linting issues
 ## 🆘 Troubleshooting
 
 ### Script fails to run
+
 ```bash
 # Make scripts executable (Unix/Mac)
 chmod +x scripts/*.ts
@@ -211,6 +219,7 @@ tsx scripts/organize-docs.ts --dry-run
 ```
 
 ### Pre-commit hook not working
+
 ```bash
 # Reinitialize husky
 npx husky init
@@ -220,6 +229,7 @@ cat .husky/pre-commit
 ```
 
 ### Validation errors
+
 ```bash
 # Fix auto-fixable issues
 pnpm docs:lint:fix
@@ -237,16 +247,19 @@ markdownlint-cli2 "docs/path/to/file.md"
 3. ✅ Validate results
 4. ⏭️ Update team documentation
 5. ⏭️ Update onboarding guides
-6. ⏭️ Archive old planning docs (`.cursor/planing/` → `.cursor/archive/planning/`)
+6. ⏭️ Archive old planning docs (`.cursor/planing/` →
+   `.cursor/archive/planning/`)
 
 ---
 
 ## 🎉 Success!
 
 Once complete, your repository will have:
+
 - Clean root directory
 - Organized documentation structure
 - Automated validation
 - Prevention of future clutter
 
-**Questions?** See `DOCUMENTATION_ORGANIZATION_STRATEGY.md` for detailed information.
+**Questions?** See `DOCUMENTATION_ORGANIZATION_STRATEGY.md` for detailed
+information.

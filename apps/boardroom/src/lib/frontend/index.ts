@@ -13,10 +13,10 @@ export {
   type ViewConfig,
   type ComponentConfig,
   type FrontendCustomization,
-} from './customization-schemas'
+} from "./customization-schemas"
 
 export {
   validateCustomization,
   mergeCustomization,
   safeParseCustomization,
-} from './customization-service'
+} from "./customization-service"

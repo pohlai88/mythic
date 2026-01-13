@@ -13,17 +13,17 @@
  *   tsx apps/boardroom/scripts/database-performance-test.ts
  */
 
-import { performance } from 'perf_hooks'
-import { db } from '../src/db'
+import { performance } from "perf_hooks"
+import { db } from "../src/db"
 import {
   getProposalById,
   getProposalWithRelations,
   getProposalsByCircleId,
   getCircleById,
   getCommentsByProposalId,
-} from '../src/db/queries'
-import { proposals, circles, boardComments } from '../src/db/schema'
-import { eq } from 'drizzle-orm'
+} from "../src/db/queries"
+import { proposals, circles, boardComments } from "../src/db/schema"
+import { eq } from "drizzle-orm"
 
 interface TestResult {
   name: string
@@ -126,7 +126,7 @@ async function measureExecution<T>(
  * Measures time to establish first database connection
  */
 async function testColdStart(): Promise<TestResult> {
-  console.log('🧪 Testing Cold Start...')
+  console.log("🧪 Testing Cold Start...")
 
   // Clear any existing connections by creating a new db instance
   // Note: This is a simplified test - in real serverless, cold start includes module loading
@@ -135,7 +135,7 @@ async function testColdStart(): Promise<TestResult> {
   // Simulate cold start by measuring first query
   try {
     // Get a test ID (we'll use a simple query that should always work)
-    await db.execute({ sql: 'SELECT 1', args: [] })
+    await db.execute({ sql: "SELECT 1", args: [] })
   } catch (error) {
     // If no data, that's okay - we're just testing connection
   }
@@ -144,7 +144,7 @@ async function testColdStart(): Promise<TestResult> {
   const duration = end - start
 
   return {
-    name: 'Cold Start',
+    name: "Cold Start",
     duration,
     iterations: 1,
     avgDuration: duration,
@@ -163,19 +163,23 @@ async function testColdStart(): Promise<TestResult> {
  * Measures overhead of establishing connections
  */
 async function testConnectionOverhead(): Promise<TestResult> {
-  console.log('🧪 Testing Connection Overhead...')
+  console.log("🧪 Testing Connection Overhead...")
 
-  return measureExecution('Connection Overhead', async () => {
-    // Simple query to measure connection overhead
-    await db.execute({ sql: 'SELECT 1', args: [] })
-  }, 20)
+  return measureExecution(
+    "Connection Overhead",
+    async () => {
+      // Simple query to measure connection overhead
+      await db.execute({ sql: "SELECT 1", args: [] })
+    },
+    20
+  )
 }
 
 /**
  * Test 3: Prepared Statement Performance
  */
 async function testPreparedStatement(proposalId?: string): Promise<TestResult> {
-  console.log('🧪 Testing Prepared Statement...')
+  console.log("🧪 Testing Prepared Statement...")
 
   // Get a real proposal ID if available
   let testId = proposalId
@@ -186,7 +190,7 @@ async function testPreparedStatement(proposalId?: string): Promise<TestResult> {
     } catch {
       // If no proposals exist, skip this test
       return {
-        name: 'Prepared Statement',
+        name: "Prepared Statement",
         duration: 0,
         iterations: 0,
         avgDuration: 0,
@@ -202,9 +206,9 @@ async function testPreparedStatement(proposalId?: string): Promise<TestResult> {
   }
 
   if (!testId) {
-    console.warn('⚠️  No proposals found, skipping prepared statement test')
+    console.warn("⚠️  No proposals found, skipping prepared statement test")
     return {
-      name: 'Prepared Statement',
+      name: "Prepared Statement",
       duration: 0,
       iterations: 0,
       avgDuration: 0,
@@ -219,7 +223,7 @@ async function testPreparedStatement(proposalId?: string): Promise<TestResult> {
   }
 
   const result = await measureExecution(
-    'Prepared Statement',
+    "Prepared Statement",
     async () => {
       await getProposalById.execute({ id: testId! })
     },
@@ -236,7 +240,7 @@ async function testPreparedStatement(proposalId?: string): Promise<TestResult> {
  * Test 4: Regular Query Performance
  */
 async function testRegularQuery(proposalId?: string): Promise<TestResult> {
-  console.log('🧪 Testing Regular Query...')
+  console.log("🧪 Testing Regular Query...")
 
   let testId = proposalId
   if (!testId) {
@@ -245,7 +249,7 @@ async function testRegularQuery(proposalId?: string): Promise<TestResult> {
       testId = firstProposal?.id
     } catch {
       return {
-        name: 'Regular Query',
+        name: "Regular Query",
         duration: 0,
         iterations: 0,
         avgDuration: 0,
@@ -261,9 +265,9 @@ async function testRegularQuery(proposalId?: string): Promise<TestResult> {
   }
 
   if (!testId) {
-    console.warn('⚠️  No proposals found, skipping regular query test')
+    console.warn("⚠️  No proposals found, skipping regular query test")
     return {
-      name: 'Regular Query',
+      name: "Regular Query",
       duration: 0,
       iterations: 0,
       avgDuration: 0,
@@ -278,7 +282,7 @@ async function testRegularQuery(proposalId?: string): Promise<TestResult> {
   }
 
   const result = await measureExecution(
-    'Regular Query',
+    "Regular Query",
     async () => {
       await db.select().from(proposals).where(eq(proposals.id, testId!)).limit(1)
     },
@@ -295,7 +299,7 @@ async function testRegularQuery(proposalId?: string): Promise<TestResult> {
  * Test 5: Relational Query Performance
  */
 async function testRelationalQuery(proposalId?: string): Promise<TestResult> {
-  console.log('🧪 Testing Relational Query...')
+  console.log("🧪 Testing Relational Query...")
 
   let testId = proposalId
   if (!testId) {
@@ -304,7 +308,7 @@ async function testRelationalQuery(proposalId?: string): Promise<TestResult> {
       testId = firstProposal?.id
     } catch {
       return {
-        name: 'Relational Query',
+        name: "Relational Query",
         duration: 0,
         iterations: 0,
         avgDuration: 0,
@@ -320,9 +324,9 @@ async function testRelationalQuery(proposalId?: string): Promise<TestResult> {
   }
 
   if (!testId) {
-    console.warn('⚠️  No proposals found, skipping relational query test')
+    console.warn("⚠️  No proposals found, skipping relational query test")
     return {
-      name: 'Relational Query',
+      name: "Relational Query",
       duration: 0,
       iterations: 0,
       avgDuration: 0,
@@ -337,7 +341,7 @@ async function testRelationalQuery(proposalId?: string): Promise<TestResult> {
   }
 
   const result = await measureExecution(
-    'Relational Query',
+    "Relational Query",
     async () => {
       await getProposalWithRelations(testId!)
     },
@@ -354,7 +358,7 @@ async function testRelationalQuery(proposalId?: string): Promise<TestResult> {
  * Test 6: Manual Join Performance (for comparison)
  */
 async function testManualJoin(proposalId?: string): Promise<TestResult> {
-  console.log('🧪 Testing Manual Join (Comparison)...')
+  console.log("🧪 Testing Manual Join (Comparison)...")
 
   let testId = proposalId
   if (!testId) {
@@ -363,7 +367,7 @@ async function testManualJoin(proposalId?: string): Promise<TestResult> {
       testId = firstProposal?.id
     } catch {
       return {
-        name: 'Manual Join',
+        name: "Manual Join",
         duration: 0,
         iterations: 0,
         avgDuration: 0,
@@ -379,9 +383,9 @@ async function testManualJoin(proposalId?: string): Promise<TestResult> {
   }
 
   if (!testId) {
-    console.warn('⚠️  No proposals found, skipping manual join test')
+    console.warn("⚠️  No proposals found, skipping manual join test")
     return {
-      name: 'Manual Join',
+      name: "Manual Join",
       duration: 0,
       iterations: 0,
       avgDuration: 0,
@@ -396,7 +400,7 @@ async function testManualJoin(proposalId?: string): Promise<TestResult> {
   }
 
   const result = await measureExecution(
-    'Manual Join',
+    "Manual Join",
     async () => {
       // Simulate manual join with multiple queries
       const [proposal] = await db.select().from(proposals).where(eq(proposals.id, testId!)).limit(1)
@@ -431,8 +435,8 @@ function formatDuration(ms: number): string {
  * Print test result
  */
 function printResult(result: TestResult): void {
-  const status = result.passed ? '✅' : '❌'
-  const targetStr = result.target ? ` (target: <${formatDuration(result.target)})` : ''
+  const status = result.passed ? "✅" : "❌"
+  const targetStr = result.target ? ` (target: <${formatDuration(result.target)})` : ""
 
   console.log(`\n${status} ${result.name}${targetStr}`)
   console.log(`   Iterations: ${result.iterations}`)
@@ -448,7 +452,7 @@ function printResult(result: TestResult): void {
  * Generate performance report
  */
 async function generateReport(): Promise<PerformanceReport> {
-  console.log('🚀 Starting Database Performance Tests...\n')
+  console.log("🚀 Starting Database Performance Tests...\n")
 
   // Get a test proposal ID once
   let testProposalId: string | undefined
@@ -456,7 +460,7 @@ async function generateReport(): Promise<PerformanceReport> {
     const [firstProposal] = await db.select({ id: proposals.id }).from(proposals).limit(1)
     testProposalId = firstProposal?.id
   } catch (error) {
-    console.warn('⚠️  Could not fetch test proposal ID:', error)
+    console.warn("⚠️  Could not fetch test proposal ID:", error)
   }
 
   // Run all tests
@@ -531,29 +535,37 @@ async function generateReport(): Promise<PerformanceReport> {
   }
 
   // Print summary
-  console.log('\n📊 Performance Summary:')
+  console.log("\n📊 Performance Summary:")
   console.log(`   Total Tests: ${report.summary.totalTests}`)
   console.log(`   Passed: ${report.summary.passed} ✅`)
-  console.log(`   Failed: ${report.summary.failed} ${report.summary.failed > 0 ? '❌' : ''}`)
+  console.log(`   Failed: ${report.summary.failed} ${report.summary.failed > 0 ? "❌" : ""}`)
   console.log(`   Average Query Latency: ${formatDuration(report.summary.avgQueryLatency)}`)
-  console.log(`   Average Connection Overhead: ${formatDuration(report.summary.avgConnectionOverhead)}`)
+  console.log(
+    `   Average Connection Overhead: ${formatDuration(report.summary.avgConnectionOverhead)}`
+  )
 
   // Performance comparison
   if (preparedStatement.iterations > 0 && regularQuery.iterations > 0) {
-    const improvement = ((regularQuery.avgDuration - preparedStatement.avgDuration) / regularQuery.avgDuration) * 100
+    const improvement =
+      ((regularQuery.avgDuration - preparedStatement.avgDuration) / regularQuery.avgDuration) * 100
     console.log(`\n⚡ Prepared Statement Improvement: ${improvement.toFixed(1)}% faster`)
   }
 
   if (relationalQuery.iterations > 0 && manualJoin.iterations > 0) {
-    const improvement = ((manualJoin.avgDuration - relationalQuery.avgDuration) / manualJoin.avgDuration) * 100
-    console.log(`⚡ Relational Query Improvement: ${improvement.toFixed(1)}% faster than manual joins`)
+    const improvement =
+      ((manualJoin.avgDuration - relationalQuery.avgDuration) / manualJoin.avgDuration) * 100
+    console.log(
+      `⚡ Relational Query Improvement: ${improvement.toFixed(1)}% faster than manual joins`
+    )
   }
 
   // Targets check
-  console.log('\n🎯 Target Compliance:')
-  console.log(`   Query Latency: <50ms ${report.summary.avgQueryLatency < 50 ? '✅' : '❌'}`)
-  console.log(`   Connection Overhead: <5ms ${report.summary.avgConnectionOverhead < 5 ? '✅' : '❌'}`)
-  console.log(`   Cold Start: <200ms ${coldStart.avgDuration < 200 ? '✅' : '❌'}`)
+  console.log("\n🎯 Target Compliance:")
+  console.log(`   Query Latency: <50ms ${report.summary.avgQueryLatency < 50 ? "✅" : "❌"}`)
+  console.log(
+    `   Connection Overhead: <5ms ${report.summary.avgConnectionOverhead < 5 ? "✅" : "❌"}`
+  )
+  console.log(`   Cold Start: <200ms ${coldStart.avgDuration < 200 ? "✅" : "❌"}`)
 
   return report
 }
@@ -565,32 +577,32 @@ async function main() {
   try {
     // Check if database is configured
     try {
-      await db.execute({ sql: 'SELECT 1', args: [] })
+      await db.execute({ sql: "SELECT 1", args: [] })
     } catch (error) {
-      console.error('❌ Database connection failed. Please ensure:')
-      console.error('   1. DATABASE_URL is set in your .env file')
-      console.error('   2. Database is accessible')
-      console.error('   3. Network/firewall allows connection')
-      console.error('\n   Error:', error instanceof Error ? error.message : String(error))
-      console.error('\n   See docs/architecture/ENVIRONMENT_VARIABLES.md for setup instructions.')
+      console.error("❌ Database connection failed. Please ensure:")
+      console.error("   1. DATABASE_URL is set in your .env file")
+      console.error("   2. Database is accessible")
+      console.error("   3. Network/firewall allows connection")
+      console.error("\n   Error:", error instanceof Error ? error.message : String(error))
+      console.error("\n   See docs/architecture/ENVIRONMENT_VARIABLES.md for setup instructions.")
       process.exit(1)
     }
 
     const report = await generateReport()
 
     // Save report to file
-    const fs = await import('fs/promises')
-    const path = await import('path')
-    const reportPath = path.join(process.cwd(), 'database-performance-report.json')
-    await fs.writeFile(reportPath, JSON.stringify(report, null, 2), 'utf-8')
+    const fs = await import("fs/promises")
+    const path = await import("path")
+    const reportPath = path.join(process.cwd(), "database-performance-report.json")
+    await fs.writeFile(reportPath, JSON.stringify(report, null, 2), "utf-8")
     console.log(`\n💾 Report saved to: ${reportPath}`)
 
     // Exit with appropriate code
     process.exit(report.summary.failed > 0 ? 1 : 0)
   } catch (error) {
-    console.error('❌ Performance test failed:', error)
-    if (error instanceof Error && error.message.includes('Database configuration')) {
-      console.error('\n💡 Tip: Set DATABASE_URL in your .env file to run performance tests')
+    console.error("❌ Performance test failed:", error)
+    if (error instanceof Error && error.message.includes("Database configuration")) {
+      console.error("\n💡 Tip: Set DATABASE_URL in your .env file to run performance tests")
     }
     process.exit(1)
   }

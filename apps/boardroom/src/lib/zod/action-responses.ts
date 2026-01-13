@@ -5,8 +5,8 @@
  * Ensures type safety and runtime validation for all action responses.
  */
 
-import { z as z4 } from 'zod/v4'
-import { proposalSchema, type Proposal } from '@mythic/shared-types/boardroom'
+import { z as z4 } from "zod/v4"
+import { proposalSchema, type Proposal } from "@mythic/shared-types/boardroom"
 
 /**
  * Base response schema for actions that return success/error
@@ -59,20 +59,24 @@ export type ProposalResponse = z4.infer<typeof proposalResponseSchema>
  * Stencil response schema
  * Uses a flexible object schema for stencil definitions
  */
-export const stencilResponseSchema = z4.object({
-  id: z4.string(),
-  name: z4.string(),
-  version: z4.number(),
-  fields: z4.array(z4.object({
+export const stencilResponseSchema = z4
+  .object({
     id: z4.string(),
-    label: z4.string(),
-    type: z4.enum(['string', 'number', 'date', 'enum', 'jsonb']),
-    required: z4.boolean(),
-    validationRule: z4.string().optional(),
-    options: z4.array(z4.string()).optional(),
-  })),
-  requiredApprovers: z4.array(z4.string()),
-}).nullable()
+    name: z4.string(),
+    version: z4.number(),
+    fields: z4.array(
+      z4.object({
+        id: z4.string(),
+        label: z4.string(),
+        type: z4.enum(["string", "number", "date", "enum", "jsonb"]),
+        required: z4.boolean(),
+        validationRule: z4.string().optional(),
+        options: z4.array(z4.string()).optional(),
+      })
+    ),
+    requiredApprovers: z4.array(z4.string()),
+  })
+  .nullable()
 
 export type StencilResponse = z4.infer<typeof stencilResponseSchema>
 

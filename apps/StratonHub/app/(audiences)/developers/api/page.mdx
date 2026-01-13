@@ -1,0 +1,89 @@
+---
+title: API Reference
+description: Complete API reference for NexusCanon modules
+audience: developers
+type: reference
+published: true
+---
+
+# API Reference
+
+> Complete API documentation for all NexusCanon modules
+
+## Overview
+
+This section provides comprehensive API documentation for integrating with
+NexusCanon systems.
+
+**Base URL**: `/api/v1`
+
+## Available Modules
+
+### BoardRoom API
+
+Executive decision engine endpoints.
+
+- [BoardRoom API Reference](/developers/api/boardroom)
+
+**Key Endpoints**:
+
+- `GET /proposals` - List proposals
+- `POST /proposals` - Create proposal
+- `GET /proposals/:id` - Get proposal details
+- `POST /proposals/:id/approve` - Approve proposal
+
+### Accounting API
+
+Financial record management endpoints.
+
+- `GET /accounts` - List accounts
+- `POST /transactions` - Record transaction
+- `GET /ledger` - View ledger entries
+
+### CRM API
+
+Customer relationship management endpoints.
+
+- `GET /customers` - List customers
+- `POST /customers` - Create customer
+- `GET /interactions` - View interactions
+
+## Authentication
+
+All API requests require Bearer token authentication:
+
+```bash
+Authorization: Bearer <your-token>
+```
+
+## Rate Limiting
+
+| Tier       | Requests/min | Burst |
+| ---------- | ------------ | ----- |
+| Standard   | 60           | 100   |
+| Premium    | 300          | 500   |
+| Enterprise | 1000         | 2000  |
+
+## Error Handling
+
+All errors follow a consistent format:
+
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid request payload",
+    "details": [{ "field": "email", "message": "Required" }]
+  }
+}
+```
+
+## Related Documentation
+
+- [BoardRoom Integration](/developers/guides/boardroom-integration) -
+  Integration tutorial
+- [SDKs & Kits](/developers/sdks) - Client libraries
+
+---
+
+**Last Updated**: 2026-01-13

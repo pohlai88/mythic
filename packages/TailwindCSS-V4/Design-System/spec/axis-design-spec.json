@@ -1,0 +1,446 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "version": "1.0.0",
+  "name": "AXIS Design System Specification",
+  "description": "Machine-readable specification for AXIS design system enforcement. AI coding assistants MUST reference this specification when generating UI code.",
+  "lastUpdated": "2026-01-13",
+
+  "colors": {
+    "forbidden": {
+      "values": [
+        "#FFFFFF",
+        "#ffffff",
+        "#FFF",
+        "#fff",
+        "white",
+        "bg-white",
+        "text-white",
+        "border-white",
+        "rgb(255,255,255)",
+        "rgba(255,255,255,1)",
+        "hsl(0,0%,100%)",
+        "hsla(0,0%,100%,1)"
+      ],
+      "reason": "Pure white (#FFFFFF) violates the Void aesthetic. Use --color-signal or --color-parchment instead.",
+      "alternatives": {
+        "for_text": "text-signal or text-parchment",
+        "for_background": "bg-void or bg-obsidian"
+      }
+    },
+    "palette": {
+      "void": {
+        "hsl": "240 5% 4%",
+        "hex": "#0a0a0b",
+        "cssVar": "--color-void",
+        "classes": ["bg-void"],
+        "usage": "Global backgrounds. The infinite dark. Never pure black.",
+        "semantic": "bg"
+      },
+      "obsidian": {
+        "hsl": "240 5% 8%",
+        "hex": "#141416",
+        "cssVar": "--color-obsidian",
+        "classes": ["bg-obsidian", "bg-surface"],
+        "usage": "Surface elements (Cards, Sidebars, Modals).",
+        "semantic": "surface"
+      },
+      "obsidian-hover": {
+        "hsl": "240 6% 9%",
+        "hex": "#161619",
+        "cssVar": "--color-obsidian-hover",
+        "classes": ["bg-obsidian-hover"],
+        "usage": "Interactive surface hover states.",
+        "semantic": "surface-hover"
+      },
+      "charcoal": {
+        "hsl": "240 3% 12%",
+        "hex": "#1f1f23",
+        "cssVar": "--color-charcoal",
+        "classes": ["bg-charcoal", "border-charcoal"],
+        "usage": "Deep UI elements, elevated surfaces.",
+        "semantic": "elevated"
+      },
+      "gold": {
+        "hsl": "42 49% 58%",
+        "hex": "#c9a961",
+        "cssVar": "--color-gold",
+        "classes": ["text-gold", "bg-gold", "border-gold", "text-accent"],
+        "usage": "Active states, Focus rings, Ratified actions. The signal of authority.",
+        "semantic": "accent"
+      },
+      "parchment": {
+        "hsl": "38 36% 96%",
+        "hex": "#f8f5f0",
+        "cssVar": "--color-parchment",
+        "classes": ["text-parchment", "text-text"],
+        "usage": "Primary text color. Warm, aged paper aesthetic.",
+        "semantic": "text"
+      },
+      "ash": {
+        "hsl": "218 11% 65%",
+        "hex": "#9ca3af",
+        "cssVar": "--color-ash",
+        "classes": ["text-ash", "text-muted"],
+        "usage": "Secondary/muted text, metadata, timestamps.",
+        "semantic": "muted"
+      },
+      "ember": {
+        "hsl": "15 70% 50%",
+        "hex": "#d97706",
+        "cssVar": "--color-ember",
+        "classes": ["text-ember", "bg-ember", "border-ember"],
+        "usage": "Destructive actions, Errors, Critical warnings.",
+        "semantic": "error"
+      },
+      "signal": {
+        "hsl": "60 20% 99%",
+        "hex": "#fdfdfc",
+        "cssVar": "--color-signal",
+        "classes": ["text-signal"],
+        "usage": "High-gain white for headings. The brightest allowed white.",
+        "semantic": "heading"
+      },
+      "border": {
+        "hsl": "240 4% 15%",
+        "hex": "#252528",
+        "cssVar": "--color-border",
+        "classes": ["border-divider"],
+        "usage": "Default border color for containers.",
+        "semantic": "divider"
+      }
+    },
+    "semanticAliases": {
+      "--color-bg": "var(--color-void)",
+      "--color-surface": "var(--color-obsidian)",
+      "--color-text": "var(--color-parchment)",
+      "--color-muted": "var(--color-ash)",
+      "--color-accent": "var(--color-gold)",
+      "--color-divider": "var(--color-border)"
+    }
+  },
+
+  "shadows": {
+    "doctrine": "STRICTLY FORBIDDEN. Axis uses Lighting and Borders, not shadows to create depth.",
+    "forbidden": [
+      "shadow-sm",
+      "shadow",
+      "shadow-md",
+      "shadow-lg",
+      "shadow-xl",
+      "shadow-2xl",
+      "drop-shadow",
+      "drop-shadow-sm",
+      "drop-shadow-md",
+      "drop-shadow-lg",
+      "drop-shadow-xl",
+      "box-shadow"
+    ],
+    "allowed": ["shadow-none"],
+    "exception": {
+      "condition": "Glow effects on active/focus states ONLY",
+      "pattern": "box-shadow: 0 0 20px -5px hsl(var(--color-accent))",
+      "example": "focus:ring-2 focus:ring-gold/50"
+    },
+    "alternative": "Use 1px borders with opacity for depth: border border-white/10"
+  },
+
+  "borderRadius": {
+    "doctrine": "Sharp edges. No rounded corners. Brutalist precision.",
+    "max": "2px",
+    "forbidden": [
+      "rounded",
+      "rounded-md",
+      "rounded-lg",
+      "rounded-xl",
+      "rounded-2xl",
+      "rounded-3xl",
+      "rounded-full",
+      "rounded-[4px]",
+      "rounded-[8px]",
+      "rounded-[12px]",
+      "rounded-[16px]"
+    ],
+    "allowed": ["rounded-none", "rounded-sm", "rounded-[2px]", "rounded-[1px]"],
+    "default": "rounded-none",
+    "cssVar": "--radius-card: 0px"
+  },
+
+  "animations": {
+    "doctrine": "Ritual Time. Heavy, gravitational movement. No snappy web animations.",
+    "minDuration": 500,
+    "forbidden": {
+      "durations": [
+        "duration-75",
+        "duration-100",
+        "duration-150",
+        "duration-200",
+        "duration-300",
+        "duration-400"
+      ],
+      "reason": "Animations faster than 500ms violate the 'Rush Veto'"
+    },
+    "durations": {
+      "micro": {
+        "value": 700,
+        "class": "duration-700",
+        "alias": "duration-ritual",
+        "usage": "Hover states, micro-interactions"
+      },
+      "macro": {
+        "value": 1200,
+        "class": "duration-[1200ms]",
+        "usage": "Page transitions, Modal open/close"
+      },
+      "ratify": {
+        "value": 1618,
+        "class": "duration-[1618ms]",
+        "alias": "duration-ratify",
+        "usage": "Form submissions, Confirmations (Golden Ratio scaling)"
+      }
+    },
+    "curve": {
+      "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "cssVar": "--ease-gravity",
+      "description": "High friction, no bounce. Heavy, mechanical movement."
+    },
+    "utilities": {
+      "transition-illuminate": "transition-all duration-[1200ms] ease-out",
+      "transition-commit": "transition-all duration-[1618ms] ease-out",
+      "transition-hover-intelligent": "transition-all duration-[700ms] ease-out"
+    }
+  },
+
+  "typography": {
+    "fontStack": {
+      "sans": {
+        "family": "Inter, ui-sans-serif, system-ui, -apple-system, sans-serif",
+        "class": "font-sans",
+        "usage": "Headlines (H1, H2, H3), Body text"
+      },
+      "mono": {
+        "family": "JetBrains Mono, ui-monospace, SFMono-Regular, monospace",
+        "class": "font-mono",
+        "usage": "Data labels, IDs, Timestamps, Status tags, Navigation links, Buttons"
+      }
+    },
+    "headings": {
+      "h1": {
+        "size": "text-h1 (3.5rem / 56px)",
+        "weight": "font-light (300)",
+        "tracking": "tracking-axis (-0.03em / -3%)",
+        "leading": "leading-h1 (1)",
+        "color": "text-signal",
+        "utility": "h1-apex"
+      },
+      "h3": {
+        "size": "text-h3 (1.1rem / 17.6px)",
+        "tracking": "tracking-h3 (-0.02em / -2%)",
+        "color": "text-signal"
+      }
+    },
+    "body": {
+      "size": "text-body (0.85rem / 13.6px)",
+      "leading": "leading-body (1.6)",
+      "color": "text-parchment or text-muted"
+    },
+    "data": {
+      "size": "text-btn (0.65rem / 10.4px) or text-meta (0.7rem / 11.2px)",
+      "font": "font-mono",
+      "transform": "uppercase",
+      "tracking": "tracking-widest (0.1em) or tracking-ultra (0.25em)",
+      "utility": "micro-status"
+    },
+    "scales": {
+      "--text-h1": "3.5rem",
+      "--text-h3": "1.1rem",
+      "--text-body": "0.85rem",
+      "--text-micro": "0.6rem",
+      "--text-meta": "0.7rem",
+      "--text-btn": "0.65rem"
+    },
+    "tracking": {
+      "--tracking-axis": "-0.03em",
+      "--tracking-h3": "-0.02em",
+      "--tracking-tight": "-0.025em",
+      "--tracking-normal": "0em",
+      "--tracking-wide": "0.025em",
+      "--tracking-widest": "0.1em",
+      "--tracking-ultra": "0.25em"
+    }
+  },
+
+  "components": {
+    "card": {
+      "required": ["card-axis"],
+      "forbidden": [
+        "shadow-md",
+        "shadow-lg",
+        "rounded-lg",
+        "rounded-xl",
+        "bg-white"
+      ],
+      "structure": {
+        "background": "bg-surface (--color-obsidian)",
+        "border": "border border-divider (1px solid)",
+        "radius": "rounded-none",
+        "hover": "border-gold, bg-obsidian-hover, translateY(-2px)",
+        "transition": "duration-[800ms] ease-[--ease-gravity]"
+      },
+      "example": "<div className=\"card-axis p-6\">Content</div>"
+    },
+    "button": {
+      "required": ["btn-axis"],
+      "forbidden": [
+        "rounded-full",
+        "rounded-lg",
+        "bg-blue-500",
+        "bg-green-500",
+        "bg-red-500",
+        "bg-purple-500",
+        "shadow-md",
+        "shadow-lg"
+      ],
+      "states": {
+        "default": "Transparent background, 1px border (ash/30), text-parchment",
+        "hover": "Background stays transparent, border becomes gold, text becomes gold",
+        "active": "Fill gold, text-void"
+      },
+      "structure": {
+        "font": "font-mono",
+        "size": "text-btn (0.65rem)",
+        "tracking": "tracking-widest (0.1em)",
+        "transform": "uppercase",
+        "color": "text-gold",
+        "border": "border-b border-gold/35",
+        "transition": "duration-300"
+      },
+      "example": "<button className=\"btn-axis\">Submit Action</button>"
+    },
+    "input": {
+      "forbidden": ["rounded-lg", "shadow-sm", "bg-white"],
+      "structure": {
+        "background": "bg-void or bg-obsidian",
+        "border": "border border-divider",
+        "focus": "border-gold, ring-2 ring-gold/50"
+      }
+    },
+    "link": {
+      "structure": {
+        "color": "text-gold",
+        "underline": "border-b border-gold/35",
+        "hover": "border-gold (full opacity)"
+      }
+    }
+  },
+
+  "layout": {
+    "container": {
+      "maxWidth": "--container-axis: 920px",
+      "padding": {
+        "mobile": "px-6 py-8",
+        "desktop": "px-12 py-16"
+      }
+    },
+    "doctrine": "Aggressive Negative Space. If it feels empty, do NOT fill it. Leave it void."
+  },
+
+  "terminology": {
+    "doctrine": "Language shapes perception. Use authoritative, precise terminology.",
+    "replacements": {
+      "User": "Operator",
+      "user": "operator",
+      "Settings": "Config",
+      "settings": "config",
+      "Oops": "Error",
+      "oops": "error",
+      "Something went wrong": "Operation failed",
+      "Please try again": "Retry operation",
+      "Submit": "Ratify",
+      "Save": "Commit",
+      "Delete": "Dissolve",
+      "Cancel": "Abort"
+    }
+  },
+
+  "vetoPatterns": {
+    "description": "Anti-patterns that trigger immediate rejection",
+    "patterns": [
+      {
+        "name": "The Pop Veto",
+        "violation": "Using gradients as primary backgrounds",
+        "pattern": "bg-gradient-to-*, from-*, to-*",
+        "exception": "Subtle accent gradients on text (text-divergence utility)"
+      },
+      {
+        "name": "The Float Veto",
+        "violation": "Using drop-shadows to lift elements",
+        "pattern": "shadow-*, drop-shadow-*"
+      },
+      {
+        "name": "The Friendly Veto",
+        "violation": "Using rounded-xl or circular buttons",
+        "pattern": "rounded-lg, rounded-xl, rounded-full, rounded-2xl"
+      },
+      {
+        "name": "The Rush Veto",
+        "violation": "Animations faster than 500ms",
+        "pattern": "duration-100, duration-150, duration-200, duration-300"
+      },
+      {
+        "name": "The Bleach Veto",
+        "violation": "Any usage of pure white (#FFFFFF)",
+        "pattern": "#FFFFFF, #fff, white, bg-white, text-white"
+      }
+    ]
+  },
+
+  "utilities": {
+    "axisProvided": [
+      {
+        "name": "text-divergence",
+        "description": "Gradient text effect (white to 45% white)",
+        "usage": "Subtle emphasis on secondary headings"
+      },
+      {
+        "name": "h1-apex",
+        "description": "Canonical H1 styling",
+        "usage": "Main page headings"
+      },
+      {
+        "name": "micro-status",
+        "description": "System status microtype",
+        "usage": "Status indicators, timestamps, coordinates"
+      },
+      {
+        "name": "card-axis",
+        "description": "Obsidian card with gravity hover",
+        "usage": "All card components"
+      },
+      {
+        "name": "btn-axis",
+        "description": "Mechanical link button",
+        "usage": "All button/link components"
+      }
+    ],
+    "intelligenceLayer": [
+      "vector-past",
+      "vector-present",
+      "vector-future",
+      "risk-on-track",
+      "risk-warning",
+      "risk-overrun",
+      "risk-critical",
+      "status-draft",
+      "status-listening",
+      "status-approved",
+      "status-vetoed",
+      "priority-high",
+      "priority-medium",
+      "priority-low",
+      "priority-urgent",
+      "data-loading",
+      "data-error",
+      "data-empty"
+    ]
+  }
+}

@@ -1,18 +1,14 @@
 # AI-BOS Mythic
 
-A Next.js monorepo with comprehensive documentation, governance, and AI-assisted development tooling.
+A Next.js monorepo with comprehensive documentation, governance, and AI-assisted
+development tooling.
 
 ---
 
 ## 📚 Documentation
 
-### Quick Start
-
-- **[QUICK_START.md](./QUICK_START.md)** - Get started in 5 minutes
-- **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** - Quick reference guide
-- **[System Architecture](./docs/architecture/DOC-0100_system-architecture.md)** - System architecture overview
-
-### Complete Documentation
+- **[System Architecture](./docs/architecture/DOC-0100_system-architecture.md)** -
+  System architecture overview
 
 - **[docs/](./docs/)** - Full internal documentation
   - Architecture, API, Guides, Reference, Governance

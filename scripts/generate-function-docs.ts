@@ -9,12 +9,12 @@
  *   pnpm generate:function-docs
  */
 
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs'
-import { join } from 'node:path'
-import { Project } from 'ts-morph'
-import { createScriptLogger } from '../src/lib/logger'
+import { writeFileSync, mkdirSync, existsSync } from "node:fs"
+import { join } from "node:path"
+import { Project } from "ts-morph"
+import { createScriptLogger } from "../src/lib/logger"
 
-const log = createScriptLogger('generate-function-docs')
+const log = createScriptLogger("generate-function-docs")
 
 interface FunctionDoc {
   name: string
@@ -31,38 +31,36 @@ interface FunctionDoc {
   exported: boolean
 }
 
-const outputDir = join(process.cwd(), 'apps/docs/content/reference/functions')
+const outputDir = join(process.cwd(), "apps/docs/content/reference/functions")
 const sourcePaths = [
-  'src/**/*.ts',
-  'packages/**/src/**/*.ts',
-  'apps/**/src/**/*.ts',
-  'apps/**/lib/**/*.ts',
+  "src/**/*.ts",
+  "packages/**/src/**/*.ts",
+  "apps/**/src/**/*.ts",
+  "apps/**/lib/**/*.ts",
 ]
 
 // Exclude patterns (check if file path contains these)
-const excludePatterns = [
-  'node_modules',
-  '.next',
-  'dist',
-  'build',
-  '.test.ts',
-  '.spec.ts',
-]
+const excludePatterns = ["node_modules", ".next", "dist", "build", ".test.ts", ".spec.ts"]
 
-function extractJSDocComment(node: { getJsDocs(): Array<{ getComment(): string; getTags(): Array<{ getTagName(): string; getComment(): string }> }> }): {
+function extractJSDocComment(node: {
+  getJsDocs(): Array<{
+    getComment(): string
+    getTags(): Array<{ getTagName(): string; getComment(): string }>
+  }>
+}): {
   description: string
   examples: string[]
 } {
   const jsDocs = node.getJsDocs()
-  if (jsDocs.length === 0) return { description: '', examples: [] }
+  if (jsDocs.length === 0) return { description: "", examples: [] }
 
   const firstDoc = jsDocs[0]
-  const description = firstDoc?.getComment() || ''
+  const description = firstDoc?.getComment() || ""
   const examples: string[] = []
 
   // Extract @example tags
   firstDoc?.getTags().forEach((tag) => {
-    if (tag.getTagName() === 'example') {
+    if (tag.getTagName() === "example") {
       const example = tag.getComment()
       if (example) examples.push(example)
     }
@@ -71,12 +69,12 @@ function extractJSDocComment(node: { getJsDocs(): Array<{ getComment(): string; 
   return { description, examples }
 }
 
-
 function generateMDX(functionDoc: FunctionDoc): string {
   const { name, description, params, returnType, examples } = functionDoc
 
-  const paramsSection = params.length > 0
-    ? `## Parameters
+  const paramsSection =
+    params.length > 0
+      ? `## Parameters
 
 ${params
   .map(
@@ -84,14 +82,14 @@ ${params
 
 **Type**: \`${param.type}\`
 
-${param.optional ? '**Optional**' : '**Required**'}
+${param.optional ? "**Optional**" : "**Required**"}
 
-${param.docs || 'No description available'}
+${param.docs || "No description available"}
 
 `
   )
-  .join('\n')}`
-    : ''
+  .join("\n")}`
+      : ""
 
   const returnsSection = `## Returns
 
@@ -99,8 +97,9 @@ ${param.docs || 'No description available'}
 
 `
 
-  const examplesSection = examples.length > 0
-    ? `## Examples
+  const examplesSection =
+    examples.length > 0
+      ? `## Examples
 
 ${examples
   .map(
@@ -110,8 +109,8 @@ ${example}
 
 `
   )
-  .join('\n')}`
-    : ''
+  .join("\n")}`
+      : ""
 
   return `---
 title: ${name}
@@ -148,17 +147,17 @@ function generateMetadata(functionDocs: FunctionDoc[]): Record<string, unknown> 
 }
 
 async function generateFunctionDocs(): Promise<void> {
-  log.info('Starting function documentation generation...')
+  log.info("Starting function documentation generation...")
 
   // Ensure output directory exists
   if (!existsSync(outputDir)) {
     mkdirSync(outputDir, { recursive: true })
-    log.info({ outputDir }, 'Created output directory')
+    log.info({ outputDir }, "Created output directory")
   }
 
   // Initialize ts-morph project
   const project = new Project({
-    tsConfigFilePath: join(process.cwd(), 'tsconfig.json'),
+    tsConfigFilePath: join(process.cwd(), "tsconfig.json"),
     skipAddingFilesFromTsConfig: false,
   })
 
@@ -167,7 +166,7 @@ async function generateFunctionDocs(): Promise<void> {
     try {
       project.addSourceFilesAtPaths(pattern)
     } catch (error) {
-      log.warn({ pattern, error }, 'Failed to add source files for pattern')
+      log.warn({ pattern, error }, "Failed to add source files for pattern")
     }
   }
 
@@ -191,7 +190,7 @@ async function generateFunctionDocs(): Promise<void> {
       // Create unique key with file path to handle duplicates
       const uniqueKey = `${filePath}:${name}`
       if (processedNames.has(uniqueKey)) {
-        log.warn({ name, filePath }, 'Duplicate function name found, skipping')
+        log.warn({ name, filePath }, "Duplicate function name found, skipping")
         return
       }
       processedNames.add(uniqueKey)
@@ -206,21 +205,21 @@ async function generateFunctionDocs(): Promise<void> {
         const paramOptional = param.hasInitializer() || param.isOptional()
 
         // Extract param docs from JSDoc
-        let paramDocs = ''
+        let paramDocs = ""
         try {
           const jsDocs = func.getJsDocs()
           if (jsDocs.length > 0) {
             const tags = jsDocs[0].getTags()
             const paramTag = tags.find((tag) => {
               try {
-                return tag.getTagName() === 'param' && tag.getName() === paramName
+                return tag.getTagName() === "param" && tag.getName() === paramName
               } catch {
                 return false
               }
             })
             if (paramTag) {
               try {
-                paramDocs = paramTag.getComment() || ''
+                paramDocs = paramTag.getComment() || ""
               } catch {
                 // Ignore errors
               }
@@ -259,22 +258,22 @@ async function generateFunctionDocs(): Promise<void> {
   for (const functionDoc of functionDocs) {
     // Only generate docs for exported functions or functions with JSDoc
     if (!functionDoc.exported && !functionDoc.description) {
-      log.debug({ name: functionDoc.name }, 'Skipping non-exported function without JSDoc')
+      log.debug({ name: functionDoc.name }, "Skipping non-exported function without JSDoc")
       continue
     }
 
     const mdx = generateMDX(functionDoc)
     const outputPath = join(outputDir, `${functionDoc.name}.mdx`)
 
-    writeFileSync(outputPath, mdx, 'utf-8')
+    writeFileSync(outputPath, mdx, "utf-8")
     generatedCount++
-    log.debug({ name: functionDoc.name, path: outputPath }, 'Generated function documentation')
+    log.debug({ name: functionDoc.name, path: outputPath }, "Generated function documentation")
   }
 
   // Generate metadata JSON
   const metadata = generateMetadata(functionDocs)
-  const metadataPath = join(outputDir, '.meta.json')
-  writeFileSync(metadataPath, JSON.stringify(metadata, null, 2), 'utf-8')
+  const metadataPath = join(outputDir, ".meta.json")
+  writeFileSync(metadataPath, JSON.stringify(metadata, null, 2), "utf-8")
 
   log.info(
     { generated: generatedCount, total: functionDocs.length, outputDir },
@@ -284,6 +283,6 @@ async function generateFunctionDocs(): Promise<void> {
 
 // Run generator
 generateFunctionDocs().catch((error) => {
-  log.error({ error }, 'Failed to generate function documentation')
+  log.error({ error }, "Failed to generate function documentation")
   process.exit(1)
 })

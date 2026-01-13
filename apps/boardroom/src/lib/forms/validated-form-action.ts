@@ -1,14 +1,14 @@
 /**
  * Validated Form Actions with Zod
- * 
+ *
  * Contract-First approach: Validate form actions with Zod
  * Provides type-safe form actions using Next.js useActionState hook.
  */
 
-'use client'
+"use client"
 
-import { z as z4 } from 'zod/v4'
-import { useActionState, useTransition } from 'react'
+import { z as z4 } from "zod/v4"
+import { useActionState, useTransition } from "react"
 
 /**
  * Form action result type
@@ -29,17 +29,17 @@ export interface FormActionState {
 
 /**
  * Hook for validated form actions
- * 
+ *
  * Wraps a server action with Zod validation for form inputs.
  * Provides type-safe form handling with validation errors.
- * 
+ *
  * @example
  * ```typescript
  * const { state, formAction, isPending } = useValidatedFormAction(
  *   createProposalInputSchema,
  *   createProposal
  * )
- * 
+ *
  * <form action={formAction}>
  *   {state.issues?.map(issue => (
  *     <div key={issue.path.join('.')}>{issue.message}</div>
@@ -52,23 +52,20 @@ export function useValidatedFormAction<TSchema extends z4.ZodTypeAny>(
   action: (input: z4.infer<TSchema>) => Promise<FormActionResult>
 ) {
   const [isPending, startTransition] = useTransition()
-  
+
   const [state, formAction] = useActionState(
-    async (
-      prevState: FormActionState,
-      formData: FormData
-    ): Promise<FormActionState> => {
+    async (prevState: FormActionState, formData: FormData): Promise<FormActionState> => {
       // Extract form data
       const rawInput = Object.fromEntries(formData.entries())
-      
+
       // Validate with Zod schema
       const result = schema.safeParse(rawInput)
-      
+
       if (!result.success) {
         // Return validation errors
         return {
           success: false,
-          error: 'Validation failed',
+          error: "Validation failed",
           issues: result.error.issues,
         }
       }
@@ -76,7 +73,7 @@ export function useValidatedFormAction<TSchema extends z4.ZodTypeAny>(
       try {
         // Execute action with validated input
         const actionResult = await action(result.data)
-        
+
         if (actionResult.success) {
           return {
             success: true,
@@ -93,7 +90,7 @@ export function useValidatedFormAction<TSchema extends z4.ZodTypeAny>(
         // Handle action errors
         return {
           success: false,
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: error instanceof Error ? error.message : "Unknown error",
         }
       }
     },
@@ -109,12 +106,12 @@ export function useValidatedFormAction<TSchema extends z4.ZodTypeAny>(
 
 /**
  * Helper to convert FormData to object with proper types
- * 
+ *
  * Handles multi-value fields and type coercion.
  */
 export function formDataToObject(formData: FormData): Record<string, unknown> {
   const obj: Record<string, unknown> = {}
-  
+
   for (const [key, value] of formData.entries()) {
     // Handle multiple values for the same key
     if (obj[key]) {
@@ -128,6 +125,6 @@ export function formDataToObject(formData: FormData): Record<string, unknown> {
       obj[key] = value
     }
   }
-  
+
   return obj
 }

@@ -2,9 +2,11 @@
 
 ## 🎯 Objective
 
-Transform all **IDENTICAL** (currently used) Zod features from **OPTIONAL** to **MANDATORY** requirements across the entire workspace.
+Transform all **IDENTICAL** (currently used) Zod features from **OPTIONAL** to
+**MANDATORY** requirements across the entire workspace.
 
-**Goal**: 100% compliance with mandatory Zod patterns and zero tolerance for deviations.
+**Goal**: 100% compliance with mandatory Zod patterns and zero tolerance for
+deviations.
 
 ---
 
@@ -20,6 +22,7 @@ Transform all **IDENTICAL** (currently used) Zod features from **OPTIONAL** to *
 ### Mandatory Schema Patterns
 
 #### String Schemas (MUST use these patterns)
+
 - `z.string()` - Base string type
 - `.min()` - Minimum length validation
 - `.max()` - Maximum length validation
@@ -27,6 +30,7 @@ Transform all **IDENTICAL** (currently used) Zod features from **OPTIONAL** to *
 - `.datetime()` - ISO datetime strings
 
 #### Number Schemas (MUST use these patterns)
+
 - `z.number()` - Base number type
 - `.min()` - Minimum value
 - `.max()` - Maximum value
@@ -35,26 +39,32 @@ Transform all **IDENTICAL** (currently used) Zod features from **OPTIONAL** to *
 - `z.coerce.number()` - Number coercion for query params
 
 #### Object Schemas (MUST use these patterns)
+
 - `z.object()` - Object definition
 - `.extend()` - Schema extension
 - `.partial()` - Optional fields for updates
 - `.strip()` - Default behavior (strip unknown keys)
 
 #### Array Schemas (MUST use these patterns)
+
 - `z.array()` - Array definition
 
 #### Enum Schemas (MUST use these patterns)
+
 - `z.enum()` - Enum definition
 
 #### Wrapper Methods (MUST use these patterns)
+
 - `.optional()` - Optional fields
 - `.nullable()` - Nullable fields
 - `.default()` - Default values
 
 #### Documentation (MUST use these patterns)
+
 - `.describe()` - Schema documentation
 
 #### Integration (MUST use these patterns)
+
 - `drizzle-zod` - Database schema integration
 - `zod-to-openapi` - OpenAPI generation
 - `.openapi()` - OpenAPI metadata
@@ -65,15 +75,17 @@ Transform all **IDENTICAL** (currently used) Zod features from **OPTIONAL** to *
 
 ### 1. Biome Integration (PRIMARY)
 
-**Biome is the primary enforcement tool** for catching Zod violations at development time.
+**Biome is the primary enforcement tool** for catching Zod violations at
+development time.
 
-**Configuration**: `biome.json` includes Zod-specific rules
-**Commands**:
+**Configuration**: `biome.json` includes Zod-specific rules **Commands**:
+
 - `pnpm check` - Run Biome validation
 - `pnpm check:fix` - Auto-fix Biome issues
 - `pnpm check:ci` - CI/CD validation
 
 **What Biome Catches**:
+
 - Import path violations (`'zod'` vs `'zod/v4'`)
 - Type inference violations
 - Missing documentation patterns
@@ -83,14 +95,15 @@ Transform all **IDENTICAL** (currently used) Zod features from **OPTIONAL** to *
 
 **Cursor rules** provide IDE-level enforcement and guidance.
 
-**Location**: `.cursor/rules/zod-mandatory-enforcement.mdc`
-**Features**:
+**Location**: `.cursor/rules/zod-mandatory-enforcement.mdc` **Features**:
+
 - Real-time guidance in IDE
 - Pattern suggestions
 - Violation warnings
 - Customizable per workspace
 
 **How to Customize**:
+
 1. Open `.cursor/rules/zod-mandatory-enforcement.mdc`
 2. Modify rules as needed
 3. Cursor will apply changes immediately
@@ -99,14 +112,15 @@ Transform all **IDENTICAL** (currently used) Zod features from **OPTIONAL** to *
 
 Strict type definitions enforce mandatory patterns at compile time.
 
-**Location**: `src/lib/zod/types.ts`
-**Enforcement**: TypeScript compiler catches violations
+**Location**: `src/lib/zod/types.ts` **Enforcement**: TypeScript compiler
+catches violations
 
 ### 4. Validation Scripts
 
 Custom validation scripts catch patterns Biome cannot detect.
 
 **Scripts**:
+
 - `pnpm validate:zod` - Custom Zod validation
 - `pnpm migrate:zod-imports` - Import migration
 
@@ -117,6 +131,7 @@ Custom validation scripts catch patterns Biome cannot detect.
 Validate schemas before commits using Biome.
 
 **Setup**: Add to `.husky/pre-commit` or similar
+
 ```bash
 pnpm check --staged
 pnpm validate:zod
@@ -127,6 +142,7 @@ pnpm validate:zod
 Automated checks in CI pipeline using Biome.
 
 **Commands**:
+
 - `pnpm check:ci` - Biome CI check
 - `pnpm validate:zod` - Custom validation
 
@@ -134,8 +150,8 @@ Automated checks in CI pipeline using Biome.
 
 Mandatory templates ensure new schemas follow patterns.
 
-**Location**: `src/lib/api-schemas/patterns.ts`
-**Usage**: Import and use mandatory patterns
+**Location**: `src/lib/api-schemas/patterns.ts` **Usage**: Import and use
+mandatory patterns
 
 ---
 
@@ -228,6 +244,7 @@ Configure Biome to catch Zod violations:
    - Enable import type checking
 
 2. **Test Biome**:
+
    ```bash
    pnpm check
    pnpm check:fix

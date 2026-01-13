@@ -5,20 +5,20 @@
  * Supports engagement tracking and user feedback.
  */
 
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
-import { relations } from 'drizzle-orm'
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
-import { z as z4 } from 'zod/v4'
-import { broadcasts } from './broadcasts'
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import { relations } from "drizzle-orm"
+import { createInsertSchema, createSelectSchema } from "drizzle-zod"
+import { z as z4 } from "zod/v4"
+import { broadcasts } from "./broadcasts"
 
-export const broadcastReactions = pgTable('broadcast_reactions', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  broadcastId: uuid('broadcast_id')
+export const broadcastReactions = pgTable("broadcast_reactions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  broadcastId: uuid("broadcast_id")
     .notNull()
-    .references(() => broadcasts.id, { onDelete: 'cascade' }),
-  userId: uuid('user_id').notNull(),
-  emoji: text('emoji').notNull(), // '👍', '❤️', '🎉', etc.
-  createdAt: timestamp('created_at').notNull().defaultNow(),
+    .references(() => broadcasts.id, { onDelete: "cascade" }),
+  userId: uuid("user_id").notNull(),
+  emoji: text("emoji").notNull(), // '👍', '❤️', '🎉', etc.
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 })
 
 // Zod schemas

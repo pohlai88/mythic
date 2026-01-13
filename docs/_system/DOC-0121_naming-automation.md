@@ -10,15 +10,16 @@ tags: [documentation, automation, naming, governance]
 
 # Documentation Naming Automation
 
-**Date**: 2026-01-10
-**Status**: ✅ **ACTIVE**
-**Purpose**: Automated naming convention enforcement and fixing
+**Date**: 2026-01-10 **Status**: ✅ **ACTIVE** **Purpose**: Automated naming
+convention enforcement and fixing
 
 ---
 
 ## Overview
 
-Documentation naming is now **automated** with auto-fix capabilities. Instead of manual renaming, the system automatically fixes naming violations before validation.
+Documentation naming is now **automated** with auto-fix capabilities. Instead of
+manual renaming, the system automatically fixes naming violations before
+validation.
 
 ---
 
@@ -41,6 +42,7 @@ Documentation naming is now **automated** with auto-fix capabilities. Instead of
 - Extension: `.md` or `.mdx`
 
 **Example**:
+
 - `API_AUTOGENERATION_STRATEGY.md` → `DOC-0115_api-autogeneration-strategy.md`
 
 ---
@@ -84,6 +86,7 @@ The pre-commit hook automatically:
 ### Step 1: Detection
 
 Finds files that don't match naming patterns:
+
 - Missing DOC-XXXX prefix
 - Invalid characters
 - Wrong format
@@ -128,11 +131,13 @@ docs/reference/DOC-0119_turbopack-quick-reference.md
 ### Reference Updates
 
 **Before**:
+
 ```markdown
 See [API Strategy](./api/API_AUTOGENERATION_STRATEGY.md)
 ```
 
 **After**:
+
 ```markdown
 See [API Strategy](./api/DOC-0115_api-autogeneration-strategy.md)
 ```
@@ -144,6 +149,7 @@ See [API Strategy](./api/DOC-0115_api-autogeneration-strategy.md)
 ### Excluded Directories
 
 Auto-fix skips:
+
 - `content/` (Nextra routing files)
 - `docs/migrations/` (historical)
 - `docs/changelog/` (historical)
@@ -184,6 +190,7 @@ pnpm fix:docs:naming
 ### Conflicts
 
 If target file exists:
+
 - Auto-fix skips the file
 - Manual intervention required
 - Check for duplicate content
@@ -218,13 +225,11 @@ grep -r "old-filename" docs/
 
 ## Status
 
-**Automation**: ✅ **ACTIVE**
-**Pre-Commit**: ✅ **ENABLED**
-**Auto-Fix**: ✅ **WORKING**
+**Automation**: ✅ **ACTIVE** **Pre-Commit**: ✅ **ENABLED** **Auto-Fix**: ✅
+**WORKING**
 
 All documentation naming is now automated. No manual intervention required.
 
 ---
 
-**Last Updated**: 2026-01-10
-**Next Review**: As needed
+**Last Updated**: 2026-01-10 **Next Review**: As needed

@@ -4,14 +4,14 @@
  * Phase 17: Runtime validation for user and global config
  */
 
-import { z as z4 } from 'zod/v4'
+import { z as z4 } from "zod/v4"
 import {
   userConfigSchema,
   globalConfigSchema,
   enforceGlobalConfigSecurity,
   type UserConfig,
   type GlobalConfig,
-} from './user-config-schema'
+} from "./user-config-schema"
 
 /**
  * Validate and parse user configuration
@@ -21,7 +21,7 @@ import {
 export function parseUserConfig(config: unknown): UserConfig {
   const result = userConfigSchema.safeParse(config)
   if (!result.success) {
-    throw new Error(`Invalid user config: ${result.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(`Invalid user config: ${result.error.issues[0]?.message || "Unknown error"}`)
   }
   return result.data
 }
@@ -34,7 +34,7 @@ export function parseUserConfig(config: unknown): UserConfig {
 export function parseGlobalConfig(config: unknown): GlobalConfig {
   const result = globalConfigSchema.safeParse(config)
   if (!result.success) {
-    throw new Error(`Invalid global config: ${result.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(`Invalid global config: ${result.error.issues[0]?.message || "Unknown error"}`)
   }
   // Enforce security policies
   return enforceGlobalConfigSecurity(result.data)
@@ -73,27 +73,31 @@ export function mergeUserConfig(
   // Validate both inputs
   const userResult = userConfigSchema.partial().safeParse(userCustomization)
   if (!userResult.success) {
-    throw new Error(`Invalid user customization: ${userResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid user customization: ${userResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   const validatedUser = userResult.data
 
   const globalResult = globalConfigSchema.partial().safeParse(globalDefaults)
   if (!globalResult.success) {
-    throw new Error(`Invalid global defaults: ${globalResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid global defaults: ${globalResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   const validatedGlobal = globalResult.data
 
   // Start with defaults
   const defaults: UserConfig = {
-    user_id: validatedUser.user_id || '',
-    theme: validatedGlobal.theme || 'system',
-    default_view: 'pool_table',
+    user_id: validatedUser.user_id || "",
+    theme: validatedGlobal.theme || "system",
+    default_view: "pool_table",
     cards_per_page: validatedGlobal.show_risk_scores ? 20 : 10,
     compact_mode: false,
     email_notifications: true,
-    mention_alerts: 'instant',
+    mention_alerts: "instant",
     approval_reminders: true,
-    digest_frequency: 'daily',
+    digest_frequency: "daily",
     show_future_vector: validatedGlobal.show_risk_scores ?? true,
     show_past_versions: true,
     auto_collapse_comments: false,
@@ -115,7 +119,9 @@ export function mergeUserConfig(
     ...validatedUser,
   })
   if (!mergedResult.success) {
-    throw new Error(`Invalid merged config: ${mergedResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid merged config: ${mergedResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   return mergedResult.data
 }

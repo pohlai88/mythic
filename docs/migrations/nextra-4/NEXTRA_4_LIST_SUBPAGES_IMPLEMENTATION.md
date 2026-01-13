@@ -1,13 +1,15 @@
 # Nextra 4: List Subpages Feature - Implementation Complete
 
-**Date**: 2025-01-27
-**Status**: ✅ **IMPLEMENTED** - List Subpages feature added to Guides index page
+**Date**: 2025-01-27 **Status**: ✅ **IMPLEMENTED** - List Subpages feature
+added to Guides index page
 
 ---
 
 ## 🎯 Overview
 
-The **List Subpages** feature has been implemented to automatically display all subpages as cards on index pages. This provides a visual, card-based navigation alternative to the sidebar.
+The **List Subpages** feature has been implemented to automatically display all
+subpages as cards on index pages. This provides a visual, card-based navigation
+alternative to the sidebar.
 
 ---
 
@@ -27,9 +29,9 @@ title: Guides
 description: How-to guides for NexusCanon-AXIS
 ---
 
-import { Cards } from 'nextra/components'
-import { MDXRemote } from 'nextra/mdx-remote'
-import { createIndexPage, getPageMap } from 'nextra/page-map'
+import { Cards } from "nextra/components"
+import { MDXRemote } from "nextra/mdx-remote"
+import { createIndexPage, getPageMap } from "nextra/page-map"
 
 # Guides
 
@@ -38,13 +40,9 @@ Step-by-step guides for working with NexusCanon-AXIS governance documentation.
 ## Available Guides
 
 <MDXRemote
-  compiledSource={
-    await createIndexPage(
-      await getPageMap('/guides')
-    )
-  }
+  compiledSource={await createIndexPage(await getPageMap("/guides"))}
   components={{
-    Cards
+    Cards,
   }}
 />
 
@@ -85,30 +83,28 @@ The following subpages will be automatically displayed as cards:
 To add icons to the cards, add an `icon` field to each subpage's front matter:
 
 **Example** (`content/guides/getting-started.mdx`):
+
 ```mdx
 ---
 title: Getting Started
 description: Initial setup and orientation for NexusCanon-AXIS
-icon: MyIcon  # Optional: Add icon component
+icon: MyIcon # Optional: Add icon component
 ---
 ```
 
 Then import and provide the icon component:
+
 ```mdx
-import { Cards } from 'nextra/components'
-import { MDXRemote } from 'nextra/mdx-remote'
-import { createIndexPage, getPageMap } from 'nextra/page-map'
-import { MyIcon } from '../path/to/icons'  // Import icon
+import { Cards } from "nextra/components"
+import { MDXRemote } from "nextra/mdx-remote"
+import { createIndexPage, getPageMap } from "nextra/page-map"
+import { MyIcon } from "../path/to/icons" // Import icon
 
 <MDXRemote
-  compiledSource={
-    await createIndexPage(
-      await getPageMap('/guides')
-    )
-  }
+  compiledSource={await createIndexPage(await getPageMap("/guides"))}
   components={{
     Cards,
-    MyIcon  // Provide icon component
+    MyIcon, // Provide icon component
   }}
 />
 ```
@@ -153,18 +149,14 @@ The following index pages could also benefit from this feature:
 To add to other index pages, follow the same pattern:
 
 ```mdx
-import { Cards } from 'nextra/components'
-import { MDXRemote } from 'nextra/mdx-remote'
-import { createIndexPage, getPageMap } from 'nextra/page-map'
+import { Cards } from "nextra/components"
+import { MDXRemote } from "nextra/mdx-remote"
+import { createIndexPage, getPageMap } from "nextra/page-map"
 
 <MDXRemote
-  compiledSource={
-    await createIndexPage(
-      await getPageMap('/your-route')
-    )
-  }
+  compiledSource={await createIndexPage(await getPageMap("/your-route"))}
   components={{
-    Cards
+    Cards,
   }}
 />
 ```
@@ -197,8 +189,8 @@ pnpm check
 
 ## 📊 Feature Status
 
-| Feature                  | Status            | Notes                         |
-| ------------------------ | ----------------- | ----------------------------- |
+| Feature                  | Status             | Notes                         |
+| ------------------------ | ------------------ | ----------------------------- |
 | **List Subpages**        | ✅ **IMPLEMENTED** | Added to `/guides` index page |
 | **whiteListTagsStyling** | ⚠️ **SKIPPED**     | Not needed                    |
 | **asIndexPage**          | ⚠️ **SKIPPED**     | No conflicts found            |
@@ -230,5 +222,5 @@ pnpm check
 
 ---
 
-**Last Updated**: 2025-01-27
-**Status**: ✅ **IMPLEMENTED** - List Subpages feature active on `/guides` page
+**Last Updated**: 2025-01-27 **Status**: ✅ **IMPLEMENTED** - List Subpages
+feature active on `/guides` page

@@ -1,11 +1,11 @@
 # Nextra 4: Bundle Size Improvements
 
-**Date**: 2025-01-27
-**Status**: ✅ **Significant Improvements Achieved**
+**Date**: 2025-01-27 **Status**: ✅ **Significant Improvements Achieved**
 
 ## Overview
 
-Nextra 4 provides **significant bundle size reductions** compared to Nextra 3, thanks to App Router optimizations and React Compiler enhancements.
+Nextra 4 provides **significant bundle size reductions** compared to Nextra 3,
+thanks to App Router optimizations and React Compiler enhancements.
 
 ---
 
@@ -14,15 +14,18 @@ Nextra 4 provides **significant bundle size reductions** compared to Nextra 3, t
 ### Docs Example (nextra-theme-docs)
 
 #### Nextra 3
+
 - **First Load JS**: 173 kB
 - **Shared chunks**: Larger bundle size
 
 #### Nextra 4
+
 - **First Load JS**: 106 kB
 - **Shared chunks**: Optimized
 - **Improvement**: **38.7% reduction** (67 kB smaller)
 
 **Route Breakdown**:
+
 ```
 Route (app)                              Size     First Load JS
 ┌ ○ /                                    146 B           106 kB
@@ -40,15 +43,18 @@ Route (app)                              Size     First Load JS
 ### Blog Example (nextra-theme-blog)
 
 #### Nextra 3
+
 - **First Load JS**: 114 kB
 - **Shared chunks**: Larger bundle size
 
 #### Nextra 4
+
 - **First Load JS**: 105 kB
 - **Shared chunks**: Optimized
 - **Improvement**: **7.9% reduction** (9 kB smaller)
 
 **Route Breakdown**:
+
 ```
 Route (app)                                 Size     First Load JS
 ┌ ○ /                                       578 B           130 kB
@@ -67,6 +73,7 @@ Route (app)                                 Size     First Load JS
 ### i18n Docs Example
 
 #### Nextra 4 with i18n
+
 - **First Load JS**: 106 kB (same as non-i18n)
 - **Middleware**: 40.4 kB
 - **Total**: ~146 kB (with i18n support)
@@ -74,6 +81,7 @@ Route (app)                                 Size     First Load JS
 **Key Insight**: i18n adds minimal overhead - only middleware size increases.
 
 **Route Breakdown**:
+
 ```
 Route (app)                                    Size     First Load JS
 ┌ ● /[lang]/[[...mdxPath]]                     3.79 kB         184 kB
@@ -99,11 +107,13 @@ Route (app)                                    Size     First Load JS
 **Significant reductions** in First Load JS:
 
 **Docs Theme**:
+
 - **Before**: 173 kB (Nextra 3)
 - **After**: 106 kB (Nextra 4)
 - **Savings**: 67 kB (**38.7% reduction**)
 
 **Blog Theme**:
+
 - **Before**: 114 kB (Nextra 3)
 - **After**: 105 kB (Nextra 4)
 - **Savings**: 9 kB (**7.9% reduction**)
@@ -135,7 +145,8 @@ Route (app)                                    Size     First Load JS
 
 ### 2. React Compiler
 
-- **Automatic optimizations**: Removed unnecessary `useCallback`, `useMemo`, `memo`
+- **Automatic optimizations**: Removed unnecessary `useCallback`, `useMemo`,
+  `memo`
 - **Better code generation**: More efficient output
 - **Smaller bundles**: Optimized component code
 
@@ -158,6 +169,7 @@ Route (app)                                    Size     First Load JS
 ### Bundle Size Analysis
 
 **Our Implementation**:
+
 - ✅ Nextra 4 App Router
 - ✅ Server Components
 - ✅ RSC i18n ready (when needed)
@@ -165,6 +177,7 @@ Route (app)                                    Size     First Load JS
 - ✅ React Compiler optimizations
 
 **Expected Benefits**:
+
 - ✅ **36.9% smaller** First Load JS
 - ✅ Faster initial page load
 - ✅ Better mobile performance
@@ -177,6 +190,7 @@ Route (app)                                    Size     First Load JS
 ### How to Measure Bundle Size
 
 **Build and analyze**:
+
 ```bash
 # Build the application
 pnpm build
@@ -188,12 +202,14 @@ ANALYZE=true pnpm build
 ```
 
 **Output**: Bundle analyzer report showing:
+
 - Individual route sizes
 - Shared chunk sizes
 - First Load JS sizes
 - Total bundle size
 
 **Current Setup**:
+
 - ✅ Bundle analyzer configured (`@next/bundle-analyzer`)
 - ✅ Analyze script available (`pnpm analyze`)
 - ✅ Automatic analysis with `ANALYZE=true`
@@ -238,11 +254,13 @@ ANALYZE=true pnpm build
 ### Performance Metrics
 
 **Before (Nextra 3)**:
+
 - First Load JS: 168 kB
 - Time to Interactive: Slower
 - Mobile performance: Heavier
 
 **After (Nextra 4)**:
+
 - First Load JS: 106 kB (-38.7%)
 - Time to Interactive: Faster
 - Mobile performance: Better
@@ -289,18 +307,17 @@ Route (app)                              Size     First Load JS
 
 ## Summary
 
-✅ **38.7% Bundle Size Reduction** (Docs): 173 kB → 106 kB
-✅ **7.9% Bundle Size Reduction** (Blog): 114 kB → 105 kB
-✅ **Faster Load Times**: Smaller bundles = faster downloads
-✅ **Better Performance**: Improved Core Web Vitals
-✅ **i18n Efficient**: Minimal overhead (~40 kB middleware)
-✅ **Production Ready**: All optimizations applied
+✅ **38.7% Bundle Size Reduction** (Docs): 173 kB → 106 kB ✅ **7.9% Bundle Size
+Reduction** (Blog): 114 kB → 105 kB ✅ **Faster Load Times**: Smaller bundles =
+faster downloads ✅ **Better Performance**: Improved Core Web Vitals ✅ **i18n
+Efficient**: Minimal overhead (~40 kB middleware) ✅ **Production Ready**: All
+optimizations applied
 
-**Conclusion**: First Load JS is **significantly decreased** in all Nextra 4 examples.
+**Conclusion**: First Load JS is **significantly decreased** in all Nextra 4
+examples.
 
 **Status**: ✅ **Optimized for Performance**
 
 ---
 
-**Last Updated**: 2025-01-27
-**Next Review**: After production deployment
+**Last Updated**: 2025-01-27 **Next Review**: After production deployment

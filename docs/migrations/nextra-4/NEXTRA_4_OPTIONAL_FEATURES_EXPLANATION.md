@@ -1,13 +1,16 @@
 # Nextra 4: Optional Features - Explanation & Reasoning
 
-**Date**: 2025-01-27
-**Purpose**: Explain why certain features are marked as "Optional" and when to use them
+**Date**: 2025-01-27 **Purpose**: Explain why certain features are marked as
+"Optional" and when to use them
 
 ---
 
 ## 🎯 Overview
 
-In Nextra 4, some features are marked as **⚠️ Optional** because they are **enhancements** rather than **requirements**. These features provide customization opportunities but are not necessary for the core functionality to work.
+In Nextra 4, some features are marked as **⚠️ Optional** because they are
+**enhancements** rather than **requirements**. These features provide
+customization opportunities but are not necessary for the core functionality to
+work.
 
 ---
 
@@ -18,7 +21,9 @@ In Nextra 4, some features are marked as **⚠️ Optional** because they are **
 **Status**: ⚠️ **OPTIONAL**
 
 **What It Is**:
-- Ability to customize icons displayed in code blocks (e.g., JavaScript, TypeScript, Python icons)
+
+- Ability to customize icons displayed in code blocks (e.g., JavaScript,
+  TypeScript, Python icons)
 - Uses `withIcons` HOC to wrap the `Pre` component
 
 **Why It's Optional**:
@@ -45,12 +50,14 @@ In Nextra 4, some features are marked as **⚠️ Optional** because they are **
    - More code to review and test
 
 **When to Use**:
+
 - ✅ You have a specific brand identity requiring custom icons
 - ✅ You want to match icons with your design system
 - ✅ You have icon assets ready to use
 - ✅ Visual consistency is a high priority
 
 **When NOT to Use**:
+
 - ❌ Default icons are sufficient for your needs
 - ❌ You want to minimize bundle size
 - ❌ You prefer simplicity over customization
@@ -65,7 +72,9 @@ In Nextra 4, some features are marked as **⚠️ Optional** because they are **
 **Status**: ⚠️ **OPTIONAL**
 
 **What It Is**:
-- Ability to customize text selection color using `color` prop on `<Head>` component
+
+- Ability to customize text selection color using `color` prop on `<Head>`
+  component
 - Selection color matches your primary theme color
 
 **Why It's Optional**:
@@ -91,12 +100,14 @@ In Nextra 4, some features are marked as **⚠️ Optional** because they are **
    - Doesn't affect core documentation functionality
 
 **When to Use**:
+
 - ✅ You have a strong brand color identity
 - ✅ You want selection color to match your theme
 - ✅ You're building a premium, polished experience
 - ✅ You have design system color values ready
 
 **When NOT to Use**:
+
 - ❌ Default browser selection is acceptable
 - ❌ You want to minimize configuration
 - ❌ You prioritize functionality over visual polish
@@ -111,18 +122,22 @@ In Nextra 4, some features are marked as **⚠️ Optional** because they are **
 ### Reasoning Categories:
 
 #### 1. **Functionality vs Enhancement**
+
 - **Required**: Features that affect core functionality
 - **Optional**: Features that enhance but don't enable functionality
 
 #### 2. **Default Behavior**
+
 - **Required**: Features that break without configuration
 - **Optional**: Features that work fine with defaults
 
 #### 3. **User Impact**
+
 - **Required**: Features users notice and need
 - **Optional**: Features that are nice-to-have polish
 
 #### 4. **Maintenance Cost**
+
 - **Required**: Features worth maintaining
 - **Optional**: Features that add complexity without critical benefit
 
@@ -130,8 +145,8 @@ In Nextra 4, some features are marked as **⚠️ Optional** because they are **
 
 ## 📊 Comparison: Required vs Optional
 
-| Feature                 | Type       | Reason          | Impact if Missing       |
-| ----------------------- | ---------- | --------------- | ----------------------- |
+| Feature                 | Type        | Reason          | Impact if Missing       |
+| ----------------------- | ----------- | --------------- | ----------------------- |
 | **compileMdx API**      | ✅ Required | Breaking change | Code won't work         |
 | **Table Components**    | ✅ Required | Breaking change | Components won't render |
 | **useRouter Migration** | ✅ Required | Breaking change | Navigation breaks       |
@@ -219,11 +234,13 @@ In Nextra 4, some features are marked as **⚠️ Optional** because they are **
 3. **They add complexity** without critical benefit
 4. **They're nice-to-have** rather than must-have
 
-**Current approach**: ✅ **Using defaults** - This is a valid, production-ready choice.
+**Current approach**: ✅ **Using defaults** - This is a valid, production-ready
+choice.
 
-**Future consideration**: Can add optional features when specific requirements arise.
+**Future consideration**: Can add optional features when specific requirements
+arise.
 
 ---
 
-**Last Updated**: 2025-01-27
-**Status**: ✅ **Documented** - Optional features explained with reasoning
+**Last Updated**: 2025-01-27 **Status**: ✅ **Documented** - Optional features
+explained with reasoning

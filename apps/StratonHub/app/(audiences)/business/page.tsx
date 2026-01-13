@@ -1,50 +1,77 @@
 /**
- * Business Hub Page
+ * Sovereign Hub Page
  *
- * Main page for business stakeholders documentation
+ * DOCTRINE: Pages must not paint.
+ * This page composes: AxisStack + AxisHero + AxisCardGrid + AxisCard
+ * Data only. No local component definitions.
+ *
+ * Note: The layout already provides the shell (header, nav, container).
+ * This page provides content blocks only.
  */
 
-import Link from 'next/link'
-import type { Metadata } from 'next'
+import type { Metadata } from "next"
+import { AxisStack, AxisHero, AxisCardGrid, AxisCard } from "@/components"
 
 export const metadata: Metadata = {
-  title: 'Business Documentation',
-  description: 'Business overview, training, and compliance documentation',
+  title: "Sovereign · StratonHub",
+  description:
+    "Sovereign-facing doctrine, governance, and executive truth surfaces for NexusCanon and AXIS.",
 }
+
+// Data only - no component definitions in pages
+const sovereignCards = [
+  {
+    href: "/business/overview",
+    eyebrow: "I · Orientation",
+    title: "System Overview",
+    body: "What NexusCanon is, how AXIS is governed, and what remains invariant across time and tooling.",
+    action: "Open Module →",
+  },
+  {
+    href: "/business/compliance",
+    eyebrow: "II · Governance",
+    title: "Compliance & Audit",
+    body: "Audit models, trace discipline, override recording, and the rules that preserve accountability.",
+    action: "Open Module →",
+  },
+  {
+    href: "/business/kpis",
+    eyebrow: "III · Metrics",
+    title: "KPI Dictionary",
+    body: "Canonical definitions for all Key Performance Indicators. Formulas, sources, and refresh schedules.",
+    action: "Open Module →",
+  },
+  {
+    href: "/business/process-flows",
+    eyebrow: "IV · Operations",
+    title: "Process Flows",
+    body: "End-to-end business processes: Procure-to-Pay, Order-to-Cash, Record-to-Report, and more.",
+    action: "Open Module →",
+  },
+  {
+    href: "/business/training",
+    eyebrow: "V · Induction",
+    title: "Training",
+    body: "Induction paths and operational literacy for decision-makers and stakeholders.",
+    action: "Open Module →",
+  },
+] as const
 
 export default function BusinessPage() {
   return (
-    <div>
-      <h1 className="text-4xl font-serif font-bold mb-4">Business Documentation</h1>
-      <p className="text-ash mb-8">
-        Business overview, training materials, and compliance documentation for stakeholders.
-      </p>
+    <AxisStack gap="authority">
+      <AxisHero
+        status="Role: Sovereign · Environment: Production"
+        title="Sovereign"
+        subtitle="Governance."
+        description="StratonHub is the canonical record for NexusCanon and AXIS. This section defines the laws of governance, auditability, and executive truth surfaces."
+      />
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <Link
-          href="/business/overview"
-          className="block p-6 border border-charcoal rounded-xs bg-obsidian hover:border-gold transition-colors"
-        >
-          <h2 className="text-2xl font-serif font-bold mb-2">System Overview</h2>
-          <p className="text-ash">ERP system capabilities, modules, and business value</p>
-        </Link>
-
-        <Link
-          href="/business/training"
-          className="block p-6 border border-charcoal rounded-xs bg-obsidian hover:border-gold transition-colors"
-        >
-          <h2 className="text-2xl font-serif font-bold mb-2">Training</h2>
-          <p className="text-ash">Training materials and onboarding resources</p>
-        </Link>
-
-        <Link
-          href="/business/compliance"
-          className="block p-6 border border-charcoal rounded-xs bg-obsidian hover:border-gold transition-colors"
-        >
-          <h2 className="text-2xl font-serif font-bold mb-2">Compliance</h2>
-          <p className="text-ash">Compliance documentation and audit trails</p>
-        </Link>
-      </div>
-    </div>
+      <AxisCardGrid columns={3} density="comfortable" label="Sovereign documentation modules">
+        {sovereignCards.map((card) => (
+          <AxisCard key={card.href} {...card} />
+        ))}
+      </AxisCardGrid>
+    </AxisStack>
   )
 }

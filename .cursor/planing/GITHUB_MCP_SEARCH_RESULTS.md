@@ -2,15 +2,15 @@
 
 ## Open Source Repository Search
 
-**Date:** 2026-01-10
-**Status:** Search Complete
-**Method:** GitHub MCP API Search
+**Date:** 2026-01-10 **Status:** Search Complete **Method:** GitHub MCP API
+Search
 
 ---
 
 ## ✅ SEARCH COMPLETED
 
-**Result:** Found relevant open source repositories for documentation tools compatible with Next.js/Vercel.
+**Result:** Found relevant open source repositories for documentation tools
+compatible with Next.js/Vercel.
 
 ---
 
@@ -18,15 +18,12 @@
 
 ### 1. Nextra (Official Repository)
 
-**Repository:** `shuding/nextra`
-**URL:** https://github.com/shuding/nextra
-**Stars:** 13,494 ⭐
-**Forks:** 1,412
-**Open Issues:** 297
-**Language:** TypeScript
-**Status:** ✅ Active (Updated: 2026-01-10)
+**Repository:** `shuding/nextra` **URL:** https://github.com/shuding/nextra
+**Stars:** 13,494 ⭐ **Forks:** 1,412 **Open Issues:** 297 **Language:**
+TypeScript **Status:** ✅ Active (Updated: 2026-01-10)
 
-**Description:** Simple, powerful and flexible site generation framework with everything you love from Next.js.
+**Description:** Simple, powerful and flexible site generation framework with
+everything you love from Next.js.
 
 **Key Features:**
 
@@ -45,13 +42,10 @@
 
 ### 2. Docusaurus (Official Repository)
 
-**Repository:** `facebook/docusaurus`
-**URL:** https://github.com/facebook/docusaurus
-**Stars:** 63,305 ⭐
-**Forks:** 9,648
-**Open Issues:** 349
-**Language:** TypeScript
-**Status:** ✅ Active (Updated: 2026-01-10)
+**Repository:** `facebook/docusaurus` **URL:**
+https://github.com/facebook/docusaurus **Stars:** 63,305 ⭐ **Forks:** 9,648
+**Open Issues:** 349 **Language:** TypeScript **Status:** ✅ Active (Updated:
+2026-01-10)
 
 **Description:** Easy to maintain open source documentation websites.
 
@@ -70,14 +64,13 @@
 ### Nextra Templates Found
 
 1. **`pdsuwwz/nextjs-nextra-starter`**
-
    - Stars: 275
-   - Description: Next.js v16 + Nextra v4 + TypeScript + Tailwind CSS v4 + React v19
+   - Description: Next.js v16 + Nextra v4 + TypeScript + Tailwind CSS v4 + React
+     v19
    - Features: Shadcn UI, Radix UI, i18n, dark mode
    - **Status:** ✅ Active (Updated: 2026-01-07)
 
 2. **`phucbm/nextra-docs-starter`**
-
    - Stars: 43
    - Description: Nextra docs template with Next.js 16, React 19, Tailwind v4
    - Features: Improved search UI
@@ -167,9 +160,9 @@
 ### Official Templates
 
 1. **Nextra Docs Template**
-
    - Repository: `shuding/nextra-docs-template`
-   - Vercel Deploy: [Deploy Button Available](https://vercel.com/new/clone?s=https%3A%2F%2Fgithub.com%2Fshuding%2Fnextra-docs-template)
+   - Vercel Deploy:
+     [Deploy Button Available](https://vercel.com/new/clone?s=https%3A%2F%2Fgithub.com%2Fshuding%2Fnextra-docs-template)
    - Live Demo: https://nextra-docs-template.vercel.app
 
 2. **Next.js Example**

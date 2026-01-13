@@ -1,0 +1,7 @@
+{
+  "name": "@mythic/monorepo-templates",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Project templates and schemas for the monorepo",
+  "main": "index.js"
+}

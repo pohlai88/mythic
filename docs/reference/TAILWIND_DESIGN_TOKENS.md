@@ -1,14 +1,14 @@
 # Tailwind Design Tokens Reference
 
-**Version**: 1.0.0
-**Last Updated**: 2026-01-11
-**Status**: ✅ **Active**
+**Version**: 1.0.0 **Last Updated**: 2026-01-11 **Status**: ✅ **Active**
 
 ---
 
 ## Overview
 
-Complete reference for all design tokens available in the `@mythic/design-system` package. All tokens are defined using Tailwind CSS v4's CSS-first configuration via the `@theme` directive.
+Complete reference for all design tokens available in the
+`@mythic/design-system` package. All tokens are defined using Tailwind CSS v4's
+CSS-first configuration via the `@theme` directive.
 
 ---
 
@@ -32,18 +32,18 @@ The primary brand color palette representing material states, not UI states.
 #### Primary Palette (Material Truth)
 
 ```css
---color-void: 240 10% 4%;        /* Absence / Authority - Deepest black */
---color-obsidian: 240 8% 8%;      /* Surface / Weight - Dark surface */
---color-charcoal: 240 3% 17%;     /* Border / Divider - Subtle border */
+--color-void: 240 10% 4%; /* Absence / Authority - Deepest black */
+--color-obsidian: 240 8% 8%; /* Surface / Weight - Dark surface */
+--color-charcoal: 240 3% 17%; /* Border / Divider - Subtle border */
 ```
 
 #### Accent Palette (BEASTMODE Gold)
 
 ```css
---color-parchment: 40 20% 96%;    /* Knowledge - Warm off-white (NOT pure white) */
---color-ash: 40 10% 82%;          /* Commentary - Neutral gray */
---color-gold: 40 45% 55%;         /* Ratified Authority - Primary accent */
---color-ember: 35 40% 45%;        /* Consequence - Secondary accent */
+--color-parchment: 40 20% 96%; /* Knowledge - Warm off-white (NOT pure white) */
+--color-ash: 40 10% 82%; /* Commentary - Neutral gray */
+--color-gold: 40 45% 55%; /* Ratified Authority - Primary accent */
+--color-ember: 35 40% 45%; /* Consequence - Secondary accent */
 ```
 
 #### Semantic Color Mappings
@@ -63,16 +63,19 @@ The primary brand color palette representing material states, not UI states.
 For apps that need complete 50-950 scales:
 
 #### Primary Colors
+
 ```css
 --color-primary-50 through --color-primary-950
 ```
 
 #### Secondary Colors
+
 ```css
 --color-secondary-50 through --color-secondary-950
 ```
 
 #### Semantic Colors
+
 - **Success**: `--color-success-50` through `--color-success-950`
 - **Warning**: `--color-warning-50` through `--color-warning-950`
 - **Error**: `--color-error-50` through `--color-error-950`
@@ -106,10 +109,10 @@ Dark mode variants are automatically applied when using the `.dark` class:
 
 ```css
 .dark {
-  --color-void: 240 10% 2%;      /* Even darker */
+  --color-void: 240 10% 2%; /* Even darker */
   --color-obsidian: 240 8% 4%;
-  --color-parchment: 40 20% 10%;  /* Darker text */
-  --color-gold: 40 45% 65%;       /* Brighter gold */
+  --color-parchment: 40 20% 10%; /* Darker text */
+  --color-gold: 40 45% 65%; /* Brighter gold */
   /* ... */
 }
 ```
@@ -121,6 +124,7 @@ Dark mode variants are automatically applied when using the `.dark` class:
 ### Font Families
 
 #### System Fonts (Default)
+
 ```css
 --font-family-sans: ui-sans-serif, system-ui, ...;
 --font-family-serif: ui-serif, Georgia, ...;
@@ -128,10 +132,11 @@ Dark mode variants are automatically applied when using the `.dark` class:
 ```
 
 #### Custom Fonts
+
 ```css
---font-family-serif-custom: 'Cormorant Garamond', serif;
---font-family-sans-custom: 'Inter', sans-serif;
---font-family-mono-custom: 'JetBrains Mono', monospace;
+--font-family-serif-custom: "Cormorant Garamond", serif;
+--font-family-sans-custom: "Inter", sans-serif;
+--font-family-mono-custom: "JetBrains Mono", monospace;
 ```
 
 ### Usage
@@ -154,21 +159,23 @@ Dark mode variants are automatically applied when using the `.dark` class:
 ### Available Values
 
 ```css
---radius-none: 0;                /* 0px - No rounding */
---radius-xs: 0.0625rem;          /* 1px - Minimal rounding */
---radius-sm: 0.125rem;           /* 2px */
---radius-base: 0.25rem;          /* 4px */
---radius-md: 0.375rem;           /* 6px */
---radius-lg: 0.5rem;             /* 8px */
---radius-xl: 0.75rem;            /* 12px */
---radius-2xl: 1rem;              /* 16px */
---radius-3xl: 1.5rem;            /* 24px */
---radius-full: 9999px;           /* Fully rounded (circle) */
+--radius-none: 0; /* 0px - No rounding */
+--radius-xs: 0.0625rem; /* 1px - Minimal rounding */
+--radius-sm: 0.125rem; /* 2px */
+--radius-base: 0.25rem; /* 4px */
+--radius-md: 0.375rem; /* 6px */
+--radius-lg: 0.5rem; /* 8px */
+--radius-xl: 0.75rem; /* 12px */
+--radius-2xl: 1rem; /* 16px */
+--radius-3xl: 1.5rem; /* 24px */
+--radius-full: 9999px; /* Fully rounded (circle) */
 ```
 
 ### Usage Patterns
 
-**Most Common**: `rounded-xs` (1px) - Used extensively for buttons, inputs, badges
+**Most Common**: `rounded-xs` (1px) - Used extensively for buttons, inputs,
+badges
+
 ```tsx
 <button className="rounded-xs">Button</button>
 <input className="rounded-xs" />
@@ -176,12 +183,14 @@ Dark mode variants are automatically applied when using the `.dark` class:
 ```
 
 **Other Common**:
+
 - `rounded-full` - Circular elements (avatars, spinners)
 - `rounded-lg` - Cards, containers
 
 ### Usage Statistics
 
 Based on codebase analysis:
+
 - `rounded-xs`: **41 uses** (most common)
 - `rounded-full`: Used for circular elements
 - `rounded-lg`: Used for cards/containers
@@ -270,23 +279,27 @@ Tri-vector display utilities (past, present, future).
 
 ### How It Works
 
-Tailwind v4 **automatically generates** utilities from `@theme` color definitions. You do NOT need to define them manually.
+Tailwind v4 **automatically generates** utilities from `@theme` color
+definitions. You do NOT need to define them manually.
 
 ### Auto-Generated Color Utilities
 
 All colors defined in `@theme` automatically create utilities:
 
 **Background**:
+
 - `bg-void`, `bg-obsidian`, `bg-charcoal`
 - `bg-parchment`, `bg-ash`, `bg-gold`, `bg-ember`
 - `bg-primary-50` through `bg-primary-950`
 - `bg-success-*`, `bg-warning-*`, `bg-error-*`, `bg-neutral-*`
 
 **Text**:
+
 - `text-parchment`, `text-ash`, `text-gold`, `text-ember`
 - `text-primary-*`, `text-success-*`, etc.
 
 **Border**:
+
 - `border-charcoal`, `border-gold`
 - `border-primary-*`, etc.
 
@@ -318,7 +331,7 @@ All utilities work with Tailwind variants:
 ### Complete Component Example
 
 ```tsx
-import { intelligentStatusStyles } from '@mythic/shared-utils'
+import { intelligentStatusStyles } from "@mythic/nextjs-shared-utils"
 
 function ProposalCard({ proposal }) {
   return (
@@ -327,13 +340,17 @@ function ProposalCard({ proposal }) {
         {proposal.title}
       </h3>
 
-      <span className={intelligentStatusStyles(proposal.status, 'badge', 'px-2 py-1 rounded-xs text-xs')}>
+      <span
+        className={intelligentStatusStyles(
+          proposal.status,
+          "badge",
+          "px-2 py-1 rounded-xs text-xs"
+        )}
+      >
         {proposal.status}
       </span>
 
-      <p className="text-ash text-sm mt-2">
-        {proposal.description}
-      </p>
+      <p className="text-ash text-sm mt-2">{proposal.description}</p>
 
       <button className="mt-4 px-4 py-2 bg-gold text-void rounded-xs font-mono text-sm hover:bg-ember transition-hover-intelligent">
         View Details
@@ -368,7 +385,12 @@ function ProposalCard({ proposal }) {
 ### Importing Tokens
 
 ```typescript
-import { colors, typography, spacing, borderRadius } from '@mythic/design-system/tokens'
+import {
+  colors,
+  typography,
+  spacing,
+  borderRadius,
+} from "@mythic/design-system/tokens"
 
 // Type-safe access
 const primaryColor = colors.gold
@@ -378,7 +400,11 @@ const fontSize = typography.modern.fontSize
 ### Type Exports
 
 ```typescript
-import type { ColorName, Spacing, BorderRadius } from '@mythic/design-system/tokens'
+import type {
+  ColorName,
+  Spacing,
+  BorderRadius,
+} from "@mythic/design-system/tokens"
 ```
 
 ---
@@ -407,6 +433,7 @@ import type { ColorName, Spacing, BorderRadius } from '@mythic/design-system/tok
 ### From Custom CSS Variables
 
 **Before**:
+
 ```css
 :root {
   --color-void: #0a0a0b;
@@ -414,20 +441,23 @@ import type { ColorName, Spacing, BorderRadius } from '@mythic/design-system/tok
 ```
 
 **After**:
+
 ```css
 @theme {
-  --color-void: 240 10% 4%;  /* HSL format */
+  --color-void: 240 10% 4%; /* HSL format */
 }
 ```
 
 ### From Tailwind v3
 
 **Before** (v3):
+
 ```tsx
 <div className="bg-[#0a0a0b]">
 ```
 
 **After** (v4):
+
 ```tsx
 <div className="bg-void">  {/* Auto-generated from @theme */}
 ```
@@ -436,10 +466,10 @@ import type { ColorName, Spacing, BorderRadius } from '@mythic/design-system/tok
 
 ## File Locations
 
-- **Source**: `packages/design-system/src/tokens/input.css`
-- **Compiled**: `packages/design-system/src/tokens/style.css`
-- **TypeScript**: `packages/design-system/src/tokens.ts`
-- **Documentation**: `packages/design-system/src/tokens/README.md`
+- **Source**: `packages/TailwindCSS-V4/Design-System/src/tokens/input.css`
+- **Compiled**: `packages/TailwindCSS-V4/Design-System/src/tokens/style.css`
+- **TypeScript**: `packages/TailwindCSS-V4/Design-System/src/tokens.ts`
+- **Documentation**: `packages/TailwindCSS-V4/Design-System/src/tokens/README.md`
 
 ---
 
@@ -466,13 +496,15 @@ pnpm tokens:rebuild
 pnpm tokens:full-sync
 ```
 
-**See**: [Handoff Integration Guide](../guides/HANDOFF_INTEGRATION.md) for complete setup and usage.
+**See**: [Handoff Integration Guide](../guides/HANDOFF_INTEGRATION.md) for
+complete setup and usage.
 
 ---
 
 ## Related Documentation
 
-- [Handoff Integration Guide](../guides/HANDOFF_INTEGRATION.md) - Figma → Code sync
+- [Handoff Integration Guide](../guides/HANDOFF_INTEGRATION.md) - Figma → Code
+  sync
 - [Tailwind Intelligence-Driven Styling](./TAILWIND_INTELLIGENCE_DRIVEN.md)
 - [Design System Architecture](../architecture/DESIGN_SYSTEM.md)
 - [Tailwind v4 Quick Start](../_system/DOC-0127_tailwind-v4-quick-start.md)
@@ -482,11 +514,11 @@ pnpm tokens:full-sync
 ## Support
 
 For questions or issues:
+
 1. Check this reference guide
-2. Review `packages/design-system/src/tokens/README.md`
+2. Review `packages/TailwindCSS-V4/Design-System/src/tokens/README.md`
 3. Consult Tailwind v4 documentation: https://tailwindcss.com/docs/v4-beta
 
 ---
 
-**Last Updated**: 2026-01-11
-**Maintained By**: Architecture Team
+**Last Updated**: 2026-01-11 **Maintained By**: Architecture Team

@@ -1,0 +1,116 @@
+---
+title: SDKs & Kits
+description: Client libraries and development kits for NexusCanon
+audience: developers
+type: reference
+published: true
+---
+
+# SDKs & Kits
+
+> Typed clients and pre-validated utilities for rapid integration
+
+## Overview
+
+SDKs provide typed, validated interfaces to NexusCanon APIs. Use these instead
+of raw HTTP calls for better developer experience and fewer integration errors.
+
+## Available SDKs
+
+### TypeScript/JavaScript SDK
+
+**Package**: `@nexuscanon/sdk`
+
+```bash
+pnpm add @nexuscanon/sdk
+```
+
+**Features**:
+
+- Full TypeScript support
+- Automatic retry with exponential backoff
+- Request/response validation
+- Streaming support for large datasets
+
+**Quick Start**:
+
+```typescript
+import { NexusCanon } from "@nexuscanon/sdk"
+
+const client = new NexusCanon({
+  apiKey: process.env.NEXUSCANON_API_KEY,
+})
+
+// Create a proposal
+const proposal = await client.boardroom.proposals.create({
+  stencilId: "hiring-request",
+  circleId: "engineering",
+  data: {
+    position: "Software Engineer",
+    department: "Engineering",
+  },
+})
+```
+
+### Python SDK
+
+**Package**: `nexuscanon`
+
+```bash
+pip install nexuscanon
+```
+
+**Features**:
+
+- Async/await support
+- Pydantic models for validation
+- Comprehensive type hints
+
+### Go SDK
+
+**Package**: `github.com/nexuscanon/sdk-go`
+
+```bash
+go get github.com/nexuscanon/sdk-go
+```
+
+**Features**:
+
+- Context support for cancellation
+- Structured error handling
+- Connection pooling
+
+## Development Kits
+
+### Stencil Kit
+
+Tools for creating and validating proposal stencils.
+
+- Stencil schema validation
+- Field type definitions
+- Preview rendering
+
+### Testing Kit
+
+Utilities for integration testing.
+
+- Mock server
+- Fixture generation
+- Snapshot testing
+
+## SDK Versioning
+
+| SDK Version | API Version | Status |
+| ----------- | ----------- | ------ |
+| 1.x         | v1          | Stable |
+| 2.x         | v2          | Beta   |
+
+## Related Documentation
+
+- [API Reference](/developers/api) - Raw API documentation
+- [BoardRoom Integration](/developers/guides/boardroom-integration) -
+  Integration guide
+
+---
+
+**Last Updated**: 2026-01-13

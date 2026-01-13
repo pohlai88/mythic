@@ -1,11 +1,12 @@
 # Nextra 4: Remote Docs Implementation Guide
 
-**Status**: ✅ **Infrastructure Ready**
-**Date**: 2025-01-27
+**Status**: ✅ **Infrastructure Ready** **Date**: 2025-01-27
 
 ## Overview
 
-Nextra 4 supports loading documentation from **remote GitHub repositories**. This allows you to include external documentation in your site without maintaining copies locally.
+Nextra 4 supports loading documentation from **remote GitHub repositories**.
+This allows you to include external documentation in your site without
+maintaining copies locally.
 
 ---
 
@@ -14,8 +15,10 @@ Nextra 4 supports loading documentation from **remote GitHub repositories**. Thi
 ### ✅ Infrastructure Created
 
 1. **Remote Docs Pages**
-   - ✅ `app/remote/graphql-eslint/[[...slug]]/page.tsx` - GraphQL ESLint remote docs
-   - ✅ `app/remote/graphql-yoga/[[...slug]]/page.tsx` - GraphQL Yoga remote docs
+   - ✅ `app/remote/graphql-eslint/[[...slug]]/page.tsx` - GraphQL ESLint remote
+     docs
+   - ✅ `app/remote/graphql-yoga/[[...slug]]/page.tsx` - GraphQL Yoga remote
+     docs
 
 2. **Configuration Files**
    - ✅ `nextra-remote-filepaths/graphql-eslint.json` - GraphQL ESLint config
@@ -32,7 +35,8 @@ Nextra 4 supports loading documentation from **remote GitHub repositories**. Thi
 ### Process Flow
 
 1. **Configuration**: JSON file defines repo, branch, and file paths
-2. **Page Map Generation**: `convertToPageMap()` creates page map from file paths
+2. **Page Map Generation**: `convertToPageMap()` creates page map from file
+   paths
 3. **Metadata Merging**: `mergeMetaWithPageMap()` adds sidebar metadata
 4. **Content Fetching**: Fetches MDX from GitHub raw content
 5. **Compilation**: `compileMdx()` compiles MDX to JavaScript
@@ -186,7 +190,8 @@ export default async function RootLayout({ children }) {
 }
 ```
 
-**Current Status**: Code is prepared but commented out. Uncomment when ready to enable remote docs.
+**Current Status**: Code is prepared but commented out. Uncomment when ready to
+enable remote docs.
 
 ---
 
@@ -202,11 +207,7 @@ export default async function RootLayout({ children }) {
   "repo": "repository-name",
   "branch": "main",
   "docsPath": "docs/",
-  "filePaths": [
-    "README.md",
-    "getting-started.md",
-    "api-reference.md"
-  ]
+  "filePaths": ["README.md", "getting-started.md", "api-reference.md"]
 }
 ```
 
@@ -274,14 +275,14 @@ export function generateStaticParams() {
 **File**: `app/layout.tsx`
 
 ```typescript
-import { pageMap as myRepoPageMap } from './remote/my-repo/[[...slug]]/page'
+import { pageMap as myRepoPageMap } from "./remote/my-repo/[[...slug]]/page"
 
 // In RootLayout:
 pageMap = [
   ...pageMap,
   {
-    name: 'remote',
-    route: '/remote',
+    name: "remote",
+    route: "/remote",
     children: [
       // ... existing remote docs
       myRepoPageMap,
@@ -300,12 +301,13 @@ Converts file paths to page map structure.
 
 ```typescript
 const { mdxPages, pageMap } = convertToPageMap({
-  filePaths: ['README.md', 'docs/getting-started.md'],
-  basePath: 'remote/my-repo',
+  filePaths: ["README.md", "docs/getting-started.md"],
+  basePath: "remote/my-repo",
 })
 ```
 
 **Returns**:
+
 - `mdxPages`: Object mapping routes to file paths
 - `pageMap`: Page map structure for navigation
 
@@ -315,11 +317,11 @@ Merges metadata with page map for sidebar navigation.
 
 ```typescript
 const pageMapWithMeta = mergeMetaWithPageMap(pageMap, {
-  index: 'Introduction',
-  'getting-started': {
-    title: 'Getting Started',
+  index: "Introduction",
+  "getting-started": {
+    title: "Getting Started",
     items: {
-      index: 'Overview',
+      index: "Overview",
     },
   },
 })
@@ -378,6 +380,7 @@ const { default: MDXContent, toc, metadata } = evaluate(rawJs, components)
 **Problem**: Remote docs don't appear in sidebar
 
 **Solutions**:
+
 1. Check page map is exported from remote page
 2. Verify layout merges remote page maps
 3. Check configuration file paths are correct
@@ -388,6 +391,7 @@ const { default: MDXContent, toc, metadata } = evaluate(rawJs, components)
 **Problem**: Remote content fails to load
 
 **Solutions**:
+
 1. Check GitHub URL is correct
 2. Verify branch exists
 3. Check file paths in config match repo structure
@@ -399,6 +403,7 @@ const { default: MDXContent, toc, metadata } = evaluate(rawJs, components)
 **Problem**: Build fails with remote docs
 
 **Solutions**:
+
 1. Check `generateStaticParams()` returns valid params
 2. Verify all imports are correct
 3. Check TypeScript types
@@ -430,8 +435,8 @@ const { default: MDXContent, toc, metadata } = evaluate(rawJs, components)
 
 ```typescript
 // Uncomment these imports:
-import { pageMap as graphqlEslintPageMap } from './remote/graphql-eslint/[[...slug]]/page'
-import { pageMap as graphqlYogaPageMap } from './remote/graphql-yoga/[[...slug]]/page'
+import { pageMap as graphqlEslintPageMap } from "./remote/graphql-eslint/[[...slug]]/page"
+import { pageMap as graphqlYogaPageMap } from "./remote/graphql-yoga/[[...slug]]/page"
 
 // Uncomment merging code in RootLayout
 ```
@@ -472,14 +477,13 @@ After enabling, these routes will be available:
 
 ## Summary
 
-✅ **Infrastructure Ready**: Remote docs pages and configs created
-✅ **Layout Integration**: Code prepared (commented, ready to enable)
-✅ **Documentation**: Complete guide provided
-⚠️ **Not Enabled**: Requires uncommenting layout code
+✅ **Infrastructure Ready**: Remote docs pages and configs created ✅ **Layout
+Integration**: Code prepared (commented, ready to enable) ✅ **Documentation**:
+Complete guide provided ⚠️ **Not Enabled**: Requires uncommenting layout code
 
 **Status**: ✅ **Ready to Enable** (when needed)
 
 ---
 
-**Last Updated**: 2025-01-27
-**Next Action**: Uncomment layout code when remote docs needed
+**Last Updated**: 2025-01-27 **Next Action**: Uncomment layout code when remote
+docs needed

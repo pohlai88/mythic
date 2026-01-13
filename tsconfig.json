@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -28,24 +24,21 @@
       }
     ],
     "paths": {
-      "@mythic/shared-utils": ["./packages/shared-utils/src"],
-      "@mythic/shared-utils/*": ["./packages/shared-utils/src/*"],
-      "@mythic/shared-types": ["./packages/shared-types/src"],
-      "@mythic/shared-types/*": ["./packages/shared-types/src/*"],
-      "@mythic/design-system": ["./packages/design-system/src"],
-      "@mythic/design-system/*": ["./packages/design-system/src/*"],
-      "@mythic/domain-core": ["./packages/domain-core/src"],
-      "@mythic/domain-core/*": ["./packages/domain-core/src/*"],
-      "@mythic/performance": ["./packages/performance/src"],
-      "@mythic/performance/*": ["./packages/performance/src/*"],
-      "@mythic/monitoring": ["./packages/monitoring/src"],
-      "@mythic/monitoring/*": ["./packages/monitoring/src/*"]
+      "@mythic/nextjs-shared-utils": ["./packages/NextJS/Shared-Utils/src"],
+      "@mythic/nextjs-shared-utils/*": ["./packages/NextJS/Shared-Utils/src/*"],
+      "@mythic/typescript-shared-types": ["./packages/TypeScript/Shared-Types/src"],
+      "@mythic/typescript-shared-types/*": ["./packages/TypeScript/Shared-Types/src/*"],
+      "@mythic/tailwindcss-v4-design-system": ["./packages/TailwindCSS-V4/Design-System/src"],
+      "@mythic/tailwindcss-v4-design-system/*": ["./packages/TailwindCSS-V4/Design-System/src/*"],
+      "@mythic/nextjs-domain-core": ["./packages/NextJS/Domain-Core/src"],
+      "@mythic/nextjs-domain-core/*": ["./packages/NextJS/Domain-Core/src/*"],
+      "@mythic/nodejs-performance": ["./packages/NodeJS/Performance/src"],
+      "@mythic/nodejs-performance/*": ["./packages/NodeJS/Performance/src/*"],
+      "@mythic/nodejs-monitoring": ["./packages/NodeJS/Monitoring/src"],
+      "@mythic/nodejs-monitoring/*": ["./packages/NodeJS/Monitoring/src/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": [
     "node_modules",
     "scripts/**/*",

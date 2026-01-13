@@ -3,80 +3,66 @@
     // ============================================================================
     // Core Development Tools (REQUIRED)
     // ============================================================================
-    "dbaeumer.vscode-eslint", // ESLint support
-    "esbenp.prettier-vscode", // Prettier formatter
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+
     // ============================================================================
     // Language Support
     // ============================================================================
-    "ms-vscode.vscode-typescript-next", // Latest TypeScript features
-    "yoavbls.pretty-ts-errors", // Enhanced TypeScript error messages
-    "ms-vscode.powershell", // PowerShell support
+    "ms-vscode.vscode-typescript-next",
+    "yoavbls.pretty-ts-errors",
+    "ms-vscode.powershell",
 
     // ============================================================================
     // Framework & Library Support
     // ============================================================================
-    // React & Next.js
-    "dsznajder.es7-react-js-snippets", // React/Next.js code snippets
-    "formulahendry.auto-rename-tag", // Auto-rename paired HTML/JSX tags
-    "formulahendry.auto-close-tag", // Auto-close HTML/JSX tags
-    "pulkitgangwar.nextjs-snippets", // Next.js specific snippets
-
-    // Tailwind CSS
-    "bradlc.vscode-tailwindcss", // Tailwind CSS IntelliSense
-    "jumail.headwind", // Tailwind class sorter
-
-    // GraphQL
-    "graphql.vscode-graphql", // GraphQL language features
-    "graphql.vscode-graphql-syntax", // GraphQL syntax highlighting
-    "apollographql.vscode-apollo", // Apollo GraphQL tooling
-
-    // tRPC
-    "trpc.trpc-vscode", // tRPC snippets and IntelliSense
+    "dsznajder.es7-react-js-snippets",
+    "formulahendry.auto-rename-tag",
+    "formulahendry.auto-close-tag",
+    "pulkitgangwar.nextjs-snippets",
+    "bradlc.vscode-tailwindcss",
+    "jumail.headwind",
+    "graphql.vscode-graphql",
+    "graphql.vscode-graphql-syntax",
+    "apollographql.vscode-apollo",
+    "trpc.trpc-vscode",
 
     // ============================================================================
     // Code Quality & Productivity
     // ============================================================================
-    "usernamehw.errorlens", // Inline error highlighting
-    "editorconfig.editorconfig", // EditorConfig support
-    "christian-kohler.path-intellisense", // Path autocomplete
-    "steoates.autoimport", // Auto-import management
-    "wix.vscode-import-cost", // Display import/require package size
+    "usernamehw.errorlens",
+    "editorconfig.editorconfig",
+    "christian-kohler.path-intellisense",
+    "wix.vscode-import-cost",
 
     // ============================================================================
     // Documentation & Comments
     // ============================================================================
-    "crystal-spider.jsdoc-generator", // Auto-generate JSDoc/TSDoc comments
-    "aaron-bond.better-comments", // Enhanced comment highlighting
-    "streetsidesoftware.code-spell-checker", // Spell checker
-    "jeffy-g.jsdoc-tag-completions", // JSDoc tag completions
-    "yzhang.markdown-all-in-one", // Markdown formatting and preview (for .md and .mdx files)
+    "crystal-spider.jsdoc-generator",
+    "aaron-bond.better-comments",
+    "streetsidesoftware.code-spell-checker",
+    "yzhang.markdown-all-in-one",
 
     // ============================================================================
     // Git & Version Control
     // ============================================================================
-    "eamodio.gitlens", // Git supercharged
-    "mhutchie.git-graph", // Visualize git history
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
 
     // ============================================================================
     // Database & Backend
     // ============================================================================
-    "supabase.postgrestools", // Postgres Language Server
+    "supabase.postgrestools",
 
     // ============================================================================
     // Testing
     // ============================================================================
-    "ZixuanChen.vitest-explorer", // Vitest test explorer and runner (PRIMARY)
-    "firsttris.vscode-jest-runner", // Run Jest tests from editor
-    "orta.vscode-jest", // Jest support
+    "ZixuanChen.vitest-explorer",
 
     // ============================================================================
     // Utilities
     // ============================================================================
-    "mikestead.dotenv", // .env file support
-    "wayou.vscode-todo-highlight", // Highlight TODO comments
-    "gruntfuggly.todo-tree", // TODO tree view
-    "alefragnani.project-manager", // Project management
-    "formulahendry.code-runner", // Run code snippets
-    "ms-vscode.vscode-json" // JSON language support
+    "mikestead.dotenv",
+    "gruntfuggly.todo-tree"
   ]
 }

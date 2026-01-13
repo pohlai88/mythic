@@ -1,37 +1,52 @@
 ---
-description: "Standardize assistant outputs: steps, patches, and verification."
+description: "Standardize assistant outputs: Diffs only by default, no automatic documentation"
 globs: "*"
 alwaysApply: false
 ---
 
 # Output Format
 
+**CRITICAL**: Default to diffs only. Do NOT generate documentation files unless explicitly requested.
+
+**Token Budget Enforcement:**
+- @rules/099_token-budget-documentation-block.mdc - Blocks automatic documentation generation
+- Default output: Code diffs only (saves ~89% tokens)
+
 When delivering work, structure as:
 1) What changed (bullet list)
 2) Files touched (list)
-3) How to verify (commands / steps)
-4) Notes / tradeoffs (if any)
+3) **Diffs** (file-by-file code blocks) ← DEFAULT OUTPUT
+4) How to verify (commands / steps)
+5) Notes / tradeoffs (if any)
 
 **Output Formats by Task Type:**
-- **Diffs** - For code changes (always show diffs)
+- **Diffs** - For code changes (ALWAYS default, no docs)
 - **Files** - For new files (show complete file)
 - **Plans** - For complex tasks (structured plan with todos)
 - **Summaries** - For reviews (checklist format)
 
 **Format Rules:**
-- Always show diffs for code changes
-- Use structured output for plans
-- Include code examples in documentation
+- ✅ **ALWAYS show diffs for code changes** (default)
+- ❌ **NEVER create documentation files** unless explicitly requested
+- ❌ **NEVER create summary/audit/report files** for code changes
+- Use structured output for plans (when requested)
 - Format output for readability
 - Reference concrete paths: `src/...`, `app/...`, etc.
 
-**For Code Changes:**
-1) Summary (what changed)
+**For Code Changes (DEFAULT):**
+1) Summary (1-2 sentences)
 2) Files touched (list)
-3) Patch (file-by-file code blocks)
+3) **Diffs only** (file-by-file code blocks showing changes)
 4) How to verify (commands + expected outcomes)
 5) Notes / tradeoffs (if any)
 
+**DO NOT CREATE:**
+- ❌ Implementation summaries in `.md` files
+- ❌ Change logs or audit reports
+- ❌ "What changed" documentation files
+- ❌ Any `.md`/`.mdx` files unless user explicitly requests
+
 **Reference Documentation:**
+- @rules/099_token-budget-documentation-block.mdc - Token budget enforcement (MANDATORY)
 - @rules/080_reference-style.mdc - Reference guidelines
 - @rules/010_planning.mdc - Planning format

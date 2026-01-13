@@ -9,8 +9,8 @@
 
 ## 1. Purpose
 
-The Axis Visual Canon defines the _non-negotiable perceptual laws_ governing how Axis is seen, felt,
-and trusted by humans.
+The Axis Visual Canon defines the _non-negotiable perceptual laws_ governing how
+Axis is seen, felt, and trusted by humans.
 
 This is not a branding guide. This is not UI polish.
 
@@ -18,7 +18,8 @@ It is a **jurisdictional surface specification**.
 
 The goal is singular:
 
-> **To ensure every interaction communicates authority, restraint, and human dignity.**
+> **To ensure every interaction communicates authority, restraint, and human
+> dignity.**
 
 ---
 
@@ -26,7 +27,8 @@ The goal is singular:
 
 ### 2.1 Jurisdiction, Not Product
 
-Axis is not a product that invites engagement. Axis is a system that _permits action_.
+Axis is not a product that invites engagement. Axis is a system that _permits
+action_.
 
 Therefore:
 
@@ -172,7 +174,9 @@ They must never behave the same.
 - Borders warm before content
 
 ```html
-<section class="border border-charcoal bg-obsidian transition duration-1200 hover:border-gold">
+<section
+  class="border border-charcoal bg-obsidian transition duration-1200 hover:border-gold"
+></section>
 ```
 
 ---

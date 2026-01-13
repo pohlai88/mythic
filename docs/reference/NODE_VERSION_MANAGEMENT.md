@@ -3,11 +3,13 @@
 ## 📋 Current Configuration
 
 ### Installed Version
+
 - **Current:** Node.js v22.20.0
 - **Recommended:** Node.js 20.18.0 (LTS)
 - **Minimum:** Node.js 18.0.0
 
 ### Next.js Requirements
+
 - **Next.js 16.1.1** requires Node.js >= 18.0.0
 - **Recommended:** Node.js 20.x (LTS) for best compatibility
 
@@ -16,28 +18,33 @@
 ## 🔧 Version Management Files
 
 ### 1. `.nvmrc` (for nvm users)
+
 ```
 20.18.0
 ```
 
 **Usage:**
+
 ```bash
 nvm use          # Automatically uses version from .nvmrc
 nvm install      # Installs the version if not available
 ```
 
 ### 2. `.node-version` (for asdf/nodenv users)
+
 ```
 20.18.0
 ```
 
 **Usage:**
+
 ```bash
 asdf install nodejs 20.18.0
 asdf local nodejs 20.18.0
 ```
 
 ### 3. `package.json` engines field
+
 ```json
 {
   "engines": {
@@ -92,7 +99,8 @@ pnpm --version    # Should show >= 8.0.0
 
 ## ⚠️ Deprecation Warnings
 
-The warnings you're seeing are from **subdependencies**, not your direct dependencies:
+The warnings you're seeing are from **subdependencies**, not your direct
+dependencies:
 
 ```
 @babel/plugin-proposal-class-properties@7.18.6
@@ -107,7 +115,8 @@ node-domexception@1.0.0
 
 ### Why These Warnings Appear
 
-These are **transitive dependencies** (dependencies of your dependencies) that use deprecated packages. They don't affect functionality but indicate:
+These are **transitive dependencies** (dependencies of your dependencies) that
+use deprecated packages. They don't affect functionality but indicate:
 
 1. **Outdated subdependencies** - Some packages need updates
 2. **Compatibility maintained** - Still work with current Node.js
@@ -124,35 +133,40 @@ These are **transitive dependencies** (dependencies of your dependencies) that u
 
 ## 📊 Version Compatibility Matrix
 
-| Package | Node.js 18 | Node.js 20 | Node.js 22 |
-|---------|------------|------------|------------|
-| Next.js 16.1.1 | ✅ | ✅ | ✅ |
-| React 18.3.1 | ✅ | ✅ | ✅ |
-| TypeScript 5.7.2 | ✅ | ✅ | ✅ |
-| pnpm 8+ | ✅ | ✅ | ✅ |
+| Package          | Node.js 18 | Node.js 20 | Node.js 22 |
+| ---------------- | ---------- | ---------- | ---------- |
+| Next.js 16.1.1   | ✅         | ✅         | ✅         |
+| React 18.3.1     | ✅         | ✅         | ✅         |
+| TypeScript 5.7.2 | ✅         | ✅         | ✅         |
+| pnpm 8+          | ✅         | ✅         | ✅         |
 
-**Recommendation:** Use **Node.js 20.x (LTS)** for best compatibility and stability.
+**Recommendation:** Use **Node.js 20.x (LTS)** for best compatibility and
+stability.
 
 ---
 
 ## 🔍 Checking Your Setup
 
 ### Verify Node.js Version
+
 ```bash
 node --version
 ```
 
 ### Verify pnpm Version
+
 ```bash
 pnpm --version
 ```
 
 ### Check Engine Requirements
+
 ```bash
 pnpm check-engines
 ```
 
 ### List All Node.js Versions (nvm)
+
 ```bash
 nvm list
 ```
@@ -164,6 +178,7 @@ nvm list
 ### Issue: Wrong Node.js Version
 
 **Solution:**
+
 ```bash
 # Using nvm
 nvm use 20.18.0
@@ -178,6 +193,7 @@ node --version
 ### Issue: pnpm Not Found
 
 **Solution:**
+
 ```bash
 # Install pnpm
 npm install -g pnpm
@@ -190,6 +206,7 @@ corepack prepare pnpm@latest --activate
 ### Issue: Engine Mismatch
 
 **Solution:**
+
 ```bash
 # Update Node.js to required version
 nvm install 20.18.0
@@ -229,8 +246,8 @@ jobs:
           version: 8
       - uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
       - run: pnpm install
       - run: pnpm test
 ```
@@ -238,6 +255,7 @@ jobs:
 ### Vercel Configuration
 
 Vercel automatically detects Node.js version from:
+
 - `.nvmrc`
 - `.node-version`
 - `package.json` engines field
@@ -259,12 +277,14 @@ Vercel automatically detects Node.js version from:
 ## 🎯 Recommended Actions
 
 1. **Switch to Node.js 20.18.0** (LTS):
+
    ```bash
    nvm install 20.18.0
    nvm use 20.18.0
    ```
 
 2. **Verify everything works:**
+
    ```bash
    pnpm install
    pnpm dev

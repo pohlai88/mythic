@@ -5,20 +5,26 @@
  * Client state (UI, form state) should use Zustand, not TanStack Query.
  */
 
-'use client'
+"use client"
 
-import { useQuery, useMutation, useQueryClient, type UseQueryResult, type UseMutationResult } from '@tanstack/react-query'
-import { getProposals, getProposal, approveProposal, vetoProposal } from '@/app/actions/proposals'
-import type { Proposal } from '@mythic/shared-types/boardroom'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  type UseQueryResult,
+  type UseMutationResult,
+} from "@tanstack/react-query"
+import { getProposals, getProposal, approveProposal, vetoProposal } from "@/app/actions/proposals"
+import type { Proposal } from "@mythic/shared-types/boardroom"
 
 /**
  * Query keys for proposals
  */
 export const proposalKeys = {
-  all: ['proposals'] as const,
-  lists: () => [...proposalKeys.all, 'list'] as const,
+  all: ["proposals"] as const,
+  lists: () => [...proposalKeys.all, "list"] as const,
   list: (filters?: Record<string, unknown>) => [...proposalKeys.lists(), filters] as const,
-  details: () => [...proposalKeys.all, 'detail'] as const,
+  details: () => [...proposalKeys.all, "detail"] as const,
   detail: (id: string) => [...proposalKeys.details(), id] as const,
 }
 
@@ -40,9 +46,11 @@ export function useProposals(
 /**
  * Fetch single proposal
  */
-export function useProposal(proposalId: string | undefined): UseQueryResult<Proposal | null, Error> {
+export function useProposal(
+  proposalId: string | undefined
+): UseQueryResult<Proposal | null, Error> {
   return useQuery({
-    queryKey: proposalKeys.detail(proposalId ?? ''),
+    queryKey: proposalKeys.detail(proposalId ?? ""),
     queryFn: () => {
       if (!proposalId) return null
       return getProposal({ proposalId })
@@ -55,12 +63,15 @@ export function useProposal(proposalId: string | undefined): UseQueryResult<Prop
 /**
  * Approve proposal mutation with optimistic updates
  */
-export function useApproveProposal(): UseMutationResult<{ success: boolean; error?: string }, Error, { proposalId: string; approvedBy: string }> {
+export function useApproveProposal(): UseMutationResult<
+  { success: boolean; error?: string },
+  Error,
+  { proposalId: string; approvedBy: string }
+> {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (input: { proposalId: string; approvedBy: string }) =>
-      approveProposal(input),
+    mutationFn: (input: { proposalId: string; approvedBy: string }) => approveProposal(input),
     // Optimistic update: Update UI immediately before server responds
     onMutate: async ({ proposalId, approvedBy }) => {
       // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
@@ -75,7 +86,12 @@ export function useApproveProposal(): UseMutationResult<{ success: boolean; erro
           proposalKeys.list(),
           previousProposals.map((p) =>
             p.id === proposalId
-              ? { ...p, status: 'APPROVED' as const, approved_by: approvedBy, approved_at: new Date() }
+              ? {
+                  ...p,
+                  status: "APPROVED" as const,
+                  approved_by: approvedBy,
+                  approved_at: new Date(),
+                }
               : p
           )
         )
@@ -86,7 +102,7 @@ export function useApproveProposal(): UseMutationResult<{ success: boolean; erro
       if (previousProposal) {
         queryClient.setQueryData<Proposal>(proposalKeys.detail(proposalId), {
           ...previousProposal,
-          status: 'APPROVED' as const,
+          status: "APPROVED" as const,
           approved_by: approvedBy,
           approved_at: new Date(),
         })
@@ -101,7 +117,10 @@ export function useApproveProposal(): UseMutationResult<{ success: boolean; erro
         queryClient.setQueryData(proposalKeys.list(), context.previousProposals)
       }
       if (context?.previousProposal) {
-        queryClient.setQueryData(proposalKeys.detail(variables.proposalId), context.previousProposal)
+        queryClient.setQueryData(
+          proposalKeys.detail(variables.proposalId),
+          context.previousProposal
+        )
       }
     },
     // Always refetch after error or success to ensure consistency
@@ -114,7 +133,11 @@ export function useApproveProposal(): UseMutationResult<{ success: boolean; erro
 /**
  * Veto proposal mutation with optimistic updates
  */
-export function useVetoProposal(): UseMutationResult<{ success: boolean; error?: string }, Error, { proposalId: string; vetoedBy: string; reason: string }> {
+export function useVetoProposal(): UseMutationResult<
+  { success: boolean; error?: string },
+  Error,
+  { proposalId: string; vetoedBy: string; reason: string }
+> {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -136,7 +159,7 @@ export function useVetoProposal(): UseMutationResult<{ success: boolean; error?:
             p.id === proposalId
               ? {
                   ...p,
-                  status: 'VETOED' as const,
+                  status: "VETOED" as const,
                   vetoed_by: vetoedBy,
                   veto_reason: reason,
                   vetoed_at: new Date(),
@@ -151,7 +174,7 @@ export function useVetoProposal(): UseMutationResult<{ success: boolean; error?:
       if (previousProposal) {
         queryClient.setQueryData<Proposal>(proposalKeys.detail(proposalId), {
           ...previousProposal,
-          status: 'VETOED' as const,
+          status: "VETOED" as const,
           vetoed_by: vetoedBy,
           veto_reason: reason,
           vetoed_at: new Date(),
@@ -167,7 +190,10 @@ export function useVetoProposal(): UseMutationResult<{ success: boolean; error?:
         queryClient.setQueryData(proposalKeys.list(), context.previousProposals)
       }
       if (context?.previousProposal) {
-        queryClient.setQueryData(proposalKeys.detail(variables.proposalId), context.previousProposal)
+        queryClient.setQueryData(
+          proposalKeys.detail(variables.proposalId),
+          context.previousProposal
+        )
       }
     },
     // Always refetch after error or success to ensure consistency

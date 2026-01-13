@@ -10,8 +10,8 @@
  *   pnpm tsx scripts/validate-verbatim.ts
  */
 
-import { readFileSync, existsSync } from 'fs'
-import { join } from 'path'
+import { readFileSync, existsSync } from "fs"
+import { join } from "path"
 
 // Read verbatim registry (from project root)
 let verbatimRegistry: {
@@ -28,15 +28,15 @@ let verbatimRegistry: {
 }
 
 try {
-  const registryPath = join(process.cwd(), 'scripts', 'verbatim-registry.json')
+  const registryPath = join(process.cwd(), "scripts", "verbatim-registry.json")
   if (!existsSync(registryPath)) {
-    console.error('❌ Error: verbatim-registry.json not found')
+    console.error("❌ Error: verbatim-registry.json not found")
     console.error(`   Expected at: ${registryPath}`)
     process.exit(1)
   }
-  verbatimRegistry = JSON.parse(readFileSync(registryPath, 'utf-8'))
+  verbatimRegistry = JSON.parse(readFileSync(registryPath, "utf-8"))
 } catch (error) {
-  console.error('❌ Error: Failed to read verbatim-registry.json')
+  console.error("❌ Error: Failed to read verbatim-registry.json")
   console.error(`   ${error instanceof Error ? error.message : String(error)}`)
   process.exit(1)
 }
@@ -61,12 +61,12 @@ function validateFile(file: {
       file: file.path,
       passed: false,
       category: file.category,
-      error: `File not found: ${file.path}`
+      error: `File not found: ${file.path}`,
     }
   }
 
   try {
-    const actual = readFileSync(filePath, 'utf-8').trim()
+    const actual = readFileSync(filePath, "utf-8").trim()
     const expected = file.template.trim()
 
     if (actual !== expected) {
@@ -74,21 +74,21 @@ function validateFile(file: {
         file: file.path,
         passed: false,
         category: file.category,
-        error: `Content mismatch: File does not match verbatim template`
+        error: `Content mismatch: File does not match verbatim template`,
       }
     }
 
     return {
       file: file.path,
       passed: true,
-      category: file.category
+      category: file.category,
     }
   } catch (error) {
     return {
       file: file.path,
       passed: false,
       category: file.category,
-      error: `Failed to read file: ${error instanceof Error ? error.message : String(error)}`
+      error: `Failed to read file: ${error instanceof Error ? error.message : String(error)}`,
     }
   }
 }
@@ -97,36 +97,36 @@ function validateNodeVersionConsistency(): ValidationResult[] {
   const results: ValidationResult[] = []
 
   try {
-    const nodeVersion = readFileSync('.node-version', 'utf-8').trim()
-    const nvmrc = readFileSync('.nvmrc', 'utf-8').trim()
-    const packageJson = JSON.parse(readFileSync('package.json', 'utf-8'))
+    const nodeVersion = readFileSync(".node-version", "utf-8").trim()
+    const nvmrc = readFileSync(".nvmrc", "utf-8").trim()
+    const packageJson = JSON.parse(readFileSync("package.json", "utf-8"))
     const enginesNode = packageJson.engines?.node
 
     // Check .node-version and .nvmrc match
     if (nodeVersion !== nvmrc) {
       results.push({
-        file: '.node-version/.nvmrc',
+        file: ".node-version/.nvmrc",
         passed: false,
-        category: 'critical',
-        error: `.node-version (${nodeVersion}) does not match .nvmrc (${nvmrc})`
+        category: "critical",
+        error: `.node-version (${nodeVersion}) does not match .nvmrc (${nvmrc})`,
       })
     }
 
     // Check engines.node is compatible
-    if (!enginesNode || !enginesNode.includes('20')) {
+    if (!enginesNode || !enginesNode.includes("20")) {
       results.push({
-        file: 'package.json',
+        file: "package.json",
         passed: false,
-        category: 'critical',
-        error: `package.json engines.node (${enginesNode}) must include Node 20`
+        category: "critical",
+        error: `package.json engines.node (${enginesNode}) must include Node 20`,
       })
     }
   } catch (error) {
     results.push({
-      file: 'node-version-consistency',
+      file: "node-version-consistency",
       passed: false,
-      category: 'critical',
-      error: `Failed to validate Node version consistency: ${error instanceof Error ? error.message : String(error)}`
+      category: "critical",
+      error: `Failed to validate Node version consistency: ${error instanceof Error ? error.message : String(error)}`,
     })
   }
 
@@ -137,23 +137,24 @@ function validateWorkspaceDefinition(): ValidationResult[] {
   const results: ValidationResult[] = []
 
   try {
-    const packageJson = JSON.parse(readFileSync('package.json', 'utf-8'))
+    const packageJson = JSON.parse(readFileSync("package.json", "utf-8"))
 
     // Check package.json does NOT have workspaces field
     if (packageJson.workspaces) {
       results.push({
-        file: 'package.json',
+        file: "package.json",
         passed: false,
-        category: 'critical',
-        error: 'package.json must NOT have workspaces field (use pnpm-workspace.yaml as single source of truth)'
+        category: "critical",
+        error:
+          "package.json must NOT have workspaces field (use pnpm-workspace.yaml as single source of truth)",
       })
     }
   } catch (error) {
     results.push({
-      file: 'workspace-definition',
+      file: "workspace-definition",
       passed: false,
-      category: 'critical',
-      error: `Failed to validate workspace definition: ${error instanceof Error ? error.message : String(error)}`
+      category: "critical",
+      error: `Failed to validate workspace definition: ${error instanceof Error ? error.message : String(error)}`,
     })
   }
 
@@ -161,30 +162,29 @@ function validateWorkspaceDefinition(): ValidationResult[] {
 }
 
 function main() {
-  console.log('🔍 Validating verbatim config files...\n')
+  console.log("🔍 Validating verbatim config files...\n")
 
-  const criticalFiles = verbatimRegistry.files.filter(f => f.category === 'critical')
+  const criticalFiles = verbatimRegistry.files.filter((f) => f.category === "critical")
   const fileResults = criticalFiles.map(validateFile)
-  const consistencyResults = [
-    ...validateNodeVersionConsistency(),
-    ...validateWorkspaceDefinition()
-  ]
+  const consistencyResults = [...validateNodeVersionConsistency(), ...validateWorkspaceDefinition()]
 
   const allResults = [...fileResults, ...consistencyResults]
-  const failures = allResults.filter(r => !r.passed)
+  const failures = allResults.filter((r) => !r.passed)
 
   if (failures.length > 0) {
-    console.error('❌ Verbatim validation failed:\n')
-    failures.forEach(f => {
+    console.error("❌ Verbatim validation failed:\n")
+    failures.forEach((f) => {
       console.error(`  ${f.file}`)
       console.error(`    Category: ${f.category}`)
       console.error(`    Error: ${f.error}\n`)
     })
-    console.error('💡 Fix: Update files to match verbatim templates in docs/architecture/ELITE_VERBATIM_STRATEGY.md\n')
+    console.error(
+      "💡 Fix: Update files to match verbatim templates in docs/architecture/ELITE_VERBATIM_STRATEGY.md\n"
+    )
     process.exit(1)
   }
 
-  const passed = allResults.filter(r => r.passed).length
+  const passed = allResults.filter((r) => r.passed).length
   console.log(`✅ All verbatim files validated (${passed} checks passed)`)
 }
 

@@ -2,8 +2,7 @@
 
 ## Nextra Implementation for NexusCanon-AXIS
 
-**Status:** Active Planning Document
-**Authority:** System Architect Office
+**Status:** Active Planning Document **Authority:** System Architect Office
 **Reference:** @DOCUMENTATION_TOOL_RECOMMENDATION.md
 
 ---
@@ -85,7 +84,7 @@ constitutional_citations:
 **`theme.config.tsx`:**
 
 ```tsx
-import { DocsThemeConfig } from "nextra-theme-docs";
+import { DocsThemeConfig } from "nextra-theme-docs"
 
 const config: DocsThemeConfig = {
   logo: <span>NexusCanon-AXIS</span>,
@@ -100,9 +99,9 @@ const config: DocsThemeConfig = {
   sidebar: {
     defaultMenuCollapseLevel: 1,
   },
-};
+}
 
-export default config;
+export default config
 ```
 
 ---
@@ -112,14 +111,13 @@ export default config;
 ### Sealed Documents (Priority 1)
 
 - [ ] Migrate LBOS Origin Paper
-
   - Source: `.cursor/planing/.lbos_origin_paper_sealed.md`
   - Target: `apps/docs/pages/sealed/lbos-origin-paper/index.mdx`
   - Action: Copy content, add frontmatter, mark as sealed
 
 - [ ] Migrate NexusCanon Constitution v1.0
-
-  - Source: `.cursor/planing/.nexus_canon_constitution_v_1_governance_pack_v_1.md`
+  - Source:
+    `.cursor/planing/.nexus_canon_constitution_v_1_governance_pack_v_1.md`
   - Target: `apps/docs/pages/sealed/nexus-canon-constitution/v1.0.mdx`
   - Action: Copy content, add frontmatter, mark as ratified
 
@@ -131,8 +129,8 @@ export default config;
 ### Planning Documents (Priority 2)
 
 - [ ] Migrate Planning Playbook v2
-
-  - Source: `.cursor/planing/0.axis_governance_planning_tracking_playbook_with_reference_benchmarks_V2.md`
+  - Source:
+    `.cursor/planing/0.axis_governance_planning_tracking_playbook_with_reference_benchmarks_V2.md`
   - Target: `apps/docs/pages/active/planning-playbook/v2.mdx`
   - Action: Copy content, add frontmatter, mark as active
 
@@ -143,7 +141,6 @@ export default config;
 ### Cross-References (Priority 3)
 
 - [ ] Update `@docs/...` references
-
   - Map to new Nextra paths
   - Create MDX citation components
 
@@ -159,7 +156,8 @@ export default config;
 
 - **Nextra:** https://nextra.site/
 - **Vercel Template:** https://vercel.com/templates?type=documentation
-- **Next.js Docs Example:** https://github.com/vercel/next.js/tree/canary/examples/with-nextra
+- **Next.js Docs Example:**
+  https://github.com/vercel/next.js/tree/canary/examples/with-nextra
 
 ### Governance References
 

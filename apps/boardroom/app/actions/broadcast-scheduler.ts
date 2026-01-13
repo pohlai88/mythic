@@ -5,11 +5,11 @@
  * Can be used with cron jobs or scheduled tasks to publish broadcasts automatically.
  */
 
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { broadcasts } from '@/src/db/schema'
-import { eq, and, lte, isNull } from 'drizzle-orm'
+import { db } from "@/src/db"
+import { broadcasts } from "@/src/db/schema"
+import { eq, and, lte, isNull } from "drizzle-orm"
 
 /**
  * Get scheduled broadcasts that are ready to be published
@@ -46,7 +46,7 @@ export async function getScheduledBroadcasts(): Promise<
       scheduledFor: b.scheduledFor!,
     }))
   } catch (error) {
-    console.error('Error fetching scheduled broadcasts:', error)
+    console.error("Error fetching scheduled broadcasts:", error)
     return []
   }
 }
@@ -70,8 +70,8 @@ export async function publishScheduledBroadcast(
 
     return { success: true }
   } catch (error) {
-    console.error('Error publishing scheduled broadcast:', error)
-    return { success: false, error: 'Failed to publish broadcast' }
+    console.error("Error publishing scheduled broadcast:", error)
+    return { success: false, error: "Failed to publish broadcast" }
   }
 }
 

@@ -1,18 +1,20 @@
 # Turbo Token Missing - Solution
 
-**Status**: ✅ Active | **Last Updated**: 2026-01-11
-**Issue**: Config file has `teamId` but no `token` field
+**Status**: ✅ Active | **Last Updated**: 2026-01-11 **Issue**: Config file has
+`teamId` but no `token` field
 
 ---
 
 ## What We Found
 
 Your `.turbo/config.json` contains:
+
 ```json
-{"teamId":"team_05yVsWPh4ZJT3Q8u4sM6W2OP"}
+{ "teamId": "team_05yVsWPh4ZJT3Q8u4sM6W2OP" }
 ```
 
 **Status**:
+
 - ✅ `TURBO_TEAM` = `team_05yVsWPh4ZJT3Q8u4sM6W2OP` (found!)
 - ❌ `TURBO_TOKEN` = Not in config file
 
@@ -98,7 +100,8 @@ If you need the token for CI/CD:
 
 ### Step 2: Use as Turbo Token
 
-**Note**: Vercel API tokens can sometimes work as Turbo tokens, but they're different services.
+**Note**: Vercel API tokens can sometimes work as Turbo tokens, but they're
+different services.
 
 **Better approach**: Re-run `turbo link` and capture the full output.
 
@@ -124,6 +127,7 @@ Get-Content .turbo\config.json
 **If token appears in output**: Copy it immediately!
 
 **If token still missing**: You might need to:
+
 - Use Vercel API token instead
 - Or Turbo might use Vercel auth automatically (no token needed)
 
@@ -132,9 +136,11 @@ Get-Content .turbo\config.json
 ## Current Status
 
 **You have**:
+
 - ✅ `TURBO_TEAM` = `team_05yVsWPh4ZJT3Q8u4sM6W2OP`
 
 **You need**:
+
 - ⚠️ `TURBO_TOKEN` = Try re-linking or check Vercel dashboard
 
 ---
@@ -152,5 +158,5 @@ If it works, you might not need the token explicitly set!
 
 ---
 
-**Last Updated**: 2026-01-11
-**Status**: ✅ Team Found, Token Needs Investigation
+**Last Updated**: 2026-01-11 **Status**: ✅ Team Found, Token Needs
+Investigation

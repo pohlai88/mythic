@@ -11,15 +11,16 @@ migrated_from: DOCUMENTATION_ORGANIZATION_STRATEGY.md
 
 # Documentation Organization Strategy
 
-**Status**: Implementation Plan
-**Date**: 2025-01-27
-**Priority**: High - Repository Cleanliness
+**Status**: Implementation Plan **Date**: 2025-01-27 **Priority**: High -
+Repository Cleanliness
 
 ---
 
 ## 🎯 Problem Statement
 
-The repository root contains **212+ markdown files** scattered across multiple directories, making it difficult for developers to:
+The repository root contains **212+ markdown files** scattered across multiple
+directories, making it difficult for developers to:
+
 - Find relevant documentation
 - Understand project structure
 - Maintain clean workspace
@@ -30,13 +31,15 @@ The repository root contains **212+ markdown files** scattered across multiple d
 ## 📊 Current State Analysis
 
 ### Root Directory Clutter
-- **Implementation Summaries**: 30+ files (NEXTRA_4_*, ZOD_*, VALIDATION_*)
+
+- **Implementation Summaries**: 30+ files (NEXTRA*4*_, ZOD\__, VALIDATION\_\*)
 - **Migration Guides**: 15+ files
 - **Quick References**: 10+ files
 - **Setup Guides**: 8+ files
 - **Architecture Docs**: Mixed in root and `.cursor/` directories
 
 ### Existing Structure
+
 - ✅ `docs/` - Empty except README (intended for public docs)
 - ✅ `.cursor/docs/` - Cursor-specific documentation
 - ✅ `.cursor/rules/` - Cursor rules (.mdc files)
@@ -117,6 +120,7 @@ mythic/
 ### Required Tools
 
 1. **Documentation Linter** - Ensure consistency
+
    ```json
    "markdownlint-cli2": "^0.11.0"
    "remark-cli": "^12.0.0"
@@ -124,12 +128,14 @@ mythic/
    ```
 
 2. **Documentation Generator** - Auto-generate indexes
+
    ```json
    "typedoc": "^0.26.0"          # TypeScript API docs
    "jsdoc": "^4.0.2"             # JavaScript docs
    ```
 
 3. **File Organization** - Automated cleanup
+
    ```json
    "glob": "^11.0.0"             # File pattern matching
    "chalk": "^5.3.0"             # Terminal colors
@@ -137,6 +143,7 @@ mythic/
    ```
 
 4. **Pre-commit Hooks** - Prevent future clutter
+
    ```json
    "husky": "^9.0.11"
    "lint-staged": "^15.2.0"
@@ -154,12 +161,14 @@ mythic/
 ### Phase 1: Setup Tools (15 minutes)
 
 1. **Install Dependencies**
+
    ```bash
    pnpm add -D markdownlint-cli2 remark-cli remark-preset-lint-markdown-style-guide \
      typedoc jsdoc glob chalk inquirer husky lint-staged serve
    ```
 
 2. **Configure Markdown Linting**
+
    ```bash
    # Create .markdownlint.json
    ```
@@ -191,11 +200,13 @@ mythic/
 ### Phase 3: Execute Organization (20 minutes)
 
 1. **Dry Run** - Preview changes
+
    ```bash
    pnpm organize-docs --dry-run
    ```
 
 2. **Execute** - Apply changes
+
    ```bash
    pnpm organize-docs
    ```
@@ -208,6 +219,7 @@ mythic/
 ### Phase 4: Setup Automation (10 minutes)
 
 1. **Pre-commit Hook** - Prevent root clutter
+
    ```bash
    # .husky/pre-commit
    ```
@@ -226,6 +238,7 @@ mythic/
 **Purpose**: Automatically categorize and move documentation files
 
 **Features**:
+
 - Pattern-based categorization
 - Link updating
 - Backup creation
@@ -237,6 +250,7 @@ mythic/
 **Purpose**: Ensure documentation quality and consistency
 
 **Checks**:
+
 - Markdown syntax
 - Internal link validity
 - Broken references
@@ -248,6 +262,7 @@ mythic/
 **Purpose**: Auto-generate documentation indexes
 
 **Features**:
+
 - Category-based organization
 - Auto-generated TOC
 - Link validation
@@ -260,16 +275,19 @@ mythic/
 ### Rules to Enforce
 
 1. **No Markdown Files in Root** (except README.md, QUICK_START.md)
+
    ```bash
    # Reject commits with new .md files in root
    ```
 
 2. **Documentation Must Have Frontmatter**
+
    ```bash
    # Require frontmatter with title, date, category
    ```
 
 3. **Links Must Be Valid**
+
    ```bash
    # Check all internal links exist
    ```
@@ -346,4 +364,5 @@ pnpm generate-docs-index
 
 ---
 
-**For questions or suggestions, see**: `.cursor/docs/architecture/system-overview.md`
+**For questions or suggestions, see**:
+`.cursor/docs/architecture/system-overview.md`

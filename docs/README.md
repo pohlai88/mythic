@@ -2,7 +2,8 @@
 
 **Welcome to the AI-BOS/mythic documentation system.**
 
-This directory contains all canonical internal documentation. For public-facing documentation, see [`content/`](../content/) (rendered via Nextra).
+This directory contains all canonical internal documentation. For public-facing
+documentation, see [`content/`](../content/) (rendered via Nextra).
 
 ---
 
@@ -10,21 +11,20 @@ This directory contains all canonical internal documentation. For public-facing 
 
 ### Essential Starting Points
 
-- **Getting Started**: See root [`QUICK_START.md`](../QUICK_START.md)
-- **Quick Reference**: See root [`QUICK_REFERENCE.md`](../QUICK_REFERENCE.md)
-- **System Architecture**: [`docs/architecture/DOC-0100_system-architecture.md`](./architecture/DOC-0100_system-architecture.md)
+- **System Architecture**:
+  [`docs/architecture/DOC-0100_system-architecture.md`](./architecture/DOC-0100_system-architecture.md)
 
 ### Main Documentation Categories
 
-| Category           | Description                              | Path                               |
-| ------------------ | ---------------------------------------- | ---------------------------------- |
+| Category            | Description                              | Path                               |
+| ------------------- | ---------------------------------------- | ---------------------------------- |
 | **🏛️ Architecture** | System design, architecture decisions    | [`architecture/`](./architecture/) |
 | **📡 API**          | API documentation (GraphQL, REST, tRPC)  | [`api/`](./api/)                   |
 | **🏛️ Governance**   | Internal governance & system control     | [`governance/`](./governance/)     |
 | **📚 Guides**       | How-to guides & setup instructions       | [`guides/`](./guides/)             |
 | **📖 Reference**    | Reference documentation & best practices | [`reference/`](./reference/)       |
-| **🗄️ Migrations**   | Historical migration documentation       | [`migrations/`](./migrations/) ⚠️   |
-| **📅 Changelog**    | Implementation summaries & history       | [`changelog/`](./changelog/) ⚠️     |
+| **🗄️ Migrations**   | Historical migration documentation       | [`migrations/`](./migrations/) ⚠️  |
+| **📅 Changelog**    | Implementation summaries & history       | [`changelog/`](./changelog/) ⚠️    |
 
 ⚠️ = Excluded from AI context (historical reference only)
 
@@ -33,16 +33,20 @@ This directory contains all canonical internal documentation. For public-facing 
 ## 🏗️ Architecture
 
 **Current Documentation**:
-- [RFL Doctrine v1.0](./architecture/DOC-0114_rfl-doctrine-v1.0.md) - Request-First Logic doctrine
+
+- [RFL Doctrine v1.0](./architecture/DOC-0114_rfl-doctrine-v1.0.md) -
+  Request-First Logic doctrine
 - [Consistency & Sustainability Audit](./architecture/DOC-0118_consistency-sustainability-audit.md)
 
-**Purpose**: System architecture, design patterns, ADRs (Architecture Decision Records)
+**Purpose**: System architecture, design patterns, ADRs (Architecture Decision
+Records)
 
 ---
 
 ## 📡 API Documentation
 
 **Current Documentation**:
+
 - [API Autogeneration Strategy](./api/DOC-0115_api-autogeneration-strategy.md)
 - [API Autogeneration Implementation](./api/DOC-0116_api-autogeneration-implementation.md)
 - [API Autogeneration Quick Reference](./api/DOC-0117_api-autogeneration-quick-reference.md)
@@ -54,13 +58,17 @@ This directory contains all canonical internal documentation. For public-facing 
 ## 🏛️ Governance
 
 **Current Documentation**:
+
 - [Active Governance](./governance/active/) - Working governance documents
 
 **Purpose**: Internal governance, decision tracking, system control
 
 **For Public Governance**, see:
-- [Sealed Documents](../content/governance/sealed/) - Immutable foundation (Constitution, Titan Protocol, LBOS Origin Paper)
-- [Active Governance](../content/governance/active/) - Current governance (Planning Playbook)
+
+- [Sealed Documents](../content/governance/sealed/) - Immutable foundation
+  (Constitution, Titan Protocol, LBOS Origin Paper)
+- [Active Governance](../content/governance/active/) - Current governance
+  (Planning Playbook)
 - [Amendments](../content/governance/amendments/) - Governance amendments
 
 ---
@@ -68,7 +76,9 @@ This directory contains all canonical internal documentation. For public-facing 
 ## 📚 Guides
 
 **Current Documentation**:
-- [Post-Clone Setup](./guides/POST_CLONE_SETUP.md) - Setup after cloning repository
+
+- [Post-Clone Setup](./guides/POST_CLONE_SETUP.md) - Setup after cloning
+  repository
 
 **Purpose**: Step-by-step guides for common tasks
 
@@ -77,6 +87,7 @@ This directory contains all canonical internal documentation. For public-facing 
 ## 📖 Reference
 
 **Current Documentation**:
+
 - [Cursor Best Practices (Evidence-Based)](./reference/CURSOR_BEST_PRACTICES_EVIDENCE_BASED.md)
 - [KPI Reference](./reference/KPI_REFERENCE.md)
 - [Turbopack Support](./reference/DOC-0120_turbopack-support.md)
@@ -98,24 +109,30 @@ This directory contains all canonical internal documentation. For public-facing 
 
 Documentation of past migrations. **For reference only**, not current patterns.
 
-- [Nextra 4 Migration](./migrations/nextra-4/) - Nextra v3 → v4 migration (26 files)
+- [Nextra 4 Migration](./migrations/nextra-4/) - Nextra v3 → v4 migration (26
+  files)
 - [Nextra Migration](./migrations/nextra/) - General Nextra migration (9 files)
-- [Zod v4 Migration](./migrations/zod-v4/) - Zod enforcement & v4 migration (10 files)
-- [Validation Migration](./migrations/validation/) - Validation system migration (5 files)
+- [Zod v4 Migration](./migrations/zod-v4/) - Zod enforcement & v4 migration (10
+  files)
+- [Validation Migration](./migrations/validation/) - Validation system migration
+  (5 files)
 
-**Why excluded from AI**: Historical implementation details don't reflect current codebase patterns.
+**Why excluded from AI**: Historical implementation details don't reflect
+current codebase patterns.
 
 ### Changelog (Excluded from AI Context)
 
 Past implementation summaries. **For audit trail only**, not current state.
 
-- [2025-01 Implementations](./changelog/2025-01/) - January 2025 implementation summaries (22 files)
+- [2025-01 Implementations](./changelog/2025-01/) - January 2025 implementation
+  summaries (22 files)
 
-**Why excluded from AI**: Past implementations are not representative of current active work.
+**Why excluded from AI**: Past implementations are not representative of current
+active work.
 
 ---
 
-## 🔧 System Files (_system/)
+## 🔧 System Files (\_system/)
 
 **Documentation Governance & Control**:
 
@@ -136,10 +153,10 @@ Past implementation summaries. **For audit trail only**, not current state.
 
 ### For Developers
 
-1. **Getting Started**: [`QUICK_START.md`](../QUICK_START.md) in root
-2. **Architecture Overview**: [`docs/architecture/DOC-0100_system-architecture.md`](./architecture/DOC-0100_system-architecture.md)
-3. **API Docs**: [`docs/api/`](./api/)
-4. **Setup Guides**: [`docs/guides/`](./guides/)
+1. **Architecture Overview**:
+   [`docs/architecture/DOC-0100_system-architecture.md`](./architecture/DOC-0100_system-architecture.md)
+2. **API Docs**: [`docs/api/`](./api/)
+3. **Setup Guides**: [`docs/guides/`](./guides/)
 
 ### For Governance
 
@@ -151,7 +168,8 @@ Past implementation summaries. **For audit trail only**, not current state.
 
 1. **Best Practices**: [`docs/reference/`](./reference/)
 2. **Architecture Patterns**: [`docs/architecture/`](./architecture/)
-3. **Setup Guide**: [`docs/guides/POST_CLONE_SETUP.md`](./guides/POST_CLONE_SETUP.md)
+3. **Setup Guide**:
+   [`docs/guides/POST_CLONE_SETUP.md`](./guides/POST_CLONE_SETUP.md)
 
 ---
 
@@ -160,9 +178,11 @@ Past implementation summaries. **For audit trail only**, not current state.
 ### File Naming Convention
 
 **Preferred**: `DOC-[NUMBER]_descriptive-name.md`
+
 - Example: `DOC-0042_architecture-overview.md`
 
 **Acceptable Alternatives**:
+
 - Hash prefix: `a7f3e2b1_api-spec.md`
 - Version prefix: `v1.0.0_cursor-guide.md`
 
@@ -196,17 +216,15 @@ Draft → Active → Sealed (immutable)
 
 ### Included in Cursor AI Context
 
-✅ All documentation in `docs/` (except migrations/, changelog/)
-✅ All public documentation in `content/`
-✅ All architecture and API docs
-✅ All guides and reference docs
+✅ All documentation in `docs/` (except migrations/, changelog/) ✅ All public
+documentation in `content/` ✅ All architecture and API docs ✅ All guides and
+reference docs
 
 ### Excluded from Cursor AI Context
 
-❌ `docs/migrations/` - Historical, not current patterns
-❌ `docs/changelog/` - Past implementations
-❌ `.cursor/archive/` - Archived documents
-❌ `.cursor/work/` - Temporary analysis
+❌ `docs/migrations/` - Historical, not current patterns ❌ `docs/changelog/` -
+Past implementations ❌ `.cursor/archive/` - Archived documents ❌
+`.cursor/work/` - Temporary analysis
 
 **Configuration**: See [`.cursorignore`](../.cursorignore)
 
@@ -216,7 +234,8 @@ Draft → Active → Sealed (immutable)
 
 1. **For new docs**: Use proper naming convention (DOC-XXXX preferred)
 2. **For updates**: Update `modified` date in frontmatter
-3. **For governance docs**: Follow amendment process (see [`content/governance/amendments/`](../content/governance/amendments/))
+3. **For governance docs**: Follow amendment process (see
+   [`content/governance/amendments/`](../content/governance/amendments/))
 4. **For temporary work**: Use `.temp-docs/` with TEMP- prefix (7-day expiry)
 
 **Pre-commit Hook**: Validates naming and frontmatter compliance
@@ -232,6 +251,5 @@ Draft → Active → Sealed (immutable)
 
 ---
 
-**Last Updated**: 2026-01-10
-**Cleanup Phase**: Phase 4 (Cutover + Navigation)
+**Last Updated**: 2026-01-10 **Cleanup Phase**: Phase 4 (Cutover + Navigation)
 **Total Documentation Files**: 259 (191 .md, 35 .mdx, 33 .mdc)

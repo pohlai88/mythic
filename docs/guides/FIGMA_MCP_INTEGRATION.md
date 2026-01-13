@@ -8,13 +8,16 @@
 
 ## Overview
 
-This guide covers integrating Figma's Model Context Protocol (MCP) server for syncing design tokens directly from Figma to your codebase. This provides an alternative to Handoff CLI, using Figma's native MCP integration.
+This guide covers integrating Figma's Model Context Protocol (MCP) server for
+syncing design tokens directly from Figma to your codebase. This provides an
+alternative to Handoff CLI, using Figma's native MCP integration.
 
 ---
 
 ## What is Figma MCP?
 
-Figma MCP is a Model Context Protocol server that provides AI agents with direct access to Figma design data, including:
+Figma MCP is a Model Context Protocol server that provides AI agents with direct
+access to Figma design data, including:
 
 - **Design Variables**: Colors, spacing, typography tokens
 - **Components**: Component definitions and properties
@@ -30,16 +33,19 @@ Figma MCP is a Model Context Protocol server that provides AI agents with direct
 ### Two Sync Methods
 
 **Method 1: Handoff CLI** (Current)
+
 ```
 Figma → Handoff CLI → handoff-colors.ts → update-css-from-handoff.ts → input.css
 ```
 
 **Method 2: Figma MCP** (New)
+
 ```
 Figma → MCP Server → get_variable_defs → sync-figma-tokens-mcp.ts → handoff-colors.ts → update-css-from-handoff.ts → input.css
 ```
 
-Both methods produce the same output format (`handoff-colors.ts`), ensuring compatibility.
+Both methods produce the same output format (`handoff-colors.ts`), ensuring
+compatibility.
 
 ---
 
@@ -54,6 +60,7 @@ Figma MCP server can be used in two ways:
 **For Cursor/Claude Desktop**, add to your MCP configuration:
 
 **Cursor** (`.cursor/mcp.json` or Cursor Settings):
+
 ```json
 {
   "mcpServers": {
@@ -68,7 +75,9 @@ Figma MCP server can be used in two ways:
 }
 ```
 
-**Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+**Claude Desktop**
+(`~/Library/Application Support/Claude/claude_desktop_config.json`):
+
 ```json
 {
   "mcpServers": {
@@ -85,7 +94,8 @@ Figma MCP server can be used in two ways:
 
 #### Option B: Local MCP Server (Desktop App)
 
-Requires Figma Desktop app installed. See [Figma MCP Local Installation](https://developers.figma.com/docs/figma-mcp-server/local-server-installation).
+Requires Figma Desktop app installed. See
+[Figma MCP Local Installation](https://developers.figma.com/docs/figma-mcp-server/local-server-installation).
 
 ---
 
@@ -96,18 +106,21 @@ Requires Figma Desktop app installed. See [Figma MCP Local Installation](https:/
 **Step 1: Get Variables from Figma**
 
 In Cursor or Claude Desktop, ask:
+
 ```
 Get the variable names and values for Figma file <file-key>
 ```
 
 Or be more specific:
+
 ```
 Get the color variables used in Figma file <file-key>, node <node-id>
 ```
 
 **Step 2: Save MCP Response**
 
-The MCP server will return variable data. Save this to a JSON file (e.g., `figma-variables.json`).
+The MCP server will return variable data. Save this to a JSON file (e.g.,
+`figma-variables.json`).
 
 **Step 3: Sync Tokens**
 
@@ -128,21 +141,22 @@ pnpm tokens:rebuild
 
 ### Method 2: Direct MCP Tool Call
 
-If you have programmatic access to MCP tools, you can call `get_variable_defs` directly:
+If you have programmatic access to MCP tools, you can call `get_variable_defs`
+directly:
 
 ```typescript
 // Example: Using MCP SDK (pseudo-code)
-const mcpClient = new MCPClient({ server: 'figma' })
-const variables = await mcpClient.callTool('get_variable_defs', {
+const mcpClient = new MCPClient({ server: "figma" })
+const variables = await mcpClient.callTool("get_variable_defs", {
   fileKey: process.env.FIGMA_FILE_KEY,
-  nodeId: '<node-id>' // Optional
+  nodeId: "<node-id>", // Optional
 })
 
 // Save to JSON file
-writeFileSync('figma-variables.json', JSON.stringify(variables, null, 2))
+writeFileSync("figma-variables.json", JSON.stringify(variables, null, 2))
 
 // Run sync
-execSync('pnpm tokens:sync-mcp --json=figma-variables.json')
+execSync("pnpm tokens:sync-mcp --json=figma-variables.json")
 ```
 
 ---
@@ -154,19 +168,21 @@ execSync('pnpm tokens:sync-mcp --json=figma-variables.json')
 **Purpose**: Get design variables (colors, spacing, typography) from Figma
 
 **Parameters**:
+
 - `fileKey` (required): Figma file key
 - `nodeId` (optional): Specific node ID to get variables from
 
 **Returns**: Object with variables array
 
 **Example Response**:
+
 ```json
 {
   "variables": [
     {
       "name": "gold",
       "type": "COLOR",
-      "value": { "r": 0.788, "g": 0.663, "b": 0.380 },
+      "value": { "r": 0.788, "g": 0.663, "b": 0.38 },
       "description": "Ratified Authority - Primary accent"
     },
     {
@@ -191,17 +207,18 @@ execSync('pnpm tokens:sync-mcp --json=figma-variables.json')
 
 The sync script maps Figma variable names to our token structure:
 
-| Figma Variable | Token Name | Description |
-|---------------|------------|-------------|
-| `void` | `void` | Absence / Authority |
-| `obsidian` | `obsidian` | Surface / Weight |
-| `parchment` | `parchment` | Knowledge |
-| `ash` | `ash` | Commentary |
-| `gold` | `gold` | Ratified Authority |
-| `ember` | `ember` | Consequence |
-| `charcoal` | `charcoal` | Border / Divider |
+| Figma Variable | Token Name  | Description         |
+| -------------- | ----------- | ------------------- |
+| `void`         | `void`      | Absence / Authority |
+| `obsidian`     | `obsidian`  | Surface / Weight    |
+| `parchment`    | `parchment` | Knowledge           |
+| `ash`          | `ash`       | Commentary          |
+| `gold`         | `gold`      | Ratified Authority  |
+| `ember`        | `ember`     | Consequence         |
+| `charcoal`     | `charcoal`  | Border / Divider    |
 
-**Custom Mapping**: Edit `scripts/sync-figma-tokens-mcp.ts` to add/modify mappings.
+**Custom Mapping**: Edit `scripts/sync-figma-tokens-mcp.ts` to add/modify
+mappings.
 
 ---
 
@@ -215,11 +232,13 @@ pnpm tokens:full-sync
 ```
 
 **Pros**:
+
 - ✅ Fully automated
 - ✅ No manual steps
 - ✅ Works in CI/CD
 
 **Cons**:
+
 - ⚠️ Requires Handoff CLI installation
 - ⚠️ Separate tool dependency
 
@@ -236,12 +255,14 @@ pnpm tokens:rebuild
 ```
 
 **Pros**:
+
 - ✅ Native Figma integration
 - ✅ Works with AI agents directly
 - ✅ No additional CLI tools needed
 - ✅ Can get variables from specific nodes
 
 **Cons**:
+
 - ⚠️ Requires MCP client setup
 - ⚠️ Manual step to get variables (can be automated)
 
@@ -249,13 +270,14 @@ pnpm tokens:rebuild
 
 ## Integration with Existing Workflow
 
-Both methods produce the same output format (`handoff-colors.ts`), so they're fully compatible:
+Both methods produce the same output format (`handoff-colors.ts`), so they're
+fully compatible:
 
 ```typescript
 // Both methods produce this format:
 export const handoffColors = {
-  void: { value: '#0a0a0b', description: '...' },
-  gold: { value: '#c9a961', description: '...' },
+  void: { value: "#0a0a0b", description: "..." },
+  gold: { value: "#c9a961", description: "..." },
   // ...
 }
 ```
@@ -271,6 +293,7 @@ export const handoffColors = {
 **Problem**: MCP tools not available in Cursor/Claude
 
 **Solution**:
+
 1. Verify MCP server configuration
 2. Check `FIGMA_API_KEY` environment variable
 3. Restart Cursor/Claude Desktop
@@ -281,6 +304,7 @@ export const handoffColors = {
 **Problem**: `get_variable_defs` returns empty or wrong variables
 
 **Solution**:
+
 1. Verify file key is correct
 2. Check node ID (if using specific node)
 3. Ensure variables exist in Figma file
@@ -291,6 +315,7 @@ export const handoffColors = {
 **Problem**: Colors not converting correctly
 
 **Solution**:
+
 1. Ensure Figma variables are COLOR type
 2. Check color format (RGB object vs HEX string)
 3. Review `figmaColorToHex` function in sync script
@@ -302,11 +327,13 @@ export const handoffColors = {
 ### 1. Use Consistent Variable Names
 
 In Figma, use the exact variable names that match your token mapping:
+
 - `void`, `obsidian`, `parchment`, `ash`, `gold`, `ember`, `charcoal`
 
 ### 2. Add Descriptions
 
 Include descriptions in Figma variables - they'll be synced to code:
+
 ```
 gold: "Ratified Authority - Primary accent"
 ```
@@ -314,14 +341,16 @@ gold: "Ratified Authority - Primary accent"
 ### 3. Organize Variables
 
 Group variables in Figma for easier management:
+
 - Create variable collections: "BEASTMODE Gold Palette"
 - Use consistent naming conventions
 
 ### 4. Version Control
 
 Commit `handoff-colors.ts` to git after syncing:
+
 ```bash
-git add packages/design-system/src/tokens/handoff-colors.ts
+git add packages/TailwindCSS-V4/Design-System/src/tokens/handoff-colors.ts
 git commit -m "chore: sync design tokens from Figma"
 ```
 
@@ -329,16 +358,21 @@ git commit -m "chore: sync design tokens from Figma"
 
 ## Related Documentation
 
-- [Handoff Integration Guide](./HANDOFF_INTEGRATION.md) - Alternative sync method
-- [Design Tokens Reference](../reference/TAILWIND_DESIGN_TOKENS.md) - Token usage
-- [Figma MCP Server Docs](https://developers.figma.com/docs/figma-mcp-server) - Official documentation
+- [Handoff Integration Guide](./HANDOFF_INTEGRATION.md) - Alternative sync
+  method
+- [Design Tokens Reference](../reference/TAILWIND_DESIGN_TOKENS.md) - Token
+  usage
+- [Figma MCP Server Docs](https://developers.figma.com/docs/figma-mcp-server) -
+  Official documentation
 
 ---
 
 ## Support
 
 For issues or questions:
-1. Check [Figma MCP Server Documentation](https://developers.figma.com/docs/figma-mcp-server)
+
+1. Check
+   [Figma MCP Server Documentation](https://developers.figma.com/docs/figma-mcp-server)
 2. Review MCP server configuration
 3. Verify environment variables
 4. Check variable names in Figma match token mapping

@@ -7,13 +7,13 @@
  * @see PRD Section 4.3 Weapon 8: The Oracle
  */
 
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { caseWhatifBudgets, caseWhatifMilestones } from '@/src/db/schema'
-import { eq, asc } from 'drizzle-orm'
-import { z as z4 } from 'zod/v4'
-import { validateActionInput } from '@/src/lib/actions/validate-action'
+import { db } from "@/src/db"
+import { caseWhatifBudgets, caseWhatifMilestones } from "@/src/db/schema"
+import { eq, asc } from "drizzle-orm"
+import { z as z4 } from "zod/v4"
+import { validateActionInput } from "@/src/lib/actions/validate-action"
 
 /**
  * Input schema for getting variance data
@@ -33,7 +33,7 @@ export interface VarianceData {
   plannedAt: Date | null
   actualAt: Date | null
   variancePct: number | null
-  varianceStatus: 'on_track' | 'warning' | 'overrun' | 'underrun' | 'critical' | null
+  varianceStatus: "on_track" | "warning" | "overrun" | "underrun" | "critical" | null
   varianceReason: string | null
   budgetedBreakdown: Record<string, unknown> | null
   plannedMetrics: Record<string, unknown> | null
@@ -58,13 +58,11 @@ export interface VarianceData {
  * Returns variance analysis including Budgeted/Planned/Actual values
  * and calculated variance percentage and status.
  */
-export async function getVarianceData(
-  input: unknown
-): Promise<VarianceData | null> {
+export async function getVarianceData(input: unknown): Promise<VarianceData | null> {
   // Validate input
   const inputResult = validateActionInput(input, getVarianceInputSchema)
   if (!inputResult.success) {
-    console.error('Invalid getVarianceData input:', inputResult.issues)
+    console.error("Invalid getVarianceData input:", inputResult.issues)
     return null
   }
 
@@ -91,13 +89,9 @@ export async function getVarianceData(
       .orderBy(asc(caseWhatifMilestones.scheduledDate))
 
     // Parse numeric values
-    const budgeted = parseFloat(varianceBudget.budgetedTotal || '0')
-    const planned = varianceBudget.plannedTotal
-      ? parseFloat(varianceBudget.plannedTotal)
-      : null
-    const actual = varianceBudget.actualTotal
-      ? parseFloat(varianceBudget.actualTotal)
-      : null
+    const budgeted = parseFloat(varianceBudget.budgetedTotal || "0")
+    const planned = varianceBudget.plannedTotal ? parseFloat(varianceBudget.plannedTotal) : null
+    const actual = varianceBudget.actualTotal ? parseFloat(varianceBudget.actualTotal) : null
 
     // Calculate variance percentage if we have actual data
     let variancePct: number | null = null
@@ -114,9 +108,7 @@ export async function getVarianceData(
       actualDate: m.actualDate,
       budgetToDate: m.budgetToDate ? parseFloat(m.budgetToDate) : null,
       actualToDate: m.actualToDate ? parseFloat(m.actualToDate) : null,
-      variancePctToDate: m.variancePctToDate
-        ? parseFloat(m.variancePctToDate)
-        : null,
+      variancePctToDate: m.variancePctToDate ? parseFloat(m.variancePctToDate) : null,
       notes: m.notes,
       reviewedAt: m.reviewedAt,
     }))
@@ -129,19 +121,15 @@ export async function getVarianceData(
       plannedAt: varianceBudget.plannedAt || null,
       actualAt: varianceBudget.lastActualAt || null,
       variancePct,
-      varianceStatus:
-        (varianceBudget.varianceStatus as VarianceData['varianceStatus']) || null,
+      varianceStatus: (varianceBudget.varianceStatus as VarianceData["varianceStatus"]) || null,
       varianceReason: varianceBudget.varianceReason || null,
-      budgetedBreakdown:
-        (varianceBudget.budgetedBreakdown as Record<string, unknown>) || null,
-      plannedMetrics:
-        (varianceBudget.plannedMetrics as Record<string, unknown>) || null,
-      actualBreakdown:
-        (varianceBudget.actualBreakdown as Record<string, unknown>) || null,
+      budgetedBreakdown: (varianceBudget.budgetedBreakdown as Record<string, unknown>) || null,
+      plannedMetrics: (varianceBudget.plannedMetrics as Record<string, unknown>) || null,
+      actualBreakdown: (varianceBudget.actualBreakdown as Record<string, unknown>) || null,
       milestones: transformedMilestones,
     }
   } catch (error) {
-    console.error('Error fetching variance data:', error)
+    console.error("Error fetching variance data:", error)
     return null
   }
 }
@@ -159,12 +147,12 @@ export function calculateVariancePct(budgeted: number, actual: number): number {
  */
 export function calculateRiskStatusFromVariance(
   variancePct: number
-): 'on_track' | 'warning' | 'overrun' | 'underrun' | 'critical' {
-  if (variancePct >= 20) return 'critical'
-  if (variancePct >= 10) return 'overrun'
-  if (variancePct >= 5) return 'warning'
-  if (variancePct <= -10) return 'underrun'
-  return 'on_track'
+): "on_track" | "warning" | "overrun" | "underrun" | "critical" {
+  if (variancePct >= 20) return "critical"
+  if (variancePct >= 10) return "overrun"
+  if (variancePct >= 5) return "warning"
+  if (variancePct <= -10) return "underrun"
+  return "on_track"
 }
 
 /**
@@ -189,8 +177,8 @@ export async function createVarianceBudget(
 ): Promise<{ success: boolean; varianceBudgetId?: string; error?: string }> {
   const inputResult = validateActionInput(input, createVarianceBudgetInputSchema)
   if (!inputResult.success) {
-    console.error('Invalid createVarianceBudget input:', inputResult.issues)
-    return { success: false, error: 'Invalid input' }
+    console.error("Invalid createVarianceBudget input:", inputResult.issues)
+    return { success: false, error: "Invalid input" }
   }
 
   const { proposalId, caseNumber, stencilId, budgetedTotal, budgetedBreakdown, budgetedBy } =
@@ -205,7 +193,7 @@ export async function createVarianceBudget(
       .limit(1)
 
     if (existing) {
-      return { success: false, error: 'Variance budget already exists for this proposal' }
+      return { success: false, error: "Variance budget already exists for this proposal" }
     }
 
     // Create variance budget
@@ -223,13 +211,13 @@ export async function createVarianceBudget(
       .returning()
 
     if (!varianceBudget) {
-      return { success: false, error: 'Failed to create variance budget' }
+      return { success: false, error: "Failed to create variance budget" }
     }
 
     return { success: true, varianceBudgetId: varianceBudget.id }
   } catch (error) {
-    console.error('Error creating variance budget:', error)
-    return { success: false, error: 'Failed to create variance budget' }
+    console.error("Error creating variance budget:", error)
+    return { success: false, error: "Failed to create variance budget" }
   }
 }
 
@@ -257,8 +245,8 @@ export async function updateVarianceBudget(
 ): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, updateVarianceBudgetInputSchema)
   if (!inputResult.success) {
-    console.error('Invalid updateVarianceBudget input:', inputResult.issues)
-    return { success: false, error: 'Invalid input' }
+    console.error("Invalid updateVarianceBudget input:", inputResult.issues)
+    return { success: false, error: "Invalid input" }
   }
 
   const {
@@ -281,7 +269,7 @@ export async function updateVarianceBudget(
       .limit(1)
 
     if (!existing) {
-      return { success: false, error: 'Variance budget not found' }
+      return { success: false, error: "Variance budget not found" }
     }
 
     // Build update object
@@ -320,7 +308,7 @@ export async function updateVarianceBudget(
       updateData.actualTotal = actualTotal.toString()
       updateData.lastActualAt = new Date()
       // Increment review count
-      const currentCount = parseFloat(existing.actualReviewCount || '0')
+      const currentCount = parseFloat(existing.actualReviewCount || "0")
       updateData.actualReviewCount = (currentCount + 1).toString()
     }
     if (actualBreakdown !== undefined) {
@@ -334,8 +322,8 @@ export async function updateVarianceBudget(
     }
 
     // Calculate variance if we have both budgeted and actual
-    const budgeted = parseFloat(existing.budgetedTotal || '0')
-    const actual = actualTotal !== undefined ? actualTotal : parseFloat(existing.actualTotal || '0')
+    const budgeted = parseFloat(existing.budgetedTotal || "0")
+    const actual = actualTotal !== undefined ? actualTotal : parseFloat(existing.actualTotal || "0")
 
     if (budgeted > 0 && actual !== null && !isNaN(actual)) {
       const variancePct = calculateVariancePct(budgeted, actual)
@@ -351,8 +339,8 @@ export async function updateVarianceBudget(
 
     return { success: true }
   } catch (error) {
-    console.error('Error updating variance budget:', error)
-    return { success: false, error: 'Failed to update variance budget' }
+    console.error("Error updating variance budget:", error)
+    return { success: false, error: "Failed to update variance budget" }
   }
 }
 
@@ -376,8 +364,8 @@ export async function createMilestone(
 ): Promise<{ success: boolean; milestoneId?: string; error?: string }> {
   const inputResult = validateActionInput(input, createMilestoneInputSchema)
   if (!inputResult.success) {
-    console.error('Invalid createMilestone input:', inputResult.issues)
-    return { success: false, error: 'Invalid input' }
+    console.error("Invalid createMilestone input:", inputResult.issues)
+    return { success: false, error: "Invalid input" }
   }
 
   const { proposalId, milestoneKey, milestoneLabel, scheduledDate, budgetToDate, actualToDate } =
@@ -392,7 +380,7 @@ export async function createMilestone(
       .limit(1)
 
     if (!varianceBudget) {
-      return { success: false, error: 'Variance budget not found for this proposal' }
+      return { success: false, error: "Variance budget not found for this proposal" }
     }
 
     // Calculate variance percentage if we have both values
@@ -417,13 +405,13 @@ export async function createMilestone(
       .returning()
 
     if (!milestone) {
-      return { success: false, error: 'Failed to create milestone' }
+      return { success: false, error: "Failed to create milestone" }
     }
 
     return { success: true, milestoneId: milestone.id }
   } catch (error) {
-    console.error('Error creating milestone:', error)
-    return { success: false, error: 'Failed to create milestone' }
+    console.error("Error creating milestone:", error)
+    return { success: false, error: "Failed to create milestone" }
   }
 }
 
@@ -447,8 +435,8 @@ export async function updateMilestone(
 ): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, updateMilestoneInputSchema)
   if (!inputResult.success) {
-    console.error('Invalid updateMilestone input:', inputResult.issues)
-    return { success: false, error: 'Invalid input' }
+    console.error("Invalid updateMilestone input:", inputResult.issues)
+    return { success: false, error: "Invalid input" }
   }
 
   const { milestoneId, actualDate, budgetToDate, actualToDate, notes, reviewedBy } =
@@ -500,7 +488,7 @@ export async function updateMilestone(
 
     return { success: true }
   } catch (error) {
-    console.error('Error updating milestone:', error)
-    return { success: false, error: 'Failed to update milestone' }
+    console.error("Error updating milestone:", error)
+    return { success: false, error: "Failed to update milestone" }
   }
 }

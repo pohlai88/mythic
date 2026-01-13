@@ -1,8 +1,7 @@
 # DRY Handoff Architecture: Single Source of Truth
 
-**Status**: ✅ **MANDATORY ARCHITECTURE**
-**Date**: 2026-01-11
-**Version**: 3.0.0 (Final - No More Mistakes)
+**Status**: ✅ **MANDATORY ARCHITECTURE** **Date**: 2026-01-11 **Version**:
+3.0.0 (Final - No More Mistakes)
 
 ---
 
@@ -32,7 +31,8 @@
 6. Components (Tailwind classes only) ← Final Usage
 ```
 
-**CRITICAL**: This is a **DERIVATIVE SYSTEM** - each layer derives from the previous. No loops, no conflicts.
+**CRITICAL**: This is a **DERIVATIVE SYSTEM** - each layer derives from the
+previous. No loops, no conflicts.
 
 ---
 
@@ -40,11 +40,12 @@
 
 ### 1. Root Source: Handoff
 
-**Location**: `packages/design-system/src/tokens/handoff-colors.ts`
+**Location**: `packages/TailwindCSS-V4/Design-System/src/tokens/handoff-colors.ts`
 
 **Purpose**: Single source of truth from Figma/Handoff
 
 **Action**: Auto-sync from Handoff
+
 ```bash
 pnpm tokens:sync
 ```
@@ -53,19 +54,20 @@ pnpm tokens:sync
 
 ### 2. Design Tokens: input.css
 
-**Location**: `packages/design-system/src/tokens/input.css`
+**Location**: `packages/TailwindCSS-V4/Design-System/src/tokens/input.css`
 
 **Purpose**: Tailwind v4 `@theme` directive with Handoff colors
 
 **Rule**: ✅ **ONLY TAILWIND @theme** - No CSS rules, no selectors
 
 **Example**:
+
 ```css
 @theme {
   /* ✅ CORRECT: Design tokens only */
   --color-void: 240 10% 4%;
   --color-gold: 40 45% 55%;
-  
+
   /* ❌ FORBIDDEN: No CSS rules */
   /* body { ... } ❌ */
   /* * { ... } ❌ */
@@ -73,6 +75,7 @@ pnpm tokens:sync
 ```
 
 **Build**:
+
 ```bash
 cd packages/design-system
 pnpm build:css
@@ -82,7 +85,7 @@ pnpm build:css
 
 ### 3. Compiled Output: style.css
 
-**Location**: `packages/design-system/src/tokens/style.css`
+**Location**: `packages/TailwindCSS-V4/Design-System/src/tokens/style.css`
 
 **Purpose**: PostCSS-compiled Tailwind CSS
 
@@ -101,12 +104,14 @@ pnpm build:css
 **Rule**: ✅ **ONLY IMPORTS** - No custom CSS
 
 **Content**:
+
 ```css
 /* ✅ CORRECT: Only imports */
 @import "@mythic/design-system/tokens/style.css";
 ```
 
 **❌ FORBIDDEN**:
+
 - No CSS rules
 - No selectors
 - No !important
@@ -123,6 +128,7 @@ pnpm build:css
 **Rule**: ✅ **ONLY @theme EXTENSIONS** - No CSS rules
 
 **Example**:
+
 ```css
 /* ✅ CORRECT: Extend theme only */
 @import "../../styles/globals.css";
@@ -134,6 +140,7 @@ pnpm build:css
 ```
 
 **❌ FORBIDDEN**:
+
 - No CSS rules
 - No selectors
 - No !important
@@ -150,6 +157,7 @@ pnpm build:css
 **Rule**: ✅ **ONLY TAILWIND CLASSES** - No inline styles, no CSS modules
 
 **Example**:
+
 ```tsx
 // ✅ CORRECT: Tailwind classes only
 <div className="bg-void text-parchment p-4">
@@ -262,20 +270,20 @@ pnpm build:css
 
 ### ✅ Allowed Files
 
-| File | Status | Purpose |
-|------|--------|---------|
-| `input.css` | ✅ Allowed | Design tokens only |
-| `style.css` | ✅ Allowed | Generated output |
-| `globals.css` (shared) | ✅ Allowed | Imports only |
-| `globals.css` (app) | ✅ Allowed | Theme extensions only |
+| File                   | Status     | Purpose               |
+| ---------------------- | ---------- | --------------------- |
+| `input.css`            | ✅ Allowed | Design tokens only    |
+| `style.css`            | ✅ Allowed | Generated output      |
+| `globals.css` (shared) | ✅ Allowed | Imports only          |
+| `globals.css` (app)    | ✅ Allowed | Theme extensions only |
 
 ### ❌ Forbidden Files
 
-| File | Status | Action |
-|------|--------|--------|
-| `axis-theme.css` | ❌ Forbidden | Convert to Tailwind or remove |
-| `*.module.css` | ❌ Forbidden | Remove, use Tailwind |
-| Any CSS with rules | ❌ Forbidden | Remove or convert |
+| File               | Status       | Action                        |
+| ------------------ | ------------ | ----------------------------- |
+| `axis-theme.css`   | ❌ Forbidden | Convert to Tailwind or remove |
+| `*.module.css`     | ❌ Forbidden | Remove, use Tailwind          |
+| Any CSS with rules | ❌ Forbidden | Remove or convert             |
 
 ---
 
@@ -296,6 +304,5 @@ pnpm build:css
 
 ---
 
-**Status**: ✅ **MANDATORY - ENFORCE STRICTLY**
-**Version**: 3.0.0
-**Last Updated**: 2026-01-11
+**Status**: ✅ **MANDATORY - ENFORCE STRICTLY** **Version**: 3.0.0 **Last
+Updated**: 2026-01-11

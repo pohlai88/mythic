@@ -5,7 +5,7 @@
  * Vanguard Security: Ensures audit trail integrity
  */
 
-import { z as z4 } from 'zod/v4'
+import { z as z4 } from "zod/v4"
 import {
   thanosEventSchema,
   immutableAuditTrailSchema,
@@ -13,26 +13,26 @@ import {
   type ThanosEvent,
   type ImmutableAuditTrail,
   type CreateAuditEvent,
-} from './audit-schemas'
-import { db } from '@/src/db'
-import { thanosEvents } from '@/src/db/schema/thanos'
-import { eq } from 'drizzle-orm'
+} from "./audit-schemas"
+import { db } from "@/src/db"
+import { thanosEvents } from "@/src/db/schema/thanos"
+import { eq } from "drizzle-orm"
 
 /**
  * Create audit event
  *
  * Validates event and stores in database with immutable flag
  */
-export async function createAuditEvent(
-  event: CreateAuditEvent
-): Promise<ThanosEvent> {
+export async function createAuditEvent(event: CreateAuditEvent): Promise<ThanosEvent> {
   // Validate event
   const validatedResult = createAuditEventSchema.safeParse({
     ...event,
     when: new Date(), // Always use current timestamp
   })
   if (!validatedResult.success) {
-    throw new Error(`Invalid audit event: ${validatedResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid audit event: ${validatedResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   const validated = validatedResult.data
 
@@ -45,7 +45,9 @@ export async function createAuditEvent(
     ...validated,
   })
   if (!fullEventResult.success) {
-    throw new Error(`Invalid full audit event: ${fullEventResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid full audit event: ${fullEventResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   const fullEvent = fullEventResult.data
 
@@ -72,9 +74,7 @@ export async function createAuditEvent(
  *
  * Returns immutable audit trail
  */
-export async function getAuditTrail(
-  proposalId: string
-): Promise<ImmutableAuditTrail> {
+export async function getAuditTrail(proposalId: string): Promise<ImmutableAuditTrail> {
   // Query database
   const events = await db
     .select()
@@ -91,10 +91,10 @@ export async function getAuditTrail(
       who: event.who,
       what: event.what,
       when: event.when,
-      where: event.where as 'web' | 'api' | 'webhook' | 'batch',
+      where: event.where as "web" | "api" | "webhook" | "batch",
       why: event.why || undefined,
       which: event.which || undefined,
-      how: event.how as 'UI' | 'API' | 'batch' | 'automated',
+      how: event.how as "UI" | "API" | "batch" | "automated",
       metadata: event.metadata || undefined,
     })
     if (!result.success) {
@@ -113,7 +113,9 @@ export async function getAuditTrail(
     immutable: true,
   })
   if (!trailResult.success) {
-    throw new Error(`Invalid audit trail: ${trailResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid audit trail: ${trailResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   const trail = trailResult.data
 
@@ -137,8 +139,6 @@ export function validateAuditTrail(trail: unknown): ImmutableAuditTrail {
 /**
  * Validate create audit event
  */
-export function validateCreateAuditEvent(
-  event: unknown
-): CreateAuditEvent {
+export function validateCreateAuditEvent(event: unknown): CreateAuditEvent {
   return createAuditEventSchema.parse(event)
 }

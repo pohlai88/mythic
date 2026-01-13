@@ -13,17 +13,17 @@
  *   pnpm validate-docs --fix        # Auto-fix issues
  */
 
-import { existsSync } from 'node:fs'
-import { readFile } from 'node:fs/promises'
-import { dirname, join } from 'node:path'
-import chalk from 'chalk'
-import { glob } from 'glob'
+import { existsSync } from "node:fs"
+import { readFile } from "node:fs/promises"
+import { dirname, join } from "node:path"
+import chalk from "chalk"
+import { glob } from "glob"
 
 interface ValidationIssue {
   file: string
   line?: number
   column?: number
-  severity: 'error' | 'warning'
+  severity: "error" | "warning"
   message: string
   rule: string
 }
@@ -34,7 +34,7 @@ interface ValidationResult {
   valid: boolean
 }
 
-const DOCS_DIRS = ['docs', '.cursor/docs']
+const DOCS_DIRS = ["docs", ".cursor/docs"]
 
 async function findMarkdownFiles(): Promise<string[]> {
   const files: string[] = []
@@ -52,12 +52,12 @@ function validateFrontmatter(content: string, filePath: string): ValidationIssue
   const issues: ValidationIssue[] = []
 
   // Check for frontmatter (optional but recommended)
-  if (!content.startsWith('---')) {
+  if (!content.startsWith("---")) {
     issues.push({
       file: filePath,
-      severity: 'warning',
-      message: 'Missing frontmatter (recommended)',
-      rule: 'frontmatter',
+      severity: "warning",
+      message: "Missing frontmatter (recommended)",
+      rule: "frontmatter",
     })
   }
 
@@ -66,32 +66,32 @@ function validateFrontmatter(content: string, filePath: string): ValidationIssue
 
 function validateMarkdownSyntax(content: string, filePath: string): ValidationIssue[] {
   const issues: ValidationIssue[] = []
-  const lines = content.split('\n')
+  const lines = content.split("\n")
 
   // Check for common markdown issues
   lines.forEach((line, index) => {
     const lineNum = index + 1
 
     // Check for trailing whitespace
-    const hasTrailingWhitespace = line.endsWith(' ') || line.endsWith('\t')
+    const hasTrailingWhitespace = line.endsWith(" ") || line.endsWith("\t")
     if (hasTrailingWhitespace) {
       issues.push({
         file: filePath,
         line: lineNum,
-        severity: 'warning',
-        message: 'Trailing whitespace',
-        rule: 'no-trailing-whitespace',
+        severity: "warning",
+        message: "Trailing whitespace",
+        rule: "no-trailing-whitespace",
       })
     }
 
     // Check for long lines (over 120 characters)
-    if (line.length > 120 && !line.startsWith('```')) {
+    if (line.length > 120 && !line.startsWith("```")) {
       issues.push({
         file: filePath,
         line: lineNum,
-        severity: 'warning',
+        severity: "warning",
         message: `Line exceeds 120 characters (${line.length} chars)`,
-        rule: 'line-length',
+        rule: "line-length",
       })
     }
 
@@ -103,9 +103,9 @@ function validateMarkdownSyntax(content: string, filePath: string): ValidationIs
         issues.push({
           file: filePath,
           line: lineNum,
-          severity: 'warning',
-          message: 'Heading level should not exceed h4',
-          rule: 'heading-level',
+          severity: "warning",
+          message: "Heading level should not exceed h4",
+          rule: "heading-level",
         })
       }
     }
@@ -116,7 +116,7 @@ function validateMarkdownSyntax(content: string, filePath: string): ValidationIs
 
 function extractInternalLinks(content: string): Array<{ text: string; url: string; line: number }> {
   const links: Array<{ text: string; url: string; line: number }> = []
-  const lines = content.split('\n')
+  const lines = content.split("\n")
 
   lines.forEach((line, index) => {
     // Match markdown links: [text](url)
@@ -126,7 +126,7 @@ function extractInternalLinks(content: string): Array<{ text: string; url: strin
     while ((match = linkRegex.exec(line)) !== null) {
       const url = match[2]
       // Only check internal links (relative paths)
-      if (!url.startsWith('http') && !url.startsWith('mailto:') && !url.startsWith('#')) {
+      if (!url.startsWith("http") && !url.startsWith("mailto:") && !url.startsWith("#")) {
         links.push({
           text: match[1],
           url,
@@ -157,15 +157,15 @@ async function validateInternalLinks(
       existsSync(linkPath) ||
       existsSync(linkPathWithExt) ||
       existsSync(linkPathWithMdx) ||
-      link.url.startsWith('/')
+      link.url.startsWith("/")
 
     if (!linkExists) {
       issues.push({
         file: filePath,
         line: link.line,
-        severity: 'error',
+        severity: "error",
         message: `Broken internal link: ${link.url}`,
-        rule: 'broken-link',
+        rule: "broken-link",
       })
     }
   }
@@ -175,7 +175,7 @@ async function validateInternalLinks(
 
 async function validateFile(filePath: string): Promise<ValidationResult> {
   try {
-    const content = await readFile(filePath, 'utf-8')
+    const content = await readFile(filePath, "utf-8")
     const issues: ValidationIssue[] = []
 
     // Run validations
@@ -186,7 +186,7 @@ async function validateFile(filePath: string): Promise<ValidationResult> {
     return {
       file: filePath,
       issues,
-      valid: issues.filter((i) => i.severity === 'error').length === 0,
+      valid: issues.filter((i) => i.severity === "error").length === 0,
     }
   } catch (error) {
     return {
@@ -194,9 +194,9 @@ async function validateFile(filePath: string): Promise<ValidationResult> {
       issues: [
         {
           file: filePath,
-          severity: 'error',
+          severity: "error",
           message: `Failed to read file: ${error}`,
-          rule: 'file-read',
+          rule: "file-read",
         },
       ],
       valid: false,
@@ -205,7 +205,7 @@ async function validateFile(filePath: string): Promise<ValidationResult> {
 }
 
 async function validateAll(): Promise<void> {
-  console.log(chalk.blue.bold('\n📝 Documentation Validator\n'))
+  console.log(chalk.blue.bold("\n📝 Documentation Validator\n"))
 
   const files = await findMarkdownFiles()
   console.log(chalk.gray(`Found ${files.length} markdown files to validate\n`))
@@ -219,10 +219,10 @@ async function validateAll(): Promise<void> {
 
   // Display results
   const errors = results.filter((r) => !r.valid)
-  const warnings = results.flatMap((r) => r.issues.filter((i) => i.severity === 'warning'))
+  const warnings = results.flatMap((r) => r.issues.filter((i) => i.severity === "warning"))
 
   if (errors.length === 0 && warnings.length === 0) {
-    console.log(chalk.green.bold('✅ All documentation is valid!\n'))
+    console.log(chalk.green.bold("✅ All documentation is valid!\n"))
     return
   }
 
@@ -231,8 +231,8 @@ async function validateAll(): Promise<void> {
     console.log(chalk.red.bold(`\n❌ Errors (${errors.length} files):\n`))
     for (const result of errors) {
       console.log(chalk.red(`  ${result.file}`))
-      for (const issue of result.issues.filter((i) => i.severity === 'error')) {
-        const location = issue.line ? `:${issue.line}` : ''
+      for (const issue of result.issues.filter((i) => i.severity === "error")) {
+        const location = issue.line ? `:${issue.line}` : ""
         console.log(chalk.red(`    [${issue.rule}] ${issue.message}${location}`))
       }
     }
@@ -243,7 +243,7 @@ async function validateAll(): Promise<void> {
     console.log(chalk.yellow.bold(`\n⚠️  Warnings (${warnings.length}):\n`))
     const warningsByFile = new Map<string, ValidationIssue[]>()
     for (const result of results) {
-      const fileWarnings = result.issues.filter((i) => i.severity === 'warning')
+      const fileWarnings = result.issues.filter((i) => i.severity === "warning")
       if (fileWarnings.length > 0) {
         warningsByFile.set(result.file, fileWarnings)
       }
@@ -252,30 +252,30 @@ async function validateAll(): Promise<void> {
     for (const [file, fileWarnings] of warningsByFile.entries()) {
       console.log(chalk.yellow(`  ${file}`))
       for (const issue of fileWarnings) {
-        const location = issue.line ? `:${issue.line}` : ''
+        const location = issue.line ? `:${issue.line}` : ""
         console.log(chalk.yellow(`    [${issue.rule}] ${issue.message}${location}`))
       }
     }
   }
 
   // Summary
-  const totalErrors = results.flatMap((r) => r.issues.filter((i) => i.severity === 'error')).length
+  const totalErrors = results.flatMap((r) => r.issues.filter((i) => i.severity === "error")).length
   const totalWarnings = warnings.length
 
-  console.log(chalk.blue.bold('\n📊 Summary:\n'))
+  console.log(chalk.blue.bold("\n📊 Summary:\n"))
   console.log(`Files checked:  ${chalk.cyan(files.length)}`)
   console.log(`Errors:        ${chalk.red(totalErrors)}`)
   console.log(`Warnings:      ${chalk.yellow(totalWarnings)}`)
 
   if (totalErrors > 0) {
-    console.log(chalk.red.bold('\n❌ Validation failed\n'))
+    console.log(chalk.red.bold("\n❌ Validation failed\n"))
     process.exit(1)
   } else {
-    console.log(chalk.green.bold('\n✅ Validation passed (with warnings)\n'))
+    console.log(chalk.green.bold("\n✅ Validation passed (with warnings)\n"))
   }
 }
 
 validateAll().catch((error) => {
-  console.error(chalk.red.bold('\n❌ Fatal error:'), error)
+  console.error(chalk.red.bold("\n❌ Fatal error:"), error)
   process.exit(1)
 })

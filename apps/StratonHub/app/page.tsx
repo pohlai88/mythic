@@ -1,65 +1,68 @@
 /**
- * Home Page
+ * Home Page - StratonHub
  *
- * Audience selection page for documentation
+ * DOCTRINE: Pages must not paint.
+ * This page composes: PageShell + AxisStack + AxisHero + AxisCardGrid + AxisCard
+ * Data only. No layout primitives. No local component definitions.
  */
 
-import Link from 'next/link'
-import type { Metadata } from 'next'
+import type { Metadata } from "next"
+import { PageShell, AxisStack, AxisHero, AxisCardGrid, AxisCard } from "@/components"
+
+const SITE_CONFIG = {
+  name: "StratonHub",
+  subtitle: "Governance.",
+  description:
+    "The canonical chamber of NexusCanon. Structured by Diataxis. Engineered for clarity. Built to endure long hours and hard truths.",
+} as const
 
 export const metadata: Metadata = {
-  title: 'ERP Documentation',
-  description: 'Comprehensive ERP system documentation',
+  title: `${SITE_CONFIG.name} — NexusCanon`,
+  description: "Precision in typography. Authority in gold. The system is awake.",
 }
+
+// Data only - no component definitions in pages
+const audienceCards = [
+  {
+    href: "/developers",
+    eyebrow: "01 · Architecture",
+    title: "Developers",
+    body: "Encode governance into logic. Contracts, schemas, and boundaries—engineered to hold under pressure, immune to distortion.",
+    ariaLabel: "Navigate to Developer documentation",
+  },
+  {
+    href: "/users",
+    eyebrow: "02 · Operations",
+    title: "Users",
+    body: "Execute with certainty. Standard operating procedures that function like rituals—repeatable, auditable, and exact.",
+    ariaLabel: "Navigate to User documentation",
+  },
+  {
+    href: "/business",
+    eyebrow: "03 · Sovereignty",
+    title: "Business",
+    body: "Decisions anchored in truth. Governance, audit, and command—documents that command presence when stakes are high.",
+    ariaLabel: "Navigate to Business documentation",
+  },
+] as const
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-void text-parchment">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl font-serif font-bold mb-4">ERP Documentation</h1>
-          <p className="text-xl text-ash mb-12">
-            Comprehensive documentation for developers, end users, and business stakeholders
-          </p>
+    <PageShell preset="landing">
+      <AxisStack gap="authority">
+        <AxisHero
+          status="System Online"
+          title={SITE_CONFIG.name}
+          subtitle={SITE_CONFIG.subtitle}
+          description={SITE_CONFIG.description}
+        />
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Developers */}
-            <Link
-              href="/developers"
-              className="block p-6 border border-charcoal rounded-xs bg-obsidian hover:border-gold transition-colors"
-            >
-              <h2 className="text-2xl font-serif font-bold mb-2">👨‍💻 Developers</h2>
-              <p className="text-ash">
-                API reference, architecture, and technical guides for developers building and
-                integrating with the ERP system.
-              </p>
-            </Link>
-
-            {/* Users */}
-            <Link
-              href="/users"
-              className="block p-6 border border-charcoal rounded-xs bg-obsidian hover:border-gold transition-colors"
-            >
-              <h2 className="text-2xl font-serif font-bold mb-2">👥 End Users</h2>
-              <p className="text-ash">
-                User guides, tutorials, and how-to documentation for daily ERP system usage.
-              </p>
-            </Link>
-
-            {/* Business */}
-            <Link
-              href="/business"
-              className="block p-6 border border-charcoal rounded-xs bg-obsidian hover:border-gold transition-colors"
-            >
-              <h2 className="text-2xl font-serif font-bold mb-2">🏢 Business</h2>
-              <p className="text-ash">
-                Business overview, training materials, and compliance documentation for
-                stakeholders.
-              </p>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
+        <AxisCardGrid columns={3} label="Documentation audience selection">
+          {audienceCards.map((card) => (
+            <AxisCard key={card.href} {...card} />
+          ))}
+        </AxisCardGrid>
+      </AxisStack>
+    </PageShell>
   )
 }

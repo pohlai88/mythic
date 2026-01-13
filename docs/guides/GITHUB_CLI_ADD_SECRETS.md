@@ -1,7 +1,7 @@
 # Add GitHub Secrets via CLI
 
-**Status**: ✅ Active | **Last Updated**: 2026-01-11
-**Purpose**: Add Turbo secrets to GitHub using GitHub CLI
+**Status**: ✅ Active | **Last Updated**: 2026-01-11 **Purpose**: Add Turbo
+secrets to GitHub using GitHub CLI
 
 ---
 
@@ -9,10 +9,11 @@
 
 **Yes, GitHub CLI (`gh`) can add secrets!**
 
-**GitHub MCP**: ❌ Not available (no GitHub MCP tools in Cursor)
-**GitHub CLI**: ✅ Can add secrets (if installed and token has permissions)
+**GitHub MCP**: ❌ Not available (no GitHub MCP tools in Cursor) **GitHub CLI**:
+✅ Can add secrets (if installed and token has permissions)
 
-**⚠️ Note**: Your token needs `admin:repo` or `repo` scope with write access to secrets.
+**⚠️ Note**: Your token needs `admin:repo` or `repo` scope with write access to
+secrets.
 
 ---
 
@@ -21,6 +22,7 @@
 ### Prerequisites
 
 1. **Install GitHub CLI** (if not installed):
+
    ```bash
    # Windows (via winget)
    winget install --id GitHub.cli
@@ -44,6 +46,7 @@ gh secret set TURBO_TEAM --body "team_05yVsWPh4ZJT3Q8u4sM6W2OP"
 ```
 
 **Note**: Make sure you're in the repository directory or specify the repo:
+
 ```bash
 gh secret set TURBO_TOKEN --body "C48Zm7IyYhSZEn0AlBYyYkUo" --repo owner/repo-name
 ```
@@ -63,6 +66,7 @@ curl -H "Authorization: token YOUR_GITHUB_TOKEN" \
 ```
 
 **Response**:
+
 ```json
 {
   "key_id": "1234567890",
@@ -73,6 +77,7 @@ curl -H "Authorization: token YOUR_GITHUB_TOKEN" \
 ### Step 2: Encrypt Secret
 
 You need to encrypt the secret using the public key. This requires:
+
 - The public key from Step 1
 - A library to encrypt (like `libsodium` or `tweetnacl`)
 
@@ -97,7 +102,8 @@ curl -X PUT \
 
 If CLI/API is too complex:
 
-1. **Go to**: https://github.com/YOUR_USERNAME/YOUR_REPO/settings/secrets/actions
+1. **Go to**:
+   https://github.com/YOUR_USERNAME/YOUR_REPO/settings/secrets/actions
 2. **Click**: "New repository secret"
 3. **Add**:
    - Name: `TURBO_TOKEN`
@@ -121,6 +127,7 @@ echo "✅ Secrets added successfully!"
 ```
 
 **PowerShell version**:
+
 ```powershell
 # add-turbo-secrets.ps1
 gh secret set TURBO_TOKEN --body "C48Zm7IyYhSZEn0AlBYyYkUo"
@@ -138,6 +145,7 @@ gh secret list
 ```
 
 **Expected output**:
+
 ```
 TURBO_TEAM
 TURBO_TOKEN
@@ -147,21 +155,21 @@ TURBO_TOKEN
 
 ## Summary
 
-| Method | Difficulty | Speed | Recommended |
-|--------|-----------|-------|-------------|
-| **GitHub CLI** | Easy | Fast | ✅ Yes |
-| **GitHub API** | Hard | Medium | ⚠️ Only if CLI unavailable |
-| **Manual (Web)** | Easy | Slow | ✅ Yes (if CLI not installed) |
+| Method           | Difficulty | Speed  | Recommended                   |
+| ---------------- | ---------- | ------ | ----------------------------- |
+| **GitHub CLI**   | Easy       | Fast   | ✅ Yes                        |
+| **GitHub API**   | Hard       | Medium | ⚠️ Only if CLI unavailable    |
+| **Manual (Web)** | Easy       | Slow   | ✅ Yes (if CLI not installed) |
 
 ---
 
 ## Your Values
 
 **To add**:
+
 - `TURBO_TOKEN` = `C48Zm7IyYhSZEn0AlBYyYkUo`
 - `TURBO_TEAM` = `team_05yVsWPh4ZJT3Q8u4sM6W2OP`
 
 ---
 
-**Last Updated**: 2026-01-11
-**Status**: ✅ Guide Ready
+**Last Updated**: 2026-01-11 **Status**: ✅ Guide Ready

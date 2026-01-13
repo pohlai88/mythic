@@ -1,0 +1,487 @@
+---
+description: "AXIS Design System AI Enforcement - Machine-enforceable rules for AI coding assistants"
+globs: "*.tsx,*.ts,*.jsx,*.js,*.css,*.mdx"
+alwaysApply: false
+priority: 34
+---
+
+# AXIS Design System AI Enforcement (RFC-2119 MANDATORY)
+
+**Purpose**: Machine-enforceable rules for AI coding assistants generating AXIS-compliant UI code.
+**Authority**: This rule provides explicit constraints, not metaphors. Follow exactly.
+**Specification**: `@packages/design-system/spec/axis-design-spec.json`
+**Status**: MANDATORY
+
+---
+
+## 1. Token Quick Reference (COPY-PASTE READY)
+
+### 1.1 Color Classes
+
+| Semantic | Class | Usage |
+|----------|-------|-------|
+| Background | `bg-void` | Page backgrounds |
+| Surface | `bg-surface`, `bg-obsidian` | Cards, modals, sidebars |
+| Accent | `text-gold`, `border-gold` | Active states, focus, emphasis |
+| Text | `text-parchment`, `text-text` | Primary body text |
+| Muted | `text-ash`, `text-muted` | Secondary text, metadata |
+| Error | `text-ember`, `border-ember` | Errors, destructive actions |
+| Heading | `text-signal` | H1, H2, high-emphasis text |
+| Border | `border-divider` | Container borders |
+
+### 1.2 Typography Classes
+
+| Element | Classes | Notes |
+|---------|---------|-------|
+| H1 | `h1-apex` or `font-sans font-light text-h1 tracking-axis text-signal` | Main page headings |
+| H3 | `text-h3 tracking-h3 text-signal` | Section headings |
+| Body | `text-body leading-body text-parchment` | Prose content |
+| Data | `font-mono text-btn uppercase tracking-widest text-gold` | Labels, IDs, timestamps |
+| Status | `micro-status` | System status indicators |
+
+### 1.3 Component Classes
+
+| Component | Required Class | Example |
+|-----------|----------------|---------|
+| Card | `card-axis` | `<div className="card-axis p-6">` |
+| Button | `btn-axis` | `<button className="btn-axis">` |
+| Link | `btn-axis` or custom | `<Link className="btn-axis">` |
+
+---
+
+## 2. FORBIDDEN Patterns (NEVER USE)
+
+### 2.1 Colors - FORBIDDEN
+
+```tsx
+// ❌ NEVER USE THESE:
+className="bg-white"           // Use: bg-void or bg-surface
+className="text-white"         // Use: text-signal or text-parchment
+className="#FFFFFF"            // Use: hsl(var(--color-signal))
+className="bg-[#fff]"          // Use: bg-void
+style={{ color: 'white' }}     // Use: text-parchment
+```
+
+### 2.2 Shadows - FORBIDDEN
+
+```tsx
+// ❌ NEVER USE THESE:
+className="shadow-sm"
+className="shadow-md"
+className="shadow-lg"
+className="shadow-xl"
+className="drop-shadow"
+className="drop-shadow-lg"
+
+// ✅ USE INSTEAD:
+className="shadow-none"
+// For depth, use borders:
+className="border border-white/10"
+// For focus glow (exception):
+className="focus:ring-2 focus:ring-gold/50"
+```
+
+### 2.3 Border Radius - FORBIDDEN
+
+```tsx
+// ❌ NEVER USE THESE:
+className="rounded"
+className="rounded-md"
+className="rounded-lg"
+className="rounded-xl"
+className="rounded-full"
+className="rounded-[8px]"
+
+// ✅ USE INSTEAD:
+className="rounded-none"        // Default, preferred
+className="rounded-sm"          // Maximum allowed
+className="rounded-[2px]"       // Explicit 2px max
+```
+
+### 2.4 Fast Animations - FORBIDDEN
+
+```tsx
+// ❌ NEVER USE THESE (The "Rush Veto"):
+className="duration-75"
+className="duration-100"
+className="duration-150"
+className="duration-200"
+className="duration-300"
+
+// ✅ USE INSTEAD:
+className="duration-700"           // Micro (hover)
+className="duration-[1200ms]"      // Macro (transitions)
+className="duration-[1618ms]"      // Ratify (submissions)
+// Or use utilities:
+className="transition-hover-intelligent"
+className="transition-illuminate"
+className="transition-commit"
+```
+
+### 2.5 Gradients - FORBIDDEN (except text-divergence)
+
+```tsx
+// ❌ NEVER USE AS BACKGROUNDS:
+className="bg-gradient-to-r from-blue-500 to-purple-500"
+className="bg-gradient-to-b from-gray-900 to-black"
+
+// ✅ EXCEPTION - Text gradient utility only:
+className="text-divergence"
+```
+
+---
+
+## 3. REQUIRED Patterns (ALWAYS USE)
+
+### 3.1 Card Component
+
+```tsx
+// ✅ CORRECT: Use card-axis utility
+<div className="card-axis p-6">
+  <h3 className="text-h3 tracking-h3 text-signal mb-4">Title</h3>
+  <p className="text-body text-muted">Content</p>
+</div>
+
+// ✅ CORRECT: Manual implementation if needed
+<div className="
+  bg-surface
+  border border-divider
+  rounded-none
+  transition-all duration-[800ms] ease-[var(--ease-gravity)]
+  hover:border-gold hover:bg-obsidian-hover hover:-translate-y-0.5
+">
+```
+
+### 3.2 Button Component
+
+```tsx
+// ✅ CORRECT: Use btn-axis utility
+<button className="btn-axis">
+  Submit Action
+</button>
+
+// ✅ CORRECT: Manual implementation if needed
+<button className="
+  font-mono text-btn uppercase tracking-widest
+  text-gold
+  border-b border-gold/35
+  pb-1
+  transition-colors duration-300
+  hover:border-gold hover:text-parchment
+">
+  Submit Action
+</button>
+```
+
+### 3.3 Heading Component
+
+```tsx
+// ✅ CORRECT: H1 with apex styling
+<h1 className="h1-apex">
+  Page Title
+  <span className="text-divergence block mt-1">Subtitle</span>
+</h1>
+
+// ✅ CORRECT: Manual H1 implementation
+<h1 className="
+  font-sans font-light
+  text-h1 leading-h1 tracking-axis
+  text-signal
+">
+  Page Title
+</h1>
+```
+
+### 3.4 Status/Metadata Component
+
+```tsx
+// ✅ CORRECT: Use micro-status utility
+<span className="micro-status">
+  System Online
+</span>
+
+// ✅ CORRECT: Manual implementation
+<span className="
+  font-mono text-micro uppercase tracking-ultra
+  text-gold opacity-90
+">
+  Coordinate 404
+</span>
+```
+
+### 3.5 Page Layout
+
+```tsx
+// ✅ CORRECT: Void background, axis container
+<main className="min-h-dvh bg-void">
+  <div className="max-w-[920px] mx-auto px-6 py-8 md:px-12 md:py-16">
+    {/* Content */}
+  </div>
+</main>
+```
+
+---
+
+## 4. Component Examples (Copy-Ready)
+
+### 4.1 Complete Card Example
+
+```tsx
+<Link
+  href="/destination"
+  className="card-axis group relative block p-10"
+>
+  {/* Eyebrow - Gold authority signal */}
+  <div className="mb-6 font-mono text-meta uppercase tracking-[0.12em] text-gold opacity-90">
+    <span>01 · Category</span>
+  </div>
+
+  {/* Title */}
+  <h3 className="mb-3 text-h3 font-medium tracking-h3 text-signal">
+    Card Title
+  </h3>
+
+  {/* Description */}
+  <p className="mb-8 text-body font-light leading-body text-muted opacity-90">
+    Card description text goes here.
+  </p>
+
+  {/* Action */}
+  <div className="mt-auto">
+    <span className="btn-axis">
+      Enter Module →
+    </span>
+  </div>
+</Link>
+```
+
+### 4.2 Complete Button Example
+
+```tsx
+<button
+  className="btn-axis"
+  aria-label="Perform action"
+>
+  Ratify Decision
+</button>
+
+{/* Secondary/muted button */}
+<button
+  className="btn-axis opacity-60 hover:opacity-100"
+  aria-label="Secondary action"
+>
+  View Archives
+</button>
+```
+
+### 4.3 Complete 404 Page Structure
+
+```tsx
+<div className="relative flex min-h-dvh w-full flex-col items-center justify-center bg-void px-8 text-center">
+  {/* Decorative gold filament */}
+  <div
+    className="absolute top-0 h-32 w-px bg-linear-to-b from-gold/0 via-gold/40 to-gold/0"
+    aria-hidden="true"
+  />
+
+  <div className="relative z-10 flex max-w-[480px] flex-col items-center">
+    {/* Coordinate ID */}
+    <span className="micro-status mb-6">
+      Coordinate 404
+    </span>
+
+    {/* Main heading */}
+    <h1 className="h1-apex mb-6">
+      <span className="text-divergence block text-6xl">
+        Silence.
+      </span>
+    </h1>
+
+    {/* Description */}
+    <p className="mb-12 text-body font-light leading-relaxed text-muted opacity-80">
+      The record you are looking for is not held within the current canon.
+    </p>
+
+    {/* Actions */}
+    <div className="flex flex-col items-center gap-8 sm:flex-row sm:gap-12">
+      <Link href="/" className="btn-axis">
+        Return to Axis
+      </Link>
+      <Link href="/search" className="btn-axis opacity-60 hover:opacity-100">
+        Search Archives
+      </Link>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## 5. Terminology Enforcement
+
+When generating UI text, use AXIS terminology:
+
+| ❌ FORBIDDEN | ✅ USE INSTEAD |
+|-------------|----------------|
+| User | Operator |
+| Settings | Config |
+| Oops | Error |
+| Something went wrong | Operation failed |
+| Please try again | Retry operation |
+| Submit | Ratify |
+| Save | Commit |
+| Delete | Dissolve |
+| Cancel | Abort |
+
+---
+
+## 6. Pre-Generation Checklist
+
+Before generating any UI code, verify:
+
+- [ ] No `#FFFFFF`, `white`, `bg-white`, or `text-white`
+- [ ] No `shadow-sm`, `shadow-md`, `shadow-lg`, `shadow-xl`
+- [ ] No `rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-full`
+- [ ] No `duration-100`, `duration-150`, `duration-200`, `duration-300`
+- [ ] No gradient backgrounds (except `text-divergence`)
+- [ ] Using `font-mono` for data/buttons, `font-sans` for prose
+- [ ] Using AXIS terminology (Operator, Config, Ratify, etc.)
+- [ ] Cards use `card-axis` utility
+- [ ] Buttons use `btn-axis` utility
+- [ ] Headings use `h1-apex` or proper tracking
+
+---
+
+## 7. Veto Pattern Detection
+
+If user requests violate AXIS, respond with warning:
+
+```
+⚠️ AXIS VIOLATION DETECTED
+
+The requested pattern violates the AXIS design specification:
+- [Pattern Name] Veto: [Description]
+
+AXIS-compliant alternative:
+[Provide compliant code]
+
+Reference: packages/design-system/spec/axis-design-spec.json
+```
+
+### Veto Types:
+
+1. **The Bleach Veto**: Pure white (#FFFFFF) requested
+2. **The Float Veto**: Drop shadows requested
+3. **The Friendly Veto**: Rounded corners (>2px) requested
+4. **The Rush Veto**: Fast animations (<500ms) requested
+5. **The Pop Veto**: Gradient backgrounds requested
+
+---
+
+## 8. Intelligence Layer Utilities
+
+For ERP/Business logic contexts, use these semantic classes:
+
+```tsx
+// Vector states (temporal)
+className="vector-past"      // opacity-60 text-ash
+className="vector-present"   // text-gold
+className="vector-future"    // opacity-80
+
+// Risk status
+className="risk-on-track"    // emerald tones
+className="risk-warning"     // gold tones
+className="risk-critical"    // ember with pulse
+
+// Proposal status
+className="status-draft"     // ash tones
+className="status-listening" // gold tones
+className="status-approved"  // emerald tones
+className="status-vetoed"    // ember tones
+
+// Priority levels
+className="priority-high"    // ember
+className="priority-medium"  // gold
+className="priority-low"     // ash
+className="priority-urgent"  // ember with pulse
+
+// Data states
+className="data-loading"     // pulse animation
+className="data-error"       // ember tones
+className="data-empty"       // ash, muted
+```
+
+---
+
+## 9. CSS Variable Reference
+
+When writing custom CSS, use these variables:
+
+```css
+/* Colors */
+var(--color-void)           /* Background */
+var(--color-obsidian)       /* Surface */
+var(--color-gold)           /* Accent */
+var(--color-parchment)      /* Text */
+var(--color-ash)            /* Muted */
+var(--color-ember)          /* Error */
+var(--color-signal)         /* Headings */
+var(--color-border)         /* Borders */
+
+/* Typography */
+var(--font-sans)            /* Prose, headings */
+var(--font-mono)            /* Data, buttons */
+var(--text-h1)              /* 3.5rem */
+var(--text-body)            /* 0.85rem */
+var(--text-btn)             /* 0.65rem */
+var(--tracking-axis)        /* -0.03em */
+var(--tracking-widest)      /* 0.1em */
+
+/* Motion */
+var(--ease-gravity)         /* cubic-bezier(0.4, 0, 0.2, 1) */
+
+/* Layout */
+var(--container-axis)       /* 920px */
+var(--radius-card)          /* 0px */
+```
+
+---
+
+## 10. Quick Decision Tree
+
+```
+Generating UI? → Follow this:
+
+COLOR needed?
+  ├─ Background → bg-void, bg-surface
+  ├─ Text → text-parchment, text-muted, text-signal
+  ├─ Accent → text-gold, border-gold
+  └─ Error → text-ember
+
+COMPONENT needed?
+  ├─ Card → card-axis
+  ├─ Button → btn-axis
+  └─ Status → micro-status
+
+HEADING needed?
+  ├─ H1 → h1-apex
+  └─ H3 → text-h3 tracking-h3 text-signal
+
+ANIMATION needed?
+  ├─ Hover → duration-700
+  ├─ Transition → duration-[1200ms]
+  └─ Submit → duration-[1618ms]
+
+BORDER RADIUS needed?
+  └─ Always → rounded-none (or rounded-sm max)
+
+SHADOW needed?
+  └─ Never → shadow-none (use borders for depth)
+```
+
+---
+
+**Status**: MANDATORY - All UI code generation MUST comply
+**Version**: 1.0.0
+**Created**: 2026-01-13
+**Reference**: `@packages/design-system/spec/axis-design-spec.json`

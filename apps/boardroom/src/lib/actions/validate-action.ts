@@ -1,11 +1,11 @@
 /**
  * Server Action Validation Utilities
- * 
+ *
  * Contract-First approach: Validate all server action inputs and outputs
  * Provides type-safe wrappers and validation helpers for Next.js Server Actions.
  */
 
-import { z as z4 } from 'zod/v4'
+import { z as z4 } from "zod/v4"
 
 /**
  * Action result type for validated actions
@@ -16,7 +16,7 @@ export type ActionResult<TData = unknown> =
 
 /**
  * Validate action input
- * 
+ *
  * Helper function to validate action inputs with Zod schemas.
  * Returns a result object that can be checked for success/error.
  */
@@ -35,14 +35,14 @@ export function validateActionInput<TSchema extends z4.ZodTypeAny>(
 
   return {
     success: false,
-    error: 'Invalid input parameters',
+    error: "Invalid input parameters",
     issues: result.error.issues,
   }
 }
 
 /**
  * Validate action output
- * 
+ *
  * Helper function to validate action outputs with Zod schemas.
  * Throws if output is invalid (should not happen in production).
  */
@@ -54,10 +54,10 @@ export function validateActionOutput<TSchema extends z4.ZodTypeAny>(
 
   if (!result.success) {
     // Log error in development, throw in production
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Invalid action output:', result.error.issues)
+    if (process.env.NODE_ENV === "development") {
+      console.error("Invalid action output:", result.error.issues)
     }
-    throw new Error('Invalid action output format')
+    throw new Error("Invalid action output format")
   }
 
   return result.data
@@ -65,9 +65,9 @@ export function validateActionOutput<TSchema extends z4.ZodTypeAny>(
 
 /**
  * Create a validated action handler
- * 
+ *
  * Wraps an action handler with input and output validation.
- * 
+ *
  * @example
  * ```typescript
  * const createProposalAction = createValidatedAction(
@@ -99,11 +99,11 @@ export function createValidatedAction<
         error: inputResult.error,
         issues: inputResult.issues,
       })
-      
+
       if (errorResponse.success) {
         return errorResponse.data as z4.infer<TOutputSchema>
       }
-      
+
       // Fallback error response
       throw new Error(`Input validation failed: ${inputResult.error}`)
     }
@@ -111,21 +111,21 @@ export function createValidatedAction<
     try {
       // Execute handler with validated input
       const output = await handler(inputResult.data)
-      
+
       // Validate output
       return validateActionOutput(output, outputSchema)
     } catch (error) {
       // Handle errors and return validated error response
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      const errorMessage = error instanceof Error ? error.message : "Unknown error"
       const errorResponse = outputSchema.safeParse({
         success: false,
         error: errorMessage,
       })
-      
+
       if (errorResponse.success) {
         return errorResponse.data as z4.infer<TOutputSchema>
       }
-      
+
       throw error
     }
   }
@@ -133,7 +133,7 @@ export function createValidatedAction<
 
 /**
  * Safe parse action input (non-throwing)
- * 
+ *
  * Returns a result object that can be checked without try/catch.
  */
 export function safeParseActionInput<TSchema extends z4.ZodTypeAny>(

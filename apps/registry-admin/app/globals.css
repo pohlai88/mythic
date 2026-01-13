@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "@mythic/tailwindcss-v4-design-system/tokens/axis-theme.css";
+@import "@mythic/tailwindcss-v4-design-system/tokens/axis-base.css";
+@source "../../packages/TailwindCSS-V4/Design-System/src";
+
+@layer base {
+  body {
+    @apply bg-void text-parchment;
+  }
+}

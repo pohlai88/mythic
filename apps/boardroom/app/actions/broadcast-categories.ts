@@ -5,11 +5,11 @@
  * Provides utilities for category/tag operations.
  */
 
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { broadcasts } from '@/src/db/schema'
-import { sql } from 'drizzle-orm'
+import { db } from "@/src/db"
+import { broadcasts } from "@/src/db/schema"
+import { sql } from "drizzle-orm"
 
 /**
  * Get all unique categories from broadcasts
@@ -34,7 +34,7 @@ export async function getAllCategories(): Promise<string[]> {
 
     return Array.from(categorySet).sort()
   } catch (error) {
-    console.error('Error fetching categories:', error)
+    console.error("Error fetching categories:", error)
     return []
   }
 }
@@ -62,7 +62,7 @@ export async function getAllTags(): Promise<string[]> {
 
     return Array.from(tagSet).sort()
   } catch (error) {
-    console.error('Error fetching tags:', error)
+    console.error("Error fetching tags:", error)
     return []
   }
 }
@@ -89,7 +89,7 @@ export async function getBroadcastsByCategory(
       type: r.type,
     }))
   } catch (error) {
-    console.error('Error fetching broadcasts by category:', error)
+    console.error("Error fetching broadcasts by category:", error)
     return []
   }
 }
@@ -116,7 +116,7 @@ export async function getBroadcastsByTag(
       type: r.type,
     }))
   } catch (error) {
-    console.error('Error fetching broadcasts by tag:', error)
+    console.error("Error fetching broadcasts by tag:", error)
     return []
   }
 }

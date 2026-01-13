@@ -4,18 +4,13 @@
  * Phase 20: Frontend customization with validated schemas
  */
 
-import { z as z4 } from 'zod/v4'
-import {
-  frontendCustomizationSchema,
-  type FrontendCustomization,
-} from './customization-schemas'
+import { z as z4 } from "zod/v4"
+import { frontendCustomizationSchema, type FrontendCustomization } from "./customization-schemas"
 
 /**
  * Validate frontend customization
  */
-export function validateCustomization(
-  customization: unknown
-): FrontendCustomization {
+export function validateCustomization(customization: unknown): FrontendCustomization {
   return frontendCustomizationSchema.parse(customization)
 }
 
@@ -31,13 +26,17 @@ export function mergeCustomization(
   // Validate both inputs
   const userResult = frontendCustomizationSchema.partial().safeParse(userCustomization)
   if (!userResult.success) {
-    throw new Error(`Invalid user customization: ${userResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid user customization: ${userResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   const validatedUser = userResult.data
 
   const globalResult = frontendCustomizationSchema.safeParse(globalDefaults)
   if (!globalResult.success) {
-    throw new Error(`Invalid global defaults: ${globalResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid global defaults: ${globalResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   const validatedGlobal = globalResult.data
 
@@ -50,7 +49,9 @@ export function mergeCustomization(
     components: { ...validatedGlobal.components, ...validatedUser.components },
   })
   if (!mergedResult.success) {
-    throw new Error(`Invalid merged customization: ${mergedResult.error.issues[0]?.message || 'Unknown error'}`)
+    throw new Error(
+      `Invalid merged customization: ${mergedResult.error.issues[0]?.message || "Unknown error"}`
+    )
   }
   return mergedResult.data
 }

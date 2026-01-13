@@ -13,17 +13,21 @@ related_docs:
 
 # Intelligence-Driven Tailwind CSS System
 
-**Status**: ✅ **ACTIVE**
-**Version**: 1.0.0
-**Last Updated**: 2026-01-11
+**Status**: ✅ **ACTIVE** **Version**: 1.0.0 **Last Updated**: 2026-01-11
 
 ---
 
 ## Executive Summary
 
-The Intelligence-Driven Tailwind CSS system provides **context-aware, data-driven styling utilities** that automatically apply appropriate Tailwind classes based on business logic, risk scores, status values, and real-time state changes.
+The Intelligence-Driven Tailwind CSS system provides **context-aware,
+data-driven styling utilities** that automatically apply appropriate Tailwind
+classes based on business logic, risk scores, status values, and real-time state
+changes.
 
-This system supports the **AXIS Decision BoardRoom MVP** requirement for "intelligence-driven boardroom decisions" by enabling dynamic styling that reflects:
+This system supports the **AXIS Decision BoardRoom MVP** requirement for
+"intelligence-driven boardroom decisions" by enabling dynamic styling that
+reflects:
+
 - Real-time risk analysis
 - Variance tracking (Budgeted/Planned/Actual)
 - Proposal status changes
@@ -34,13 +38,13 @@ This system supports the **AXIS Decision BoardRoom MVP** requirement for "intell
 
 ## Key Features
 
-✅ **Risk-Based Styling**: Automatic color/background/border based on risk scores
-✅ **Status-Aware Styling**: Context-aware styling for proposal statuses
-✅ **Variance Intelligence**: Dynamic styling based on percentage thresholds
-✅ **Priority Indicators**: Visual urgency based on priority levels
-✅ **Type-Safe API**: Full TypeScript support with intelligent autocomplete
-✅ **Axis Visual Canon Compliant**: Respects material truth and gravitational time
-✅ **Fluent Builder API**: Chainable style builder for complex scenarios
+✅ **Risk-Based Styling**: Automatic color/background/border based on risk
+scores ✅ **Status-Aware Styling**: Context-aware styling for proposal statuses
+✅ **Variance Intelligence**: Dynamic styling based on percentage thresholds ✅
+**Priority Indicators**: Visual urgency based on priority levels ✅ **Type-Safe
+API**: Full TypeScript support with intelligent autocomplete ✅ **Axis Visual
+Canon Compliant**: Respects material truth and gravitational time ✅ **Fluent
+Builder API**: Chainable style builder for complex scenarios
 
 ---
 
@@ -57,13 +61,13 @@ import {
   intelligentVarianceStyles,
   intelligentPriorityStyles,
   createIntelligentStyles,
-} from '@mythic/shared-utils'
+} from "@mythic/nextjs-shared-utils"
 ```
 
 ### Basic Usage
 
 ```tsx
-import { intelligentRiskStyles, intelligentStatusStyles } from '@mythic/shared-utils'
+import { intelligentRiskStyles, intelligentStatusStyles } from '@mythic/nextjs-shared-utils'
 
 // Risk-based styling (automatically calculates from variance %)
 <div className={intelligentRiskStyles(15.5, 'future')}>
@@ -82,7 +86,8 @@ import { intelligentRiskStyles, intelligentStatusStyles } from '@mythic/shared-u
 
 ### 1. Risk-Based Styling
 
-Automatically applies appropriate styling based on risk status or variance percentage.
+Automatically applies appropriate styling based on risk status or variance
+percentage.
 
 ```typescript
 intelligentRiskStyles(
@@ -93,6 +98,7 @@ intelligentRiskStyles(
 ```
 
 **Risk Status Types**:
+
 - `on_track`: Variance < 5%
 - `warning`: Variance 5-10%
 - `overrun`: Variance 10-20%
@@ -119,6 +125,7 @@ intelligentRiskStyles(
 ```
 
 **Vector Types**:
+
 - `past`: Historical data (gray/ash tones)
 - `present`: Current state (gold accents)
 - `future`: Predictive data (risk-based colors)
@@ -138,6 +145,7 @@ intelligentStatusStyles(
 ```
 
 **Status Types**:
+
 - `DRAFT`: Ash tones (inactive)
 - `LISTENING`: Gold tones (active, awaiting decision)
 - `APPROVED`: Emerald tones (success)
@@ -209,6 +217,7 @@ intelligentPriorityStyles(
 ```
 
 **Priority Levels**:
+
 - `HIGH`: Ember tones (urgent, pulsing animation)
 - `MEDIUM`: Gold tones (moderate urgency)
 - `LOW`: Ash tones (low urgency)
@@ -254,13 +263,13 @@ intelligentStyles(config: {
 ```tsx
 <div
   className={intelligentStyles({
-    status: 'LISTENING',
-    priority: 'HIGH',
+    status: "LISTENING",
+    priority: "HIGH",
     riskStatus: 12.5,
-    vectorType: 'future',
+    vectorType: "future",
     isSelected: true,
     isUrgent: true,
-    className: 'p-6 rounded-lg',
+    className: "p-6 rounded-lg",
   })}
 >
   High-priority proposal with risk warning
@@ -274,20 +283,21 @@ intelligentStyles(config: {
 For complex styling scenarios, use the fluent builder API:
 
 ```typescript
-import { createIntelligentStyles } from '@mythic/shared-utils'
+import { createIntelligentStyles } from "@mythic/nextjs-shared-utils"
 
 const styles = createIntelligentStyles()
-  .risk(15.5, 'future')
-  .status('LISTENING', 'card')
-  .priority('HIGH', 'text')
-  .variance(12.3, 'badge')
-  .transition('illuminate')
-  .gradient('warning')
-  .add('p-6 rounded-lg')
+  .risk(15.5, "future")
+  .status("LISTENING", "card")
+  .priority("HIGH", "text")
+  .variance(12.3, "badge")
+  .transition("illuminate")
+  .gradient("warning")
+  .add("p-6 rounded-lg")
   .build()
 ```
 
 **Builder Methods**:
+
 - `.risk(riskStatus, vectorType)` - Add risk-based styling
 - `.status(status, variant)` - Add status-based styling
 - `.priority(priority, variant)` - Add priority-based styling
@@ -302,7 +312,8 @@ const styles = createIntelligentStyles()
 
 ## CSS Utilities
 
-The design system also includes CSS utilities that can be used directly in HTML/JSX:
+The design system also includes CSS utilities that can be used directly in
+HTML/JSX:
 
 ### Risk Utilities
 
@@ -369,7 +380,7 @@ import {
   intelligentStyles,
   intelligentRiskStyles,
   intelligentStatusStyles,
-} from '@mythic/shared-utils'
+} from "@mythic/nextjs-shared-utils"
 
 function ProposalCard({ proposal }: { proposal: Proposal }) {
   const variancePct = calculateVariance(proposal)
@@ -381,17 +392,19 @@ function ProposalCard({ proposal }: { proposal: Proposal }) {
         status: proposal.status,
         priority: proposal.priority,
         riskStatus: variancePct,
-        vectorType: 'future',
+        vectorType: "future",
         isSelected: proposal.isSelected,
-        className: 'p-6 rounded-lg cursor-pointer',
+        className: "p-6 rounded-lg cursor-pointer",
       })}
     >
       <div className="flex items-center justify-between mb-4">
-        <span className={intelligentStatusStyles(proposal.status, 'badge')}>
+        <span className={intelligentStatusStyles(proposal.status, "badge")}>
           {proposal.status}
         </span>
-        <span className={intelligentRiskStyles(riskStatus, 'future', 'text-sm')}>
-          {variancePct > 0 ? '+' : ''}
+        <span
+          className={intelligentRiskStyles(riskStatus, "future", "text-sm")}
+        >
+          {variancePct > 0 ? "+" : ""}
           {variancePct.toFixed(1)}%
         </span>
       </div>
@@ -404,7 +417,7 @@ function ProposalCard({ proposal }: { proposal: Proposal }) {
 ### Example 2: Tri-Vector Display
 
 ```tsx
-import { intelligentRiskStyles } from '@mythic/shared-utils'
+import { intelligentRiskStyles } from "@mythic/nextjs-shared-utils"
 
 function TriVectorDisplay({ budgeted, planned, actual }: TriVectorProps) {
   const variancePct = ((actual - budgeted) / budgeted) * 100
@@ -412,23 +425,43 @@ function TriVectorDisplay({ budgeted, planned, actual }: TriVectorProps) {
   return (
     <div className="grid grid-cols-3 gap-4">
       {/* Past Vector */}
-      <div className={intelligentRiskStyles('on_track', 'past', 'p-4 rounded-lg')}>
+      <div
+        className={intelligentRiskStyles("on_track", "past", "p-4 rounded-lg")}
+      >
         <h4>📋 Budgeted</h4>
         <p className="text-2xl font-bold">${budgeted.toLocaleString()}</p>
       </div>
 
       {/* Present Vector */}
-      <div className={intelligentRiskStyles('on_track', 'present', 'p-4 rounded-lg')}>
+      <div
+        className={intelligentRiskStyles(
+          "on_track",
+          "present",
+          "p-4 rounded-lg"
+        )}
+      >
         <h4>📊 Planned</h4>
         <p className="text-2xl font-bold">${planned.toLocaleString()}</p>
       </div>
 
       {/* Future Vector (with risk-based styling) */}
-      <div className={intelligentRiskStyles(variancePct, 'future', 'p-4 rounded-lg')}>
+      <div
+        className={intelligentRiskStyles(
+          variancePct,
+          "future",
+          "p-4 rounded-lg"
+        )}
+      >
         <h4>🎯 Actual</h4>
         <p className="text-2xl font-bold">${actual.toLocaleString()}</p>
-        <p className={intelligentVarianceStyles(variancePct, 'text', 'text-sm mt-2')}>
-          Variance: {variancePct > 0 ? '+' : ''}
+        <p
+          className={intelligentVarianceStyles(
+            variancePct,
+            "text",
+            "text-sm mt-2"
+          )}
+        >
+          Variance: {variancePct > 0 ? "+" : ""}
           {variancePct.toFixed(1)}%
         </p>
       </div>
@@ -440,7 +473,10 @@ function TriVectorDisplay({ budgeted, planned, actual }: TriVectorProps) {
 ### Example 3: Status Badge Component
 
 ```tsx
-import { intelligentStatusStyles, intelligentPriorityStyles } from '@mythic/shared-utils'
+import {
+  intelligentStatusStyles,
+  intelligentPriorityStyles,
+} from "@mythic/nextjs-shared-utils"
 
 function StatusBadge({
   status,
@@ -451,12 +487,22 @@ function StatusBadge({
 }) {
   return (
     <div className="flex items-center gap-2">
-      <span className={intelligentStatusStyles(status, 'badge', 'px-3 py-1 rounded-full')}>
+      <span
+        className={intelligentStatusStyles(
+          status,
+          "badge",
+          "px-3 py-1 rounded-full"
+        )}
+      >
         {status}
       </span>
       {priority && (
         <span
-          className={intelligentPriorityStyles(priority, 'badge', 'px-2 py-1 rounded-full text-xs')}
+          className={intelligentPriorityStyles(
+            priority,
+            "badge",
+            "px-2 py-1 rounded-full text-xs"
+          )}
         >
           {priority}
         </span>
@@ -474,38 +520,42 @@ All utilities are fully typed with TypeScript:
 
 ```typescript
 // Type-safe risk status
-type RiskStatus = 'on_track' | 'warning' | 'overrun' | 'underrun' | 'critical'
+type RiskStatus = "on_track" | "warning" | "overrun" | "underrun" | "critical"
 
 // Type-safe proposal status
-type ProposalStatus = 'DRAFT' | 'LISTENING' | 'APPROVED' | 'VETOED' | 'ARCHIVED'
+type ProposalStatus = "DRAFT" | "LISTENING" | "APPROVED" | "VETOED" | "ARCHIVED"
 
 // Type-safe priority
-type PriorityLevel = 'HIGH' | 'MEDIUM' | 'LOW'
+type PriorityLevel = "HIGH" | "MEDIUM" | "LOW"
 
 // Type-safe vector type
-type VectorType = 'past' | 'present' | 'future'
+type VectorType = "past" | "present" | "future"
 ```
 
 ---
 
 ## Axis Visual Canon Compliance
 
-All intelligence-driven utilities respect the **Axis Visual Canon** design principles:
+All intelligence-driven utilities respect the **Axis Visual Canon** design
+principles:
 
-✅ **Material Truth**: Colors represent material states, not UI states
-✅ **Gravitational Time**: Transitions use 700ms (hover), 1200ms (illuminate), 1618ms (commit)
-✅ **No Pure White**: Uses Parchment (#f8f5f0) instead of pure white
-✅ **Earned Contrast**: Risk/status colors are subtle and earned
-✅ **No Bounce/Snap**: All transitions use ease-out, no elastic easing
+✅ **Material Truth**: Colors represent material states, not UI states ✅
+**Gravitational Time**: Transitions use 700ms (hover), 1200ms (illuminate),
+1618ms (commit) ✅ **No Pure White**: Uses Parchment (#f8f5f0) instead of pure
+white ✅ **Earned Contrast**: Risk/status colors are subtle and earned ✅ **No
+Bounce/Snap**: All transitions use ease-out, no elastic easing
 
 ---
 
 ## Performance Considerations
 
-- **Zero Runtime Overhead**: All utilities generate static class strings at build time
+- **Zero Runtime Overhead**: All utilities generate static class strings at
+  build time
 - **Tree-Shakeable**: Only import what you need
-- **CSS-First**: Leverages Tailwind v4's CSS-first approach for optimal performance
-- **Memoization-Friendly**: Class strings can be memoized for expensive components
+- **CSS-First**: Leverages Tailwind v4's CSS-first approach for optimal
+  performance
+- **Memoization-Friendly**: Class strings can be memoized for expensive
+  components
 
 ---
 
@@ -514,56 +564,65 @@ All intelligence-driven utilities respect the **Axis Visual Canon** design princ
 ### From Manual Class Strings
 
 **Before**:
+
 ```tsx
-const statusClass = proposal.status === 'APPROVED'
-  ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
-  : proposal.status === 'VETOED'
-  ? 'bg-red-500/20 text-red-400 border-red-500/30'
-  : 'bg-ash/20 text-ash border-ash/30'
+const statusClass =
+  proposal.status === "APPROVED"
+    ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+    : proposal.status === "VETOED"
+      ? "bg-red-500/20 text-red-400 border-red-500/30"
+      : "bg-ash/20 text-ash border-ash/30"
 ```
 
 **After**:
+
 ```tsx
-const statusClass = intelligentStatusStyles(proposal.status, 'badge')
+const statusClass = intelligentStatusStyles(proposal.status, "badge")
 ```
 
 ### From Conditional Logic
 
 **Before**:
+
 ```tsx
-const riskClass = variancePct > 20
-  ? 'border-red-600/80 bg-red-600/10 text-red-300'
-  : variancePct > 10
-  ? 'border-red-500/60 bg-red-500/5 text-red-400'
-  : variancePct > 5
-  ? 'border-amber-500/60 bg-amber-500/5 text-amber-400'
-  : 'border-emerald-500/60 bg-emerald-500/5 text-emerald-400'
+const riskClass =
+  variancePct > 20
+    ? "border-red-600/80 bg-red-600/10 text-red-300"
+    : variancePct > 10
+      ? "border-red-500/60 bg-red-500/5 text-red-400"
+      : variancePct > 5
+        ? "border-amber-500/60 bg-amber-500/5 text-amber-400"
+        : "border-emerald-500/60 bg-emerald-500/5 text-emerald-400"
 ```
 
 **After**:
+
 ```tsx
-const riskClass = intelligentRiskStyles(variancePct, 'future')
+const riskClass = intelligentRiskStyles(variancePct, "future")
 ```
 
 ---
 
 ## Related Documentation
 
-- [Tailwind CSS v4 Design System](./DOC-0126_tailwind-v4-design-system.md) - Complete design system reference
-- [Tailwind CLI & IntelliSense](./TAILWIND_CLI_INTELLISENSE.md) - Development setup
-- [PRD Decision BoardRoom MVP](../product/PRD_Decision_BoardRoom_MVP.md) - Product requirements
+- [Tailwind CSS v4 Design System](./DOC-0126_tailwind-v4-design-system.md) -
+  Complete design system reference
+- [Tailwind CLI & IntelliSense](./TAILWIND_CLI_INTELLISENSE.md) - Development
+  setup
+- [PRD Decision BoardRoom MVP](../product/PRD_Decision_BoardRoom_MVP.md) -
+  Product requirements
 
 ---
 
 ## Support
 
 For questions or issues with intelligence-driven Tailwind utilities:
+
 1. Check this documentation
-2. Review the TypeScript types in `@mythic/shared-utils/src/tailwind-intelligence.ts`
-3. Check the CSS utilities in `packages/design-system/src/tokens/input.css`
+2. Review the TypeScript types in
+   `@mythic/shared-utils/src/tailwind-intelligence.ts`
+3. Check the CSS utilities in `packages/TailwindCSS-V4/Design-System/src/tokens/input.css`
 
 ---
 
-**Status**: ✅ Production Ready
-**Version**: 1.0.0
-**Last Updated**: 2026-01-11
+**Status**: ✅ Production Ready **Version**: 1.0.0 **Last Updated**: 2026-01-11

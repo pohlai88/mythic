@@ -10,18 +10,22 @@
 
 ## 1. Ratification Declaration
 
-The **AXIS Visual Constitution v1.0** is hereby **RATIFIED** and enters force as **binding product law** within the AXIS layer.
+The **AXIS Visual Constitution v1.0** is hereby **RATIFIED** and enters force as
+**binding product law** within the AXIS layer.
 
 This ratification:
+
 - Does **not** rewrite or alter any prior doctrine
 - Binds **authority, scope, and enforcement only**
-- Elevates visual and interaction standards from guidance to **constitutional law**
+- Elevates visual and interaction standards from guidance to **constitutional
+  law**
 
 ---
 
 ## 2. Scope of Authority
 
 Upon ratification, this Constitution:
+
 - Governs all AXIS interfaces, dashboards, and executive surfaces
 - Declares **The Apex (v2.1)** as the mandatory default Design Mode
 - Requires explicit Design Mode declaration for all AXIS surfaces
@@ -47,6 +51,7 @@ Failure to comply constitutes a **Design Authority Violation**.
 This ratification **MUST** be recorded in the Public Ledger.
 
 ### Required Ledger Fields
+
 - Artifact Name
 - Version
 - Cryptographic Hash
@@ -54,6 +59,7 @@ This ratification **MUST** be recorded in the Public Ledger.
 - Effective Date
 
 ### Canonical Ledger Entry Template
+
 ```
 DOC.RATIFY | AXIS_VISUAL_CONSTITUTION | v1.0 | sha256:<DOCUMENT_HASH> | Authority:<OFFICE_NAME> | Effective:<YYYY-MM-DD>
 ```
@@ -83,7 +89,7 @@ This ratification formally binds AXIS into the constitutional chain:
 ## 7. Closing Statement
 
 > AXIS does not pursue aesthetics for their own sake.  
-> AXIS codifies perception in service of truth.  
->  
-> From this moment forward, visual law is **binding, enforceable, and auditable**.
-
+> AXIS codifies perception in service of truth.
+>
+> From this moment forward, visual law is **binding, enforceable, and
+> auditable**.

@@ -1,14 +1,14 @@
 # Migration Plan
 
-**Generated**: 2026-01-10
-**Status**: PROPOSED (pending approval)
-**Purpose**: Phased execution strategy for documentation cleanup
+**Generated**: 2026-01-10 **Status**: PROPOSED (pending approval) **Purpose**:
+Phased execution strategy for documentation cleanup
 
 ---
 
 ## Executive Summary
 
 ### Scope
+
 - **Total Files**: 259 documentation files (.md, .mdx, .mdc)
 - **Files to Move**: ~30-40 (duplicates, legacy, misplaced)
 - **Directories to Create**: 5 new directories
@@ -16,12 +16,14 @@
 - **Files to Delete**: ZERO (non-destructive approach)
 
 ### Timeline
+
 - **Phase 0-1**: ✅ Complete (inventory + contradiction detection)
 - **Phase 2**: ✅ Complete (taxonomy + this migration plan)
 - **Phase 3**: Awaiting approval (~2-3 hours execution)
 - **Phase 4**: After Phase 3 verification (~1 hour)
 
 ### Risk Level
+
 - **Overall**: 🟢 LOW (non-destructive, reversible moves)
 - **Data Loss**: 🟢 ZERO (no deletions)
 - **Breaking Changes**: 🟡 LOW (will update links, provide redirects)
@@ -43,16 +45,14 @@
 ### Deliverables
 
 ✅ `docs/_system/INVENTORY.md` - 259 files catalogued, 15+ duplicates detected
-✅ `docs/_system/CONTRADICTIONS.md` - 4 contradictions documented
-✅ `docs/_system/DECISIONS.md` - 7 decisions recorded
-✅ `docs/_system/TAXONOMY.md` - Canonical structure defined
-✅ `docs/_system/MIGRATION_PLAN.md` - This execution plan
+✅ `docs/_system/CONTRADICTIONS.md` - 4 contradictions documented ✅
+`docs/_system/DECISIONS.md` - 7 decisions recorded ✅
+`docs/_system/TAXONOMY.md` - Canonical structure defined ✅
+`docs/_system/MIGRATION_PLAN.md` - This execution plan
 
 ### Status
 
-**Complete**: 2026-01-10
-**Blockers**: None
-**Next**: Phase 1 (already complete)
+**Complete**: 2026-01-10 **Blockers**: None **Next**: Phase 1 (already complete)
 
 ---
 
@@ -63,33 +63,34 @@
 - [x] Scan all .md, .mdx, .mdc files (259 total)
 - [x] Extract titles and headings
 - [x] Detect duplicate clusters (15+ found)
-- [x] Identify legacy files (10+ with "Legacy_" prefix)
+- [x] Identify legacy files (10+ with "Legacy\_" prefix)
 - [x] Identify orphan documents (7 analysis docs)
 - [x] Flag contradictions (4 major issues)
 
 ### Key Findings
 
 **Duplicates Detected**:
+
 1. Constitution documents (4 copies)
 2. Titan Protocol documents (4 copies)
 3. Design Philosophy documents (3 copies)
 4. LBOS Origin Paper (2 copies)
 5. Planning Playbook variants (3 versions)
 
-**Legacy Files** (10+ with "Legacy_" prefix):
+**Legacy Files** (10+ with "Legacy\_" prefix):
+
 - All in `.cursor/planing/` directory
 - Superseded governance documents
 - Need archival to `.cursor/archive/legacy/`
 
 **Orphan Documents** (7 analysis files):
+
 - Tool comparisons, search results, inventories
 - Should move to `.cursor/work/` or `.cursor/archive/`
 
 ### Status
 
-**Complete**: 2026-01-10
-**Blockers**: None
-**Next**: Phase 2 (already complete)
+**Complete**: 2026-01-10 **Blockers**: None **Next**: Phase 2 (already complete)
 
 ---
 
@@ -108,65 +109,64 @@
 
 #### Duplicate Governance Docs → Canonical Locations
 
-| Current Location | Action | New Location | Status |
-|------------------|--------|--------------|--------|
-| `.cursor/planing/Legacy_NexusCanon_Constitution.md` | ARCHIVE | `.cursor/archive/legacy/constitution-v1.md` | legacy |
-| `.cursor/planing/Legacy_NexusCanon_Constitution_v5.md` | ARCHIVE | `.cursor/archive/legacy/constitution-v5.md` | legacy |
-| `.cursor/NexusCanon_Constitution.md` | ARCHIVE | `.cursor/archive/legacy/constitution-working.md` | legacy |
-| `content/governance/sealed/nexus-canon-constitution.mdx` | **KEEP** | (no move) | sealed ✅ CANONICAL |
+| Current Location                                         | Action   | New Location                                     | Status              |
+| -------------------------------------------------------- | -------- | ------------------------------------------------ | ------------------- |
+| `.cursor/planing/Legacy_NexusCanon_Constitution.md`      | ARCHIVE  | `.cursor/archive/legacy/constitution-v1.md`      | legacy              |
+| `.cursor/planing/Legacy_NexusCanon_Constitution_v5.md`   | ARCHIVE  | `.cursor/archive/legacy/constitution-v5.md`      | legacy              |
+| `.cursor/NexusCanon_Constitution.md`                     | ARCHIVE  | `.cursor/archive/legacy/constitution-working.md` | legacy              |
+| `content/governance/sealed/nexus-canon-constitution.mdx` | **KEEP** | (no move)                                        | sealed ✅ CANONICAL |
 
-| Current Location | Action | New Location | Status |
-|------------------|--------|--------------|--------|
-| `.cursor/planing/Legacy_The_Titan_Protocol.md` | ARCHIVE | `.cursor/archive/legacy/titan-protocol-v1.md` | legacy |
-| `.cursor/planing/Legacy_NexusCanon_TheTitanProtocol.md` | ARCHIVE | `.cursor/archive/legacy/titan-protocol-v2.md` | legacy |
-| `.cursor/planing/.titan_protocol_v_1.md` | ARCHIVE | `.cursor/archive/legacy/titan-protocol-v1-spec.md` | legacy |
-| `content/governance/sealed/titan-protocol.mdx` | **KEEP** | (no move) | sealed ✅ CANONICAL |
+| Current Location                                        | Action   | New Location                                       | Status              |
+| ------------------------------------------------------- | -------- | -------------------------------------------------- | ------------------- |
+| `.cursor/planing/Legacy_The_Titan_Protocol.md`          | ARCHIVE  | `.cursor/archive/legacy/titan-protocol-v1.md`      | legacy              |
+| `.cursor/planing/Legacy_NexusCanon_TheTitanProtocol.md` | ARCHIVE  | `.cursor/archive/legacy/titan-protocol-v2.md`      | legacy              |
+| `.cursor/planing/.titan_protocol_v_1.md`                | ARCHIVE  | `.cursor/archive/legacy/titan-protocol-v1-spec.md` | legacy              |
+| `content/governance/sealed/titan-protocol.mdx`          | **KEEP** | (no move)                                          | sealed ✅ CANONICAL |
 
-| Current Location | Action | New Location | Status |
-|------------------|--------|--------------|--------|
-| `.cursor/planing/.lbos_origin_paper_sealed.md` | ARCHIVE | `.cursor/archive/legacy/lbos-origin-paper-draft.md` | legacy |
-| `content/governance/sealed/lbos-origin-paper.mdx` | **KEEP** | (no move) | sealed ✅ CANONICAL |
+| Current Location                                  | Action   | New Location                                        | Status              |
+| ------------------------------------------------- | -------- | --------------------------------------------------- | ------------------- |
+| `.cursor/planing/.lbos_origin_paper_sealed.md`    | ARCHIVE  | `.cursor/archive/legacy/lbos-origin-paper-draft.md` | legacy              |
+| `content/governance/sealed/lbos-origin-paper.mdx` | **KEEP** | (no move)                                           | sealed ✅ CANONICAL |
 
 #### Legacy Design Philosophy Docs → Archive
 
-| Current Location | Action | New Location | Status |
-|------------------|--------|--------------|--------|
-| `.cursor/planing/Legacy_Axis_Design_Philosophy.md` | ARCHIVE | `.cursor/archive/legacy/axis-design-philosophy-v1.md` | legacy |
-| `.cursor/planing/Legacy_AxisDesignPhilosophy.md` | ARCHIVE | `.cursor/archive/legacy/axis-design-philosophy-v2.md` | legacy |
-| `.cursor/planing/Legacy_DesignModeSpecification_TheApex.md` | ARCHIVE | `.cursor/archive/legacy/design-mode-spec-apex.md` | legacy |
+| Current Location                                            | Action  | New Location                                          | Status |
+| ----------------------------------------------------------- | ------- | ----------------------------------------------------- | ------ |
+| `.cursor/planing/Legacy_Axis_Design_Philosophy.md`          | ARCHIVE | `.cursor/archive/legacy/axis-design-philosophy-v1.md` | legacy |
+| `.cursor/planing/Legacy_AxisDesignPhilosophy.md`            | ARCHIVE | `.cursor/archive/legacy/axis-design-philosophy-v2.md` | legacy |
+| `.cursor/planing/Legacy_DesignModeSpecification_TheApex.md` | ARCHIVE | `.cursor/archive/legacy/design-mode-spec-apex.md`     | legacy |
 
 #### Planning Playbook Variants → Consolidate
 
-| Current Location | Action | New Location | Status |
-|------------------|--------|--------------|--------|
-| `.cursor/planing/0.axis_governance_planning_tracking_playbook.md` | ARCHIVE | `.cursor/archive/planning/playbook-v1.md` | archived |
-| `.cursor/planing/0.axis_governance_planning_tracking_playbook_with_reference_benchmarks.md` | ARCHIVE | `.cursor/archive/planning/playbook-v2.md` | archived |
-| `.cursor/planing/0.axis_governance_planning_tracking_playbook_with_reference_benchmarks_V2.md` | ARCHIVE | `.cursor/archive/planning/playbook-v3.md` | archived |
-| `content/governance/active/planning-playbook.mdx` | **KEEP** | (no move) | active ✅ CANONICAL |
+| Current Location                                                                               | Action   | New Location                              | Status              |
+| ---------------------------------------------------------------------------------------------- | -------- | ----------------------------------------- | ------------------- |
+| `.cursor/planing/0.axis_governance_planning_tracking_playbook.md`                              | ARCHIVE  | `.cursor/archive/planning/playbook-v1.md` | archived            |
+| `.cursor/planing/0.axis_governance_planning_tracking_playbook_with_reference_benchmarks.md`    | ARCHIVE  | `.cursor/archive/planning/playbook-v2.md` | archived            |
+| `.cursor/planing/0.axis_governance_planning_tracking_playbook_with_reference_benchmarks_V2.md` | ARCHIVE  | `.cursor/archive/planning/playbook-v3.md` | archived            |
+| `content/governance/active/planning-playbook.mdx`                                              | **KEEP** | (no move)                                 | active ✅ CANONICAL |
 
 #### Orphan Analysis Docs → Archive or Work
 
-| Current Location | Action | New Location | Status |
-|------------------|--------|--------------|--------|
-| `.cursor/REQUIREMENTS_VS_PROPOSAL_DIFF.md` | MOVE | `.cursor/archive/analysis/requirements-proposal-diff.md` | archived |
-| `.cursor/TEMPLATE_VS_PLAN_COMPARISON.md` | MOVE | `.cursor/archive/analysis/template-plan-comparison.md` | archived |
-| `.cursor/MIGRATION_PLAN.md` | ARCHIVE | `.cursor/archive/planning/migration-plan-2025.md` | archived |
-| `.cursor/STRATEGY_OVERVIEW.md` | ARCHIVE | `.cursor/archive/planning/strategy-overview-2025.md` | archived |
-| `.cursor/planing/GITHUB_MCP_SEARCH_RESULTS.md` | ARCHIVE | `.cursor/archive/analysis/github-mcp-search-2025.md` | archived |
-| `.cursor/planing/TOOL_COMPARISON_REPORT.md` | ARCHIVE | `.cursor/archive/analysis/tool-comparison-2025.md` | archived |
-| `.cursor/planing/0.DOCUMENT_INVENTORY.md` | ARCHIVE | `.cursor/archive/analysis/document-inventory-2025.md` | archived |
+| Current Location                               | Action  | New Location                                             | Status   |
+| ---------------------------------------------- | ------- | -------------------------------------------------------- | -------- |
+| `.cursor/REQUIREMENTS_VS_PROPOSAL_DIFF.md`     | MOVE    | `.cursor/archive/analysis/requirements-proposal-diff.md` | archived |
+| `.cursor/TEMPLATE_VS_PLAN_COMPARISON.md`       | MOVE    | `.cursor/archive/analysis/template-plan-comparison.md`   | archived |
+| `.cursor/MIGRATION_PLAN.md`                    | ARCHIVE | `.cursor/archive/planning/migration-plan-2025.md`        | archived |
+| `.cursor/STRATEGY_OVERVIEW.md`                 | ARCHIVE | `.cursor/archive/planning/strategy-overview-2025.md`     | archived |
+| `.cursor/planing/GITHUB_MCP_SEARCH_RESULTS.md` | ARCHIVE | `.cursor/archive/analysis/github-mcp-search-2025.md`     | archived |
+| `.cursor/planing/TOOL_COMPARISON_REPORT.md`    | ARCHIVE | `.cursor/archive/analysis/tool-comparison-2025.md`       | archived |
+| `.cursor/planing/0.DOCUMENT_INVENTORY.md`      | ARCHIVE | `.cursor/archive/analysis/document-inventory-2025.md`    | archived |
 
 #### Directory Rename
 
-| Current Location | Action | New Location | Reason |
-|------------------|--------|--------------|--------|
+| Current Location   | Action | New Location    | Reason                                  |
+| ------------------ | ------ | --------------- | --------------------------------------- |
 | `.cursor/planing/` | RENAME | `.cursor/work/` | Clarify purpose: temporary working docs |
 
 ### Status
 
-**Complete**: 2026-01-10
-**Blockers**: Awaiting approval for proposed decisions (D-0005, D-0006, D-0007)
-**Next**: Phase 3 (execution)
+**Complete**: 2026-01-10 **Blockers**: Awaiting approval for proposed decisions
+(D-0005, D-0006, D-0007) **Next**: Phase 3 (execution)
 
 ---
 
@@ -175,11 +175,13 @@
 ### Prerequisites
 
 **Required Approvals**:
+
 1. ✅ D-0005: Canonical governance doc locations
 2. ✅ D-0006: Root directory exception (11 files)
 3. ✅ D-0007: Document lifecycle taxonomy (draft/active/sealed/legacy/archived)
 
 **Blockers**:
+
 - Cannot proceed until stakeholder approves path mapping
 - Cannot update links until canonical locations confirmed
 
@@ -202,6 +204,7 @@ mkdir -p docs/governance/draft
 ```
 
 **Verification**:
+
 - Confirm directories created successfully
 - Confirm no files moved yet
 
@@ -210,12 +213,14 @@ mkdir -p docs/governance/draft
 **Low risk, reversible**
 
 **Files to Move**:
+
 1. Legacy Constitution files (3) → `.cursor/archive/legacy/`
 2. Legacy Titan Protocol files (3) → `.cursor/archive/legacy/`
 3. Legacy Design Philosophy files (3) → `.cursor/archive/legacy/`
 4. Legacy LBOS Origin Paper (1) → `.cursor/archive/legacy/`
 
 **Process**:
+
 ```bash
 # For each file:
 1. Add frontmatter to original:
@@ -229,22 +234,24 @@ mkdir -p docs/governance/draft
 
 3. Create stub at original location (optional):
    # [Original Title]
-   
+
    **Status**: LEGACY - This document has been superseded
-   
+
    **Canonical Version**: [link to canonical doc]
-   
+
    **Archived**: 2026-01-10 to `.cursor/archive/legacy/[new-name].md`
-   
+
    This file is kept for historical reference only.
 ```
 
 **Link Updates**:
+
 - Scan all docs for links to these files
 - Update to point to canonical versions (not archives)
 - If stub created, links can point to stub (will redirect)
 
 **Verification**:
+
 - Confirm 10 files moved
 - Confirm stubs created (if applicable)
 - Confirm no broken links (run link checker)
@@ -254,11 +261,13 @@ mkdir -p docs/governance/draft
 **Low risk, reversible**
 
 **Files to Move**:
+
 1. Planning Playbook v1, v2, v3 → `.cursor/archive/planning/`
 
 **Process**: Same as Batch 2
 
 **Verification**:
+
 - Confirm 3 files moved
 - Confirm canonical playbook in `content/governance/active/` untouched
 - Confirm no broken links
@@ -268,6 +277,7 @@ mkdir -p docs/governance/draft
 **Low risk, reversible**
 
 **Files to Move**:
+
 1. Comparison reports (2) → `.cursor/archive/analysis/`
 2. Planning docs (2) → `.cursor/archive/planning/`
 3. Search/tool reports (3) → `.cursor/archive/analysis/`
@@ -275,6 +285,7 @@ mkdir -p docs/governance/draft
 **Process**: Same as Batch 2
 
 **Verification**:
+
 - Confirm 7 files moved
 - Confirm no broken links
 
@@ -283,6 +294,7 @@ mkdir -p docs/governance/draft
 **Medium risk, affects many files**
 
 **Action**:
+
 ```bash
 # Option A: Git mv (preserves history)
 git mv .cursor/planing .cursor/work
@@ -294,11 +306,13 @@ git rm -r .cursor/planing
 ```
 
 **Link Updates**:
+
 - Scan all docs for links to `.cursor/planing/`
 - Update to `.cursor/work/`
 - Update .cursorignore if references planing/
 
 **Verification**:
+
 - Confirm directory renamed
 - Confirm all files intact
 - Confirm links updated
@@ -309,11 +323,13 @@ git rm -r .cursor/planing
 **Low risk, improves metadata**
 
 **Files to Update**:
+
 - All files in `content/governance/sealed/` → Add `status: sealed`
 - All files in `content/governance/active/` → Add `status: active`
 - All files in `docs/` → Add appropriate doc_type and status
 
 **Process**:
+
 ```bash
 # For each canonical doc:
 1. Add/update frontmatter:
@@ -332,6 +348,7 @@ git rm -r .cursor/planing
 ```
 
 **Verification**:
+
 - Confirm all canonical docs have proper frontmatter
 - Confirm `source_of_truth: true` set correctly
 - Run validation script: `pnpm validate:docs`
@@ -341,6 +358,7 @@ git rm -r .cursor/planing
 **Low risk, improves AI context**
 
 **Updates**:
+
 ```
 # Add exclusions for archives
 .cursor/archive/         # Historical docs (exclude from AI)
@@ -348,6 +366,7 @@ git rm -r .cursor/planing
 ```
 
 **Verification**:
+
 - Confirm .cursorignore updated
 - Test AI context: Should not see archived docs in suggestions
 
@@ -369,8 +388,7 @@ git reset --hard [commit-before-phase-3]
 
 ### Status
 
-**Status**: AWAITING APPROVAL
-**Estimated Time**: 2-3 hours (with verification)
+**Status**: AWAITING APPROVAL **Estimated Time**: 2-3 hours (with verification)
 **Risk**: 🟢 LOW (all moves reversible, no deletions)
 
 ---
@@ -380,6 +398,7 @@ git reset --hard [commit-before-phase-3]
 ### Prerequisites
 
 **Required**:
+
 1. Phase 3 complete and verified
 2. All links validated (no broken links)
 3. All canonical docs have proper frontmatter
@@ -396,39 +415,47 @@ git reset --hard [commit-before-phase-3]
 ## 📚 Main Documentation
 
 ### Architecture
+
 - [System Overview](./architecture/overview.md)
 - [Tech Stack](./architecture/tech-stack.md)
 
 ### API Documentation
+
 - [GraphQL API](./api/graphql.md)
 - [REST API](./api/rest.md)
 - [tRPC API](./api/trpc.md)
 
 ### Guides
+
 - [Getting Started](./guides/getting-started.md)
 - [Post-Clone Setup](./guides/POST_CLONE_SETUP.md)
 
 ### Reference
+
 - [KPI Reference](./reference/KPI_REFERENCE.md)
 - [Best Practices](./reference/CURSOR_BEST_PRACTICES_EVIDENCE_BASED.md)
 
 ### Governance
+
 - [Active Governance](./governance/active/)
 - [Draft Proposals](./governance/draft/)
 
 ## 🗄️ Archives
 
 ### Migrations (Historical)
+
 - [Nextra 4 Migration](./migrations/nextra-4/)
 - [Zod v4 Migration](./migrations/zod-v4/)
 - [Validation Migration](./migrations/validation/)
 
 ### Changelog (Historical)
+
 - [2025-01 Implementations](./changelog/2025-01/)
 
 ## 🔧 System Files
 
 ### Documentation Governance
+
 - [Inventory](._system/INVENTORY.md) - File census
 - [Taxonomy](._system/TAXONOMY.md) - Structure definition
 - [Decisions](._system/DECISIONS.md) - Decision ledger
@@ -482,7 +509,8 @@ Add section pointing to new structure:
 
 - **Quick Start**: [QUICK_START.md](./QUICK_START.md)
 - **Quick Reference**: [QUICK_REFERENCE.md](./QUICK_REFERENCE.md)
-- **System Architecture**: [CURSOR_SYSTEM_ARCHITECTURE.md](./CURSOR_SYSTEM_ARCHITECTURE.md)
+- **System Architecture**:
+  [CURSOR_SYSTEM_ARCHITECTURE.md](./CURSOR_SYSTEM_ARCHITECTURE.md)
 - **Full Documentation**: [docs/](./docs/)
 - **Public Docs**: [content/](./content/) (published via Nextra)
 ```
@@ -492,6 +520,7 @@ Add section pointing to new structure:
 **Create**: `docs/_system/CLEANUP_REPORT.md`
 
 **Contents**:
+
 - Summary of changes
 - Files moved (with before/after paths)
 - Duplicates resolved
@@ -502,6 +531,7 @@ Add section pointing to new structure:
 **Create**: `docs/_system/POST_CLEANUP_VALIDATION.md`
 
 **Contents**:
+
 - Link validation report (all links checked)
 - Frontmatter compliance report
 - Naming convention compliance
@@ -530,13 +560,12 @@ The repository documentation follows a structured taxonomy:
   - archive/: Historical reference (excluded from AI)
   - rules/: Active Cursor rules (included in AI)
 
-See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
+See: [docs/\_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 ```
 
 ### Status
 
-**Status**: PENDING (awaits Phase 3 completion)
-**Estimated Time**: 1 hour
+**Status**: PENDING (awaits Phase 3 completion) **Estimated Time**: 1 hour
 **Risk**: 🟢 VERY LOW (documentation only, no file moves)
 
 ---
@@ -550,7 +579,7 @@ See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 - [ ] All legacy docs have `status: legacy` and `superseded_by` frontmatter
 - [ ] .cursorignore excludes archives and work directories
 - [ ] Root directory has exactly 11 files
-- [ ] docs/_system/ has all control files
+- [ ] docs/\_system/ has all control files
 
 ### Quality Checks
 
@@ -587,15 +616,15 @@ See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 
 ### Quantitative
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Total documentation files | 259 | 259 | 0 (no deletions) |
-| Root directory files | 11 | 11 | Maintained |
-| Duplicate file clusters | 15+ | 0 | 100% resolved |
-| Legacy files unarchived | 10+ | 0 | 100% archived |
-| Orphan docs | 7 | 0 | 100% relocated |
-| Files with proper frontmatter | ~10% | ~90% | 800% improvement |
-| Files following naming convention | ~5% | ~30% | 500% improvement |
+| Metric                            | Before | After | Improvement      |
+| --------------------------------- | ------ | ----- | ---------------- |
+| Total documentation files         | 259    | 259   | 0 (no deletions) |
+| Root directory files              | 11     | 11    | Maintained       |
+| Duplicate file clusters           | 15+    | 0     | 100% resolved    |
+| Legacy files unarchived           | 10+    | 0     | 100% archived    |
+| Orphan docs                       | 7      | 0     | 100% relocated   |
+| Files with proper frontmatter     | ~10%   | ~90%  | 800% improvement |
+| Files following naming convention | ~5%    | ~30%  | 500% improvement |
 
 ### Qualitative
 
@@ -613,12 +642,14 @@ See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 ### Ongoing Enforcement
 
 **Pre-commit Hook**:
+
 - Validates new docs in allowed locations
 - Checks frontmatter compliance
 - Enforces naming conventions
 - Prevents temp docs > 7 days old
 
 **CI/CD** (GitHub Actions):
+
 - Runs link validation
 - Checks documentation structure
 - Verifies frontmatter
@@ -627,15 +658,18 @@ See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 ### Regular Reviews
 
 **Weekly**:
+
 - Clean `.cursor/work/` (archive or delete old analysis)
 - Check `.temp-docs/` (should be empty or < 7 days)
 
 **Monthly**:
+
 - Review `docs/_system/CONTRADICTIONS.md` (should be empty)
 - Review `docs/_system/DECISIONS.md` (append new decisions)
 - Validate link health (run link checker)
 
 **Quarterly**:
+
 - Full documentation audit
 - Update TAXONOMY.md if needed
 - Consolidate archives (compress old planning docs)
@@ -643,12 +677,14 @@ See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 ### Future Improvements
 
 **Short-term** (next 3 months):
+
 1. Implement automated link checking (CI/CD)
 2. Create documentation linting (markdownlint)
 3. Add frontmatter validation script
 4. Generate automated indexes
 
 **Long-term** (next 6-12 months):
+
 1. Migrate more docs to DOC-XXXX naming convention
 2. Add version control for sealed documents
 3. Implement documentation search (Pagefind/Algolia)
@@ -671,6 +707,7 @@ See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 - Updating links (risk of breaking if script has bugs)
 
 **Mitigation**:
+
 - Test link updates on one file first
 - Use git to track all changes
 - Keep stubs at old locations (redirects)
@@ -678,7 +715,7 @@ See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 
 ### Zero Risk 🟢
 
-- Creating control files (docs/_system/)
+- Creating control files (docs/\_system/)
 - Generating reports
 - Adding indexes
 - Documentation-only changes
@@ -701,9 +738,8 @@ See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 
 ### Total Project Time
 
-**Estimated**: 5-7 hours (planning + execution)
-**Actual** (so far): 3.5 hours (planning)
-**Remaining**: 3-4 hours (execution)
+**Estimated**: 5-7 hours (planning + execution) **Actual** (so far): 3.5 hours
+(planning) **Remaining**: 3-4 hours (execution)
 
 ---
 
@@ -720,6 +756,7 @@ See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 **Question**:
 
 > Phase 0-2 complete. I have:
+>
 > - Inventoried 259 files
 > - Detected 15+ duplicate clusters
 > - Identified 10+ legacy files needing archival
@@ -727,11 +764,13 @@ See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 > - Mapped migration paths for all affected files
 > - Proposed solutions to all 4 contradictions
 >
-> The migration is **non-destructive** (no deletions), **reversible** (all moves via git), and **low-risk** (extensive verification steps).
+> The migration is **non-destructive** (no deletions), **reversible** (all moves
+> via git), and **low-risk** (extensive verification steps).
 >
 > **Approve Phase 3 execution?**
-> 
+>
 > If yes, I will:
+>
 > 1. Create archive directories
 > 2. Move legacy files (with stubs/redirects)
 > 3. Archive planning variants
@@ -741,7 +780,6 @@ See: [docs/_system/TAXONOMY.md](../../docs/_system/TAXONOMY.md)
 > 7. Update .cursorignore
 > 8. Verify no broken links
 >
-> **Estimated time**: 2-3 hours
-> **Risk level**: 🟢 LOW
+> **Estimated time**: 2-3 hours **Risk level**: 🟢 LOW
 
 **Status**: Phase 2 complete, awaiting approval to proceed to Phase 3

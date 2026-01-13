@@ -1,19 +1,21 @@
 # Turbo Token Not Shown in Output - How to Find It
 
-**Status**: ✅ Active | **Last Updated**: 2026-01-11
-**Purpose**: Help when `turbo link` shows team but not token
+**Status**: ✅ Active | **Last Updated**: 2026-01-11 **Purpose**: Help when
+`turbo link` shows team but not token
 
 ---
 
 ## Issue: Token Not Displayed
 
 Sometimes `turbo link` only shows:
+
 ```
 ✓ Remote caching enabled
 ✓ Team: your-team-name
 ```
 
-But **doesn't show the token**. This is normal - the token is stored in a config file.
+But **doesn't show the token**. This is normal - the token is stored in a config
+file.
 
 ---
 
@@ -32,6 +34,7 @@ Get-Content .turbo\config.json
 ```
 
 **Expected content** (may vary):
+
 ```json
 {
   "teamId": "team_xxxxxxxxxxxxx",
@@ -40,6 +43,7 @@ Get-Content .turbo\config.json
 ```
 
 **OR** (if only teamId is shown):
+
 ```json
 {
   "teamId": "team_xxxxxxxxxxxxx"
@@ -47,11 +51,13 @@ Get-Content .turbo\config.json
 ```
 
 **If token is missing**:
+
 - The token might be stored in Vercel's auth cache
 - You may need to re-link or check Vercel dashboard
 - Token is sometimes not stored locally for security
 
 **Extract values**:
+
 - `TURBO_TEAM` = Value from `teamId` (or use the team name you saw)
 - `TURBO_TOKEN` = Value from `token` (if present) OR get from Vercel
 
@@ -97,7 +103,8 @@ pnpm turbo unlink
 pnpm turbo link
 ```
 
-**This time, look carefully at the output** - the token might be shown but easy to miss.
+**This time, look carefully at the output** - the token might be shown but easy
+to miss.
 
 ---
 
@@ -111,7 +118,8 @@ If you can't find the token:
 2. **Sign in**
 3. **Go to**: Settings → Tokens
 4. **Note**: Vercel API tokens are different from Turbo tokens
-5. **For Turbo token**: You need to use `turbo link` or check `.turbo/config.json`
+5. **For Turbo token**: You need to use `turbo link` or check
+   `.turbo/config.json`
 
 ### Option 2: Re-authenticate
 
@@ -137,6 +145,7 @@ Write-Host "TURBO_TOKEN: $($config.token)"
 ```
 
 Or manually:
+
 1. Open `.turbo/config.json`
 2. Find `"token"` field
 3. Copy the value (starts with `tur_`)
@@ -168,7 +177,8 @@ TURBO_TEAM=your-team-name
 
 ### Issue: Config file exists but no token field
 
-**Solution**: 
+**Solution**:
+
 1. Run `pnpm turbo unlink`
 2. Run `pnpm turbo link` again
 3. Check output carefully
@@ -176,6 +186,7 @@ TURBO_TEAM=your-team-name
 ### Issue: Token field is empty
 
 **Solution**:
+
 1. Run `pnpm turbo login` (re-authenticate)
 2. Run `pnpm turbo link` again
 
@@ -184,6 +195,7 @@ TURBO_TEAM=your-team-name
 ## Summary
 
 **If you only see team name**:
+
 1. ✅ Check `.turbo/config.json` for the token
 2. ✅ Extract `token` field value
 3. ✅ Use that as `TURBO_TOKEN`
@@ -192,5 +204,4 @@ TURBO_TEAM=your-team-name
 
 ---
 
-**Last Updated**: 2026-01-11
-**Status**: ✅ Active Guide
+**Last Updated**: 2026-01-11 **Status**: ✅ Active Guide

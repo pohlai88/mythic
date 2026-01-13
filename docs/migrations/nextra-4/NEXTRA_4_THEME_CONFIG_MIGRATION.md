@@ -1,11 +1,12 @@
 # Nextra 4: Theme Config Migration Guide
 
-**Status**: ✅ Migration Complete
-**Date**: 2025-01-27
+**Status**: ✅ Migration Complete **Date**: 2025-01-27
 
 ## Overview
 
-Nextra 4 **discontinues support** for `theme.config.tsx` files. Theme configuration options are now passed directly as props to components in `app/layout.tsx`.
+Nextra 4 **discontinues support** for `theme.config.tsx` files. Theme
+configuration options are now passed directly as props to components in
+`app/layout.tsx`.
 
 ## What Changed
 
@@ -14,8 +15,8 @@ Nextra 4 **discontinues support** for `theme.config.tsx` files. Theme configurat
 ```javascript
 // ❌ NO LONGER SUPPORTED
 const withNextra = nextra({
-  theme: 'nextra-theme-docs',
-  themeConfig: './theme.config.tsx'
+  theme: "nextra-theme-docs",
+  themeConfig: "./theme.config.tsx",
 })
 ```
 
@@ -104,31 +105,33 @@ If migrating from Nextra 3 with `theme.config.tsx`:
 ```javascript
 // ❌ Remove these
 const withNextra = nextra({
-  theme: 'nextra-theme-docs',
-  themeConfig: './theme.config.tsx'
+  theme: "nextra-theme-docs",
+  themeConfig: "./theme.config.tsx",
 })
 ```
 
 #### Step 2: Move Options to app/layout.tsx
 
 **Old theme.config.tsx**:
+
 ```tsx
 const config = {
   logo: <span>My Docs</span>,
   project: {
-    link: 'https://github.com/...',
+    link: "https://github.com/...",
   },
-  docsRepositoryBase: 'https://github.com/...',
+  docsRepositoryBase: "https://github.com/...",
   sidebar: {
     defaultMenuCollapseLevel: 1,
   },
   footer: {
-    text: '© 2025 My Docs',
+    text: "© 2025 My Docs",
   },
 }
 ```
 
 **New app/layout.tsx**:
+
 ```tsx
 <Layout
   docsRepositoryBase="https://github.com/..."
@@ -136,19 +139,14 @@ const config = {
     defaultMenuCollapseLevel: 1,
   }}
 >
-  <Navbar
-    logo={<span>My Docs</span>}
-    projectLink="https://github.com/..."
-  >
+  <Navbar logo={<span>My Docs</span>} projectLink="https://github.com/...">
     <Search />
     <ThemeSwitch />
   </Navbar>
 
   {children}
 
-  <Footer>
-    © 2025 My Docs
-  </Footer>
+  <Footer>© 2025 My Docs</Footer>
 </Layout>
 ```
 
@@ -164,18 +162,21 @@ rm theme.config.tsx  # No longer needed
 
 ```tsx
 <Layout
-  pageMap={pageMap}                    // Required: Page map from getPageMap()
-  banner={<Banner>...</Banner>}        // Optional: Banner component
-  docsRepositoryBase="https://..."      // Optional: Docs repo base URL
-  sidebar={{                            // Optional: Sidebar config
+  pageMap={pageMap} // Required: Page map from getPageMap()
+  banner={<Banner>...</Banner>} // Optional: Banner component
+  docsRepositoryBase="https://..." // Optional: Docs repo base URL
+  sidebar={{
+    // Optional: Sidebar config
     defaultMenuCollapseLevel: 1,
     toggleButton: true,
     autoCollapse: true,
   }}
-  toc={{                                // Optional: TOC config
+  toc={{
+    // Optional: TOC config
     backToTop: true,
   }}
-  navigation={{                         // Optional: Navigation config
+  navigation={{
+    // Optional: Navigation config
     prev: true,
     next: true,
   }}
@@ -188,21 +189,18 @@ rm theme.config.tsx  # No longer needed
 
 ```tsx
 <Navbar
-  logo={<div>Logo</div>}               // Optional: Logo component
-  projectLink="https://..."             // Optional: Project link
+  logo={<div>Logo</div>} // Optional: Logo component
+  projectLink="https://..." // Optional: Project link
 >
-  <Search />                            // Optional: Search component
-  <ThemeSwitch />                       // Optional: Theme switcher
+  <Search /> // Optional: Search component
+  <ThemeSwitch /> // Optional: Theme switcher
 </Navbar>
 ```
 
 ### `<Footer>` Props
 
 ```tsx
-<Footer>
-  {/* Footer content as children */}
-  © 2025 My Docs
-</Footer>
+<Footer>{/* Footer content as children */}© 2025 My Docs</Footer>
 ```
 
 ### `<Banner>` Props
@@ -246,7 +244,7 @@ Follows Next.js App Router patterns and conventions.
 ```tsx
 <Navbar
   logo={
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
       <img src="/logo.png" alt="Logo" />
       <span style={{ fontWeight: 600 }}>My Docs</span>
     </div>
@@ -326,6 +324,7 @@ const banner = (
 **Problem**: Theme options from `theme.config.tsx` not applied
 
 **Solution**:
+
 1. Check `app/layout.tsx` - options should be props
 2. Verify component imports from `nextra-theme-docs`
 3. Ensure props are passed correctly
@@ -335,6 +334,7 @@ const banner = (
 **Problem**: Type errors with component props
 
 **Solution**:
+
 1. Check imports: `import { Layout, Navbar } from 'nextra-theme-docs'`
 2. Verify prop types match Nextra 4 API
 3. Check Nextra 4 documentation for correct prop types
@@ -344,6 +344,7 @@ const banner = (
 **Problem**: Feature from `theme.config.tsx` not available
 
 **Solution**:
+
 1. Check Nextra 4 migration guide
 2. Some features may have different prop names
 3. Some features may be removed or replaced
@@ -356,13 +357,12 @@ const banner = (
 
 ## Summary
 
-✅ **Migration Complete**: Theme config removed, options moved to component props
-✅ **Configuration Verified**: All theme options configured correctly
-✅ **No Breaking Changes**: All features working as expected
+✅ **Migration Complete**: Theme config removed, options moved to component
+props ✅ **Configuration Verified**: All theme options configured correctly ✅
+**No Breaking Changes**: All features working as expected
 
 **Status**: ✅ Production Ready
 
 ---
 
-**Last Updated**: 2025-01-27
-**Next Review**: After Nextra updates
+**Last Updated**: 2025-01-27 **Next Review**: After Nextra updates

@@ -10,15 +10,15 @@
  *   pnpm generate:meta:watch
  */
 
-import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
-import { basename, extname, join, relative } from 'node:path'
-import { createScriptLogger } from '../src/lib/logger'
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs"
+import { basename, extname, join, relative } from "node:path"
+import { createScriptLogger } from "../src/lib/logger"
 
-const log = createScriptLogger('generate-meta')
+const log = createScriptLogger("generate-meta")
 
 interface MetaEntry {
   title?: string
-  type?: 'page' | 'menu'
+  type?: "page" | "menu"
   href?: string
   // ✅ newWindow removed in Nextra 4 - external links automatically open in new tab with rel="noreferrer"
   items?: Record<string, string | MetaEntry> // Required for folder items in _meta.global
@@ -35,26 +35,26 @@ function filenameToTitle(filename: string): string {
   const name = basename(filename, extname(filename))
 
   // Skip special files
-  if (name.startsWith('_') || name === '404' || name === 'sitemap.xml') {
+  if (name.startsWith("_") || name === "404" || name === "sitemap.xml") {
     return name
   }
 
   // Convert kebab-case to Title Case
   return name
-    .split('-')
+    .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
+    .join(" ")
 }
 
 /**
  * Check if file is a valid page file
  */
 function isValidPageFile(filename: string): boolean {
-  const validExtensions = ['.mdx', '.md', '.tsx', '.ts', '.jsx', '.js']
+  const validExtensions = [".mdx", ".md", ".tsx", ".ts", ".jsx", ".js"]
   const ext = extname(filename)
 
   // Skip special files
-  if (filename.startsWith('_') || filename === '404.tsx' || filename === 'sitemap.xml.ts') {
+  if (filename.startsWith("_") || filename === "404.tsx" || filename === "sitemap.xml.ts") {
     return false
   }
 
@@ -67,7 +67,7 @@ function isValidPageFile(filename: string): boolean {
 function loadExistingMeta(metaPath: string): MetaConfig | null {
   if (existsSync(metaPath)) {
     try {
-      const content = readFileSync(metaPath, 'utf-8')
+      const content = readFileSync(metaPath, "utf-8")
       return JSON.parse(content)
     } catch {
       return null
@@ -84,14 +84,14 @@ function generateMetaForDirectory(dirPath: string, rootPath: string, isRoot = fa
   const entries = readdirSync(dirPath).sort()
 
   // Index file names for reference
-  const indexFiles = ['index.mdx', 'index.md', 'index.tsx', 'index.ts', 'index.jsx', 'index.js']
+  const indexFiles = ["index.mdx", "index.md", "index.tsx", "index.ts", "index.jsx", "index.js"]
 
   for (const entry of entries) {
     const fullPath = join(dirPath, entry)
     const stat = statSync(fullPath)
 
     // Skip hidden files and special files
-    if (entry.startsWith('.') || entry === '_meta.json' || entry === '_meta.js') {
+    if (entry.startsWith(".") || entry === "_meta.json" || entry === "_meta.js") {
       continue
     }
 
@@ -103,7 +103,7 @@ function generateMetaForDirectory(dirPath: string, rootPath: string, isRoot = fa
         // Directory with index file - treat as page
         meta[entry] = {
           title: filenameToTitle(entry),
-          type: 'page',
+          type: "page",
         }
       } else {
         // Directory without index - treat as menu/folder
@@ -111,10 +111,10 @@ function generateMetaForDirectory(dirPath: string, rootPath: string, isRoot = fa
         if (Object.keys(subMeta).length > 0) {
           meta[entry] = {
             title: filenameToTitle(entry),
-            type: 'menu',
+            type: "menu",
           }
           // Write nested _meta.json
-          const nestedMetaPath = join(fullPath, '_meta.json')
+          const nestedMetaPath = join(fullPath, "_meta.json")
           const existingNested = loadExistingMeta(nestedMetaPath)
           const finalNested = { ...existingNested, ...subMeta }
           writeFileSync(nestedMetaPath, JSON.stringify(finalNested, null, 2))
@@ -128,10 +128,10 @@ function generateMetaForDirectory(dirPath: string, rootPath: string, isRoot = fa
       const nameWithoutExt = basename(entry, extname(entry))
 
       // Special handling for index files
-      if (nameWithoutExt === 'index') {
+      if (nameWithoutExt === "index") {
         if (isRoot) {
           // Root index - add as "Introduction"
-          meta.index = 'Introduction'
+          meta.index = "Introduction"
         }
         // For nested directories, index is handled by directory entry
         continue
@@ -148,17 +148,17 @@ function generateMetaForDirectory(dirPath: string, rootPath: string, isRoot = fa
  * Main function
  */
 function main() {
-  const pagesDir = join(process.cwd(), 'pages')
+  const pagesDir = join(process.cwd(), "pages")
 
   if (!existsSync(pagesDir)) {
-    log.error('❌ pages directory not found!')
+    log.error("❌ pages directory not found!")
     process.exit(1)
   }
 
-  log.info('🔍 Scanning pages directory...')
+  log.info("🔍 Scanning pages directory...")
 
   // Load existing meta to preserve customizations
-  const metaPath = join(pagesDir, '_meta.json')
+  const metaPath = join(pagesDir, "_meta.json")
   const existingMeta = loadExistingMeta(metaPath)
 
   // Generate root _meta.json
@@ -172,9 +172,9 @@ function main() {
   if (existingMeta) {
     for (const [key, value] of Object.entries(existingMeta)) {
       // If it's a custom entry (not just a string), preserve it
-      if (typeof value === 'object' && value !== null) {
+      if (typeof value === "object" && value !== null) {
         rootMeta[key] = value
-      } else if (typeof value === 'string') {
+      } else if (typeof value === "string") {
         // Preserve custom string titles
         rootMeta[key] = value
       }
@@ -182,10 +182,10 @@ function main() {
   }
 
   // Ensure index is set if index file exists
-  const indexFiles = ['index.mdx', 'index.md', 'index.tsx', 'index.ts', 'index.jsx', 'index.js']
+  const indexFiles = ["index.mdx", "index.md", "index.tsx", "index.ts", "index.jsx", "index.js"]
   const hasIndex = indexFiles.some((file) => existsSync(join(pagesDir, file)))
   if (hasIndex && !rootMeta.index) {
-    rootMeta.index = 'Introduction'
+    rootMeta.index = "Introduction"
   }
 
   // Write root _meta.json
@@ -196,8 +196,8 @@ function main() {
     { entryCount: Object.keys(rootMeta).length },
     `📊 Found ${Object.keys(rootMeta).length} top-level entries`
   )
-  log.info('💡 Tip: Review and customize _meta.json files as needed')
-  log.info('   Nextra will automatically pick up changes on next dev server restart')
+  log.info("💡 Tip: Review and customize _meta.json files as needed")
+  log.info("   Nextra will automatically pick up changes on next dev server restart")
 }
 
 main()

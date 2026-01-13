@@ -1,7 +1,7 @@
 # Missing Items Checklist
 
-**Status**: ✅ Active | **Last Updated**: 2026-01-11
-**Purpose**: Comprehensive checklist of what might be missing in your setup
+**Status**: ✅ Active | **Last Updated**: 2026-01-11 **Purpose**: Comprehensive
+checklist of what might be missing in your setup
 
 ---
 
@@ -10,7 +10,8 @@
 ### ✅ Required (Must Have)
 
 - [ ] **`DATABASE_URL`** OR **`DB_PASSWORD`** (minimum)
-  - **Used by**: `apps/boardroom/src/db/index.ts`, `drizzle.config.ts`, `scripts/setup-database.ts`
+  - **Used by**: `apps/boardroom/src/db/index.ts`, `drizzle.config.ts`,
+    `scripts/setup-database.ts`
   - **Test**: `pnpm db:setup`
   - **If missing**: Database connection will fail
 
@@ -153,6 +154,7 @@ pnpm db:setup
 ```
 
 **Expected output**:
+
 ```
 ✅ Database connection successful
 ✅ Database schema already exists
@@ -169,6 +171,7 @@ pnpm validate:verbatim
 ```
 
 **Expected output**:
+
 ```
 ✅ All verbatim files validated (X checks passed)
 ```
@@ -195,5 +198,4 @@ Based on typical setups, these are most commonly missing:
 
 ---
 
-**Last Updated**: 2026-01-11
-**Status**: ✅ Active
+**Last Updated**: 2026-01-11 **Status**: ✅ Active

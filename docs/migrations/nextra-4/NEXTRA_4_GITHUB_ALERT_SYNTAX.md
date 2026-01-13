@@ -1,11 +1,12 @@
 # Nextra 4: GitHub Alert Syntax Support
 
-**Status**: ✅ **Automatic Support Enabled**
-**Date**: 2025-01-27
+**Status**: ✅ **Automatic Support Enabled** **Date**: 2025-01-27
 
 ## Overview
 
-Nextra 4 automatically converts **GitHub Alert Syntax** to `<Callout>` components in `.md` and `.mdx` files. No configuration needed - it works out of the box!
+Nextra 4 automatically converts **GitHub Alert Syntax** to `<Callout>`
+components in `.md` and `.mdx` files. No configuration needed - it works out of
+the box!
 
 ---
 
@@ -98,6 +99,7 @@ Nextra 4 automatically converts **GitHub Alert Syntax** to `<Callout>` component
 Nextra 4 automatically converts GitHub Alert Syntax to `<Callout>` components:
 
 **Input** (Markdown):
+
 ```markdown
 > [!NOTE]
 >
@@ -105,17 +107,15 @@ Nextra 4 automatically converts GitHub Alert Syntax to `<Callout>` components:
 ```
 
 **Output** (Rendered):
+
 ```tsx
-<Callout type="note">
-  This is a note.
-</Callout>
+<Callout type="note">This is a note.</Callout>
 ```
 
 ### No Configuration Needed
 
-✅ **Works automatically** - No setup required
-✅ **Built-in support** - Part of Nextra 4
-✅ **MDX compatible** - Works in `.md` and `.mdx` files
+✅ **Works automatically** - No setup required ✅ **Built-in support** - Part of
+Nextra 4 ✅ **MDX compatible** - Works in `.md` and `.mdx` files
 
 ---
 
@@ -239,7 +239,7 @@ Nextra 4 automatically converts GitHub Alert Syntax to `<Callout>` components:
 If you need more control, use `<Callout>` component directly:
 
 ```mdx
-import { Callout } from 'nextra/components'
+import { Callout } from "nextra/components"
 
 <Callout type="note" emoji="📝">
   Custom callout with emoji
@@ -257,9 +257,7 @@ Callout styles are handled by Nextra theme automatically. No custom CSS needed.
 ### Before (Custom Syntax)
 
 ```markdown
-:::note
-This is a note.
-:::
+:::note This is a note. :::
 ```
 
 ### After (GitHub Alert Syntax)
@@ -271,6 +269,7 @@ This is a note.
 ```
 
 **Benefits**:
+
 - ✅ Standard GitHub syntax
 - ✅ Better compatibility
 - ✅ Automatic conversion
@@ -285,6 +284,7 @@ This is a note.
 **Problem**: GitHub Alert Syntax not converted
 
 **Solutions**:
+
 1. Check file extension (`.md` or `.mdx`)
 2. Verify syntax is correct: `> [!TYPE]`
 3. Ensure Nextra 4 is installed
@@ -295,6 +295,7 @@ This is a note.
 **Problem**: Callout doesn't match expected style
 
 **Solutions**:
+
 1. Verify alert type is correct
 2. Check Nextra theme is loaded
 3. Verify CSS is imported: `import 'nextra-theme-docs/style.css'`
@@ -311,14 +312,13 @@ This is a note.
 
 ## Summary
 
-✅ **Automatic Support**: GitHub Alert Syntax works out of the box
-✅ **5 Types Supported**: NOTE, TIP, IMPORTANT, WARNING, CAUTION
-✅ **No Configuration**: Built into Nextra 4
-✅ **MDX Compatible**: Works in all Markdown files
+✅ **Automatic Support**: GitHub Alert Syntax works out of the box ✅ **5 Types
+Supported**: NOTE, TIP, IMPORTANT, WARNING, CAUTION ✅ **No Configuration**:
+Built into Nextra 4 ✅ **MDX Compatible**: Works in all Markdown files
 
 **Status**: ✅ **Ready to Use**
 
 ---
 
-**Last Updated**: 2025-01-27
-**Usage**: Just use GitHub Alert Syntax in your Markdown files!
+**Last Updated**: 2025-01-27 **Usage**: Just use GitHub Alert Syntax in your
+Markdown files!

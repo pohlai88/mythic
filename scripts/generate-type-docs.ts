@@ -9,12 +9,12 @@
  *   pnpm generate:type-docs
  */
 
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs'
-import { join } from 'node:path'
-import { Project } from 'ts-morph'
-import { createScriptLogger } from '../src/lib/logger'
+import { writeFileSync, mkdirSync, existsSync } from "node:fs"
+import { join } from "node:path"
+import { Project } from "ts-morph"
+import { createScriptLogger } from "../src/lib/logger"
 
-const log = createScriptLogger('generate-type-docs')
+const log = createScriptLogger("generate-type-docs")
 
 interface TypeDoc {
   name: string
@@ -29,34 +29,24 @@ interface TypeDoc {
   exported: boolean
 }
 
-const outputDir = join(process.cwd(), 'apps/docs/content/reference/types')
-const sourcePaths = [
-  'src/**/*.ts',
-  'packages/**/src/**/*.ts',
-  'apps/**/src/**/*.ts',
-]
+const outputDir = join(process.cwd(), "apps/docs/content/reference/types")
+const sourcePaths = ["src/**/*.ts", "packages/**/src/**/*.ts", "apps/**/src/**/*.ts"]
 
 // Exclude patterns (check if file path contains these)
-const excludePatterns = [
-  'node_modules',
-  '.next',
-  'dist',
-  'build',
-  '.test.ts',
-  '.spec.ts',
-]
+const excludePatterns = ["node_modules", ".next", "dist", "build", ".test.ts", ".spec.ts"]
 
 function extractJSDocComment(node: { getJsDocs(): Array<{ getComment(): string }> }): string {
   const jsDocs = node.getJsDocs()
-  if (jsDocs.length === 0) return ''
-  return jsDocs[0]?.getComment() || ''
+  if (jsDocs.length === 0) return ""
+  return jsDocs[0]?.getComment() || ""
 }
 
 function generateMDX(typeDoc: TypeDoc): string {
   const { name, description, properties } = typeDoc
 
-  const propertiesSection = properties.length > 0
-    ? `## Properties
+  const propertiesSection =
+    properties.length > 0
+      ? `## Properties
 
 ${properties
   .map(
@@ -64,14 +54,14 @@ ${properties
 
 **Type**: \`${prop.type}\`
 
-${prop.optional ? '**Optional**' : '**Required**'}
+${prop.optional ? "**Optional**" : "**Required**"}
 
-${prop.docs || 'No description available'}
+${prop.docs || "No description available"}
 
 `
   )
-  .join('\n')}`
-    : ''
+  .join("\n")}`
+      : ""
 
   return `---
 title: ${name}
@@ -103,17 +93,17 @@ function generateMetadata(typeDocs: TypeDoc[]): Record<string, unknown> {
 }
 
 async function generateTypeDocs(): Promise<void> {
-  log.info('Starting type documentation generation...')
+  log.info("Starting type documentation generation...")
 
   // Ensure output directory exists
   if (!existsSync(outputDir)) {
     mkdirSync(outputDir, { recursive: true })
-    log.info({ outputDir }, 'Created output directory')
+    log.info({ outputDir }, "Created output directory")
   }
 
   // Initialize ts-morph project
   const project = new Project({
-    tsConfigFilePath: join(process.cwd(), 'tsconfig.json'),
+    tsConfigFilePath: join(process.cwd(), "tsconfig.json"),
     skipAddingFilesFromTsConfig: false,
   })
 
@@ -124,7 +114,7 @@ async function generateTypeDocs(): Promise<void> {
         skipAddingFilesFromTsConfig: false,
       })
     } catch (error) {
-      log.warn({ pattern, error }, 'Failed to add source files for pattern')
+      log.warn({ pattern, error }, "Failed to add source files for pattern")
     }
   }
 
@@ -144,7 +134,7 @@ async function generateTypeDocs(): Promise<void> {
     sourceFile.getInterfaces().forEach((iface) => {
       const name = iface.getName()
       if (processedNames.has(name)) {
-        log.warn({ name, filePath }, 'Duplicate type name found, skipping')
+        log.warn({ name, filePath }, "Duplicate type name found, skipping")
         return
       }
       processedNames.add(name)
@@ -170,7 +160,7 @@ async function generateTypeDocs(): Promise<void> {
     sourceFile.getTypeAliases().forEach((typeAlias) => {
       const name = typeAlias.getName()
       if (processedNames.has(name)) {
-        log.warn({ name, filePath }, 'Duplicate type name found, skipping')
+        log.warn({ name, filePath }, "Duplicate type name found, skipping")
         return
       }
       processedNames.add(name)
@@ -183,7 +173,7 @@ async function generateTypeDocs(): Promise<void> {
       typeDocs.push({
         name,
         description,
-        properties: [{ name: 'type', type: typeText, optional: false, docs: '' }],
+        properties: [{ name: "type", type: typeText, optional: false, docs: "" }],
         filePath,
         exported: typeAlias.isExported(),
       })
@@ -193,7 +183,7 @@ async function generateTypeDocs(): Promise<void> {
     sourceFile.getEnums().forEach((enumDecl) => {
       const name = enumDecl.getName()
       if (processedNames.has(name)) {
-        log.warn({ name, filePath }, 'Duplicate type name found, skipping')
+        log.warn({ name, filePath }, "Duplicate type name found, skipping")
         return
       }
       processedNames.add(name)
@@ -201,7 +191,7 @@ async function generateTypeDocs(): Promise<void> {
       const description = extractJSDocComment(enumDecl)
       const properties = enumDecl.getMembers().map((member) => ({
         name: member.getName(),
-        type: member.getValue()?.toString() || 'string',
+        type: member.getValue()?.toString() || "string",
         optional: false,
         docs: extractJSDocComment(member),
       }))
@@ -223,22 +213,22 @@ async function generateTypeDocs(): Promise<void> {
   for (const typeDoc of typeDocs) {
     // Only generate docs for exported types
     if (!typeDoc.exported) {
-      log.debug({ name: typeDoc.name }, 'Skipping non-exported type')
+      log.debug({ name: typeDoc.name }, "Skipping non-exported type")
       continue
     }
 
     const mdx = generateMDX(typeDoc)
     const outputPath = join(outputDir, `${typeDoc.name}.mdx`)
 
-    writeFileSync(outputPath, mdx, 'utf-8')
+    writeFileSync(outputPath, mdx, "utf-8")
     generatedCount++
-    log.debug({ name: typeDoc.name, path: outputPath }, 'Generated type documentation')
+    log.debug({ name: typeDoc.name, path: outputPath }, "Generated type documentation")
   }
 
   // Generate metadata JSON
   const metadata = generateMetadata(typeDocs)
-  const metadataPath = join(outputDir, '.meta.json')
-  writeFileSync(metadataPath, JSON.stringify(metadata, null, 2), 'utf-8')
+  const metadataPath = join(outputDir, ".meta.json")
+  writeFileSync(metadataPath, JSON.stringify(metadata, null, 2), "utf-8")
 
   log.info(
     { generated: generatedCount, total: typeDocs.length, outputDir },
@@ -248,6 +238,6 @@ async function generateTypeDocs(): Promise<void> {
 
 // Run generator
 generateTypeDocs().catch((error) => {
-  log.error({ error }, 'Failed to generate type documentation')
+  log.error({ error }, "Failed to generate type documentation")
   process.exit(1)
 })

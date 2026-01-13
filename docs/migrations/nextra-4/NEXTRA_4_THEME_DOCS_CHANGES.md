@@ -1,13 +1,13 @@
 # Nextra 4: Theme Docs Changes & Migration Guide
 
-**Date**: 2025-01-27
-**Status**: ✅ **Documented - Ready for Migration**
+**Date**: 2025-01-27 **Status**: ✅ **Documented - Ready for Migration**
 
 ---
 
 ## Overview
 
-This document covers the latest changes in `nextra-theme-docs` that may affect your implementation:
+This document covers the latest changes in `nextra-theme-docs` that may affect
+your implementation:
 
 1. **Zustand Migration** - React context → Zustand
 2. **Tailwind CSS 4** - Prefix change from `_` to `x:`
@@ -20,20 +20,26 @@ This document covers the latest changes in `nextra-theme-docs` that may affect y
 
 ### What Changed
 
-All React context usages in `nextra-theme-docs` have been migrated to **Zustand** for better state management, except for places requiring dependency injection.
+All React context usages in `nextra-theme-docs` have been migrated to
+**Zustand** for better state management, except for places requiring dependency
+injection.
 
 ### Exceptions
 
 These hooks still use React context (for dependency injection):
+
 - `useConfig` - Needs to initialize state with props
 - `useThemeConfig` - Needs to initialize state with props
 
 ### Impact on Your Code
 
-**✅ No Action Required** - If you're using Nextra's built-in components, this change is transparent.
+**✅ No Action Required** - If you're using Nextra's built-in components, this
+change is transparent.
 
 **⚠️ If You're Using Internal Hooks**:
-- If you're accessing internal Nextra hooks directly, they may now use Zustand internally
+
+- If you're accessing internal Nextra hooks directly, they may now use Zustand
+  internally
 - The API remains the same, so no code changes needed
 - Performance may improve due to Zustand's optimization
 
@@ -52,11 +58,13 @@ grep -r "useConfig\|useThemeConfig" app/ components/
 
 ### What Changed
 
-`nextra-theme-docs` has been updated to **Tailwind CSS 4**. The previously used Tailwind CSS prefix `_` has been replaced with `x:`.
+`nextra-theme-docs` has been updated to **Tailwind CSS 4**. The previously used
+Tailwind CSS prefix `_` has been replaced with `x:`.
 
 ### Prefix Change
 
 **Before (Tailwind CSS 3)**:
+
 ```css
 ._text-primary-600 { ... }
 ._bg-primary-100 { ... }
@@ -64,6 +72,7 @@ grep -r "useConfig\|useThemeConfig" app/ components/
 ```
 
 **After (Tailwind CSS 4)**:
+
 ```css
 .x\:text-primary-600 { ... }
 .x\:bg-primary-100 { ... }
@@ -72,14 +81,17 @@ grep -r "useConfig\|useThemeConfig" app/ components/
 
 ### Impact on Your Code
 
-**⚠️ Action Required** - If you have custom CSS that overrides Nextra's theme classes:
+**⚠️ Action Required** - If you have custom CSS that overrides Nextra's theme
+classes:
 
 1. **Search for old prefix**:
+
    ```bash
    grep -r "_text-\|_bg-\|_border-\|_\." styles/ components/
    ```
 
 2. **Update CSS files**:
+
    ```css
    /* Before */
    ._text-primary-600 { ... }
@@ -89,6 +101,7 @@ grep -r "useConfig\|useThemeConfig" app/ components/
    ```
 
 3. **Update HTML/JSX** (if using inline styles):
+
    ```tsx
    // Before
    <div className="_text-primary-600">...</div>
@@ -99,15 +112,18 @@ grep -r "useConfig\|useThemeConfig" app/ components/
 
 ### Current Status
 
-**✅ No Overrides Found** - Your codebase doesn't appear to override Nextra's theme classes with the old `_` prefix.
+**✅ No Overrides Found** - Your codebase doesn't appear to override Nextra's
+theme classes with the old `_` prefix.
 
 **Verification**:
+
 ```bash
 $ grep -r "_text-\|_bg-\|_border-\|_\." styles/ components/
 # No matches found ✅
 ```
 
-**Conclusion**: ✅ **No migration needed** - Your custom styles don't conflict with Nextra's theme classes.
+**Conclusion**: ✅ **No migration needed** - Your custom styles don't conflict
+with Nextra's theme classes.
 
 ---
 
@@ -115,13 +131,16 @@ $ grep -r "_text-\|_bg-\|_border-\|_\." styles/ components/
 
 ### What Changed
 
-All headings now have animation for `:target` state. When a heading is targeted (via anchor link), it will animate to draw attention.
+All headings now have animation for `:target` state. When a heading is targeted
+(via anchor link), it will animate to draw attention.
 
 ### How It Works
 
-When you navigate to a heading via anchor link (e.g., `/docs#section-name`), the heading will animate to highlight it.
+When you navigate to a heading via anchor link (e.g., `/docs#section-name`), the
+heading will animate to highlight it.
 
 **Example**:
+
 ```markdown
 ## Section Name {#section-name}
 ```
@@ -133,6 +152,7 @@ When accessed via `/docs#section-name`, the heading will animate.
 **✅ No Action Required** - This is automatic and works out of the box.
 
 **Optional Enhancement**:
+
 - You can customize the animation in your CSS if needed
 - Default animation is subtle and accessible
 
@@ -160,24 +180,28 @@ h6:target {
 
 ### What Changed
 
-The built-in `<NotFoundPage>` component now includes a URL for creating an issue with the referrer URL included. This makes it easier to identify broken pages.
+The built-in `<NotFoundPage>` component now includes a URL for creating an issue
+with the referrer URL included. This makes it easier to identify broken pages.
 
 ### Current Implementation
 
 **Your Current File**: `app/not-found.tsx`
 
-You're using a **custom NotFoundPage** implementation, not Nextra's built-in component.
+You're using a **custom NotFoundPage** implementation, not Nextra's built-in
+component.
 
 ### Option 1: Keep Custom Implementation ✅
 
 **Current Status**: ✅ Your custom NotFoundPage works fine.
 
 **Pros**:
+
 - Full control over design
 - Custom functionality
 - No dependency on Nextra's component
 
 **Cons**:
+
 - Missing automatic issue creation URL
 - Manual maintenance required
 
@@ -188,19 +212,21 @@ If you want to use Nextra's enhanced NotFoundPage:
 **Migration Steps**:
 
 1. **Import NotFoundPage**:
+
    ```tsx
-   import { NotFoundPage } from 'nextra-theme-docs'
+   import { NotFoundPage } from "nextra-theme-docs"
    ```
 
 2. **Update app/not-found.tsx**:
+
    ```tsx
-   import { NotFoundPage } from 'nextra-theme-docs'
+   import { NotFoundPage } from "nextra-theme-docs"
 
    export default function NotFound() {
      return (
        <NotFoundPage
          issueUrl="https://github.com/your-org/your-repo/issues/new"
-         referrerUrl={typeof window !== 'undefined' ? window.location.href : ''}
+         referrerUrl={typeof window !== "undefined" ? window.location.href : ""}
        />
      )
    }
@@ -211,7 +237,8 @@ If you want to use Nextra's enhanced NotFoundPage:
    - Includes referrer URL for debugging
    - Consistent with Nextra theme
 
-**Current Status**: ⚠️ **Custom Implementation** - Consider migrating if you want automatic issue reporting
+**Current Status**: ⚠️ **Custom Implementation** - Consider migrating if you
+want automatic issue reporting
 
 ---
 
@@ -225,7 +252,8 @@ If you want to use Nextra's enhanced NotFoundPage:
 
 ### ⚠️ Optional
 
-- [ ] ⚠️ NotFoundPage - Consider migrating to built-in component for issue reporting
+- [ ] ⚠️ NotFoundPage - Consider migrating to built-in component for issue
+      reporting
 
 ---
 
@@ -262,8 +290,8 @@ cat app/not-found.tsx
 
 ## Summary
 
-| Change                        | Status                  | Action Required                  |
-| ----------------------------- | ----------------------- | -------------------------------- |
+| Change                        | Status                   | Action Required                  |
+| ----------------------------- | ------------------------ | -------------------------------- |
 | **Zustand Migration**         | ✅ No Impact             | None - Transparent change        |
 | **Tailwind CSS 4**            | ✅ No Overrides          | None - No custom overrides found |
 | **Heading :target Animation** | ✅ Automatic             | None - Works automatically       |
@@ -277,7 +305,8 @@ cat app/not-found.tsx
 
 Your codebase is **compatible** with the latest `nextra-theme-docs` changes:
 
-1. ✅ **No Tailwind prefix conflicts** - Your custom styles don't override Nextra's theme
+1. ✅ **No Tailwind prefix conflicts** - Your custom styles don't override
+   Nextra's theme
 2. ✅ **No internal hook usage** - Not affected by Zustand migration
 3. ✅ **Heading animations** - Automatic, no changes needed
 4. ⚠️ **NotFoundPage** - Using custom implementation (consider migrating)
@@ -304,5 +333,5 @@ Your codebase is **compatible** with the latest `nextra-theme-docs` changes:
 
 ---
 
-**Last Updated**: 2025-01-27
-**Status**: ✅ **Compatible** - No required migrations
+**Last Updated**: 2025-01-27 **Status**: ✅ **Compatible** - No required
+migrations

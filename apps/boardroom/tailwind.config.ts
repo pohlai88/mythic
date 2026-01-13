@@ -8,13 +8,10 @@
  * @see https://tailwindcss.com/docs/v4-beta
  */
 
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss"
 
 const config: Config = {
-  content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ["./app/**/*.{js,ts,jsx,tsx,mdx}", "./components/**/*.{js,ts,jsx,tsx,mdx}"],
   // All theme configuration is in app/global.css using @theme directive
   // This is the Tailwind v4 CSS-first approach
 }

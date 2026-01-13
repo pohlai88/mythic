@@ -2,23 +2,27 @@
 
 ## ✅ Solution Implemented
 
-I've created a solution using **external npm packages** instead of custom scripts with only built-in modules.
+I've created a solution using **external npm packages** instead of custom
+scripts with only built-in modules.
 
 ---
 
 ## External Dependencies Added
 
 ### 1. **chokidar** (v4.0.3)
+
 - **Purpose:** Cross-platform file system watcher
 - **Why:** Robust, battle-tested, handles all edge cases
 - **Used for:** Watch mode - auto-regenerate navigation on file changes
 
 ### 2. **fast-glob** (v3.3.3)
+
 - **Purpose:** Fast file pattern matching
 - **Why:** Much faster than Node.js built-in `fs` for pattern matching
 - **Used for:** Finding all page files in the `pages/` directory
 
 ### 3. **gray-matter** (v4.0.3)
+
 - **Purpose:** Parse YAML frontmatter from Markdown files
 - **Why:** Extract titles and metadata from MDX/MD files
 - **Used for:** Reading page titles from frontmatter
@@ -59,7 +63,8 @@ pnpm generate:meta:watch
 
 ## Files Created
 
-1. **`scripts/generate-meta-with-deps.ts`** - New script using external dependencies
+1. **`scripts/generate-meta-with-deps.ts`** - New script using external
+   dependencies
 2. **`EXTERNAL_DEPENDENCIES_SOLUTION.md`** - Complete documentation
 
 ---
@@ -67,17 +72,20 @@ pnpm generate:meta:watch
 ## Features
 
 ### ✅ Robust File Watching (chokidar)
+
 - Cross-platform (Windows, macOS, Linux)
 - Handles file renames, deletions, additions
 - Debouncing support (500ms)
 - Smart ignore patterns
 
 ### ✅ Fast File Discovery (fast-glob)
+
 - Parallel file system operations
 - Multiple pattern support
 - Much faster than recursive `fs.readdir`
 
 ### ✅ Frontmatter Support (gray-matter)
+
 - Extracts titles from YAML frontmatter
 - Supports custom metadata
 - Works with MDX/MD files
@@ -93,6 +101,7 @@ pnpm generate:meta:watch
 | **gray-matter** | 3k+   | 5M+              | MIT     |
 
 All packages are:
+
 - ✅ Well-maintained
 - ✅ Battle-tested
 - ✅ Open source (MIT)
@@ -102,8 +111,8 @@ All packages are:
 
 ## Benefits Over Custom Script
 
-| Feature            | Custom Script          | External Dependencies    |
-| ------------------ | ---------------------- | ------------------------ |
+| Feature            | Custom Script          | External Dependencies     |
+| ------------------ | ---------------------- | ------------------------- |
 | **File Watching**  | Basic `fs.watch`       | ✅ chokidar (robust)      |
 | **File Discovery** | Recursive `fs.readdir` | ✅ fast-glob (fast)       |
 | **Frontmatter**    | Manual parsing         | ✅ gray-matter (reliable) |
@@ -129,11 +138,13 @@ The script is fully customizable. Edit `scripts/generate-meta-with-deps.ts` to:
 ## Next Steps
 
 1. **Test the script:**
+
    ```bash
    pnpm generate:meta
    ```
 
 2. **Try watch mode:**
+
    ```bash
    pnpm generate:meta:watch
    ```
@@ -147,17 +158,20 @@ The script is fully customizable. Edit `scripts/generate-meta-with-deps.ts` to:
 ## Summary
 
 ✅ **Solution uses external dependencies:**
+
 - `chokidar` - File watching
 - `fast-glob` - File discovery
 - `gray-matter` - Frontmatter parsing
 
 ✅ **Benefits:**
+
 - Robust and battle-tested
 - Better performance
 - Cross-platform support
 - Less code to maintain
 
 ✅ **Same usage:**
+
 - `pnpm generate:meta` - Generate once
 - `pnpm generate:meta:watch` - Watch mode
 

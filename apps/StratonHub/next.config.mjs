@@ -8,6 +8,9 @@
 
 import createMDX from '@next/mdx'
 import bundleAnalyzer from '@next/bundle-analyzer'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -25,13 +28,24 @@ const nextConfig = {
   // Production build optimizations
   productionBrowserSourceMaps: false,
 
+  // React Compiler: Automatic React optimization
+  // Next.js 16.1.1 native support with SWC optimization
+  // Reference: https://nextjs.org/docs/app/api-reference/config/next-config-js/reactCompiler
+  reactCompiler: true,
+
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
+  },
+
   // Experimental features for build optimization
   experimental: {
     // Optimize package imports (workspace + external)
     optimizePackageImports: [
       // Workspace packages
-      '@mythic/shared-utils',
-      '@mythic/shared-types',
+      '@mythic/nextjs-shared-utils',
+      '@mythic/typescript-shared-types',
       // External packages
       'katex',
       '@tanstack/react-query',
@@ -47,26 +61,43 @@ const nextConfig = {
     },
     // Optimize server components
     optimizeServerReact: true,
+    // Next.js 16: Optimize CSS (reduce bundle size)
+    optimizeCss: true,
+    // Partial prerendering (experimental - enable when stable)
+    ppr: false,
   },
 
   // Turbopack configuration
   turbopack: {
     resolveAlias: {
-      '@mythic/shared-utils': '../../packages/shared-utils/src',
-      '@mythic/shared-types': '../../packages/shared-types/src',
+      '@mythic/nextjs-shared-utils': '../../packages/NextJS/Shared-Utils/src',
+      '@mythic/typescript-shared-types': '../../packages/TypeScript/Shared-Types/src',
     },
   },
 
   // Webpack optimizations (fallback when not using Turbopack)
   webpack: (config, { dev, isServer }) => {
-    // Fix React version mismatch in monorepo
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      react: require.resolve('react'),
-      'react-dom': require.resolve('react-dom'),
-      'react/jsx-runtime': require.resolve('react/jsx-runtime'),
-      'react/jsx-dev-runtime': require.resolve('react/jsx-dev-runtime'),
-    }
+    // Note: React resolution is handled by Next.js automatically
+    // Only add custom aliases if needed for monorepo compatibility
+    // config.resolve.alias = {
+    //   ...config.resolve.alias,
+    //   react: require.resolve('react'),
+    //   'react-dom': require.resolve('react-dom'),
+    // }
+
+    // ESLint integration with webpack (optional - Next.js already runs ESLint)
+    // Uncomment if you want ESLint to run during webpack compilation:
+    // if (dev && !isServer) {
+    //   const ESLintPlugin = require('eslint-webpack-plugin')
+    //   config.plugins.push(
+    //     new ESLintPlugin({
+    //       extensions: ['js', 'jsx', 'ts', 'tsx'],
+    //       exclude: ['node_modules', '.next', 'out', 'dist'],
+    //       failOnError: false, // Don't fail build on lint errors
+    //       emitWarning: true,
+    //     })
+    //   )
+    // }
 
     // Production optimizations
     if (!dev && !isServer) {
@@ -165,9 +196,14 @@ const nextConfig = {
 
 // Configure MDX with @next/mdx
 // Reference: https://nextjs.org/docs/app/guides/mdx
+//
+// Note: Turbopack requires serializable plugin options.
+// Using string module paths for compatibility.
 const withMDX = createMDX({
-  // Add markdown plugins if needed
-  // Options can be added here for remark/rehype plugins
+  options: {
+    remarkPlugins: ['remark-frontmatter'],
+    rehypePlugins: [],
+  },
 })
 
 // Merge MDX config with Next.js config

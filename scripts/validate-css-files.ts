@@ -9,14 +9,14 @@
  *   pnpm validate:css-files
  */
 
-import { execSync } from 'child_process'
-import { readFileSync, existsSync } from 'fs'
-import { join, resolve, dirname } from 'path'
-import { fileURLToPath } from 'url'
+import { execSync } from "child_process"
+import { readFileSync, existsSync } from "fs"
+import { join, resolve, dirname } from "path"
+import { fileURLToPath } from "url"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const WORKSPACE_ROOT = resolve(__dirname, '..')
+const WORKSPACE_ROOT = resolve(__dirname, "..")
 
 // ⚠️ DEPRECATED: This script is deprecated as of the new CSS architecture.
 // CSS files are now editable - no locking needed since apps import theme.css directly.
@@ -33,14 +33,14 @@ const PARTIALLY_LOCKED_CSS_FILES: string[] = []
  */
 function getStagedFiles(): string[] {
   try {
-    const output = execSync('git diff --cached --name-only', {
-      encoding: 'utf-8',
-      stdio: 'pipe',
+    const output = execSync("git diff --cached --name-only", {
+      encoding: "utf-8",
+      stdio: "pipe",
       cwd: WORKSPACE_ROOT,
     })
     return output
       .trim()
-      .split('\n')
+      .split("\n")
       .filter((line) => line.trim().length > 0)
   } catch (error) {
     // No staged files or not a git repo
@@ -57,7 +57,7 @@ function hasVersionHeader(filePath: string): boolean {
       return false
     }
 
-    const content = readFileSync(filePath, 'utf-8')
+    const content = readFileSync(filePath, "utf-8")
 
     // Check for version header pattern
     const hasVersionTag = /@version\s+[\d.]+/i.test(content)
@@ -79,7 +79,7 @@ function isVersionHeaderManuallyEdited(filePath: string): boolean {
       return false
     }
 
-    const content = readFileSync(filePath, 'utf-8')
+    const content = readFileSync(filePath, "utf-8")
 
     // Check for manual edit indicators
     // If header exists but doesn't have proper format, it might be manually edited
@@ -174,32 +174,32 @@ function validateCSSFiles(): { valid: boolean; violations: string[]; warnings: s
  * Main validation function
  */
 function main() {
-  console.log('🔒 Validating CSS file locking...\n')
+  console.log("🔒 Validating CSS file locking...\n")
 
   const result = validateCSSFiles()
 
   if (result.warnings.length > 0) {
-    console.log('⚠️  Warnings:\n')
+    console.log("⚠️  Warnings:\n")
     result.warnings.forEach((warning) => {
       console.log(`  ${warning}`)
     })
-    console.log('')
+    console.log("")
   }
 
   if (result.valid) {
-    console.log('✅ CSS file locking validation passed\n')
+    console.log("✅ CSS file locking validation passed\n")
     process.exit(0)
   } else {
-    console.error('❌ CSS file locking validation failed:\n')
+    console.error("❌ CSS file locking validation failed:\n")
     result.violations.forEach((violation) => {
       console.error(`  ${violation}`)
     })
-    console.error('')
-    console.error('💡 Note: In the new architecture, CSS files are editable.')
-    console.error('   Apps import theme.css directly - no build step needed.')
-    console.error('')
-    console.error('📖 See: .cursor/plans/MONOREPO_CSS_STRATEGY_PROPOSAL.md')
-    console.error('')
+    console.error("")
+    console.error("💡 Note: In the new architecture, CSS files are editable.")
+    console.error("   Apps import theme.css directly - no build step needed.")
+    console.error("")
+    console.error("📖 See: .cursor/plans/MONOREPO_CSS_STRATEGY_PROPOSAL.md")
+    console.error("")
     process.exit(1)
   }
 }

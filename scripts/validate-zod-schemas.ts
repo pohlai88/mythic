@@ -15,12 +15,12 @@
  *   pnpm validate:zod
  */
 
-import { execSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
-import { glob } from 'fast-glob'
-import { createScriptLogger } from '../src/lib/logger'
+import { execSync } from "node:child_process"
+import { readFileSync } from "node:fs"
+import { glob } from "fast-glob"
+import { createScriptLogger } from "../src/lib/logger"
 
-const log = createScriptLogger('validate-zod-schemas')
+const log = createScriptLogger("validate-zod-schemas")
 
 interface ValidationResult {
   file: string
@@ -42,7 +42,7 @@ function checkImportPath(content: string, _file: string): string[] {
   }
 
   // Only check for correct import if file uses zod
-  if (content.includes('zod') || content.includes('z.')) {
+  if (content.includes("zod") || content.includes("z.")) {
     if (!(content.includes("from 'zod/v4'") || content.includes('from "zod/v4"'))) {
       errors.push("MUST import from 'zod/v4'")
     }
@@ -59,9 +59,9 @@ function checkTypeInference(content: string, _file: string): string[] {
 
   // Check for manual type definitions that should use z.infer
   const hasZodSchema =
-    content.includes('z.object') || content.includes('z.string') || content.includes('z.number')
+    content.includes("z.object") || content.includes("z.string") || content.includes("z.number")
 
-  if (hasZodSchema && !content.includes('z.infer')) {
+  if (hasZodSchema && !content.includes("z.infer")) {
     // Check if there are manual types that should be inferred
     const schemaExports = content.match(/export\s+const\s+\w+Schema\s*=/g)
     const typeExports = content.match(/export\s+type\s+\w+\s*=/g)
@@ -70,7 +70,7 @@ function checkTypeInference(content: string, _file: string): string[] {
       // Check if types are using z.infer
       const inferCount = (content.match(/z\.infer/g) || []).length
       if (inferCount < typeExports.length) {
-        errors.push('MUST use z.infer<typeof schema> for all types derived from schemas')
+        errors.push("MUST use z.infer<typeof schema> for all types derived from schemas")
       }
     }
   }
@@ -85,8 +85,8 @@ function checkSchemaLocation(file: string): string[] {
   const errors: string[] = []
 
   // Schemas should be in src/lib/api-schemas/
-  if (!file.includes('src/lib/api-schemas/') && file.includes('Schema')) {
-    errors.push('MUST be located in src/lib/api-schemas/')
+  if (!file.includes("src/lib/api-schemas/") && file.includes("Schema")) {
+    errors.push("MUST be located in src/lib/api-schemas/")
   }
 
   return errors
@@ -103,27 +103,27 @@ function checkMandatoryPatterns(
   const warnings: string[] = []
 
   // Check for .describe() usage
-  if (content.includes('z.object') && !content.includes('.describe(')) {
-    warnings.push('SHOULD use .describe() for schema documentation')
+  if (content.includes("z.object") && !content.includes(".describe(")) {
+    warnings.push("SHOULD use .describe() for schema documentation")
   }
 
   // Check for .parse() usage (should use .safeParse())
-  if (content.includes('.parse(') && !content.includes('.safeParse(')) {
-    warnings.push('SHOULD use .safeParse() instead of .parse() for better error handling')
+  if (content.includes(".parse(") && !content.includes(".safeParse(")) {
+    warnings.push("SHOULD use .safeParse() instead of .parse() for better error handling")
   }
 
   // Check for mandatory string patterns
-  if (content.includes('z.string()') && !content.includes('.min(') && !content.includes('.max(')) {
-    warnings.push('SHOULD use .min() and .max() for string validation')
+  if (content.includes("z.string()") && !content.includes(".min(") && !content.includes(".max(")) {
+    warnings.push("SHOULD use .min() and .max() for string validation")
   }
 
   // Check for mandatory number patterns
   if (
-    content.includes('z.number()') &&
-    !content.includes('.int(') &&
-    !content.includes('.positive(')
+    content.includes("z.number()") &&
+    !content.includes(".int(") &&
+    !content.includes(".positive(")
   ) {
-    warnings.push('SHOULD use .int() and .positive() for ID validation')
+    warnings.push("SHOULD use .int() and .positive() for ID validation")
   }
 
   return { errors, warnings }
@@ -133,12 +133,12 @@ function checkMandatoryPatterns(
  * Validate a single file
  */
 function validateFile(file: string): ValidationResult {
-  const content = readFileSync(file, 'utf-8')
+  const content = readFileSync(file, "utf-8")
   const errors: string[] = []
   const warnings: string[] = []
 
   // Only validate TypeScript files with Zod usage
-  if (!(content.includes('zod') || content.includes('z.'))) {
+  if (!(content.includes("zod") || content.includes("z."))) {
     return { file, errors: [], warnings: [] }
   }
 
@@ -154,25 +154,24 @@ function validateFile(file: string): ValidationResult {
   return { file, errors, warnings }
 }
 
-
 /**
  * Main validation function
  */
 async function validateSchemas() {
-  log.info('🔍 Validating Zod schemas...')
+  log.info("🔍 Validating Zod schemas...")
 
   // Run Zod validation
-  log.info('📋 Running Zod validation...')
+  log.info("📋 Running Zod validation...")
 
   // Find all TypeScript files
-  const files = await glob(['**/*.{ts,tsx}'], {
+  const files = await glob(["**/*.{ts,tsx}"], {
     ignore: [
-      'node_modules/**',
-      '.next/**',
-      'dist/**',
-      'build/**',
-      '*.d.ts',
-      'scripts/validate-zod-schemas.ts', // Exclude self
+      "node_modules/**",
+      ".next/**",
+      "dist/**",
+      "build/**",
+      "*.d.ts",
+      "scripts/validate-zod-schemas.ts", // Exclude self
     ],
   })
 
@@ -195,7 +194,7 @@ async function validateSchemas() {
       log.info({ file: result.file }, `📄 ${result.file}`)
 
       if (result.errors.length > 0) {
-        log.error('  ❌ Errors:')
+        log.error("  ❌ Errors:")
         for (const error of result.errors) {
           log.error({ error }, `    - ${error}`)
           totalErrors++
@@ -203,7 +202,7 @@ async function validateSchemas() {
       }
 
       if (result.warnings.length > 0) {
-        log.warn('  ⚠️  Warnings:')
+        log.warn("  ⚠️  Warnings:")
         for (const warning of result.warnings) {
           log.warn({ warning }, `    - ${warning}`)
           totalWarnings++
@@ -213,35 +212,35 @@ async function validateSchemas() {
   }
 
   // Summary
-  log.info('='.repeat(60))
+  log.info("=".repeat(60))
   log.info(
     {
       filesWithIssues: results.length,
       totalErrors,
       totalWarnings,
     },
-    '📊 Validation Summary'
+    "📊 Validation Summary"
   )
-  log.info('='.repeat(60))
+  log.info("=".repeat(60))
 
   if (totalErrors > 0) {
-    log.error('❌ Validation failed! Please fix errors before committing.')
-    log.info('💡 Next steps:')
-    log.info('   1. Review and fix Zod validation errors')
-    log.info('   2. Run `pnpm validate:zod` again to verify')
+    log.error("❌ Validation failed! Please fix errors before committing.")
+    log.info("💡 Next steps:")
+    log.info("   1. Review and fix Zod validation errors")
+    log.info("   2. Run `pnpm validate:zod` again to verify")
     process.exit(1)
   } else if (totalWarnings > 0) {
-    log.warn('⚠️  Validation passed with warnings.')
-    log.info('💡 Consider addressing warnings for best practices.')
+    log.warn("⚠️  Validation passed with warnings.")
+    log.info("💡 Consider addressing warnings for best practices.")
     process.exit(0)
   } else {
-    log.info('✅ All schemas comply with mandatory requirements!')
+    log.info("✅ All schemas comply with mandatory requirements!")
     process.exit(0)
   }
 }
 
 // Run validation
 validateSchemas().catch((error) => {
-  log.error({ error }, '❌ Validation error')
+  log.error({ error }, "❌ Validation error")
   process.exit(1)
 })

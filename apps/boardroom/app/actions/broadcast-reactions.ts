@@ -5,13 +5,13 @@
  * Supports adding, removing, and viewing reactions.
  */
 
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { broadcastReactions } from '@/src/db/schema'
-import { eq, and } from 'drizzle-orm'
-import { z as z4 } from 'zod/v4'
-import { validateActionInput } from '@/src/lib/actions/validate-action'
+import { db } from "@/src/db"
+import { broadcastReactions } from "@/src/db/schema"
+import { eq, and } from "drizzle-orm"
+import { z as z4 } from "zod/v4"
+import { validateActionInput } from "@/src/lib/actions/validate-action"
 
 /**
  * Input schema for adding reaction
@@ -55,7 +55,7 @@ export async function addBroadcastReaction(
 ): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, addReactionInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { broadcastId, userId, emoji } = inputResult.data
@@ -88,8 +88,8 @@ export async function addBroadcastReaction(
 
     return { success: true }
   } catch (error) {
-    console.error('Error adding broadcast reaction:', error)
-    return { success: false, error: 'Failed to add reaction' }
+    console.error("Error adding broadcast reaction:", error)
+    return { success: false, error: "Failed to add reaction" }
   }
 }
 
@@ -101,7 +101,7 @@ export async function removeBroadcastReaction(
 ): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, removeReactionInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { broadcastId, userId, emoji } = inputResult.data
@@ -119,8 +119,8 @@ export async function removeBroadcastReaction(
 
     return { success: true }
   } catch (error) {
-    console.error('Error removing broadcast reaction:', error)
-    return { success: false, error: 'Failed to remove reaction' }
+    console.error("Error removing broadcast reaction:", error)
+    return { success: false, error: "Failed to remove reaction" }
   }
 }
 
@@ -132,7 +132,7 @@ export async function getBroadcastReactions(
 ): Promise<{ reactions: ReactionData[]; error?: string }> {
   const inputResult = validateActionInput(input, getReactionsInputSchema)
   if (!inputResult.success) {
-    return { reactions: [], error: 'Invalid input' }
+    return { reactions: [], error: "Invalid input" }
   }
 
   const { broadcastId } = inputResult.data
@@ -163,8 +163,8 @@ export async function getBroadcastReactions(
 
     return { reactions }
   } catch (error) {
-    console.error('Error fetching broadcast reactions:', error)
-    return { reactions: [], error: 'Failed to fetch reactions' }
+    console.error("Error fetching broadcast reactions:", error)
+    return { reactions: [], error: "Failed to fetch reactions" }
   }
 }
 
@@ -176,7 +176,7 @@ export async function toggleBroadcastReaction(
 ): Promise<{ success: boolean; added: boolean; error?: string }> {
   const inputResult = validateActionInput(input, addReactionInputSchema)
   if (!inputResult.success) {
-    return { success: false, added: false, error: 'Invalid input' }
+    return { success: false, added: false, error: "Invalid input" }
   }
 
   const { broadcastId, userId, emoji } = inputResult.data
@@ -205,7 +205,7 @@ export async function toggleBroadcastReaction(
       return { success: true, added: true }
     }
   } catch (error) {
-    console.error('Error toggling broadcast reaction:', error)
-    return { success: false, added: false, error: 'Failed to toggle reaction' }
+    console.error("Error toggling broadcast reaction:", error)
+    return { success: false, added: false, error: "Failed to toggle reaction" }
   }
 }

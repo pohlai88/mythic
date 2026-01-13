@@ -1,6 +1,7 @@
 # Post-Clone Configuration Guide
 
-This guide walks you through all the configuration steps needed after cloning this repository from GitHub.
+This guide walks you through all the configuration steps needed after cloning
+this repository from GitHub.
 
 ---
 
@@ -9,6 +10,7 @@ This guide walks you through all the configuration steps needed after cloning th
 ### Step 1: Verify Prerequisites
 
 **Required:**
+
 - **Node.js**: Version 18+ ([Download](https://nodejs.org/))
 - **pnpm**: Package manager ([Install](https://pnpm.io/installation))
   ```bash
@@ -16,6 +18,7 @@ This guide walks you through all the configuration steps needed after cloning th
   ```
 
 **Verify installations:**
+
 ```bash
 node --version  # Should be 18.x or higher
 pnpm --version # Should be 8.x or higher
@@ -33,7 +36,8 @@ cd mythic
 pnpm install
 ```
 
-**Expected output:** Dependencies installed successfully, `node_modules` created.
+**Expected output:** Dependencies installed successfully, `node_modules`
+created.
 
 ---
 
@@ -54,7 +58,8 @@ Check if `package.json` has all required scripts. If not, add them:
 }
 ```
 
-**Note:** The `verify` script requires the `scripts/verify-production.sh` file to be executable (see Step 6).
+**Note:** The `verify` script requires the `scripts/verify-production.sh` file
+to be executable (see Step 6).
 
 ---
 
@@ -65,11 +70,13 @@ Check if `package.json` has all required scripts. If not, add them:
 **Required Changes:**
 
 1. **Update Logo:**
+
    ```tsx
    logo: <span>Your Project Name</span>,
    ```
 
 2. **Update GitHub Repository Links:**
+
    ```tsx
    project: {
      link: 'https://github.com/YOUR-ORG/YOUR-REPO',
@@ -78,6 +85,7 @@ Check if `package.json` has all required scripts. If not, add them:
    ```
 
 3. **Update Footer:**
+
    ```tsx
    footer: {
      text: '© 2024 Your Company. All rights reserved.',
@@ -92,26 +100,27 @@ Check if `package.json` has all required scripts. If not, add them:
    ```
 
 **Example Complete Configuration:**
+
 ```tsx
-import React from 'react'
-import { DocsThemeConfig } from 'nextra-theme-docs'
+import React from "react"
+import { DocsThemeConfig } from "nextra-theme-docs"
 
 const config: DocsThemeConfig = {
   logo: <span>My Documentation</span>,
   project: {
-    link: 'https://github.com/your-org/your-repo',
+    link: "https://github.com/your-org/your-repo",
   },
   chat: {
-    link: 'https://discord.gg/your-server',
+    link: "https://discord.gg/your-server",
   },
-  docsRepositoryBase: 'https://github.com/your-org/your-repo/tree/main',
+  docsRepositoryBase: "https://github.com/your-org/your-repo/tree/main",
   footer: {
-    text: '© 2024 Your Company. All rights reserved.',
+    text: "© 2024 Your Company. All rights reserved.",
   },
   // Optional: Enable dark mode
   darkMode: true,
   nextThemes: {
-    defaultTheme: 'dark',
+    defaultTheme: "dark",
   },
 }
 
@@ -142,13 +151,15 @@ Update the navigation structure to match your documentation:
 }
 ```
 
-**Note:** File names in `pages/` directory should match the keys in `_meta.json`.
+**Note:** File names in `pages/` directory should match the keys in
+`_meta.json`.
 
 ---
 
 ### Step 6: Make Scripts Executable (Unix/Mac/Linux)
 
-If you're on Unix-based systems (Mac/Linux), make the verification script executable:
+If you're on Unix-based systems (Mac/Linux), make the verification script
+executable:
 
 ```bash
 chmod +x scripts/verify-production.sh
@@ -168,6 +179,7 @@ pnpm dev
 **Expected:** Server starts on `http://localhost:3000`
 
 **Verify:**
+
 - ✅ Site loads without errors
 - ✅ Navigation works
 - ✅ Dark mode toggles (if enabled)
@@ -188,6 +200,7 @@ pnpm start
 **Expected:** Build completes successfully, production server starts.
 
 **Or use the verification script:**
+
 ```bash
 pnpm verify
 ```
@@ -201,20 +214,22 @@ pnpm verify
 **Location:** `next.config.js`
 
 **Current (Basic):**
+
 ```javascript
-const withNextra = require('nextra')({
-  theme: 'nextra-theme-docs',
-  themeConfig: './theme.config.tsx',
+const withNextra = require("nextra")({
+  theme: "nextra-theme-docs",
+  themeConfig: "./theme.config.tsx",
 })
 
 module.exports = withNextra()
 ```
 
 **Enhanced (Recommended - See `NEXTRA_BEST_PRACTICES.md` Section 2.1):**
+
 ```javascript
-const withNextra = require('nextra')({
-  theme: 'nextra-theme-docs',
-  themeConfig: './theme.config.tsx',
+const withNextra = require("nextra")({
+  theme: "nextra-theme-docs",
+  themeConfig: "./theme.config.tsx",
   mdxOptions: {
     remarkPlugins: [],
     rehypePlugins: [],
@@ -225,7 +240,7 @@ module.exports = withNextra({
   reactStrictMode: true,
   poweredByHeader: false, // Security: Remove X-Powered-By header
   images: {
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
   },
   typescript: {
     ignoreBuildErrors: false, // Fail build on TypeScript errors
@@ -243,12 +258,15 @@ module.exports = withNextra({
 **If you want automated deployments:**
 
 1. **Copy workflow file:**
+
    ```bash
    cp .github/workflows/deploy.yml.example .github/workflows/deploy.yml
    ```
 
-2. **Configure GitHub Secrets** (Repository Settings → Secrets and variables → Actions):
-   - `VERCEL_TOKEN` - Get from [Vercel Account Tokens](https://vercel.com/account/tokens)
+2. **Configure GitHub Secrets** (Repository Settings → Secrets and variables →
+   Actions):
+   - `VERCEL_TOKEN` - Get from
+     [Vercel Account Tokens](https://vercel.com/account/tokens)
    - `VERCEL_ORG_ID` - Get from Vercel Dashboard → Settings → General
    - `VERCEL_PROJECT_ID` - Get from Vercel Project Settings → General
 
@@ -266,6 +284,7 @@ module.exports = withNextra({
 ### Optional: Configure Vercel Deployment
 
 **Option A: Vercel Dashboard (Recommended)**
+
 1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
 2. Click "Add New Project"
 3. Import your GitHub repository
@@ -273,6 +292,7 @@ module.exports = withNextra({
 5. Deploy
 
 **Option B: Vercel CLI**
+
 ```bash
 # Install Vercel CLI
 pnpm add -g vercel
@@ -290,11 +310,13 @@ vercel
 **For basic Nextra sites:** No environment variables needed.
 
 **If you need to add variables:**
+
 - **Local:** Create `.env.local` (not committed to git)
 - **Vercel:** Add in Project Settings → Environment Variables
 - **GitHub Actions:** Add as GitHub Secrets (if using workflow)
 
 **Example `.env.local` (if needed):**
+
 ```env
 # Analytics (if using)
 NEXT_PUBLIC_ANALYTICS_ID=your-id
@@ -310,6 +332,7 @@ API_KEY=your-key
 ## ✅ Post-Configuration Checklist
 
 ### Immediate (Required)
+
 - [ ] Node.js 18+ installed
 - [ ] pnpm installed
 - [ ] Dependencies installed (`pnpm install`)
@@ -319,6 +342,7 @@ API_KEY=your-key
 - [ ] Production build succeeds (`pnpm build`)
 
 ### Before First Deployment (Recommended)
+
 - [ ] Test production build locally (`pnpm start`)
 - [ ] Run verification script (`pnpm verify`)
 - [ ] Update `package.json` metadata (name, description, repository)
@@ -327,6 +351,7 @@ API_KEY=your-key
 - [ ] Set up Vercel project (if deploying to Vercel)
 
 ### Production Readiness (See `NEXTRA_BEST_PRACTICES.md` Section 6)
+
 - [ ] Run Lighthouse audit (target: 90+ scores)
 - [ ] Test mobile responsiveness
 - [ ] Verify all links work
@@ -339,13 +364,17 @@ API_KEY=your-key
 ## 🆘 Troubleshooting
 
 ### Issue: `pnpm: command not found`
+
 **Solution:**
+
 ```bash
 npm install -g pnpm
 ```
 
 ### Issue: Build fails with TypeScript errors
+
 **Solution:**
+
 ```bash
 # Check TypeScript errors
 pnpm type-check
@@ -355,7 +384,9 @@ ls next-env.d.ts
 ```
 
 ### Issue: Build fails with ESLint errors
+
 **Solution:**
+
 ```bash
 # Check ESLint errors
 pnpm lint
@@ -365,20 +396,26 @@ pnpm lint --fix
 ```
 
 ### Issue: Port 3000 already in use
+
 **Solution:**
+
 ```bash
 # Use different port
 pnpm dev -- -p 3001
 ```
 
 ### Issue: Scripts not executable (Unix/Mac)
+
 **Solution:**
+
 ```bash
 chmod +x scripts/verify-production.sh
 ```
 
 ### Issue: Module not found errors
+
 **Solution:**
+
 ```bash
 # Clean install
 rm -rf node_modules .next pnpm-lock.yaml
@@ -413,6 +450,7 @@ pnpm install
 ## 🔗 Quick Reference
 
 **Essential Commands:**
+
 ```bash
 pnpm install          # Install dependencies
 pnpm dev              # Start development server
@@ -424,18 +462,19 @@ pnpm verify           # Run production verification
 ```
 
 **Key Files:**
+
 - `theme.config.tsx` - Theme and branding
 - `next.config.js` - Next.js configuration
 - `pages/_meta.json` - Navigation structure
 - `package.json` - Project metadata and scripts
 
 **Documentation:**
+
 - `QUICK_START.md` - Quick setup guide
 - `NEXTRA_BEST_PRACTICES.md` - Comprehensive best practices
 - `KPI_REFERENCE.md` - Performance targets and KPIs
 
 ---
 
-**Last Updated:** 2024-12-19
-**Next.js Version:** 16.1.1+
-**Nextra Version:** Latest
+**Last Updated:** 2024-12-19 **Next.js Version:** 16.1.1+ **Nextra Version:**
+Latest

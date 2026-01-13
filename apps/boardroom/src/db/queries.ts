@@ -11,10 +11,10 @@
  *   const proposal = await getProposalById.execute({ id: '...' })
  */
 
-import { db } from './index'
-import { proposals, circles, boardComments, thanosEvents } from './schema'
-import { eq } from 'drizzle-orm'
-import { sql } from 'drizzle-orm'
+import { db } from "./index"
+import { proposals, circles, boardComments, thanosEvents } from "./schema"
+import { eq } from "drizzle-orm"
+import { sql } from "drizzle-orm"
 
 /**
  * Get proposal by ID (prepared statement)
@@ -22,7 +22,7 @@ import { sql } from 'drizzle-orm'
 export const getProposalById = db
   .select()
   .from(proposals)
-  .where(eq(proposals.id, sql.placeholder('id')))
+  .where(eq(proposals.id, sql.placeholder("id")))
   .prepare()
 
 /**
@@ -48,7 +48,7 @@ export async function getProposalWithRelations(id: string) {
 export const getProposalsByCircleId = db
   .select()
   .from(proposals)
-  .where(eq(proposals.circleId, sql.placeholder('circleId')))
+  .where(eq(proposals.circleId, sql.placeholder("circleId")))
   .prepare()
 
 /**
@@ -57,7 +57,7 @@ export const getProposalsByCircleId = db
 export const getProposalsByStatus = db
   .select()
   .from(proposals)
-  .where(eq(proposals.status, sql.placeholder('status')))
+  .where(eq(proposals.status, sql.placeholder("status")))
   .prepare()
 
 /**
@@ -66,7 +66,7 @@ export const getProposalsByStatus = db
 export const getCircleById = db
   .select()
   .from(circles)
-  .where(eq(circles.id, sql.placeholder('id')))
+  .where(eq(circles.id, sql.placeholder("id")))
   .prepare()
 
 /**
@@ -91,7 +91,7 @@ export async function getCircleWithRelations(id: string) {
 export const getCommentsByProposalId = db
   .select()
   .from(boardComments)
-  .where(eq(boardComments.proposalId, sql.placeholder('proposalId')))
+  .where(eq(boardComments.proposalId, sql.placeholder("proposalId")))
   .prepare()
 
 /**
@@ -100,5 +100,5 @@ export const getCommentsByProposalId = db
 export const getEventsByProposalId = db
   .select()
   .from(thanosEvents)
-  .where(eq(thanosEvents.proposalId, sql.placeholder('proposalId')))
+  .where(eq(thanosEvents.proposalId, sql.placeholder("proposalId")))
   .prepare()

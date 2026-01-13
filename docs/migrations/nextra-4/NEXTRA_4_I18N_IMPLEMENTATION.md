@@ -1,11 +1,12 @@
 # Nextra 4: RSC i18n Implementation Guide
 
-**Status**: ✅ **Infrastructure Ready**
-**Date**: 2025-01-27
+**Status**: ✅ **Infrastructure Ready** **Date**: 2025-01-27
 
 ## Overview
 
-Nextra 4 supports **Server Components i18n** using dynamic dictionary loading. Translations are loaded server-side and passed as props to components, eliminating the need to ship translation files to the client.
+Nextra 4 supports **Server Components i18n** using dynamic dictionary loading.
+Translations are loaded server-side and passed as props to components,
+eliminating the need to ship translation files to the client.
 
 ## Implementation Status
 
@@ -34,10 +35,11 @@ Nextra 4 supports **Server Components i18n** using dynamic dictionary loading. T
 
 ### ⚠️ Current Setup
 
-**Current**: Single-language setup (`app/layout.tsx`)
-**Option**: i18n setup (`app/[lang]/layout.tsx`)
+**Current**: Single-language setup (`app/layout.tsx`) **Option**: i18n setup
+(`app/[lang]/layout.tsx`)
 
-**Note**: To enable i18n, you need to restructure the app directory (see Migration section).
+**Note**: To enable i18n, you need to restructure the app directory (see
+Migration section).
 
 ---
 
@@ -46,12 +48,14 @@ Nextra 4 supports **Server Components i18n** using dynamic dictionary loading. T
 ### Server Components i18n
 
 **Benefits**:
+
 - ✅ No client-side translation files
 - ✅ Dynamic loading in server components
 - ✅ Better performance (smaller bundles)
 - ✅ SEO-friendly (server-rendered)
 
 **Process**:
+
 1. Server component loads dictionary dynamically
 2. Translations passed as props to components
 3. No translation files shipped to client
@@ -66,6 +70,7 @@ Nextra 4 supports **Server Components i18n** using dynamic dictionary loading. T
 **Location**: `lib/i18n/dictionaries/{locale}.json`
 
 **Structure**:
+
 ```json
 {
   "banner": "🎉 NexusCanon Governance Docs are now live!",
@@ -93,25 +98,25 @@ Nextra 4 supports **Server Components i18n** using dynamic dictionary loading. T
 **File**: `lib/i18n/get-dictionary.ts`
 
 ```typescript
-import 'server-only'
+import "server-only"
 
 const dictionaries = {
-  en: () => import('./dictionaries/en.json'),
-  fr: () => import('./dictionaries/fr.json'),
+  en: () => import("./dictionaries/en.json"),
+  fr: () => import("./dictionaries/fr.json"),
   // ... other locales
 }
 
 export async function getDictionary(locale: string) {
-  const normalizedLocale = locale.toLowerCase().split('-')[0]
+  const normalizedLocale = locale.toLowerCase().split("-")[0]
   const dictionaryLoader = dictionaries[normalizedLocale] || dictionaries.en
   const { default: dictionary } = await dictionaryLoader()
   return dictionary
 }
 
-export function getDirection(locale: string): 'ltr' | 'rtl' {
-  const rtlLocales = ['he', 'ar', 'fa', 'ur']
-  const normalizedLocale = locale.toLowerCase().split('-')[0]
-  return rtlLocales.includes(normalizedLocale) ? 'rtl' : 'ltr'
+export function getDirection(locale: string): "ltr" | "rtl" {
+  const rtlLocales = ["he", "ar", "fa", "ur"]
+  const normalizedLocale = locale.toLowerCase().split("-")[0]
+  return rtlLocales.includes(normalizedLocale) ? "rtl" : "ltr"
 }
 ```
 
@@ -153,8 +158,8 @@ export default async function RootLayout({ children, params }) {
     <html lang={lang} dir={direction}>
       <Layout
         i18n={[
-          { locale: 'en', name: 'English' },
-          { locale: 'fr', name: 'Français' },
+          { locale: "en", name: "English" },
+          { locale: "fr", name: "Français" },
         ]}
         // ... other props with translations
       >
@@ -180,6 +185,7 @@ export default async function RootLayout({ children, params }) {
 **Steps**:
 
 1. **Restructure app directory**:
+
    ```bash
    # Create [lang] directory
    mkdir -p app/[lang]
@@ -203,15 +209,16 @@ export default async function RootLayout({ children, params }) {
    - `/docs` → `/en/docs`
 
 4. **Add middleware** (optional):
+
    ```typescript
    // middleware.ts
-   import { NextResponse } from 'next/server'
-   import type { NextRequest } from 'next/server'
+   import { NextResponse } from "next/server"
+   import type { NextRequest } from "next/server"
 
    export function middleware(request: NextRequest) {
      const pathname = request.nextUrl.pathname
-     if (pathname === '/') {
-       return NextResponse.redirect(new URL('/en', request.url))
+     if (pathname === "/") {
+       return NextResponse.redirect(new URL("/en", request.url))
      }
    }
    ```
@@ -225,8 +232,8 @@ export default async function RootLayout({ children, params }) {
 ```tsx
 <Layout
   i18n={[
-    { locale: 'en', name: 'English' },
-    { locale: 'fr', name: 'Français' },
+    { locale: "en", name: "English" },
+    { locale: "fr", name: "Français" },
   ]}
   // ... other props
 />
@@ -235,16 +242,14 @@ export default async function RootLayout({ children, params }) {
 ### Banner Component
 
 ```tsx
-<Banner storageKey="key">
-  {dictionary.banner}
-</Banner>
+<Banner storageKey="key">{dictionary.banner}</Banner>
 ```
 
 ### Footer Component
 
 ```tsx
 <Footer>
-  {dictionary.footer.replace('{year}', new Date().getFullYear().toString())}
+  {dictionary.footer.replace("{year}", new Date().getFullYear().toString())}
 </Footer>
 ```
 
@@ -300,6 +305,7 @@ export default async function RootLayout({ children, params }) {
 **Supported**: Hebrew (he), Arabic (ar), Persian (fa), Urdu (ur)
 
 **Implementation**:
+
 ```tsx
 const direction = getDirection(lang) // Returns 'rtl' or 'ltr'
 
@@ -307,6 +313,7 @@ const direction = getDirection(lang) // Returns 'rtl' or 'ltr'
 ```
 
 **Automatic**:
+
 - Text direction set via `dir` attribute
 - Nextra theme handles RTL styling
 - Components adapt automatically
@@ -322,7 +329,7 @@ const direction = getDirection(lang) // Returns 'rtl' or 'ltr'
 ```json
 {
   "banner": "Translation here",
-  "footer": "Translation here",
+  "footer": "Translation here"
   // ... other keys
 }
 ```
@@ -334,7 +341,7 @@ const direction = getDirection(lang) // Returns 'rtl' or 'ltr'
 ```typescript
 const dictionaries = {
   // ... existing
-  newLocale: () => import('./dictionaries/newLocale.json'),
+  newLocale: () => import("./dictionaries/newLocale.json"),
 }
 ```
 
@@ -379,6 +386,7 @@ i18n={[
 **Problem**: Translations not appearing
 
 **Solutions**:
+
 1. Check dictionary file exists: `lib/i18n/dictionaries/{locale}.json`
 2. Verify `server-only` import in get-dictionary.ts
 3. Check locale matches dictionary key
@@ -389,6 +397,7 @@ i18n={[
 **Problem**: RTL languages not displaying correctly
 
 **Solutions**:
+
 1. Check `getDirection()` function
 2. Verify `dir` attribute set on `<html>`
 3. Check locale is in RTL list: `['he', 'ar', 'fa', 'ur']`
@@ -398,6 +407,7 @@ i18n={[
 **Problem**: Routes return 404 after enabling i18n
 
 **Solutions**:
+
 1. Verify `[lang]` parameter in route structure
 2. Check middleware redirects (if used)
 3. Verify all routes include `[lang]` segment
@@ -416,15 +426,14 @@ i18n={[
 
 ## Summary
 
-✅ **Infrastructure Ready**: Dictionary files and loader created
-✅ **8 Languages Supported**: en, fr, es, de, zh, ja, ru, he
-✅ **RTL Support**: Hebrew and other RTL languages
-✅ **Example Provided**: Complete i18n layout example
-⚠️ **Migration Required**: Restructure app directory to enable
+✅ **Infrastructure Ready**: Dictionary files and loader created ✅ **8
+Languages Supported**: en, fr, es, de, zh, ja, ru, he ✅ **RTL Support**: Hebrew
+and other RTL languages ✅ **Example Provided**: Complete i18n layout example ⚠️
+**Migration Required**: Restructure app directory to enable
 
 **Status**: ✅ **Ready for i18n Migration** (when needed)
 
 ---
 
-**Last Updated**: 2025-01-27
-**Next Steps**: Migrate to `app/[lang]` structure when i18n needed
+**Last Updated**: 2025-01-27 **Next Steps**: Migrate to `app/[lang]` structure
+when i18n needed

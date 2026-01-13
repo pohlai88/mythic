@@ -5,13 +5,13 @@
  * Required by tech debt prevention rules - proper error handling required
  */
 
-'use client'
+"use client"
 
-import { Card } from '@mythic/design-system'
-import { cn, intelligentStatusStyles } from '@mythic/shared-utils'
-import { tokens, buttons } from '@/src/lib'
-import { memo } from 'react'
-import { EmptyState } from './EmptyState'
+import { Card } from "@mythic/tailwindcss-v4-design-system"
+import { cn, intelligentStatusStyles } from "@mythic/nextjs-shared-utils"
+import { tokens, buttons } from "@/src/lib"
+import { memo } from "react"
+import { EmptyState } from "./EmptyState"
 
 interface ErrorStateProps {
   title?: string
@@ -22,14 +22,13 @@ interface ErrorStateProps {
 }
 
 export const ErrorState = memo(function ErrorState({
-  title = 'Something went wrong',
+  title = "Something went wrong",
   message,
   error,
   onRetry,
   className,
 }: ErrorStateProps) {
-  const errorMessage =
-    error instanceof Error ? error.message : String(error || message)
+  const errorMessage = error instanceof Error ? error.message : String(error || message)
 
   return (
     <EmptyState
@@ -37,12 +36,7 @@ export const ErrorState = memo(function ErrorState({
       description={errorMessage}
       variant="error"
       icon={
-        <svg
-          className="w-12 h-12 text-ember"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-12 h-12 text-ember" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -55,7 +49,11 @@ export const ErrorState = memo(function ErrorState({
         onRetry ? (
           <button
             onClick={onRetry}
-            className={intelligentStatusStyles('VETOED', 'badge', cn(buttons.small, 'transition-hover-intelligent'))}
+            className={intelligentStatusStyles(
+              "VETOED",
+              "badge",
+              cn(buttons.small, "transition-hover-intelligent")
+            )}
           >
             Retry
           </button>

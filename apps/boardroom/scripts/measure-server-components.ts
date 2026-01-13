@@ -15,12 +15,12 @@
  * - Shared components outside app directory
  */
 
-import { readdir, readFile } from 'fs/promises'
-import { join, extname } from 'path'
+import { readdir, readFile } from "fs/promises"
+import { join, extname } from "path"
 
 interface ComponentMetric {
   path: string
-  type: 'server' | 'client' | 'unknown'
+  type: "server" | "client" | "unknown"
   isRouteComponent: boolean
 }
 
@@ -37,60 +37,60 @@ interface Metrics {
   ratio: number
 }
 
-const APP_DIR = join(process.cwd(), 'app')
-const COMPONENTS_DIR = join(process.cwd(), 'components')
+const APP_DIR = join(process.cwd(), "app")
+const COMPONENTS_DIR = join(process.cwd(), "components")
 
 /**
  * Check if a file is a route component
  */
 function isRouteComponent(filePath: string): boolean {
   // Route components are in app directory
-  if (!filePath.includes('app/')) {
+  if (!filePath.includes("app/")) {
     return false
   }
 
   // Exclude utilities, lib, MDX, index files
   if (
-    filePath.includes('/utils/') ||
-    filePath.includes('/lib/') ||
-    filePath.endsWith('.mdx') ||
-    filePath.endsWith('/index.ts') ||
-    filePath.endsWith('/index.tsx')
+    filePath.includes("/utils/") ||
+    filePath.includes("/lib/") ||
+    filePath.endsWith(".mdx") ||
+    filePath.endsWith("/index.ts") ||
+    filePath.endsWith("/index.tsx")
   ) {
     return false
   }
 
   // Include page.tsx, layout.tsx, and components in app directory
   return (
-    filePath.endsWith('/page.tsx') ||
-    filePath.endsWith('/layout.tsx') ||
-    (filePath.includes('/components/') && filePath.endsWith('.tsx'))
+    filePath.endsWith("/page.tsx") ||
+    filePath.endsWith("/layout.tsx") ||
+    (filePath.includes("/components/") && filePath.endsWith(".tsx"))
   )
 }
 
 /**
  * Check if a component is a Client Component
  */
-async function checkComponentType(filePath: string): Promise<'server' | 'client' | 'unknown'> {
+async function checkComponentType(filePath: string): Promise<"server" | "client" | "unknown"> {
   try {
-    const content = await readFile(filePath, 'utf-8')
+    const content = await readFile(filePath, "utf-8")
 
     // Check for 'use client' directive
     if (content.includes("'use client'") || content.includes('"use client"')) {
-      return 'client'
+      return "client"
     }
 
     // Check for 'use server' directive (Server Actions)
     if (content.includes("'use server'") || content.includes('"use server"')) {
-      return 'server'
+      return "server"
     }
 
     // Default to server for route components (Next.js default)
     // Unknown for other files
-    return isRouteComponent(filePath) ? 'server' : 'unknown'
+    return isRouteComponent(filePath) ? "server" : "unknown"
   } catch (error) {
     console.error(`Error reading ${filePath}:`, error)
-    return 'unknown'
+    return "unknown"
   }
 }
 
@@ -105,17 +105,17 @@ async function findTSXFiles(dir: string, basePath: string = dir): Promise<string
 
     for (const entry of entries) {
       const fullPath = join(dir, entry.name)
-      const relativePath = fullPath.replace(basePath, '').replace(/\\/g, '/')
+      const relativePath = fullPath.replace(basePath, "").replace(/\\/g, "/")
 
       if (entry.isDirectory()) {
         // Skip node_modules, .next, etc.
-        if (!entry.name.startsWith('.') && entry.name !== 'node_modules') {
+        if (!entry.name.startsWith(".") && entry.name !== "node_modules") {
           const subFiles = await findTSXFiles(fullPath, basePath)
           files.push(...subFiles)
         }
       } else if (entry.isFile()) {
         const ext = extname(entry.name)
-        if (ext === '.tsx' || ext === '.ts') {
+        if (ext === ".tsx" || ext === ".ts") {
           files.push(fullPath)
         }
       }
@@ -139,7 +139,7 @@ async function measureServerComponents(): Promise<Metrics> {
   const components: ComponentMetric[] = []
 
   for (const file of allFiles) {
-    const relativePath = file.replace(process.cwd(), '').replace(/\\/g, '/')
+    const relativePath = file.replace(process.cwd(), "").replace(/\\/g, "/")
     const type = await checkComponentType(file)
     const isRoute = isRouteComponent(relativePath)
 
@@ -152,8 +152,8 @@ async function measureServerComponents(): Promise<Metrics> {
 
   // Calculate metrics
   const routeComponents = components.filter((c) => c.isRouteComponent)
-  const serverComponents = routeComponents.filter((c) => c.type === 'server')
-  const clientComponents = routeComponents.filter((c) => c.type === 'client')
+  const serverComponents = routeComponents.filter((c) => c.type === "server")
+  const clientComponents = routeComponents.filter((c) => c.type === "client")
 
   const totalRouteComponents = routeComponents.length
   const serverCount = serverComponents.length
@@ -162,9 +162,9 @@ async function measureServerComponents(): Promise<Metrics> {
 
   return {
     totalComponents: components.length,
-    serverComponents: components.filter((c) => c.type === 'server').length,
-    clientComponents: components.filter((c) => c.type === 'client').length,
-    unknownComponents: components.filter((c) => c.type === 'unknown').length,
+    serverComponents: components.filter((c) => c.type === "server").length,
+    clientComponents: components.filter((c) => c.type === "client").length,
+    unknownComponents: components.filter((c) => c.type === "unknown").length,
     routeComponents: {
       server: serverCount,
       client: clientCount,
@@ -178,17 +178,17 @@ async function measureServerComponents(): Promise<Metrics> {
  * Main execution
  */
 async function main() {
-  console.log('📊 Measuring Server Component Ratio...\n')
+  console.log("📊 Measuring Server Component Ratio...\n")
 
   const metrics = await measureServerComponents()
 
-  console.log('📈 Results:')
+  console.log("📈 Results:")
   console.log(`   Total Components: ${metrics.totalComponents}`)
   console.log(`   Server Components: ${metrics.serverComponents}`)
   console.log(`   Client Components: ${metrics.clientComponents}`)
   console.log(`   Unknown: ${metrics.unknownComponents}\n`)
 
-  console.log('🎯 Route Components (app/**/*.tsx):')
+  console.log("🎯 Route Components (app/**/*.tsx):")
   console.log(`   Server: ${metrics.routeComponents.server}`)
   console.log(`   Client: ${metrics.routeComponents.client}`)
   console.log(`   Total: ${metrics.routeComponents.total}`)
@@ -198,18 +198,18 @@ async function main() {
   const passed = metrics.ratio >= targetRatio
 
   console.log(`✅ Target: >${(targetRatio * 100).toFixed(0)}% Server Components`)
-  console.log(`${passed ? '✅' : '❌'} Status: ${passed ? 'PASSED' : 'FAILED'}\n`)
+  console.log(`${passed ? "✅" : "❌"} Status: ${passed ? "PASSED" : "FAILED"}\n`)
 
   if (!passed) {
-    console.log('💡 Recommendations:')
-    console.log('   - Convert unnecessary Client Components to Server Components')
-    console.log('   - Use Server Actions instead of API routes where possible')
-    console.log('   - Move client-side logic to leaf components only')
+    console.log("💡 Recommendations:")
+    console.log("   - Convert unnecessary Client Components to Server Components")
+    console.log("   - Use Server Actions instead of API routes where possible")
+    console.log("   - Move client-side logic to leaf components only")
     process.exit(1)
   }
 }
 
 main().catch((error) => {
-  console.error('Error measuring Server Components:', error)
+  console.error("Error measuring Server Components:", error)
   process.exit(1)
 })

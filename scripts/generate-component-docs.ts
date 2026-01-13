@@ -9,12 +9,12 @@
  *   pnpm generate:component-docs
  */
 
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs'
-import { join } from 'node:path'
-import { parse } from 'react-docgen-typescript'
-import { createScriptLogger } from '../src/lib/logger'
+import { writeFileSync, mkdirSync, existsSync } from "node:fs"
+import { join } from "node:path"
+import { parse } from "react-docgen-typescript"
+import { createScriptLogger } from "../src/lib/logger"
 
-const log = createScriptLogger('generate-component-docs')
+const log = createScriptLogger("generate-component-docs")
 
 interface ComponentDoc {
   displayName: string
@@ -29,29 +29,30 @@ interface ComponentDoc {
   filePath: string
 }
 
-const outputDir = join(process.cwd(), 'apps/docs/content/reference/components')
+const outputDir = join(process.cwd(), "apps/docs/content/reference/components")
 const sourcePaths = [
-  'components/**/*.tsx',
-  'apps/**/components/**/*.tsx',
-  'packages/**/src/**/*.tsx',
+  "components/**/*.tsx",
+  "apps/**/components/**/*.tsx",
+  "packages/**/src/**/*.tsx",
 ]
 
 // Exclude patterns
 const excludePatterns = [
-  '**/node_modules/**',
-  '**/.next/**',
-  '**/dist/**',
-  '**/build/**',
-  '**/*.test.tsx',
-  '**/*.spec.tsx',
-  '**/stories/**',
+  "**/node_modules/**",
+  "**/.next/**",
+  "**/dist/**",
+  "**/build/**",
+  "**/*.test.tsx",
+  "**/*.spec.tsx",
+  "**/stories/**",
 ]
 
 function generateMDX(componentDoc: ComponentDoc): string {
   const { displayName, description, props } = componentDoc
 
-  const propsSection = props.length > 0
-    ? `## Props
+  const propsSection =
+    props.length > 0
+      ? `## Props
 
 ${props
   .map(
@@ -59,16 +60,16 @@ ${props
 
 **Type**: \`${prop.type}\`
 
-${prop.required ? '**Required**' : 'Optional'}
+${prop.required ? "**Required**" : "Optional"}
 
-${prop.description || 'No description available'}
+${prop.description || "No description available"}
 
-${prop.defaultValue ? `**Default**: \`${prop.defaultValue}\`` : ''}
+${prop.defaultValue ? `**Default**: \`${prop.defaultValue}\`` : ""}
 
 `
   )
-  .join('\n')}`
-    : ''
+  .join("\n")}`
+      : ""
 
   return `---
 title: ${displayName}
@@ -99,16 +100,16 @@ function generateMetadata(componentDocs: ComponentDoc[]): Record<string, unknown
 }
 
 async function generateComponentDocs(): Promise<void> {
-  log.info('Starting component documentation generation...')
+  log.info("Starting component documentation generation...")
 
   // Ensure output directory exists
   if (!existsSync(outputDir)) {
     mkdirSync(outputDir, { recursive: true })
-    log.info({ outputDir }, 'Created output directory')
+    log.info({ outputDir }, "Created output directory")
   }
 
   // Find all component files
-  const { glob } = await import('glob')
+  const { glob } = await import("glob")
   const componentFiles: string[] = []
 
   for (const pattern of sourcePaths) {
@@ -119,7 +120,10 @@ async function generateComponentDocs(): Promise<void> {
     componentFiles.push(...files)
   }
 
-  log.info({ count: componentFiles.length }, `Found ${componentFiles.length} component files to process`)
+  log.info(
+    { count: componentFiles.length },
+    `Found ${componentFiles.length} component files to process`
+  )
 
   // Parse components using react-docgen-typescript
   const parser = parse(componentFiles, {
@@ -127,9 +131,9 @@ async function generateComponentDocs(): Promise<void> {
     shouldRemoveUndefinedFromOptional: true,
     propFilter: (prop) => {
       // Filter out internal props
-      if (prop.name.startsWith('_')) return false
-      if (prop.name === 'key') return false
-      if (prop.name === 'ref') return false
+      if (prop.name.startsWith("_")) return false
+      if (prop.name === "key") return false
+      if (prop.name === "ref") return false
       return true
     },
     savePropValueAsString: true,
@@ -140,17 +144,17 @@ async function generateComponentDocs(): Promise<void> {
   const componentDocs: ComponentDoc[] = parser.map((component) => {
     const props = Object.values(component.props || {}).map((prop) => ({
       name: prop.name,
-      type: prop.type.name || prop.type.raw || 'unknown',
+      type: prop.type.name || prop.type.raw || "unknown",
       required: prop.required || false,
-      description: prop.description || '',
+      description: prop.description || "",
       defaultValue: prop.defaultValue?.value?.toString(),
     }))
 
     return {
-      displayName: component.displayName || 'Unknown',
-      description: component.description || '',
+      displayName: component.displayName || "Unknown",
+      description: component.description || "",
       props,
-      filePath: component.filePath || '',
+      filePath: component.filePath || "",
     }
   })
 
@@ -158,23 +162,26 @@ async function generateComponentDocs(): Promise<void> {
   let generatedCount = 0
   for (const componentDoc of componentDocs) {
     // Skip components without display names
-    if (componentDoc.displayName === 'Unknown') {
-      log.warn({ filePath: componentDoc.filePath }, 'Skipping component without display name')
+    if (componentDoc.displayName === "Unknown") {
+      log.warn({ filePath: componentDoc.filePath }, "Skipping component without display name")
       continue
     }
 
     const mdx = generateMDX(componentDoc)
     const outputPath = join(outputDir, `${componentDoc.displayName}.mdx`)
 
-    writeFileSync(outputPath, mdx, 'utf-8')
+    writeFileSync(outputPath, mdx, "utf-8")
     generatedCount++
-    log.debug({ name: componentDoc.displayName, path: outputPath }, 'Generated component documentation')
+    log.debug(
+      { name: componentDoc.displayName, path: outputPath },
+      "Generated component documentation"
+    )
   }
 
   // Generate metadata JSON
   const metadata = generateMetadata(componentDocs)
-  const metadataPath = join(outputDir, '.meta.json')
-  writeFileSync(metadataPath, JSON.stringify(metadata, null, 2), 'utf-8')
+  const metadataPath = join(outputDir, ".meta.json")
+  writeFileSync(metadataPath, JSON.stringify(metadata, null, 2), "utf-8")
 
   log.info(
     { generated: generatedCount, total: componentDocs.length, outputDir },
@@ -184,6 +191,6 @@ async function generateComponentDocs(): Promise<void> {
 
 // Run generator
 generateComponentDocs().catch((error) => {
-  log.error({ error }, 'Failed to generate component documentation')
+  log.error({ error }, "Failed to generate component documentation")
   process.exit(1)
 })

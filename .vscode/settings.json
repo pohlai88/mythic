@@ -7,7 +7,7 @@
   "editor.detectIndentation": false,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "vscode.typescript-language-features",
   "editor.quickSuggestions": {
     "strings": true
   },
@@ -39,25 +39,37 @@
   "javascript.preferences.importModuleSpecifier": "relative",
   "javascript.suggest.autoImports": true,
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
   },
   "[javascriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.css-language-features"
   },
   "[markdown]": {
     "editor.defaultFormatter": "yzhang.markdown-all-in-one",
@@ -119,23 +131,12 @@
   "path-intellisense.autoSlashAfterDirectory": true,
   "path-intellisense.extensionOnImport": true,
   "markdown.extension.toc.levels": "2..6",
-  "markdown.extension.preview.autoShowPreviewToSide": false,
-  "markdown.extension.print.absoluteImgPath": false,
   // ============================================================================
-  // Vitest Configuration
+  // Testing (Vitest)
   // ============================================================================
   "vitest.enable": true,
   "vitest.commandLine": "pnpm test",
-  "vitest.include": [
-    "**/*.{test,spec}.{ts,tsx}"
-  ],
-  "vitest.exclude": [
-    "**/node_modules/**",
-    "**/dist/**",
-    "**/.next/**",
-    "**/.turbo/**"
-  ],
-  "vitest.workspaceConfig": "./vitest.config.ts",
+  "vitest.workspaceConfig": "./.config/vitest.config.ts",
   "vitest.nodeEnv": {
     "NODE_ENV": "test"
   },
@@ -157,26 +158,93 @@
   // ============================================================================
   "eslint.enable": true,
   "eslint.useFlatConfig": true,
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-  "eslint.workingDirectories": [{ "pattern": "apps/*" }, { "pattern": "packages/*" }],
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "eslint.workingDirectories": [
+    {
+      "pattern": "apps/*"
+    },
+    {
+      "pattern": "packages/*"
+    }
+  ],
+  // Run ESLint on type and save
+  "eslint.run": "onType",
+  // Enable lint task for linting all workspace files
+  // Note: VS Code ESLint extension only lints open files by default
+  // To lint all files, run the "ESLint: Lint All Files" task (Ctrl+Shift+P -> Tasks: Run Task)
+  "eslint.lintTask.enable": true,
+  "eslint.lintTask.options": "--max-warnings 0",
+  // Configure lint task to run on workspace files
+  "eslint.lintTask.problemMatcher": {
+    "owner": "eslint",
+    "fileLocation": [
+      "relative",
+      "${workspaceFolder}"
+    ],
+    "pattern": {
+      "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error)\\s+(.*)\\s\\((.*)\\)$",
+      "file": 1,
+      "line": 2,
+      "column": 3,
+      "severity": 4,
+      "message": 5,
+      "code": 6
+    }
   },
+  // Probe files to determine if ESLint should run
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  // Show problems for all files in workspace
+  "eslint.problems.shortenToSingleLine": false,
+  "eslint.alwaysShowStatus": true,
+  // ESLint for linting only (Prettier handles formatting)
+  "eslint.format.enable": false,
+  // Show problems panel for all files (not just open files)
+  "problems.showCurrentInStatus": true,
+  "prettier.enable": true,
+  "prettier.requireConfig": true,
   // ============================================================================
-  // Disabled Features
+  // Disabled Extensions
   // ============================================================================
   "deno.enable": false,
   "npm.enable": false,
   "npm.autoDetect": "off",
-  "npm-intellisense.enabled": false,
-  "prettier.enable": false,
   // ============================================================================
-  // Spell Checker - Disabled
+  // Spell Checker - Enabled for README.md and apps/StratonHub only
   // ============================================================================
-  "cSpell.enabled": false,
-  "cSpell.enableFiletypes": [],
-  "cSpell.showStatus": false,
-  "cSpell.diagnosticLevel": "none",
+  "cSpell.enabled": true,
+  "cSpell.enabledFileTypes": {
+    "markdown": true,
+    "mdx": true,
+    "typescript": true,
+    "typescriptreact": true,
+    "javascript": true,
+    "javascriptreact": true,
+    "json": true,
+    "jsonc": true
+  },
+  "cSpell.showStatus": true,
+  "cSpell.diagnosticLevel": "Warning",
+  // Only check README.md files and files in apps/StratonHub
+  // Exclude everything else explicitly
+  "cSpell.ignorePaths": [
+    "**/*",
+    "!**/README.md",
+    "!apps/StratonHub/**"
+  ],
+  // Limit checking to reduce performance impact
+  "cSpell.checkLimit": 500,
+  // Use workspace-specific settings
+  "cSpell.useGitignore": true,
   // ============================================================================
   // Language-Specific Formatters
   // ============================================================================

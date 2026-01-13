@@ -1,0 +1,146 @@
+---
+title: Process Flows
+description: Operational workflows for enterprise processes
+audience: business
+type: explanation
+published: true
+last_updated: 2026-01-13
+---
+
+# Process Flows
+
+> Canonical operational workflows across NexusCanon business domains.
+
+## Overview
+
+This section documents the end-to-end business processes implemented in
+NexusCanon. Each process flow defines:
+
+- **Trigger**: What initiates the process
+- **Steps**: Sequential activities and decision points
+- **Actors**: Roles involved at each step
+- **Outputs**: Expected deliverables and records
+
+## Procure-to-Pay (P2P)
+
+The complete procurement lifecycle from requisition to payment.
+
+### Process Steps
+
+1. **Requisition**: Department submits purchase request
+2. **Approval**: Manager reviews and approves (or rejects)
+3. **Sourcing**: Procurement identifies suppliers
+4. **Purchase Order**: PO created and sent to supplier
+5. **Receipt**: Goods/services received and inspected
+6. **Invoice Matching**: Three-way match (PO, Receipt, Invoice)
+7. **Payment**: Approved invoices scheduled for payment
+
+### Key Actors
+
+| Role             | Responsibilities                    |
+| ---------------- | ----------------------------------- |
+| Requisitioner    | Submits purchase requests           |
+| Approver         | Reviews and authorizes spending     |
+| Procurement      | Sources suppliers, negotiates terms |
+| Accounts Payable | Processes invoices and payments     |
+| Receiver         | Confirms receipt of goods/services  |
+
+### Controls
+
+- Approval thresholds by amount
+- Three-way match required for payment
+- Segregation of duties (requester ≠ approver)
+
+## Order-to-Cash (O2C)
+
+Revenue cycle from customer order to cash collection.
+
+### Process Steps
+
+1. **Order Entry**: Customer places order
+2. **Credit Check**: Customer creditworthiness verified
+3. **Fulfillment**: Order picked, packed, shipped
+4. **Delivery**: Goods delivered to customer
+5. **Invoicing**: Invoice generated and sent
+6. **Collection**: Payment received and applied
+7. **Close**: Order marked complete
+
+### Key Actors
+
+| Role        | Responsibilities                       |
+| ----------- | -------------------------------------- |
+| Sales       | Captures orders, manages relationships |
+| Credit      | Evaluates customer credit risk         |
+| Warehouse   | Fulfills and ships orders              |
+| Billing     | Generates and sends invoices           |
+| Collections | Follows up on outstanding payments     |
+
+### Controls
+
+- Credit limit enforcement
+- Shipping confirmation required before invoicing
+- Aging reports for overdue accounts
+
+## Record-to-Report (R2R)
+
+Financial close and reporting cycle.
+
+### Process Steps
+
+1. **Transaction Recording**: Daily transactions posted
+2. **Period Close**: Subledgers closed
+3. **Consolidation**: Entities combined
+4. **Adjustments**: Accruals and corrections
+5. **Review**: Management review and signoff
+6. **Reporting**: Financial statements generated
+7. **Analysis**: Variance analysis and commentary
+
+### Key Actors
+
+| Role       | Responsibilities                       |
+| ---------- | -------------------------------------- |
+| Accountant | Records transactions, prepares entries |
+| Controller | Reviews close, ensures accuracy        |
+| CFO        | Approves final statements              |
+| Auditor    | Validates controls and balances        |
+
+### Controls
+
+- Reconciliation required before close
+- Management certification
+- Audit trail for all adjustments
+
+## Decision-to-Action (D2A)
+
+Governance process for executive decisions.
+
+### Process Steps
+
+1. **Proposal**: Initiative submitted to BoardRoom
+2. **Review**: Stakeholders evaluate proposal
+3. **Discussion**: Q&A and deliberation
+4. **Vote**: Formal voting on proposal
+5. **Ratification**: Decision recorded
+6. **Implementation**: Action plan executed
+7. **Tracking**: Progress monitored
+
+### Key Actors
+
+| Role     | Responsibilities                     |
+| -------- | ------------------------------------ |
+| Proposer | Submits initiative for consideration |
+| Reviewer | Evaluates feasibility and impact     |
+| Voter    | Participates in formal decision      |
+| Executor | Implements approved decisions        |
+
+### Controls
+
+- Quorum requirements for voting
+- Conflict of interest disclosure
+- Decision audit trail
+
+## Related
+
+- [KPI Dictionary](/business/kpis) — Performance metrics
+- [Compliance](/business/compliance) — Regulatory requirements
+- [Overview](/business/overview) — System overview

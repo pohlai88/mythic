@@ -14,27 +14,31 @@ related_docs:
 
 # Next.js Monorepo Architecture Audit & Optimization
 
-**Audit Date**: 2026-01-10
-**Plan Reviewed**: `next.js_architecture_review_e5fb76a8.plan.md`
-**Next.js Version**: 16+ (App Router)
-**Monorepo Tool**: Turborepo 2.3.3
-**Status**: ✅ **APPROVED WITH RECOMMENDATIONS**
+**Audit Date**: 2026-01-10 **Plan Reviewed**:
+`next.js_architecture_review_e5fb76a8.plan.md` **Next.js Version**: 16+ (App
+Router) **Monorepo Tool**: Turborepo 2.3.3 **Status**: ✅ **APPROVED WITH
+RECOMMENDATIONS**
 
 ---
 
 ## Executive Summary
 
-This audit reviews the proposed Next.js architecture plan against Next.js 16 best practices and monorepo optimization standards. The plan demonstrates **strong alignment** with modern Next.js patterns, with specific recommendations for scalability, consistency, and production readiness.
+This audit reviews the proposed Next.js architecture plan against Next.js 16
+best practices and monorepo optimization standards. The plan demonstrates
+**strong alignment** with modern Next.js patterns, with specific recommendations
+for scalability, consistency, and production readiness.
 
 ### Key Findings
 
 ✅ **STRONG ALIGNMENT**:
+
 - Server Components as RFL boundary (matches Next.js read-only pattern)
 - Route Handlers for sync operations (Next.js-native API pattern)
 - Monorepo structure aligns with Turborepo best practices
 - Type safety enforcement (TypeScript + Zod)
 
 ⚠️ **RECOMMENDATIONS**:
+
 - Clarify client-side RFL implementation details
 - Optimize monorepo structure for scalability
 - Enhance caching strategy alignment
@@ -47,6 +51,7 @@ This audit reviews the proposed Next.js architecture plan against Next.js 16 bes
 ### 1.1 Server Components Pattern ✅ APPROVED
 
 **Plan Proposal**:
+
 ```typescript
 // Server Component reading RFL
 import { getInvoice } from '@mythic/domain-finance/rfl/server'
@@ -60,6 +65,7 @@ export default async function InvoicePage({ params }) {
 **Next.js 16 Best Practice**: ✅ **ALIGNED**
 
 **Validation**:
+
 - ✅ Server Components are default (no `'use client'` needed)
 - ✅ Async/await for data fetching (replaces `getServerSideProps`)
 - ✅ Zero client JavaScript for read-only views
@@ -72,6 +78,7 @@ export default async function InvoicePage({ params }) {
 ### 1.2 Route Handlers Pattern ✅ APPROVED WITH ENHANCEMENT
 
 **Plan Proposal**:
+
 ```typescript
 // app/api/invoices/[id]/sync/route.ts
 export async function POST(request: Request, { params }) {
@@ -84,7 +91,9 @@ export async function POST(request: Request, { params }) {
 **Next.js 16 Best Practice**: ✅ **ALIGNED** with enhancement needed
 
 **Validation**:
-- ✅ Route Handlers are the modern API pattern (replaces Pages Router API routes)
+
+- ✅ Route Handlers are the modern API pattern (replaces Pages Router API
+  routes)
 - ✅ Async params handling (`await params`) is Next.js 16 requirement
 - ✅ Proper HTTP method usage (POST for mutations)
 
@@ -92,8 +101,8 @@ export async function POST(request: Request, { params }) {
 
 ```typescript
 // ✅ ENHANCED: Add proper error handling and caching
-import { NextResponse } from 'next/server'
-import { invoiceRFL } from '@mythic/domain-finance/rfl'
+import { NextResponse } from "next/server"
+import { invoiceRFL } from "@mythic/domain-finance/rfl"
 
 export async function POST(
   request: Request,
@@ -103,11 +112,8 @@ export async function POST(
     const { id } = await params
 
     // Validate input
-    if (!id || typeof id !== 'string') {
-      return NextResponse.json(
-        { error: 'Invalid invoice ID' },
-        { status: 400 }
-      )
+    if (!id || typeof id !== "string") {
+      return NextResponse.json({ error: "Invalid invoice ID" }, { status: 400 })
     }
 
     const snapshot = await invoiceRFL.sync(id)
@@ -115,15 +121,12 @@ export async function POST(
     // Configure caching for sync operations
     return NextResponse.json(snapshot, {
       headers: {
-        'Cache-Control': 'no-store, must-revalidate', // Sync is always fresh
+        "Cache-Control": "no-store, must-revalidate", // Sync is always fresh
       },
     })
   } catch (error) {
-    console.error('RFL sync error:', error)
-    return NextResponse.json(
-      { error: 'Sync failed' },
-      { status: 500 }
-    )
+    console.error("RFL sync error:", error)
+    return NextResponse.json({ error: "Sync failed" }, { status: 500 })
   }
 }
 ```
@@ -135,18 +138,20 @@ export async function POST(
 ### 1.3 Server Actions Pattern ✅ APPROVED
 
 **Plan Proposal**:
+
 ```typescript
 // app/invoices/[id]/actions.ts
-'use server'
+"use server"
 export async function approveInvoice(id: string) {
   await invoiceLoom.approve(id)
-  revalidateTag('invoices')
+  revalidateTag("invoices")
 }
 ```
 
 **Next.js 16 Best Practice**: ✅ **ALIGNED**
 
 **Validation**:
+
 - ✅ Server Actions are the write boundary (replaces API routes for mutations)
 - ✅ `revalidateTag` for cache invalidation (Next.js 16 feature)
 - ✅ Clear separation: RFL (read) vs Loom (write)
@@ -155,10 +160,10 @@ export async function approveInvoice(id: string) {
 
 ```typescript
 // ✅ ENHANCED: Add input validation and error handling
-'use server'
-import { z } from 'zod'
-import { invoiceLoom } from '@mythic/domain-finance/loom'
-import { revalidateTag } from 'next/cache'
+"use server"
+import { z } from "zod"
+import { invoiceLoom } from "@mythic/domain-finance/loom"
+import { revalidateTag } from "next/cache"
 
 const approveInvoiceSchema = z.object({
   id: z.string().min(1),
@@ -169,12 +174,12 @@ export async function approveInvoice(input: unknown) {
     const { id } = approveInvoiceSchema.parse(input)
 
     await invoiceLoom.approve(id)
-    revalidateTag('invoices')
+    revalidateTag("invoices")
 
     return { success: true }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, error: 'Invalid input' }
+      return { success: false, error: "Invalid input" }
     }
     throw error // Re-throw for error boundary
   }
@@ -188,9 +193,10 @@ export async function approveInvoice(input: unknown) {
 ### 1.4 Client-Side RFL Pattern ⚠️ NEEDS CLARIFICATION
 
 **Plan Proposal**:
+
 ```typescript
-'use client'
-import { useInvoiceRFL } from '@mythic/domain-finance/rfl/client'
+"use client"
+import { useInvoiceRFL } from "@mythic/domain-finance/rfl/client"
 
 export default function InvoiceClientPage({ id }) {
   const { snapshot, sync, isLoading } = useInvoiceRFL(id)
@@ -201,6 +207,7 @@ export default function InvoiceClientPage({ id }) {
 **Next.js 16 Best Practice**: ⚠️ **NEEDS SPECIFICATION**
 
 **Gap Identified**:
+
 - Storage technology not specified (IndexedDB vs localStorage)
 - Hook implementation details missing
 - Error handling pattern unclear
@@ -230,13 +237,13 @@ export class ClientRFLStore {
 }
 
 // packages/domain-finance/src/rfl/client/hooks.ts
-'use client'
-import { useQuery } from '@tanstack/react-query'
-import { clientRFLStore } from './store'
+;("use client")
+import { useQuery } from "@tanstack/react-query"
+import { clientRFLStore } from "./store"
 
 export function useInvoiceRFL(id: string) {
   const query = useQuery({
-    queryKey: ['invoice', id],
+    queryKey: ["invoice", id],
     queryFn: async () => {
       // Check local cache first
       const cached = await clientRFLStore.get(id)
@@ -246,7 +253,7 @@ export function useInvoiceRFL(id: string) {
 
       // Fetch from server
       const response = await fetch(`/api/invoices/${id}/sync`, {
-        method: 'POST',
+        method: "POST",
       })
       const snapshot = await response.json()
 
@@ -275,6 +282,7 @@ export function useInvoiceRFL(id: string) {
 ### 2.1 Current Structure Analysis
 
 **Current State**:
+
 ```
 mythic/
 ├── app/                    # Next.js app (root level)
@@ -284,6 +292,7 @@ mythic/
 ```
 
 **Proposed Structure**:
+
 ```
 mythic/
 ├── apps/
@@ -378,6 +387,7 @@ mythic/
 ```
 
 **Key Principles**:
+
 1. ✅ **Apps consume packages** (Prime Monad Law)
 2. ✅ **Packages never import apps** (Dependency direction)
 3. ✅ **Domain packages are self-contained** (RFL + Loom + Types)
@@ -403,7 +413,7 @@ mythic/
   ],
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],           // ✅ Wait for dependencies
+      "dependsOn": ["^build"], // ✅ Wait for dependencies
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
       "env": ["NODE_ENV", "NEXT_PUBLIC_*", "VERCEL_*"],
       "cache": true
@@ -413,12 +423,12 @@ mythic/
       "persistent": true
     },
     "lint": {
-      "dependsOn": ["^build"],           // ✅ Lint after dependencies build
+      "dependsOn": ["^build"], // ✅ Lint after dependencies build
       "outputs": [],
       "cache": true
     },
     "type-check": {
-      "dependsOn": ["^build"],           // ✅ Type-check after dependencies
+      "dependsOn": ["^build"], // ✅ Type-check after dependencies
       "outputs": [],
       "cache": true
     },
@@ -429,12 +439,13 @@ mythic/
     }
   },
   "remoteCache": {
-    "enabled": false                     // ⚠️ Enable for team sharing
+    "enabled": false // ⚠️ Enable for team sharing
   }
 }
 ```
 
 **Key Changes**:
+
 - ✅ `dependsOn: ["^build"]` ensures dependency order
 - ✅ `outputs` includes `dist/**` for packages
 - ✅ `env` tracks environment variables
@@ -449,9 +460,10 @@ mythic/
 **Pattern**: Server Components → Domain RFL → Server Cache
 
 **Implementation**:
+
 ```typescript
 // packages/domain-finance/src/rfl/server/store.ts
-import { Redis } from 'ioredis'
+import { Redis } from "ioredis"
 
 export class ServerRFLStore {
   private cache: Map<string, Snapshot> | Redis
@@ -489,6 +501,7 @@ export async function getInvoice(id: string): Promise<Snapshot<Invoice>> {
 **Pattern**: Client Components → React Query → IndexedDB → Route Handlers
 
 **Implementation Required**:
+
 - Storage layer (IndexedDB vs localStorage)
 - Sync strategy (polling vs manual)
 - Error handling
@@ -503,6 +516,7 @@ export async function getInvoice(id: string): Promise<Snapshot<Invoice>> {
 **Plan Proposal**: Use Next.js Data Cache for Server Components
 
 **Enhancement**:
+
 ```typescript
 // ✅ ENHANCED: Combine Next.js cache with RFL
 export default async function InvoicePage({ params }) {
@@ -525,6 +539,7 @@ export default async function InvoicePage({ params }) {
 ```
 
 **Recommendation**: **DOCUMENT** when to use each:
+
 - **Next.js Cache**: Simple cases, automatic TTL
 - **Domain RFL**: Complex logic, explicit control, client-side sync
 
@@ -537,6 +552,7 @@ export default async function InvoicePage({ params }) {
 **Principle**: One domain = One package
 
 **Structure**:
+
 ```
 packages/
 ├── domain-finance/      # Finance domain
@@ -546,6 +562,7 @@ packages/
 ```
 
 **Benefits**:
+
 - ✅ Clear boundaries
 - ✅ Independent versioning
 - ✅ Parallel development
@@ -556,6 +573,7 @@ packages/
 ### 4.2 Dependency Management ✅ APPROVED
 
 **Workspace Protocol**:
+
 ```json
 {
   "dependencies": {
@@ -566,6 +584,7 @@ packages/
 ```
 
 **Benefits**:
+
 - ✅ Always latest version
 - ✅ No manual versioning
 - ✅ TypeScript path mapping works
@@ -575,6 +594,7 @@ packages/
 ### 4.3 Build Optimization ✅ APPROVED
 
 **Turborepo Caching**:
+
 - ✅ Build outputs cached
 - ✅ Lint/type-check cached
 - ✅ Parallel execution
@@ -595,15 +615,16 @@ packages/
 ```json
 {
   "compilerOptions": {
-    "strict": true,                    // ✅ Enable strict mode
-    "noUncheckedIndexedAccess": true,  // ✅ Safe array access
-    "noImplicitReturns": true,          // ✅ Explicit returns
+    "strict": true, // ✅ Enable strict mode
+    "noUncheckedIndexedAccess": true, // ✅ Safe array access
+    "noImplicitReturns": true, // ✅ Explicit returns
     "noFallthroughCasesInSwitch": true // ✅ Complete switches
   }
 }
 ```
 
 **Migration Path**:
+
 1. Enable in root `tsconfig.json`
 2. Fix errors incrementally
 3. Enforce in CI/CD
@@ -632,11 +653,11 @@ packages/
 
 ```typescript
 // ✅ CORRECT
-import { getInvoice } from '@mythic/domain-finance/rfl/server'
-import type { Invoice } from '@mythic/shared-types'
+import { getInvoice } from "@mythic/domain-finance/rfl/server"
+import type { Invoice } from "@mythic/typescript-shared-types"
 
 // ❌ INCORRECT
-import { getInvoice } from '../../../packages/domain-finance/src/rfl/server'
+import { getInvoice } from "../../../packages/domain-finance/src/rfl/server"
 ```
 
 ---
@@ -666,6 +687,7 @@ export default function InvoiceError({ error, reset }) {
 ### 6.2 Monitoring & Observability ✅ RECOMMENDED
 
 **Add**:
+
 - Error tracking (Sentry)
 - Performance monitoring (Vercel Analytics)
 - RFL cache hit/miss metrics
@@ -690,6 +712,7 @@ packages/domain-finance/
 ```
 
 **Tools**:
+
 - Vitest for unit tests
 - Playwright for E2E tests
 - React Testing Library for components
@@ -701,6 +724,7 @@ packages/domain-finance/
 ### 7.1 Phase 1: Monorepo Structure (Week 1)
 
 **Tasks**:
+
 1. ✅ Create `apps/web/` directory
 2. ✅ Move current app to `apps/web/`
 3. ✅ Create `packages/` structure
@@ -709,6 +733,7 @@ packages/domain-finance/
 6. ✅ Test build pipeline
 
 **Validation**:
+
 ```bash
 pnpm install
 pnpm build
@@ -720,6 +745,7 @@ pnpm dev
 ### 7.2 Phase 2: Domain Package Creation (Week 2)
 
 **Tasks**:
+
 1. Create first domain package (`domain-finance`)
 2. Extract RFL logic to package
 3. Extract Loom logic to package
@@ -731,6 +757,7 @@ pnpm dev
 ### 7.3 Phase 3: RFL Implementation (Week 3-4)
 
 **Tasks**:
+
 1. Implement server-side RFL
 2. Implement client-side RFL
 3. Add Route Handlers for sync
@@ -742,6 +769,7 @@ pnpm dev
 ### 7.4 Phase 4: Optimization (Week 5)
 
 **Tasks**:
+
 1. Enable remote cache
 2. Add monitoring
 3. Performance optimization
@@ -808,7 +836,10 @@ pnpm dev
 
 ## 10. Conclusion
 
-The proposed Next.js architecture plan demonstrates **strong alignment** with Next.js 16 best practices and monorepo optimization standards. The structure is **scalable**, **consistent**, and **production-ready** with the recommended enhancements.
+The proposed Next.js architecture plan demonstrates **strong alignment** with
+Next.js 16 best practices and monorepo optimization standards. The structure is
+**scalable**, **consistent**, and **production-ready** with the recommended
+enhancements.
 
 ### Approval Status
 
@@ -839,6 +870,5 @@ The proposed Next.js architecture plan demonstrates **strong alignment** with Ne
 
 ---
 
-**Status**: ✅ **APPROVED WITH RECOMMENDATIONS**
-**Last Updated**: 2026-01-10
+**Status**: ✅ **APPROVED WITH RECOMMENDATIONS** **Last Updated**: 2026-01-10
 **Next Review**: After Phase 1 completion

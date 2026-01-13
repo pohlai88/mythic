@@ -2,7 +2,9 @@
 
 ## 🎯 Executive Summary
 
-This guide provides a strategic approach to maximizing Cursor's AI capabilities through optimal documentation indexing and rules utilization. Follow these practices to achieve consistent, accurate, and context-aware AI assistance.
+This guide provides a strategic approach to maximizing Cursor's AI capabilities
+through optimal documentation indexing and rules utilization. Follow these
+practices to achieve consistent, accurate, and context-aware AI assistance.
 
 ---
 
@@ -54,19 +56,16 @@ Layer 3: Internal Project Docs (Referenced in Rules)
    ```
 
 2. **Use Version-Specific URLs**
-
    - ✅ `https://nextjs.org/docs` (auto-updates)
    - ✅ `https://react.dev` (latest)
    - ❌ Avoid versioned URLs unless you need specific version
 
 3. **Name Clearly in Cursor Settings**
-
    - ✅ "Next.js 15 Docs"
    - ✅ "Supabase API Reference"
    - ❌ "docs" or "next"
 
 4. **Monitor Indexing Status**
-
    - Check `Settings > Features > Docs` regularly
    - Remove failed or outdated indexes
    - Re-index when frameworks update
@@ -79,19 +78,16 @@ Layer 3: Internal Project Docs (Referenced in Rules)
 #### ❌ DON'T:
 
 1. **Don't Index Everything**
-
    - Too many docs = diluted context
    - AI becomes less accurate with too much information
    - Stick to 5-7 external docs maximum
 
 2. **Don't Index Internal Docs as URLs**
-
    - Internal docs should be in `.cursor/docs/`
    - Reference them in rules, not as indexed URLs
    - Exception: If you host internal docs on a server
 
 3. **Don't Index Deprecated Docs**
-
    - Remove old framework versions
    - Keep only current/active documentation
    - Check quarterly for updates
@@ -127,7 +123,6 @@ Layer 3: Internal Project Docs (Referenced in Rules)
 **Format:** `NNN_category-name.mdc`
 
 - **NNN**: Three-digit priority/sequence number
-
   - `001-099`: Core operational rules (always apply)
   - `100-199`: Domain-specific rules
   - `200-299`: Utility/helper rules
@@ -144,14 +139,12 @@ Layer 3: Internal Project Docs (Referenced in Rules)
 #### Rule Types by Scope:
 
 1. **Core Rules** (`alwaysApply: true`)
-
    - Project-wide standards
    - Coding conventions
    - Safety rules
    - **Keep under 100 lines each**
 
 2. **Pattern Rules** (`globs: "*.ts,*.tsx"`)
-
    - File-type specific
    - Pattern enforcement
    - **Keep under 50 lines each**
@@ -172,9 +165,7 @@ Layer 3: Internal Project Docs (Referenced in Rules)
 
    ---
 
-   description: Module creation patterns
-   globs: "_.ts,_.tsx"
-   alwaysApply: false
+   description: Module creation patterns globs: "_.ts,_.tsx" alwaysApply: false
 
    ---
 
@@ -214,7 +205,6 @@ Layer 3: Internal Project Docs (Referenced in Rules)
 #### ❌ DON'T:
 
 1. **Don't Create Monolithic Rules**
-
    - ❌ One 500-line rule file
    - ✅ Multiple focused 25-100 line rules
 
@@ -227,11 +217,11 @@ Layer 3: Internal Project Docs (Referenced in Rules)
 
    # ✅ Good: Specific
 
-   "Use TypeScript strict mode. No implicit any. All functions must have return types."
+   "Use TypeScript strict mode. No implicit any. All functions must have return
+   types."
    ```
 
 3. **Don't Override with `alwaysApply: true`**
-
    - Only use for truly universal rules
    - Most rules should be scoped with `globs`
 
@@ -245,7 +235,8 @@ Layer 3: Internal Project Docs (Referenced in Rules)
 
 ### 3.1 The Documentation-Rules Bridge
 
-**Principle:** External docs provide framework knowledge, rules provide project-specific guidance.
+**Principle:** External docs provide framework knowledge, rules provide
+project-specific guidance.
 
 ```
 External Docs (Indexed)
@@ -264,18 +255,15 @@ Local Docs (Referenced in Rules)
 ### 3.2 Optimal Workflow
 
 1. **Index External Framework Docs**
-
    - Next.js, React, Supabase
    - These provide base knowledge
 
 2. **Create Local Documentation**
-
    - Architecture decisions
    - Project patterns
    - Custom conventions
 
 3. **Create Focused Rules**
-
    - Reference local docs
    - Apply project-specific constraints
    - Use appropriate globs
@@ -391,13 +379,11 @@ Before creating a module:
 ### Best Practices Summary
 
 1. **Documentation:**
-
    - Index 3-5 essential external docs
    - Keep local docs in `.cursor/docs/`
    - Reference local docs in rules
 
 2. **Rules:**
-
    - Keep rules focused (<100 lines)
    - Use specific globs
    - Reference documentation
@@ -443,13 +429,11 @@ Before creating a module:
 ### Initial Setup (30 minutes)
 
 - [ ] **Index Core External Docs** (10 min)
-
   - [ ] Next.js Documentation
   - [ ] React Documentation
   - [ ] Supabase Documentation
 
 - [ ] **Create Local Documentation** (10 min)
-
   - [ ] `.cursor/docs/architecture/system-overview.md`
   - [ ] `.cursor/docs/patterns/module-patterns.md`
   - [ ] `.cursor/docs/guides/setup-guide.md`
@@ -477,6 +461,4 @@ Before creating a module:
 
 ---
 
-**Last Updated:** 2025-01-09
-**Version:** 1.0
-**Maintained By:** Project Team
+**Last Updated:** 2025-01-09 **Version:** 1.0 **Maintained By:** Project Team

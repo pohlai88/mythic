@@ -9,20 +9,20 @@
  * These tests run sequentially for accurate measurements.
  */
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { performance } from 'perf_hooks'
+import { describe, it, expect, beforeAll, afterAll } from "vitest"
+import { performance } from "perf_hooks"
 import {
   validateConnection,
   validateDockerConnection,
   validateDirectConnection,
   type ValidationResult,
-} from '../../../scripts/validate-db-connection'
+} from "../../../scripts/validate-db-connection"
 import {
   createTestConnection,
   cleanupAllTestConnections,
   createTestEnv,
   clearTestEnv,
-} from './helpers'
+} from "./helpers"
 
 /**
  * Skip performance tests if no database is configured
@@ -30,11 +30,11 @@ import {
 const hasTestDatabase =
   process.env.TEST_DATABASE_URL ||
   process.env.TEST_NEON_URL ||
-  (process.env.DB_HOST && process.env.DB_HOST !== 'localhost')
+  (process.env.DB_HOST && process.env.DB_HOST !== "localhost")
 
 const skipIfNoDb = hasTestDatabase ? describe : describe.skip
 
-skipIfNoDb('Database Connection Performance Tests', () => {
+skipIfNoDb("Database Connection Performance Tests", () => {
   beforeAll(() => {
     createTestEnv()
   })
@@ -44,8 +44,8 @@ skipIfNoDb('Database Connection Performance Tests', () => {
     clearTestEnv()
   })
 
-  describe('Cold Start Performance', () => {
-    it('should establish first connection within 200ms', async () => {
+  describe("Cold Start Performance", () => {
+    it("should establish first connection within 200ms", async () => {
       const start = performance.now()
       const result = await validateConnection()
       const duration = performance.now() - start
@@ -56,7 +56,7 @@ skipIfNoDb('Database Connection Performance Tests', () => {
       }
     }, 60000)
 
-    it('should measure cold start accurately', async () => {
+    it("should measure cold start accurately", async () => {
       // Clear any cached connections
       cleanupAllTestConnections()
 
@@ -76,8 +76,8 @@ skipIfNoDb('Database Connection Performance Tests', () => {
     }, 60000)
   })
 
-  describe('Connection Overhead', () => {
-    it('should have connection overhead < 5ms (after warm)', async () => {
+  describe("Connection Overhead", () => {
+    it("should have connection overhead < 5ms (after warm)", async () => {
       // Warm up connection
       await validateConnection()
 
@@ -104,8 +104,8 @@ skipIfNoDb('Database Connection Performance Tests', () => {
     }, 60000)
   })
 
-  describe('Query Latency', () => {
-    it('should execute queries within 50ms', async () => {
+  describe("Query Latency", () => {
+    it("should execute queries within 50ms", async () => {
       const result = await validateConnection()
 
       if (result.success) {
@@ -115,7 +115,7 @@ skipIfNoDb('Database Connection Performance Tests', () => {
       }
     }, 30000)
 
-    it('should have consistent query latency', async () => {
+    it("should have consistent query latency", async () => {
       const latencies: number[] = []
 
       for (let i = 0; i < 10; i++) {
@@ -139,8 +139,8 @@ skipIfNoDb('Database Connection Performance Tests', () => {
     }, 60000)
   })
 
-  describe('Connection Pooling Effectiveness', () => {
-    it('should benefit from connection reuse', async () => {
+  describe("Connection Pooling Effectiveness", () => {
+    it("should benefit from connection reuse", async () => {
       // First connection (cold)
       const coldStart = performance.now()
       await validateConnection()
@@ -164,9 +164,9 @@ skipIfNoDb('Database Connection Performance Tests', () => {
     }, 60000)
   })
 
-  describe('Docker vs Neon Performance Comparison', () => {
-    it('should measure Docker connection performance', async () => {
-      if (process.env.DB_HOST === 'localhost' || process.env.TEST_DATABASE_URL) {
+  describe("Docker vs Neon Performance Comparison", () => {
+    it("should measure Docker connection performance", async () => {
+      if (process.env.DB_HOST === "localhost" || process.env.TEST_DATABASE_URL) {
         const start = performance.now()
         const result = await validateDockerConnection()
         const duration = performance.now() - start
@@ -178,8 +178,8 @@ skipIfNoDb('Database Connection Performance Tests', () => {
       }
     }, 30000)
 
-    it('should measure Neon connection performance', async () => {
-      if (process.env.DATABASE_URL?.includes('.neon.tech') || process.env.TEST_NEON_URL) {
+    it("should measure Neon connection performance", async () => {
+      if (process.env.DATABASE_URL?.includes(".neon.tech") || process.env.TEST_NEON_URL) {
         const start = performance.now()
         const result = await validateDirectConnection()
         const duration = performance.now() - start
@@ -192,8 +192,8 @@ skipIfNoDb('Database Connection Performance Tests', () => {
     }, 30000)
   })
 
-  describe('Performance Targets Summary', () => {
-    it('should meet all performance targets', async () => {
+  describe("Performance Targets Summary", () => {
+    it("should meet all performance targets", async () => {
       const result = await validateConnection()
 
       if (result.success) {
@@ -204,7 +204,7 @@ skipIfNoDb('Database Connection Performance Tests', () => {
         }
 
         // Log results for debugging
-        console.log('Performance Results:', {
+        console.log("Performance Results:", {
           connectionTime: result.connectionTime,
           targets,
         })

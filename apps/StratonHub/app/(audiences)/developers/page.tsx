@@ -1,50 +1,82 @@
 /**
- * Developers Hub Page
+ * Developers Hub — Architect (TheEdge Grade)
  *
- * Main page for developers documentation
+ * DOCTRINE: Pages must not paint.
+ * This page composes: AxisStack + AxisHero + AxisCardGrid + AxisCard
+ * Data only. No local component definitions.
+ *
+ * Note: The layout already provides the shell (header, nav, container).
+ * This page provides content blocks only.
  */
 
-import Link from 'next/link'
-import type { Metadata } from 'next'
+import type { Metadata } from "next"
+import { AxisStack, AxisHero, AxisCardGrid, AxisCard } from "@/components"
 
 export const metadata: Metadata = {
-  title: 'Developers Documentation',
-  description: 'API reference, architecture, and technical guides',
+  title: "Architect · StratonHub",
+  description:
+    "Engineering reference layer: contracts, boundaries, and governed integration standards for NexusCanon.",
 }
+
+// Data only - no component definitions in pages
+const developerCards = [
+  {
+    href: "/developers/getting-started",
+    documentId: "DOC-START-000",
+    eyebrow: "// Onboarding",
+    title: "Getting Started",
+    body: "Environment setup, repository structure, and development workflow. Start here.",
+    action: "Begin Setup →",
+  },
+  {
+    href: "/developers/api",
+    documentId: "DOC-API-001",
+    eyebrow: "// Interfaces",
+    title: "API Reference",
+    body: "Endpoints, auth, rate limits, and error formats. Exact contracts and examples—no narrative.",
+    action: "Open Reference →",
+  },
+  {
+    href: "/developers/architecture",
+    documentId: "DOC-ARCH-010",
+    eyebrow: "// System",
+    title: "Architecture",
+    body: "Boundaries, invariants, and trade-offs. What is guaranteed, what is optional, and why.",
+    action: "Open Reference →",
+  },
+  {
+    href: "/developers/guides",
+    documentId: "DOC-GUIDE-020",
+    eyebrow: "// Operations",
+    title: "Execution Guides",
+    body: "Task-focused procedures: extending contracts, adding modules, running checks, and shipping safely.",
+    action: "Open Reference →",
+  },
+  {
+    href: "/developers/sdks",
+    documentId: "DOC-SDK-030",
+    eyebrow: "// Tooling",
+    title: "SDKs & Kits",
+    body: "Typed clients and pre-validated utilities. Standard patterns to move fast without breaking contracts.",
+    action: "Open Reference →",
+  },
+] as const
 
 export default function DevelopersPage() {
   return (
-    <div>
-      <h1 className="text-4xl font-serif font-bold mb-4">Developers Documentation</h1>
-      <p className="text-ash mb-8">
-        API reference, architecture documentation, and technical guides for developers.
-      </p>
+    <AxisStack gap="authority">
+      <AxisHero
+        status="Role: Architect · Environment: Production"
+        title="Architect"
+        subtitle="Contracts, boundaries, and integration standards."
+        description="This is the engineering reference layer. Contracts define behavior, schemas prevent drift, and protocols keep integrations predictable across teams and environments."
+      />
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <Link
-          href="/developers/api"
-          className="block p-6 border border-charcoal rounded-xs bg-obsidian hover:border-gold transition-colors"
-        >
-          <h2 className="text-2xl font-serif font-bold mb-2">API Reference</h2>
-          <p className="text-ash">Complete API documentation for all ERP modules</p>
-        </Link>
-
-        <Link
-          href="/developers/architecture"
-          className="block p-6 border border-charcoal rounded-xs bg-obsidian hover:border-gold transition-colors"
-        >
-          <h2 className="text-2xl font-serif font-bold mb-2">Architecture</h2>
-          <p className="text-ash">System architecture and design patterns</p>
-        </Link>
-
-        <Link
-          href="/developers/guides"
-          className="block p-6 border border-charcoal rounded-xs bg-obsidian hover:border-gold transition-colors"
-        >
-          <h2 className="text-2xl font-serif font-bold mb-2">Guides</h2>
-          <p className="text-ash">Development guides and best practices</p>
-        </Link>
-      </div>
-    </div>
+      <AxisCardGrid columns={2} density="comfortable" label="Architecture documentation modules">
+        {developerCards.map((card) => (
+          <AxisCard key={card.href} {...card} />
+        ))}
+      </AxisCardGrid>
+    </AxisStack>
   )
 }

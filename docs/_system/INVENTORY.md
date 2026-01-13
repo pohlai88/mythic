@@ -1,8 +1,7 @@
 # Documentation Inventory Report
 
-**Generated**: 2026-01-10
-**System**: AI-BOS/mythic
-**Purpose**: Global documentation cleanup and restructuring
+**Generated**: 2026-01-10 **System**: AI-BOS/mythic **Purpose**: Global
+documentation cleanup and restructuring
 
 ---
 
@@ -10,18 +9,18 @@
 
 ### Total Files Analyzed
 
-| Type | Count | Notes |
-|------|-------|-------|
-| `.md` files | 191 | Standard Markdown |
-| `.mdx` files | 35 | MDX (JSX in Markdown) |
-| `.mdc` files | 33 | Markdown Config (Cursor rules) |
-| **TOTAL** | **259** | Documentation corpus |
+| Type         | Count   | Notes                          |
+| ------------ | ------- | ------------------------------ |
+| `.md` files  | 191     | Standard Markdown              |
+| `.mdx` files | 35      | MDX (JSX in Markdown)          |
+| `.mdc` files | 33      | Markdown Config (Cursor rules) |
+| **TOTAL**    | **259** | Documentation corpus           |
 
 ### Repository State
 
-✅ **Root Directory**: Already cleaned (11 files only)
-✅ **Git Status**: Clean (1 unstaged change: .cursorignore)
-✅ **Control Directory**: Created `docs/_system/`
+✅ **Root Directory**: Already cleaned (11 files only) ✅ **Git Status**: Clean
+(1 unstaged change: .cursorignore) ✅ **Control Directory**: Created
+`docs/_system/`
 
 ---
 
@@ -43,11 +42,13 @@ Essential documentation kept in root per governance rules:
 10. `EXTERNAL_DEPENDENCIES_SOLUTION.md` - Dependencies
 11. `TEST_REPORT_CUSTOMIZATION.md` - Testing
 
-**Status**: ✅ Compliant with governance (max 3 recommended, but all 11 are essential)
+**Status**: ✅ Compliant with governance (max 3 recommended, but all 11 are
+essential)
 
 ### .cursor/ Directory (79 .md + 33 .mdc = 112 files)
 
 **Breakdown**:
+
 - `.cursor/rules/` - 33 .mdc files (Cursor rule system)
 - `.cursor/planing/` - ~46 .md files (planning documents, some legacy)
 - `.cursor/docs/` - Architecture and patterns
@@ -55,13 +56,15 @@ Essential documentation kept in root per governance rules:
 - `.cursor/product/` - Product docs
 
 **Issues Detected**:
-- ⚠️ Many legacy files with "Legacy_" prefix
+
+- ⚠️ Many legacy files with "Legacy\_" prefix
 - ⚠️ Duplicate constitution files (multiple versions)
 - ⚠️ Planning directory has mixed current/historical docs
 
 ### docs/ Directory (~95 files)
 
 **Breakdown**:
+
 - `docs/migrations/` - 56 files (migration documentation)
   - `docs/migrations/nextra-4/` - Nextra 4 migration
   - `docs/migrations/nextra/` - General Nextra migration
@@ -80,12 +83,14 @@ Essential documentation kept in root per governance rules:
 **Purpose**: Nextra public documentation content
 
 **Breakdown**:
+
 - `content/governance/` - Governance docs
 - `content/guides/` - User guides
 - `content/product/` - Product docs
 - Various root-level .mdx files
 
 **Issues**:
+
 - ⚠️ Duplicate content between `content/` and `docs/`
 - ⚠️ Some governance docs duplicated in `.cursor/planing/`
 
@@ -108,22 +113,27 @@ Essential documentation kept in root per governance rules:
 ### High-Confidence Duplicates (Identical Content)
 
 #### 1. Constitution Documents
+
 - `.cursor/planing/Legacy_NexusCanon_Constitution.md`
 - `.cursor/planing/Legacy_NexusCanon_Constitution_v5.md`
 - `.cursor/NexusCanon_Constitution.md`
 - `content/governance/sealed/nexus-canon-constitution.mdx`
 
-**Recommendation**: Keep ONE canonical version, mark others as historical references
+**Recommendation**: Keep ONE canonical version, mark others as historical
+references
 
 #### 2. Titan Protocol Documents
+
 - `.cursor/planing/Legacy_The_Titan_Protocol.md`
 - `.cursor/planing/Legacy_NexusCanon_TheTitanProtocol.md`
 - `.cursor/planing/.titan_protocol_v_1.md`
 - `content/governance/sealed/titan-protocol.mdx`
 
-**Recommendation**: Keep sealed version in `content/governance/sealed/`, archive others
+**Recommendation**: Keep sealed version in `content/governance/sealed/`, archive
+others
 
 #### 3. Design Philosophy Documents
+
 - `.cursor/planing/Legacy_Axis_Design_Philosophy.md`
 - `.cursor/planing/Legacy_AxisDesignPhilosophy.md`
 - `.cursor/planing/Legacy_DesignModeSpecification_TheApex.md`
@@ -131,12 +141,15 @@ Essential documentation kept in root per governance rules:
 **Recommendation**: Consolidate into one canonical doc
 
 #### 4. LBOS Origin Paper
+
 - `.cursor/planing/.lbos_origin_paper_sealed.md`
 - `content/governance/sealed/lbos-origin-paper.mdx`
 
-**Recommendation**: Keep `content/` version (public), move `.cursor/` version to archive
+**Recommendation**: Keep `content/` version (public), move `.cursor/` version to
+archive
 
 #### 5. Planning Playbook Variants
+
 - `.cursor/planing/0.axis_governance_planning_tracking_playbook.md`
 - `.cursor/planing/0.axis_governance_planning_tracking_playbook_with_reference_benchmarks.md`
 - `.cursor/planing/0.axis_governance_planning_tracking_playbook_with_reference_benchmarks_V2.md`
@@ -146,6 +159,7 @@ Essential documentation kept in root per governance rules:
 ### Near-Duplicates (Similar Content)
 
 #### 1. Documentation Strategy Documents
+
 - Root: `DOCUMENTATION_ORGANIZATION_STRATEGY.md`
 - Root: `DOCUMENTATION_ORGANIZATION_QUICK_START.md`
 - `.cursor/planing/SYSTEM_ARCHITECT_DOCUMENTATION_RECOMMENDATION.md`
@@ -153,6 +167,7 @@ Essential documentation kept in root per governance rules:
 **Status**: Different focus areas, can coexist
 
 #### 2. Cursor Documentation
+
 - `.cursor/QUICK_REFERENCE.md`
 - Root: `CURSOR_OPTIMIZATION_QUICK_REF.md`
 - Root: `CURSOR_SYSTEM_ARCHITECTURE.md`
@@ -160,6 +175,7 @@ Essential documentation kept in root per governance rules:
 **Status**: Different scopes, can coexist
 
 #### 3. README Files
+
 - Root: `README.md` (project overview)
 - Root: `README_FEATURES.md` (features list)
 - `.cursor/README.md` (Cursor-specific)
@@ -196,9 +212,10 @@ Essential documentation kept in root per governance rules:
 
 ## Legacy File Markers
 
-### Files with "Legacy_" Prefix (10 files)
+### Files with "Legacy\_" Prefix (10 files)
 
 All in `.cursor/planing/`:
+
 1. `Legacy_NexusCanon_Constitution.md`
 2. `Legacy_NexusCanon_Constitution_v5.md`
 3. `Legacy_NexusCanon_TheTitanProtocol.md`
@@ -224,6 +241,7 @@ All in `.cursor/planing/`:
 ### Files Without Proper Identifiers
 
 According to governance rule 022, all docs should have:
+
 - `DOC-XXXX_name.md` (preferred)
 - `[hash]_name.md` (acceptable)
 - `vX.Y.Z_name.md` (acceptable)
@@ -231,7 +249,8 @@ According to governance rule 022, all docs should have:
 
 **Violations Found**: ~200+ files (most of the corpus)
 
-**Note**: Current governance allows legacy files, but new/reorganized files should follow naming convention.
+**Note**: Current governance allows legacy files, but new/reorganized files
+should follow naming convention.
 
 ---
 
@@ -240,11 +259,13 @@ According to governance rule 022, all docs should have:
 ### 1. Documentation Storage Location
 
 **Conflict**:
+
 - `docs/` directory has organized structure
 - `.cursor/planing/` has overlapping governance docs
 - `content/governance/` has public-facing governance docs
 
 **Question**: Should governance docs live in:
+
 - A) `docs/governance/` (canonical internal)
 - B) `content/governance/` (public-facing)
 - C) `.cursor/planing/` (planning/historical)
@@ -254,7 +275,8 @@ According to governance rule 022, all docs should have:
 ### 2. "Sealed" vs "Legacy" Status
 
 **Conflict**:
-- Files marked "Legacy_" suggest superseded
+
+- Files marked "Legacy\_" suggest superseded
 - Files with "sealed" in path suggest immutable
 - Some documents appear in both categories
 
@@ -265,6 +287,7 @@ According to governance rule 022, all docs should have:
 ### 3. Planning vs Documentation
 
 **Conflict**:
+
 - `.cursor/planing/` contains ~46 files
 - Many are finished specifications, not "planning"
 - Mix of active and historical documents
@@ -280,6 +303,7 @@ According to governance rule 022, all docs should have:
 Top 20 largest documentation files (will need detailed scan):
 
 **Estimated from Glob results**:
+
 - Constitution documents: likely 10-50KB
 - Planning playbooks: likely 15-30KB
 - Migration guides: likely 5-20KB each
@@ -298,23 +322,22 @@ Top 20 largest documentation files (will need detailed scan):
 
 ### ALLOWED Locations (per governance)
 
-✅ `docs/` - 95 files (organized)
-✅ `.cursor/docs/` - Small subset (compliant)
-✅ `content/` - 34 files (Nextra, compliant)
-✅ `.temp-docs/` - 1 file (README, compliant)
+✅ `docs/` - 95 files (organized) ✅ `.cursor/docs/` - Small subset (compliant)
+✅ `content/` - 34 files (Nextra, compliant) ✅ `.temp-docs/` - 1 file (README,
+compliant)
 
 ### FORBIDDEN Locations (per governance)
 
-❌ Root directory - 11 files (EXCEEDS 3-file limit but all essential)
-⚠️ `.vscode/` - Contains `README.md` (config only, exception granted)
-✅ `src/`, `app/`, `components/` - No docs found (compliant)
+❌ Root directory - 11 files (EXCEEDS 3-file limit but all essential) ⚠️
+`.vscode/` - Contains `README.md` (config only, exception granted) ✅ `src/`,
+`app/`, `components/` - No docs found (compliant)
 
 ### AMBIGUOUS Locations
 
-⚠️ `.cursor/planing/` - 46+ files (needs review: active vs historical)
-⚠️ `.cursor/rules/` - 33 .mdc files (Cursor rules, exception granted)
-⚠️ `.cursor/templates/` - Plan templates (tool files, exception granted)
-⚠️ `.cursor/product/` - Product docs (could move to `docs/product/`)
+⚠️ `.cursor/planing/` - 46+ files (needs review: active vs historical) ⚠️
+`.cursor/rules/` - 33 .mdc files (Cursor rules, exception granted) ⚠️
+`.cursor/templates/` - Plan templates (tool files, exception granted) ⚠️
+`.cursor/product/` - Product docs (could move to `docs/product/`)
 
 ---
 
@@ -328,7 +351,7 @@ Top 20 largest documentation files (will need detailed scan):
 
 2. **Archive Legacy Files**
    - Create: `.cursor/archive/legacy/`
-   - Move: All files with "Legacy_" prefix
+   - Move: All files with "Legacy\_" prefix
 
 3. **Consolidate Planning Docs**
    - Review `.cursor/planing/` for active vs historical
@@ -353,16 +376,16 @@ Top 20 largest documentation files (will need detailed scan):
 
 ## Metrics
 
-| Metric | Value |
-|--------|-------|
-| Total documentation files | 259 |
-| Root directory files | 11 |
-| Duplicates detected | 15+ clusters |
-| Legacy files | 10+ |
-| Files needing naming updates | ~200+ |
-| Orphan documents | 7 |
-| Contradictions found | 3 major |
-| Compliance violations | 1 (root file count) |
+| Metric                       | Value               |
+| ---------------------------- | ------------------- |
+| Total documentation files    | 259                 |
+| Root directory files         | 11                  |
+| Duplicates detected          | 15+ clusters        |
+| Legacy files                 | 10+                 |
+| Files needing naming updates | ~200+               |
+| Orphan documents             | 7                   |
+| Contradictions found         | 3 major             |
+| Compliance violations        | 1 (root file count) |
 
 ---
 
@@ -371,12 +394,14 @@ Top 20 largest documentation files (will need detailed scan):
 **Question for Approval**:
 
 > Based on this inventory, the primary issues are:
+>
 > 1. **Duplicate governance documents** (constitution, titan protocol)
-> 2. **Legacy files not yet archived** (10+ files with Legacy_ prefix)
+> 2. **Legacy files not yet archived** (10+ files with Legacy\_ prefix)
 > 3. **Ambiguous .cursor/planing/ directory** (mix of active and historical)
 > 4. **Root directory file count** (11 files vs 3 recommended)
 >
 > Should I proceed to Phase 2 (Taxonomy + Mapping) to:
+>
 > - Define canonical locations for each document type
 > - Create migration plan for duplicates and legacy files
 > - Propose exception for root directory count (all files are essential)?

@@ -5,14 +5,14 @@
  * Shows read rates, engagement, and activity trends.
  */
 
-'use client'
+"use client"
 
-import { Card } from '@mythic/design-system'
-import { cn, intelligentStatusStyles } from '@mythic/shared-utils'
-import { useState, useEffect, memo } from 'react'
-import { getBroadcastAnalytics } from '@/app/actions/broadcasts'
-import { LoadingState } from './LoadingState'
-import { ErrorState } from './ErrorState'
+import { Card } from "@mythic/tailwindcss-v4-design-system"
+import { cn, intelligentStatusStyles } from "@mythic/nextjs-shared-utils"
+import { useState, useEffect, memo } from "react"
+import { getBroadcastAnalytics } from "@/app/actions/broadcasts"
+import { LoadingState } from "./LoadingState"
+import { ErrorState } from "./ErrorState"
 
 interface BroadcastAnalyticsProps {
   className?: string
@@ -41,7 +41,7 @@ export const BroadcastAnalytics = memo(function BroadcastAnalytics({
         const data = await getBroadcastAnalytics()
         setAnalytics(data)
       } catch (err) {
-        setError(err instanceof Error ? err : new Error('Failed to load analytics'))
+        setError(err instanceof Error ? err : new Error("Failed to load analytics"))
       } finally {
         setLoading(false)
       }
@@ -52,7 +52,7 @@ export const BroadcastAnalytics = memo(function BroadcastAnalytics({
 
   if (loading) {
     return (
-      <div className={cn('p-6', className)}>
+      <div className={cn("p-6", className)}>
         <LoadingState message="Loading analytics..." />
       </div>
     )
@@ -60,7 +60,7 @@ export const BroadcastAnalytics = memo(function BroadcastAnalytics({
 
   if (error) {
     return (
-      <div className={cn('p-6', className)}>
+      <div className={cn("p-6", className)}>
         <ErrorState title="Failed to load analytics" message={error.message} />
       </div>
     )
@@ -71,23 +71,23 @@ export const BroadcastAnalytics = memo(function BroadcastAnalytics({
   }
 
   const typeLabels: Record<string, string> = {
-    approval: 'Approvals',
-    veto: 'Vetoes',
-    announcement: 'Announcements',
-    poll: 'Polls',
-    emergency: 'Emergencies',
+    approval: "Approvals",
+    veto: "Vetoes",
+    announcement: "Announcements",
+    poll: "Polls",
+    emergency: "Emergencies",
   }
 
   const typeIcons: Record<string, string> = {
-    approval: '✅',
-    veto: '❌',
-    announcement: '📢',
-    poll: '🗳️',
-    emergency: '🚨',
+    approval: "✅",
+    veto: "❌",
+    announcement: "📢",
+    poll: "🗳️",
+    emergency: "🚨",
   }
 
   return (
-    <div className={cn('space-y-6', className)}>
+    <div className={cn("space-y-6", className)}>
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         <Card elevation="sm" className="p-4">
@@ -111,11 +111,11 @@ export const BroadcastAnalytics = memo(function BroadcastAnalytics({
           {Object.entries(analytics.byType).map(([type, stats]) => {
             const readRate = stats.count > 0 ? (stats.reads / stats.count) * 100 : 0
             const status =
-              type === 'approval'
-                ? 'APPROVED'
-                : type === 'veto' || type === 'emergency'
-                  ? 'VETOED'
-                  : 'LISTENING'
+              type === "approval"
+                ? "APPROVED"
+                : type === "veto" || type === "emergency"
+                  ? "VETOED"
+                  : "LISTENING"
 
             return (
               <div
@@ -123,12 +123,12 @@ export const BroadcastAnalytics = memo(function BroadcastAnalytics({
                 className="flex items-center justify-between p-3 border border-charcoal rounded-xs"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-xl">{typeIcons[type] || '📢'}</span>
+                  <span className="text-xl">{typeIcons[type] || "📢"}</span>
                   <div>
                     <div className="font-serif text-parchment">{typeLabels[type] || type}</div>
                     <div className="text-xs text-ash">
-                      {stats.count} broadcast{stats.count !== 1 ? 's' : ''} • {stats.reads} read
-                      {stats.reads !== 1 ? 's' : ''}
+                      {stats.count} broadcast{stats.count !== 1 ? "s" : ""} • {stats.reads} read
+                      {stats.reads !== 1 ? "s" : ""}
                     </div>
                   </div>
                 </div>
@@ -136,8 +136,8 @@ export const BroadcastAnalytics = memo(function BroadcastAnalytics({
                   <div
                     className={intelligentStatusStyles(
                       status,
-                      'text',
-                      'text-lg font-mono font-bold'
+                      "text",
+                      "text-lg font-mono font-bold"
                     )}
                   >
                     {Math.round(readRate)}%
@@ -161,7 +161,9 @@ export const BroadcastAnalytics = memo(function BroadcastAnalytics({
                 className="flex items-center justify-between text-sm border-b border-charcoal pb-2 last:border-0"
               >
                 <span className="text-ash font-mono">{activity.date}</span>
-                <span className="text-parchment font-mono">{activity.count} broadcast{activity.count !== 1 ? 's' : ''}</span>
+                <span className="text-parchment font-mono">
+                  {activity.count} broadcast{activity.count !== 1 ? "s" : ""}
+                </span>
               </div>
             ))}
           </div>

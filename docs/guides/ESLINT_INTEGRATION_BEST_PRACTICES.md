@@ -1,14 +1,14 @@
 # ESLint Integration Best Practices Guide
 
-**Version**: 1.0.0
-**Last Updated**: 2026-01-12
-**Status**: ✅ **Production Ready**
+**Version**: 1.0.0 **Last Updated**: 2026-01-12 **Status**: ✅ **Production
+Ready**
 
 ---
 
 ## Overview
 
-This guide covers all ESLint integration methods available for your Turborepo monorepo, including:
+This guide covers all ESLint integration methods available for your Turborepo
+monorepo, including:
 
 1. **ESLint CLI** - Standard command-line integration
 2. **ESLint Scaffold** - Automated configuration setup
@@ -35,12 +35,13 @@ This guide covers all ESLint integration methods available for your Turborepo mo
 
 | Method          | Use Case                   | Complexity | Performance | AI Integration |
 | --------------- | -------------------------- | ---------- | ----------- | -------------- |
-| **CLI**         | CI/CD, scripts, pre-commit | Low        | High        | ❌              |
-| **Scaffold**    | Initial setup, migration   | Low        | N/A         | ❌              |
-| **MCP**         | AI-assisted development    | Medium     | Medium      | ✅              |
-| **Node.js API** | Custom tooling, plugins    | High       | High        | ❌              |
+| **CLI**         | CI/CD, scripts, pre-commit | Low        | High        | ❌             |
+| **Scaffold**    | Initial setup, migration   | Low        | N/A         | ❌             |
+| **MCP**         | AI-assisted development    | Medium     | Medium      | ✅             |
+| **Node.js API** | Custom tooling, plugins    | High       | High        | ❌             |
 
-**Recommendation**: Use **CLI** for standard workflows, **MCP** for AI-assisted development.
+**Recommendation**: Use **CLI** for standard workflows, **MCP** for AI-assisted
+development.
 
 ---
 
@@ -68,24 +69,24 @@ pnpm add -D -w \
 **File**: `eslint.config.mjs` (ESLint 9 flat config format)
 
 ```javascript
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-import js from "@eslint/js";
-import typescriptEslint from "typescript-eslint";
-import react from "eslint-plugin-react";
-import reactHooks from "eslint-plugin-react-hooks";
-import importPlugin from "eslint-plugin-import";
-import prettierConfig from "eslint-config-prettier";
+import { dirname } from "path"
+import { fileURLToPath } from "url"
+import { FlatCompat } from "@eslint/eslintrc"
+import js from "@eslint/js"
+import typescriptEslint from "typescript-eslint"
+import react from "eslint-plugin-react"
+import reactHooks from "eslint-plugin-react-hooks"
+import importPlugin from "eslint-plugin-import"
+import prettierConfig from "eslint-config-prettier"
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all
-});
+  allConfig: js.configs.all,
+})
 
 export default [
   // Base recommended rules
@@ -113,7 +114,11 @@ export default [
         ecmaFeatures: {
           jsx: true,
         },
-        project: ["./tsconfig.json", "./apps/*/tsconfig.json", "./packages/*/tsconfig.json"],
+        project: [
+          "./tsconfig.json",
+          "./apps/*/tsconfig.json",
+          "./packages/*/tsconfig.json",
+        ],
       },
     },
     settings: {
@@ -123,7 +128,11 @@ export default [
       "import/resolver": {
         typescript: {
           alwaysTryTypes: true,
-          project: ["./tsconfig.json", "./apps/*/tsconfig.json", "./packages/*/tsconfig.json"],
+          project: [
+            "./tsconfig.json",
+            "./apps/*/tsconfig.json",
+            "./packages/*/tsconfig.json",
+          ],
         },
       },
     },
@@ -131,28 +140,46 @@ export default [
       // Biome-equivalent rules
       "no-console": ["error", { allow: ["warn", "error"] }],
       "no-unused-vars": "off", // Use TypeScript version
-      "@typescript-eslint/no-unused-vars": ["warn", {
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_",
-        caughtErrorsIgnorePattern: "^_",
-      }],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "react-hooks/exhaustive-deps": "warn",
       "react/react-in-jsx-scope": "off", // Not needed in React 17+
       "react/prop-types": "off", // Using TypeScript
-      "import/order": ["warn", {
-        groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
-        "newlines-between": "always",
-        alphabetize: { order: "asc", caseInsensitive: true },
-      }],
+      "import/order": [
+        "warn",
+        {
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index",
+          ],
+          "newlines-between": "always",
+          alphabetize: { order: "asc", caseInsensitive: true },
+        },
+      ],
       "import/no-unused-modules": "warn",
     },
   },
 
   // Test files overrides
   {
-    files: ["**/*.test.{ts,tsx}", "**/*.spec.{ts,tsx}", "**/__tests__/**", "**/__mocks__/**"],
+    files: [
+      "**/*.test.{ts,tsx}",
+      "**/*.spec.{ts,tsx}",
+      "**/__tests__/**",
+      "**/__mocks__/**",
+    ],
     rules: {
       "no-console": "off",
       "@typescript-eslint/no-explicit-any": "off",
@@ -188,7 +215,7 @@ export default [
 
   // Prettier integration (must be last)
   prettierConfig,
-];
+]
 ```
 
 ### 3. Update Package Scripts
@@ -270,9 +297,9 @@ npx eslint --init
 Create a setup script: `scripts/setup-eslint.ts`
 
 ```typescript
-import { execSync } from "child_process";
-import { writeFileSync } from "fs";
-import { join } from "path";
+import { execSync } from "child_process"
+import { writeFileSync } from "fs"
+import { join } from "path"
 
 const config = `import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -292,12 +319,14 @@ export default [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   ...typescriptEslint.configs.recommended,
 ];
-`;
+`
 
-writeFileSync(join(process.cwd(), "eslint.config.mjs"), config);
+writeFileSync(join(process.cwd(), "eslint.config.mjs"), config)
 
-console.log("✅ ESLint configuration created!");
-console.log("Run: pnpm add -D eslint @eslint/js typescript-eslint eslint-config-next");
+console.log("✅ ESLint configuration created!")
+console.log(
+  "Run: pnpm add -D eslint @eslint/js typescript-eslint eslint-config-next"
+)
 ```
 
 ### Method 3: Copy from Template
@@ -315,7 +344,8 @@ cp eslint.config.mjs apps/docs/eslint.config.mjs
 
 ### Overview
 
-ESLint MCP (Model Context Protocol) enables AI assistants (like Cursor, Claude Desktop) to interact with ESLint directly, providing:
+ESLint MCP (Model Context Protocol) enables AI assistants (like Cursor, Claude
+Desktop) to interact with ESLint directly, providing:
 
 - **Real-time linting** in AI conversations
 - **Code analysis** on-demand
@@ -421,8 +451,8 @@ console.log(x);
 
 ### MCP vs CLI Comparison
 
-| Feature                | CLI         | MCP                    |
-| ---------------------- | ----------- | ---------------------- |
+| Feature                | CLI          | MCP                     |
+| ---------------------- | ------------ | ----------------------- |
 | **Batch processing**   | ✅ Excellent | ⚠️ File-by-file         |
 | **CI/CD integration**  | ✅ Native    | ❌ Not suitable         |
 | **AI integration**     | ❌ No        | ✅ Native               |
@@ -430,7 +460,8 @@ console.log(x);
 | **Real-time feedback** | ❌ No        | ✅ Yes                  |
 | **Performance**        | ✅ Fast      | ⚠️ Slower (per-request) |
 
-**Best Practice**: Use **CLI** for scripts/CI, **MCP** for AI-assisted development.
+**Best Practice**: Use **CLI** for scripts/CI, **MCP** for AI-assisted
+development.
 
 ---
 
@@ -456,8 +487,8 @@ console.log(x);
 **Root `eslint.config.mjs`**:
 
 ```javascript
-import js from "@eslint/js";
-import typescriptEslint from "typescript-eslint";
+import js from "@eslint/js"
+import typescriptEslint from "typescript-eslint"
 
 export default [
   js.configs.recommended,
@@ -468,14 +499,14 @@ export default [
       // Shared rules for all packages
     },
   },
-];
+]
 ```
 
 **App-specific `apps/docs/eslint.config.mjs`**:
 
 ```javascript
-import baseConfig from "../../eslint.config.mjs";
-import nextConfig from "eslint-config-next";
+import baseConfig from "../../eslint.config.mjs"
+import nextConfig from "eslint-config-next"
 
 export default [
   ...baseConfig,
@@ -487,7 +518,7 @@ export default [
       "no-console": "off", // Allow console in docs
     },
   },
-];
+]
 ```
 
 ### 2. Turborepo Integration
@@ -501,11 +532,7 @@ export default [
       "dependsOn": [],
       "outputs": [".eslintcache"],
       "cache": true,
-      "inputs": [
-        "**/*.{ts,tsx,js,jsx}",
-        "eslint.config.*",
-        ".eslintignore"
-      ]
+      "inputs": ["**/*.{ts,tsx,js,jsx}", "eslint.config.*", ".eslintignore"]
     },
     "lint:fix": {
       "dependsOn": [],
@@ -549,10 +576,7 @@ pnpm lint:staged
 
 ```json
 {
-  "*.{ts,tsx,js,jsx}": [
-    "eslint --fix --max-warnings 0",
-    "prettier --write"
-  ]
+  "*.{ts,tsx,js,jsx}": ["eslint --fix --max-warnings 0", "prettier --write"]
 }
 ```
 
@@ -574,7 +598,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - run: pnpm install
       - run: pnpm lint
@@ -595,6 +619,7 @@ jobs:
 ### Phase 1: Parallel Setup (Week 1)
 
 1. **Install ESLint alongside Biome**
+
    ```bash
    pnpm add -D eslint@^9.26.0 @eslint/js typescript-eslint eslint-config-next
    ```
@@ -602,6 +627,7 @@ jobs:
 2. **Create ESLint config** (see [ESLint CLI Setup](#eslint-cli-setup))
 
 3. **Test on sample files**
+
    ```bash
    eslint apps/docs/src/components --ext .tsx
    ```
@@ -615,6 +641,7 @@ jobs:
 ### Phase 2: Gradual Migration (Week 2-3)
 
 1. **Update scripts to use ESLint**
+
    ```json
    {
      "scripts": {
@@ -642,11 +669,13 @@ jobs:
 ### Phase 3: Complete Migration (Week 4)
 
 1. **Remove Biome linting**
+
    ```bash
    pnpm remove @biomejs/biome
    ```
 
 2. **Update `biome.json`** (if keeping for formatting)
+
    ```json
    {
      "linter": { "enabled": false },
@@ -658,7 +687,7 @@ jobs:
    ```json
    {
      "globalDependencies": [
-       "eslint.config.mjs"  // Replace biome.json
+       "eslint.config.mjs" // Replace biome.json
      ]
    }
    ```
@@ -691,7 +720,7 @@ export default [
     cache: true,
     cacheLocation: ".eslintcache",
   },
-];
+]
 ```
 
 ### 2. Parallel Execution
@@ -739,7 +768,8 @@ eslint "apps/**/*.{ts,tsx}" --ignore-pattern "**/*.test.ts"
 }
 ```
 
-**Recommendation**: Use type-aware rules only in CI, disable in development for speed.
+**Recommendation**: Use type-aware rules only in CI, disable in development for
+speed.
 
 ### 5. Ignore Patterns
 
@@ -790,9 +820,11 @@ eslint "apps/**/*.{ts,tsx}" --ignore-pattern "**/*.test.ts"
 ### Extensions
 
 **Required**:
+
 - `dbaeumer.vscode-eslint` - ESLint extension
 
 **Recommended**:
+
 - `esbenp.prettier-vscode` - Prettier (if using)
 - `bradlc.vscode-tailwindcss` - Tailwind IntelliSense
 
@@ -803,6 +835,7 @@ eslint "apps/**/*.{ts,tsx}" --ignore-pattern "**/*.test.ts"
 ### Issue: "Cannot find module '@eslint/js'"
 
 **Solution**:
+
 ```bash
 pnpm add -D @eslint/js
 ```
@@ -810,17 +843,17 @@ pnpm add -D @eslint/js
 ### Issue: "Parsing error: Unexpected token"
 
 **Solution**: Ensure TypeScript parser is configured:
-```javascript
-import typescriptEslint from "typescript-eslint";
 
-export default [
-  ...typescriptEslint.configs.recommended,
-];
+```javascript
+import typescriptEslint from "typescript-eslint"
+
+export default [...typescriptEslint.configs.recommended]
 ```
 
 ### Issue: "ESLint cache is stale"
 
 **Solution**:
+
 ```bash
 rm -rf .eslintcache
 eslint . --cache
@@ -829,6 +862,7 @@ eslint . --cache
 ### Issue: "MCP server not connecting"
 
 **Solution**:
+
 1. Verify ESLint version: `pnpm list eslint` (must be v9.26.0+)
 2. Check MCP config in `.cursor/mcp.json`
 3. Restart Cursor
@@ -837,6 +871,7 @@ eslint . --cache
 ### Issue: "Performance is slow"
 
 **Solutions**:
+
 1. Enable caching: `eslint . --cache`
 2. Disable type-aware rules in development
 3. Use `--max-warnings 0` to fail fast
@@ -885,11 +920,11 @@ pnpm lint:changed
 - **ESLint Docs**: https://eslint.org/docs/latest/
 - **ESLint MCP**: https://eslint.org/docs/latest/use/mcp
 - **TypeScript ESLint**: https://typescript-eslint.io/
-- **Next.js ESLint**: https://nextjs.org/docs/app/building-your-application/configuring/eslint
+- **Next.js ESLint**:
+  https://nextjs.org/docs/app/building-your-application/configuring/eslint
 - **Turborepo**: https://turbo.build/repo/docs
 
 ---
 
-**Status**: ✅ Production Ready
-**Last Updated**: 2026-01-12
-**Maintainer**: Mythic Team
+**Status**: ✅ Production Ready **Last Updated**: 2026-01-12 **Maintainer**:
+Mythic Team

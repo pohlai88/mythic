@@ -8,10 +8,10 @@
  * Note: Server state (proposals list) should use TanStack Query, not Zustand.
  */
 
-'use client'
+"use client"
 
-import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
+import { create } from "zustand"
+import { devtools } from "zustand/middleware"
 
 interface BoardRoomState {
   // Selected proposal (client state only)
@@ -24,8 +24,8 @@ interface BoardRoomState {
   toggleDrawer: () => void
 
   // View preferences
-  viewMode: 'pool_table' | 'kanban' | 'calendar'
-  setViewMode: (mode: 'pool_table' | 'kanban' | 'calendar') => void
+  viewMode: "pool_table" | "kanban" | "calendar"
+  setViewMode: (mode: "pool_table" | "kanban" | "calendar") => void
 
   // Filter state (client-side only)
   filters: {
@@ -34,11 +34,11 @@ interface BoardRoomState {
     hideArchived: boolean
     onlyAwaitingMyVote: boolean
   }
-  setFilters: (filters: Partial<BoardRoomState['filters']>) => void
+  setFilters: (filters: Partial<BoardRoomState["filters"]>) => void
   resetFilters: () => void
 }
 
-const defaultFilters: BoardRoomState['filters'] = {
+const defaultFilters: BoardRoomState["filters"] = {
   circleIds: [],
   statuses: [],
   hideArchived: true,
@@ -58,7 +58,7 @@ export const useBoardRoomStore = create<BoardRoomState>()(
       toggleDrawer: () => set((state) => ({ drawerOpen: !state.drawerOpen })),
 
       // View mode
-      viewMode: 'pool_table',
+      viewMode: "pool_table",
       setViewMode: (mode) => set({ viewMode: mode }),
 
       // Filters
@@ -69,6 +69,6 @@ export const useBoardRoomStore = create<BoardRoomState>()(
         })),
       resetFilters: () => set({ filters: defaultFilters }),
     }),
-    { name: 'BoardRoom Store' }
+    { name: "BoardRoom Store" }
   )
 )

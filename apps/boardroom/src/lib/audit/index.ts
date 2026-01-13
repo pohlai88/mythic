@@ -11,7 +11,7 @@ export {
   type ThanosEvent,
   type ImmutableAuditTrail,
   type CreateAuditEvent,
-} from './audit-schemas'
+} from "./audit-schemas"
 
 export {
   createAuditEvent,
@@ -19,4 +19,4 @@ export {
   validateAuditEvent,
   validateAuditTrail,
   validateCreateAuditEvent,
-} from './audit-service'
+} from "./audit-service"

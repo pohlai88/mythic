@@ -7,38 +7,38 @@
  * @see PRD Section 4.3 Weapon 9: The Herald
  */
 
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { broadcasts, broadcastReads, broadcastTypeSchema } from '@/src/db/schema'
-import { circles, circleMembers } from '@/src/db/schema/circles'
-import { eq, and, gt, lte, or, isNull, desc, like } from 'drizzle-orm'
-import { z as z4 } from 'zod/v4'
-import { validateActionInput } from '@/src/lib/actions/validate-action'
+import { db } from "@/src/db"
+import { broadcasts, broadcastReads, broadcastTypeSchema } from "@/src/db/schema"
+import { circles, circleMembers } from "@/src/db/schema/circles"
+import { eq, and, gt, lte, or, isNull, desc, like } from "drizzle-orm"
+import { z as z4 } from "zod/v4"
+import { validateActionInput } from "@/src/lib/actions/validate-action"
 import {
   createBroadcastCreatedMessage,
   createBroadcastUpdatedMessage,
   createBroadcastReadMessage,
   emitBroadcastEvent,
-} from '@/src/lib/realtime/broadcast-events'
-import { createBroadcastVersion } from './broadcast-versions'
+} from "@/src/lib/realtime/broadcast-events"
+import { createBroadcastVersion } from "./broadcast-versions"
 
 /**
  * Input schema for creating broadcast
  */
 const createBroadcastInputSchema = z4.object({
   createdBy: z4.string().uuid(),
-  type: z4.enum(['approval', 'veto', 'announcement', 'poll', 'emergency']),
+  type: z4.enum(["approval", "veto", "announcement", "poll", "emergency"]),
   title: z4.string().min(1),
   message: z4.string().optional(),
   proposalId: z4.string().uuid().optional(),
   caseNumber: z4.string().optional(),
-  audience: z4.string().default('all'),
+  audience: z4.string().default("all"),
   sticky: z4.boolean().default(true),
   expiresAt: z4.date().optional(),
   scheduledFor: z4.date().optional(), // Schedule for future
   isDraft: z4.boolean().default(false), // Save as draft
-  priority: z4.enum(['low', 'normal', 'high', 'urgent']).default('normal'),
+  priority: z4.enum(["low", "normal", "high", "urgent"]).default("normal"),
   categories: z4.array(z4.string()).optional(),
   tags: z4.array(z4.string()).optional(),
   templateId: z4.string().uuid().optional(),
@@ -52,7 +52,7 @@ const createBroadcastInputSchema = z4.object({
 const getActiveBroadcastsInputSchema = z4.object({
   userId: z4.string().uuid(),
   userCircles: z4.array(z4.string().uuid()).optional(), // User's circle IDs
-  userRole: z4.enum(['sovereign', 'council', 'observer']).optional(), // User's role
+  userRole: z4.enum(["sovereign", "council", "observer"]).optional(), // User's role
 })
 
 /**
@@ -78,11 +78,14 @@ const updateBroadcastInputSchema = z4.object({
   expiresAt: z4.date().nullable().optional(),
   scheduledFor: z4.date().nullable().optional(),
   isDraft: z4.boolean().optional(),
-  priority: z4.enum(['low', 'normal', 'high', 'urgent']).optional(),
+  priority: z4.enum(["low", "normal", "high", "urgent"]).optional(),
   categories: z4.array(z4.string()).nullable().optional(),
   tags: z4.array(z4.string()).nullable().optional(),
   imageUrl: z4.string().url().nullable().optional(),
-  attachments: z4.array(z4.object({ url: z4.string().url(), name: z4.string() })).nullable().optional(),
+  attachments: z4
+    .array(z4.object({ url: z4.string().url(), name: z4.string() }))
+    .nullable()
+    .optional(),
 })
 
 /**
@@ -106,7 +109,7 @@ const markBroadcastReadInputSchema = z4.object({
 export interface BroadcastData {
   id: string
   createdBy: string
-  type: 'approval' | 'veto' | 'announcement' | 'poll' | 'emergency'
+  type: "approval" | "veto" | "announcement" | "poll" | "emergency"
   title: string
   message: string | null
   proposalId: string | null
@@ -116,7 +119,7 @@ export interface BroadcastData {
   expiresAt: Date | null
   scheduledFor: Date | null
   isDraft: boolean
-  priority: 'low' | 'normal' | 'high' | 'urgent'
+  priority: "low" | "normal" | "high" | "urgent"
   categories: string[] | null
   tags: string[] | null
   createdAt: Date
@@ -135,29 +138,29 @@ export async function createBroadcast(
 ): Promise<{ success: boolean; broadcastId?: string; error?: string }> {
   const inputResult = validateActionInput(input, createBroadcastInputSchema)
   if (!inputResult.success) {
-    console.error('Invalid createBroadcast input:', inputResult.issues)
-    return { success: false, error: 'Invalid input' }
+    console.error("Invalid createBroadcast input:", inputResult.issues)
+    return { success: false, error: "Invalid input" }
   }
 
-    const {
-      createdBy,
-      type,
-      title,
-      message,
-      proposalId,
-      caseNumber,
-      audience,
-      sticky,
-      expiresAt,
-      scheduledFor,
-      isDraft,
-      priority,
-      categories,
-      tags,
-      templateId,
-      imageUrl,
-      attachments,
-    } = inputResult.data
+  const {
+    createdBy,
+    type,
+    title,
+    message,
+    proposalId,
+    caseNumber,
+    audience,
+    sticky,
+    expiresAt,
+    scheduledFor,
+    isDraft,
+    priority,
+    categories,
+    tags,
+    templateId,
+    imageUrl,
+    attachments,
+  } = inputResult.data
 
   try {
     const [broadcast] = await db
@@ -174,7 +177,7 @@ export async function createBroadcast(
         expiresAt: expiresAt || null,
         scheduledFor: scheduledFor || null,
         isDraft: isDraft ?? false,
-        priority: priority || 'normal',
+        priority: priority || "normal",
         categories: categories || null,
         tags: tags || null,
         templateId: templateId || null,
@@ -184,13 +187,13 @@ export async function createBroadcast(
       .returning()
 
     if (!broadcast) {
-      return { success: false, error: 'Failed to create broadcast' }
+      return { success: false, error: "Failed to create broadcast" }
     }
 
     // Send email notifications (async, non-blocking)
     // TODO: Queue email sending in production
-    if (process.env.ENABLE_BROADCAST_EMAILS === 'true') {
-      import('./broadcast-email')
+    if (process.env.ENABLE_BROADCAST_EMAILS === "true") {
+      import("./broadcast-email")
         .then(({ sendBroadcastEmail, getEmailRecipients }) => {
           getEmailRecipients(audience).then((recipients) => {
             if (recipients.length > 0) {
@@ -198,20 +201,20 @@ export async function createBroadcast(
                 broadcastId: broadcast.id,
                 recipientEmails: recipients,
               }).catch((err) => {
-                console.error('Error sending broadcast emails:', err)
+                console.error("Error sending broadcast emails:", err)
               })
             }
           })
         })
         .catch((err) => {
-          console.error('Error loading email module:', err)
+          console.error("Error loading email module:", err)
         })
     }
 
     return { success: true, broadcastId: broadcast.id }
   } catch (error) {
-    console.error('Error creating broadcast:', error)
-    return { success: false, error: 'Failed to create broadcast' }
+    console.error("Error creating broadcast:", error)
+    return { success: false, error: "Failed to create broadcast" }
   }
 }
 
@@ -222,16 +225,16 @@ async function matchesAudience(
   broadcast: typeof broadcasts.$inferSelect,
   userId: string,
   userCircles?: string[],
-  userRole?: 'sovereign' | 'council' | 'observer'
+  userRole?: "sovereign" | "council" | "observer"
 ): Promise<boolean> {
   // "all" audience - everyone sees it
-  if (broadcast.audience === 'all') {
+  if (broadcast.audience === "all") {
     return true
   }
 
   // "circle:{id}" audience - check if user is in circle
-  if (broadcast.audience.startsWith('circle:')) {
-    const circleId = broadcast.audience.replace('circle:', '')
+  if (broadcast.audience.startsWith("circle:")) {
+    const circleId = broadcast.audience.replace("circle:", "")
     if (!userCircles) {
       // Fetch user's circles if not provided
       const memberships = await db
@@ -245,18 +248,18 @@ async function matchesAudience(
   }
 
   // "role:{role}" audience - check if user has role
-  if (broadcast.audience.startsWith('role:')) {
-    const requiredRole = broadcast.audience.replace('role:', '') as
-      | 'sovereign'
-      | 'council'
-      | 'observer'
+  if (broadcast.audience.startsWith("role:")) {
+    const requiredRole = broadcast.audience.replace("role:", "") as
+      | "sovereign"
+      | "council"
+      | "observer"
     if (!userRole) {
       // Fetch user's highest role if not provided
       const memberships = await db
         .select()
         .from(circleMembers)
         .where(eq(circleMembers.userId, userId))
-      const roles = memberships.map((m) => m.role as 'sovereign' | 'council' | 'observer')
+      const roles = memberships.map((m) => m.role as "sovereign" | "council" | "observer")
       // Check if user has required role or higher
       const roleHierarchy = { sovereign: 3, council: 2, observer: 1 }
       const userMaxRole = Math.max(...roles.map((r) => roleHierarchy[r] || 0))
@@ -278,12 +281,10 @@ async function matchesAudience(
  * - User hasn't read yet
  * - Match user's audience (all, circle, role)
  */
-export async function getActiveBroadcasts(
-  input: unknown
-): Promise<BroadcastData[]> {
+export async function getActiveBroadcasts(input: unknown): Promise<BroadcastData[]> {
   const inputResult = validateActionInput(input, getActiveBroadcastsInputSchema)
   if (!inputResult.success) {
-    console.error('Invalid getActiveBroadcasts input:', inputResult.issues)
+    console.error("Invalid getActiveBroadcasts input:", inputResult.issues)
     return []
   }
 
@@ -331,7 +332,7 @@ export async function getActiveBroadcasts(
       matchingBroadcasts.push({
         id: broadcast.id,
         createdBy: broadcast.createdBy,
-        type: broadcast.type as BroadcastData['type'],
+        type: broadcast.type as BroadcastData["type"],
         title: broadcast.title,
         message: broadcast.message,
         proposalId: broadcast.proposalId,
@@ -341,7 +342,7 @@ export async function getActiveBroadcasts(
         expiresAt: broadcast.expiresAt,
         scheduledFor: broadcast.scheduledFor,
         isDraft: broadcast.isDraft ?? false,
-        priority: (broadcast.priority as 'low' | 'normal' | 'high' | 'urgent') || 'normal',
+        priority: (broadcast.priority as "low" | "normal" | "high" | "urgent") || "normal",
         categories: (broadcast.categories as string[]) || null,
         tags: (broadcast.tags as string[]) || null,
         createdAt: broadcast.createdAt,
@@ -353,7 +354,7 @@ export async function getActiveBroadcasts(
 
     return matchingBroadcasts
   } catch (error) {
-    console.error('Error fetching active broadcasts:', error)
+    console.error("Error fetching active broadcasts:", error)
     return []
   }
 }
@@ -368,7 +369,7 @@ export async function getBroadcastHistory(
 ): Promise<{ broadcasts: BroadcastData[]; total: number }> {
   const inputResult = validateActionInput(input, getBroadcastHistoryInputSchema)
   if (!inputResult.success) {
-    console.error('Invalid getBroadcastHistory input:', inputResult.issues)
+    console.error("Invalid getBroadcastHistory input:", inputResult.issues)
     return { broadcasts: [], total: 0 }
   }
 
@@ -383,10 +384,7 @@ export async function getBroadcastHistory(
     if (search) {
       // Search in title and message
       conditions.push(
-        or(
-          like(broadcasts.title, `%${search}%`),
-          like(broadcasts.message, `%${search}%`)
-        )
+        or(like(broadcasts.title, `%${search}%`), like(broadcasts.message, `%${search}%`))
       )
     }
     // Exclude drafts from history (or make it optional)
@@ -421,7 +419,7 @@ export async function getBroadcastHistory(
     const transformedBroadcasts = historyBroadcasts.map((b) => ({
       id: b.id,
       createdBy: b.createdBy,
-      type: b.type as BroadcastData['type'],
+      type: b.type as BroadcastData["type"],
       title: b.title,
       message: b.message,
       proposalId: b.proposalId,
@@ -431,7 +429,7 @@ export async function getBroadcastHistory(
       expiresAt: b.expiresAt,
       scheduledFor: b.scheduledFor,
       isDraft: b.isDraft ?? false,
-      priority: (b.priority as 'low' | 'normal' | 'high' | 'urgent') || 'normal',
+      priority: (b.priority as "low" | "normal" | "high" | "urgent") || "normal",
       categories: (b.categories as string[]) || null,
       tags: (b.tags as string[]) || null,
       createdAt: b.createdAt,
@@ -442,7 +440,7 @@ export async function getBroadcastHistory(
 
     return { broadcasts: transformedBroadcasts, total }
   } catch (error) {
-    console.error('Error fetching broadcast history:', error)
+    console.error("Error fetching broadcast history:", error)
     return { broadcasts: [], total: 0 }
   }
 }
@@ -457,8 +455,8 @@ export async function markBroadcastRead(
 ): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, markBroadcastReadInputSchema)
   if (!inputResult.success) {
-    console.error('Invalid markBroadcastRead input:', inputResult.issues)
-    return { success: false, error: 'Invalid input' }
+    console.error("Invalid markBroadcastRead input:", inputResult.issues)
+    return { success: false, error: "Invalid input" }
   }
 
   const { broadcastId, userId } = inputResult.data
@@ -468,12 +466,7 @@ export async function markBroadcastRead(
     const [existing] = await db
       .select()
       .from(broadcastReads)
-      .where(
-        and(
-          eq(broadcastReads.broadcastId, broadcastId),
-          eq(broadcastReads.userId, userId)
-        )
-      )
+      .where(and(eq(broadcastReads.broadcastId, broadcastId), eq(broadcastReads.userId, userId)))
       .limit(1)
 
     if (existing) {
@@ -490,13 +483,13 @@ export async function markBroadcastRead(
 
     // Emit WebSocket event for real-time updates (async, non-blocking)
     emitBroadcastEvent(createBroadcastReadMessage(broadcastId, userId)).catch((err) => {
-      console.error('Error emitting broadcast_read event:', err)
+      console.error("Error emitting broadcast_read event:", err)
     })
 
     return { success: true }
   } catch (error) {
-    console.error('Error marking broadcast as read:', error)
-    return { success: false, error: 'Failed to mark broadcast as read' }
+    console.error("Error marking broadcast as read:", error)
+    return { success: false, error: "Failed to mark broadcast as read" }
   }
 }
 
@@ -510,7 +503,7 @@ export async function updateBroadcast(
 ): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, updateBroadcastInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { broadcastId, ...updates } = inputResult.data
@@ -525,26 +518,23 @@ export async function updateBroadcast(
     }
 
     if (Object.keys(cleanUpdates).length === 0) {
-      return { success: false, error: 'No updates provided' }
+      return { success: false, error: "No updates provided" }
     }
 
     // Add updatedAt timestamp
     cleanUpdates.updatedAt = new Date()
 
-    await db
-      .update(broadcasts)
-      .set(cleanUpdates)
-      .where(eq(broadcasts.id, broadcastId))
+    await db.update(broadcasts).set(cleanUpdates).where(eq(broadcasts.id, broadcastId))
 
     // Emit WebSocket event for real-time updates (async, non-blocking)
     emitBroadcastEvent(createBroadcastUpdatedMessage(broadcastId, cleanUpdates)).catch((err) => {
-      console.error('Error emitting broadcast_updated event:', err)
+      console.error("Error emitting broadcast_updated event:", err)
     })
 
     return { success: true }
   } catch (error) {
-    console.error('Error updating broadcast:', error)
-    return { success: false, error: 'Failed to update broadcast' }
+    console.error("Error updating broadcast:", error)
+    return { success: false, error: "Failed to update broadcast" }
   }
 }
 
@@ -560,7 +550,7 @@ export async function deleteBroadcast(
 ): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, deleteBroadcastInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { broadcastId } = inputResult.data
@@ -582,8 +572,8 @@ export async function deleteBroadcast(
 
     return { success: true }
   } catch (error) {
-    console.error('Error deleting broadcast:', error)
-    return { success: false, error: 'Failed to delete broadcast' }
+    console.error("Error deleting broadcast:", error)
+    return { success: false, error: "Failed to delete broadcast" }
   }
 }
 
@@ -597,7 +587,7 @@ export async function archiveBroadcast(
 ): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, deleteBroadcastInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { broadcastId } = inputResult.data
@@ -614,8 +604,8 @@ export async function archiveBroadcast(
 
     return { success: true }
   } catch (error) {
-    console.error('Error archiving broadcast:', error)
-    return { success: false, error: 'Failed to archive broadcast' }
+    console.error("Error archiving broadcast:", error)
+    return { success: false, error: "Failed to archive broadcast" }
   }
 }
 
@@ -624,9 +614,7 @@ export async function archiveBroadcast(
  *
  * Returns statistics about broadcasts (read rates, engagement, etc.)
  */
-export async function getBroadcastAnalytics(
-  broadcastId?: string
-): Promise<{
+export async function getBroadcastAnalytics(broadcastId?: string): Promise<{
   totalBroadcasts: number
   totalReads: number
   averageReadRate: number
@@ -643,13 +631,12 @@ export async function getBroadcastAnalytics(
     const totalReads = allReads.length
 
     // Calculate average read rate
-    const averageReadRate =
-      totalBroadcasts > 0 ? (totalReads / totalBroadcasts) * 100 : 0
+    const averageReadRate = totalBroadcasts > 0 ? (totalReads / totalBroadcasts) * 100 : 0
 
     // Group by type
     const byType: Record<string, { count: number; reads: number }> = {}
     for (const broadcast of allBroadcasts) {
-      const type = broadcast.type || 'unknown'
+      const type = broadcast.type || "unknown"
       if (!byType[type]) {
         byType[type] = { count: 0, reads: 0 }
       }
@@ -663,15 +650,13 @@ export async function getBroadcastAnalytics(
     const thirtyDaysAgo = new Date()
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
-    const recentBroadcasts = allBroadcasts.filter(
-      (b) => new Date(b.createdAt) >= thirtyDaysAgo
-    )
+    const recentBroadcasts = allBroadcasts.filter((b) => new Date(b.createdAt) >= thirtyDaysAgo)
 
     // Group by date
     const activityByDate = new Map<string, number>()
     for (const broadcast of recentBroadcasts) {
       if (!broadcast.createdAt) continue
-      const date = new Date(broadcast.createdAt).toISOString().split('T')[0]
+      const date = new Date(broadcast.createdAt).toISOString().split("T")[0]
       if (date) {
         activityByDate.set(date, (activityByDate.get(date) || 0) + 1)
       }
@@ -689,7 +674,7 @@ export async function getBroadcastAnalytics(
       recentActivity,
     }
   } catch (error) {
-    console.error('Error fetching broadcast analytics:', error)
+    console.error("Error fetching broadcast analytics:", error)
     return {
       totalBroadcasts: 0,
       totalReads: 0,
@@ -723,7 +708,7 @@ export async function getBroadcastReadStats(
       readAt: r.readAt,
     }))
   } catch (error) {
-    console.error('Error fetching broadcast read stats:', error)
+    console.error("Error fetching broadcast read stats:", error)
     return []
   }
 }

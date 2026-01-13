@@ -8,17 +8,17 @@
 
 ## Updated Weapons Architecture (9 Domains of Authority)
 
-| # | Weapon               | Domain           | Purpose                                     | Status      |
-| - | -------------------- | ---------------- | ------------------------------------------- | ----------- |
-| 1 | **The Codex**        | Living Schema    | Proposal templates (stencils)               | ✅ Original |
-| 2 | **The Thanos Trace** | Forensic Audit   | 6W1H immutable decision trail               | ✅ Original |
-| 3 | **The BoardDialog**  | Collaboration    | Real-time comments/consensus                | ✅ Original |
-| 4 | **The Hierarchy**    | Access Control   | Role-based permissions                      | ✅ Original |
-| 5 | **The Vault**        | Privacy          | Client-side encryption (Eyes Only)          | ✅ Original |
-| 6 | **The Vectors**      | Analytics        | Multi-dimensional metrics                   | ✅ Original |
-| 7 | **The Compass**      | Execution        | Lite To-Dos integration                     | ✅ Original |
-| 8 | **The Oracle** ⭐    | What-If Planning | Variance Analysis (Budgeted/Planned/Actual) | ✨ NEW      |
-| 9 | **The Herald** ⭐    | Announcements    | Sticky banner + broadcast tracking          | ✨ NEW      |
+| #   | Weapon               | Domain           | Purpose                                     | Status      |
+| --- | -------------------- | ---------------- | ------------------------------------------- | ----------- |
+| 1   | **The Codex**        | Living Schema    | Proposal templates (stencils)               | ✅ Original |
+| 2   | **The Thanos Trace** | Forensic Audit   | 6W1H immutable decision trail               | ✅ Original |
+| 3   | **The BoardDialog**  | Collaboration    | Real-time comments/consensus                | ✅ Original |
+| 4   | **The Hierarchy**    | Access Control   | Role-based permissions                      | ✅ Original |
+| 5   | **The Vault**        | Privacy          | Client-side encryption (Eyes Only)          | ✅ Original |
+| 6   | **The Vectors**      | Analytics        | Multi-dimensional metrics                   | ✅ Original |
+| 7   | **The Compass**      | Execution        | Lite To-Dos integration                     | ✅ Original |
+| 8   | **The Oracle** ⭐    | What-If Planning | Variance Analysis (Budgeted/Planned/Actual) | ✨ NEW      |
+| 9   | **The Herald** ⭐    | Announcements    | Sticky banner + broadcast tracking          | ✨ NEW      |
 
 ---
 
@@ -50,7 +50,8 @@ Status: Over-hired → market rates up 8%
 **1. Extends The Codex (Weapon 1)**
 
 - Every proposal stencil now includes budgeted/planned sections
-- Example: Hiring stencil has salary estimate + time-to-productivity + ROI forecast
+- Example: Hiring stencil has salary estimate + time-to-productivity + ROI
+  forecast
 
 **2. Data Model: case_whatif_budgets + case_whatif_milestones**
 
@@ -104,8 +105,10 @@ case_whatif_milestones {
 ### New Strategic Additions (Phase 1)
 
 - ✅ **Broadcast Announcements** (The Herald) — Sticky banner, read tracking
-- ✅ **What-If Variance Analysis** (The Oracle) — Budgeted/Planned/Actual tracking
-- ✅ **Config Layering** (3-tier: Global → Circle → User) — Architecture foundation
+- ✅ **What-If Variance Analysis** (The Oracle) — Budgeted/Planned/Actual
+  tracking
+- ✅ **Config Layering** (3-tier: Global → Circle → User) — Architecture
+  foundation
 - ✅ **Simple Budget Check** — Remaining budget warning
 
 ### Nice-to-Have (Phase 1)
@@ -131,8 +134,9 @@ case_whatif_milestones {
 
 **Your Requirement:**
 
-> "Everything shall be planned. Budgeted, Planned, Actual. Draw important analysis figures. Give
-> managers Know-How and Know-Why, not just asking for approval."
+> "Everything shall be planned. Budgeted, Planned, Actual. Draw important
+> analysis figures. Give managers Know-How and Know-Why, not just asking for
+> approval."
 
 **Oracle Delivers:**
 
@@ -228,7 +232,7 @@ CREATE TABLE broadcast_reads (...)
 ### Extend Codex Stencils
 
 ```sql
-ALTER TABLE proposal_stencils 
+ALTER TABLE proposal_stencils
 ADD COLUMN budgeted_fields JSONB,
 ADD COLUMN planned_fields JSONB,
 ADD COLUMN variance_milestones JSONB;
@@ -250,7 +254,7 @@ ADD COLUMN variance_milestones JSONB;
 
 ### Week 1-2: Infrastructure
 
-- Database migration (case_whatif_* tables)
+- Database migration (case*whatif*\* tables)
 - Extend Codex Stencils with budgeted/planned sections
 - API endpoints for plan creation + variance tracking
 
@@ -290,7 +294,8 @@ ADD COLUMN variance_milestones JSONB;
 
 ✅ **Strategic Success:**
 
-- Decisions made with "Know-Why" (variance reasoning) not just "Know-How" (what happened)
+- Decisions made with "Know-Why" (variance reasoning) not just "Know-How" (what
+  happened)
 - Portfolio-level thinking (approving scenarios, not individual proposals)
 - Organizational learning: "We now know hiring overruns by X%"
 - Decision latency: Approval time reduced from days → hours
@@ -299,7 +304,8 @@ ADD COLUMN variance_milestones JSONB;
 
 ## Questions for Stakeholders
 
-1. **Budgeted Defaults:** Should Oracle suggest budgeted values based on past similar cases?
+1. **Budgeted Defaults:** Should Oracle suggest budgeted values based on past
+   similar cases?
 2. **Variance Thresholds:** When do we escalate (e.g., >10% overrun)?
 3. **Milestone Frequency:** Quarterly reviews? Semi-annual? Custom per stencil?
 4. **Portfolio Limits:** Max cases to pool in one scenario (recommend 10-15)?
@@ -342,10 +348,11 @@ CEO: Opens Pool Table Dashboard
 4. 📚 **Team training** — How to fill budgeted/planned sections
 5. 🚀 **Gradual rollout** — Beta test with early users, gather feedback
 
-Your insight about "Know-How" vs "Know-Why" is the guiding principle. Every feature in Oracle should
-answer one of these:
+Your insight about "Know-How" vs "Know-Why" is the guiding principle. Every
+feature in Oracle should answer one of these:
 
 - **Know-How:** "What happened? (Actual vs Budgeted)"
 - **Know-Why:** "Why did it happen? (Variance reason)"
 
-This transforms The Apex from a governance tool to a **decision intelligence system**.
+This transforms The Apex from a governance tool to a **decision intelligence
+system**.

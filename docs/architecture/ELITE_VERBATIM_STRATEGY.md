@@ -1,6 +1,8 @@
 ---
 title: ELITE Verbatim Strategy
-description: Prevent configuration drift, ensure exact file contents, eliminate debugging nightmares
+description:
+  Prevent configuration drift, ensure exact file contents, eliminate debugging
+  nightmares
 status: sealed
 layer: L2
 document_hash: sha256:TO_BE_COMPUTED
@@ -12,9 +14,10 @@ sealed_date: 2026-01-11
 
 # ELITE Verbatim Strategy - Avoid Debugging Hell
 
-**Status**: 🔒 **SEALED** - Governance-Grade | **Version**: 1.0.0 | **Last Updated**: 2026-01-11
-**Purpose**: Prevent configuration drift, ensure exact file contents, eliminate debugging nightmares
-**Layer**: L2 (Operational) - Architecture documentation
+**Status**: 🔒 **SEALED** - Governance-Grade | **Version**: 1.0.0 | **Last
+Updated**: 2026-01-11 **Purpose**: Prevent configuration drift, ensure exact
+file contents, eliminate debugging nightmares **Layer**: L2 (Operational) -
+Architecture documentation
 
 ---
 
@@ -36,6 +39,7 @@ sealed_date: 2026-01-11
 ### The Problem: Configuration Drift Hell
 
 **Symptoms**:
+
 - ✅ Works on my machine, fails in CI
 - ✅ Build succeeds locally, fails in production
 - ✅ TypeScript errors appear randomly
@@ -44,6 +48,7 @@ sealed_date: 2026-01-11
 - ✅ Hours spent debugging config instead of building features
 
 **Root Cause**: Configuration files drift from canonical versions
+
 - Manual edits without documentation
 - Copy-paste errors
 - Environment-specific overrides
@@ -52,9 +57,11 @@ sealed_date: 2026-01-11
 
 ### The Solution: Verbatim Enforcement
 
-**ELITE Verbatim Strategy** = **Exact file contents, validated, enforced, documented**
+**ELITE Verbatim Strategy** = **Exact file contents, validated, enforced,
+documented**
 
 Every critical configuration file has:
+
 1. ✅ **Canonical Source**: Single source of truth
 2. ✅ **Verbatim Template**: Exact contents documented
 3. ✅ **Validation Script**: Automated verification
@@ -68,12 +75,14 @@ Every critical configuration file has:
 ### Principle 1: Single Source of Truth (SSOT)
 
 **✅ DO**:
+
 - One canonical version of each config file
 - Document exact contents in this guide
 - Version control all configs
 - Never modify without updating documentation
 
 **❌ DON'T**:
+
 - Create environment-specific variants
 - Modify configs "just to test"
 - Leave configs undocumented
@@ -82,12 +91,14 @@ Every critical configuration file has:
 ### Principle 2: Verbatim = Exact Match
 
 **✅ Verbatim Files**:
+
 - Contents must match documentation exactly
 - Whitespace, comments, order all matter
 - No "equivalent" variations
 - No "it should work the same" assumptions
 
 **Example**:
+
 ```json
 // ✅ CORRECT: Exact match
 {
@@ -104,12 +115,14 @@ Every critical configuration file has:
 ### Principle 3: Validation Before Execution
 
 **✅ DO**:
+
 - Validate configs before builds
 - Check file contents in CI/CD
 - Fail fast on mismatches
 - Provide clear error messages
 
 **❌ DON'T**:
+
 - Assume configs are correct
 - Skip validation for "speed"
 - Allow silent failures
@@ -118,12 +131,14 @@ Every critical configuration file has:
 ### Principle 4: Documentation as Code
 
 **✅ DO**:
+
 - Document configs in this guide
 - Include exact file contents
 - Explain why each setting exists
 - Link to tool documentation
 
 **❌ DON'T**:
+
 - Leave configs undocumented
 - Assume knowledge is shared
 - Document only "non-obvious" parts
@@ -140,21 +155,25 @@ These files **MUST** match documented contents verbatim:
 #### **Node.js Version Files**
 
 **✅ `.node-version`** - For asdf/nodenv
+
 ```
 20.18.0
 ```
 
 **✅ `.nvmrc`** - For nvm
+
 ```
 20.18.0
 ```
 
 **Why Verbatim**:
+
 - Node version mismatches cause build failures
 - Different versions = different behavior
 - CI/CD must match local development
 
 **Validation**:
+
 ```bash
 # Must match package.json engines.node
 # Must match GitHub Actions node-version
@@ -165,6 +184,7 @@ These files **MUST** match documented contents verbatim:
 #### **Package Manager Config**
 
 **✅ `.npmrc`** - pnpm Configuration
+
 ```
 # Enable pre/post scripts for pnpm
 # pnpm@8 by default doesn't execute pre/post scripts
@@ -173,11 +193,13 @@ enable-pre-post-scripts=true
 ```
 
 **Why Verbatim**:
+
 - Script execution behavior differs by pnpm version
 - Missing scripts = silent failures
 - Peer dependency resolution varies
 
 **Validation**:
+
 ```bash
 # Must match package.json packageManager version
 # Must enable pre/post scripts for pnpm@8
@@ -188,6 +210,7 @@ enable-pre-post-scripts=true
 #### **Workspace Definition**
 
 **✅ `pnpm-workspace.yaml`** - Workspace Canonical Source
+
 ```yaml
 packages:
   - "apps/*"
@@ -195,11 +218,13 @@ packages:
 ```
 
 **Why Verbatim**:
+
 - Single source of truth for workspace
 - Duplication in package.json creates conflicts
 - Wrong paths = missing packages
 
 **Validation**:
+
 ```bash
 # Must NOT have workspaces field in package.json
 # Must match actual directory structure
@@ -210,6 +235,7 @@ packages:
 #### **TypeScript Base Config**
 
 **✅ `tsconfig.json`** - Root TypeScript Base
+
 ```json
 {
   "compilerOptions": {
@@ -232,11 +258,13 @@ packages:
 ```
 
 **Why Verbatim**:
+
 - Type checking behavior depends on exact settings
 - Different targets = different type errors
 - Module resolution affects imports
 
 **Validation**:
+
 ```bash
 # Must compile without errors
 # Must match app tsconfig.json extends
@@ -247,6 +275,7 @@ packages:
 #### **TurboRepo Config**
 
 **✅ `turbo.json`** - Build Pipeline
+
 ```json
 {
   "$schema": "https://turbo.build/schema.json",
@@ -271,11 +300,13 @@ packages:
 ```
 
 **Why Verbatim**:
+
 - Pipeline dependencies affect build order
 - Wrong outputs = cache misses
 - Global deps = rebuild triggers
 
 **Validation**:
+
 ```bash
 # Must list only truly global configs (10-15 max)
 # Must match actual pipeline tasks
@@ -292,6 +323,7 @@ These files have verbatim templates but may vary by context:
 **✅ `.github/workflows/ci.yml`** - CI Pipeline
 
 **Verbatim Template**:
+
 ```yaml
 name: CI
 
@@ -328,7 +360,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -356,11 +388,13 @@ jobs:
 ```
 
 **Why Verbatim**:
+
 - CI failures waste developer time
 - Different Node versions = different results
 - Missing steps = incomplete validation
 
 **Validation**:
+
 ```bash
 # Must use exact pnpm version (8.15.0)
 # Must use Node 20 (matches .node-version)
@@ -378,11 +412,13 @@ These files are documented for reference but may evolve:
 **✅ `biome.json`** - Linting & Formatting
 
 **Current Verbatim** (see ROOT_CONFIG_ELITE_MANAGEMENT.md for exact contents):
+
 - Formatter: 2 spaces, 100 char width
 - Linter: Enabled
 - Ignore: Build artifacts
 
 **Why Documented**:
+
 - Formatting inconsistencies cause merge conflicts
 - Linter rules affect code quality
 - Team must use same settings
@@ -444,9 +480,9 @@ These files are documented for reference but may evolve:
  * Fails fast on mismatches to prevent debugging hell.
  */
 
-import { readFileSync } from 'fs'
-import { join } from 'path'
-import verbatimRegistry from './verbatim-registry.json'
+import { readFileSync } from "fs"
+import { join } from "path"
+import verbatimRegistry from "./verbatim-registry.json"
 
 interface ValidationResult {
   file: string
@@ -454,17 +490,20 @@ interface ValidationResult {
   error?: string
 }
 
-function validateFile(file: { path: string; template: string }): ValidationResult {
+function validateFile(file: {
+  path: string
+  template: string
+}): ValidationResult {
   try {
     const filePath = join(process.cwd(), file.path)
-    const actual = readFileSync(filePath, 'utf-8').trim()
+    const actual = readFileSync(filePath, "utf-8").trim()
     const expected = file.template.trim()
 
     if (actual !== expected) {
       return {
         file: file.path,
         passed: false,
-        error: `Mismatch: Expected exact match with template`
+        error: `Mismatch: Expected exact match with template`,
       }
     }
 
@@ -473,26 +512,30 @@ function validateFile(file: { path: string; template: string }): ValidationResul
     return {
       file: file.path,
       passed: false,
-      error: `File not found or unreadable: ${error}`
+      error: `File not found or unreadable: ${error}`,
     }
   }
 }
 
 function main() {
-  const criticalFiles = verbatimRegistry.files.filter(f => f.category === 'critical')
+  const criticalFiles = verbatimRegistry.files.filter(
+    (f) => f.category === "critical"
+  )
   const results = criticalFiles.map(validateFile)
-  const failures = results.filter(r => !r.passed)
+  const failures = results.filter((r) => !r.passed)
 
   if (failures.length > 0) {
-    console.error('❌ Verbatim validation failed:\n')
-    failures.forEach(f => {
+    console.error("❌ Verbatim validation failed:\n")
+    failures.forEach((f) => {
       console.error(`  ${f.file}: ${f.error}`)
     })
-    console.error('\n💡 Fix: Update files to match verbatim templates in docs/architecture/ELITE_VERBATIM_STRATEGY.md')
+    console.error(
+      "\n💡 Fix: Update files to match verbatim templates in docs/architecture/ELITE_VERBATIM_STRATEGY.md"
+    )
     process.exit(1)
   }
 
-  console.log('✅ All verbatim files validated')
+  console.log("✅ All verbatim files validated")
 }
 
 main()
@@ -534,32 +577,38 @@ echo "✅ Verbatim validation passed"
 ### 5.1 Validation Levels
 
 **Level 1: Critical Files (Blocking)**
+
 - `.node-version`, `.nvmrc` - Node version
 - `.npmrc` - Package manager config
 - `pnpm-workspace.yaml` - Workspace definition
 - `tsconfig.json` - TypeScript base config
 
 **Level 2: Important Files (Warning)**
+
 - `turbo.json` - Build pipeline
 - `.github/workflows/ci.yml` - CI config
 - `biome.json` - Linting config
 
 **Level 3: Reference Files (Documentation)**
+
 - Other configs documented but may evolve
 
 ### 5.2 Enforcement Mechanisms
 
 **✅ Pre-commit Hook**:
+
 - Blocks commits with mismatched critical files
 - Provides clear error messages
 - Links to documentation
 
 **✅ CI/CD Validation**:
+
 - Validates on every PR
 - Fails builds on mismatches
 - Prevents merge of broken configs
 
 **✅ Developer Tools**:
+
 - VS Code task to validate
 - Script to check before push
 - Auto-fix where possible
@@ -567,11 +616,13 @@ echo "✅ Verbatim validation passed"
 ### 5.3 Auto-Fix Strategy
 
 **✅ Safe Auto-Fixes**:
+
 - Whitespace normalization
 - Comment formatting
 - Line ending conversion
 
 **❌ Manual Review Required**:
+
 - Content changes
 - New settings
 - Version updates
@@ -585,6 +636,7 @@ echo "✅ Verbatim validation passed"
 **Problem**: Node version mismatch causes "works on my machine"
 
 **Solution**: Verbatim enforcement
+
 ```bash
 # ✅ All files must match:
 .node-version: 20.18.0
@@ -594,20 +646,21 @@ package.json engines.node: >=20.0.0
 ```
 
 **Validation**:
+
 ```typescript
 function validateNodeVersion() {
-  const nodeVersion = readFileSync('.node-version', 'utf-8').trim()
-  const nvmrc = readFileSync('.nvmrc', 'utf-8').trim()
-  const packageJson = JSON.parse(readFileSync('package.json', 'utf-8'))
+  const nodeVersion = readFileSync(".node-version", "utf-8").trim()
+  const nvmrc = readFileSync(".nvmrc", "utf-8").trim()
+  const packageJson = JSON.parse(readFileSync("package.json", "utf-8"))
 
   if (nodeVersion !== nvmrc) {
-    throw new Error('Node version files must match')
+    throw new Error("Node version files must match")
   }
 
   // Check engines.node is compatible
   const enginesNode = packageJson.engines?.node
-  if (!enginesNode || !enginesNode.includes('20')) {
-    throw new Error('package.json engines.node must include Node 20')
+  if (!enginesNode || !enginesNode.includes("20")) {
+    throw new Error("package.json engines.node must include Node 20")
   }
 }
 ```
@@ -617,17 +670,19 @@ function validateNodeVersion() {
 **Problem**: pnpm scripts not running, peer dependency issues
 
 **Solution**: Verbatim `.npmrc`
+
 ```ini
 # Must enable pre/post scripts for pnpm@8
 enable-pre-post-scripts=true
 ```
 
 **Validation**:
+
 ```typescript
 function validateNpmrc() {
-  const npmrc = readFileSync('.npmrc', 'utf-8')
-  if (!npmrc.includes('enable-pre-post-scripts=true')) {
-    throw new Error('.npmrc must enable pre/post scripts for pnpm@8')
+  const npmrc = readFileSync(".npmrc", "utf-8")
+  if (!npmrc.includes("enable-pre-post-scripts=true")) {
+    throw new Error(".npmrc must enable pre/post scripts for pnpm@8")
   }
 }
 ```
@@ -637,17 +692,21 @@ function validateNpmrc() {
 **Problem**: Packages not found, workspace conflicts
 
 **Solution**: Single source of truth
+
 ```yaml
 # ✅ pnpm-workspace.yaml is canonical
 # ❌ package.json workspaces field must NOT exist
 ```
 
 **Validation**:
+
 ```typescript
 function validateWorkspace() {
-  const packageJson = JSON.parse(readFileSync('package.json', 'utf-8'))
+  const packageJson = JSON.parse(readFileSync("package.json", "utf-8"))
   if (packageJson.workspaces) {
-    throw new Error('package.json must NOT have workspaces field (use pnpm-workspace.yaml)')
+    throw new Error(
+      "package.json must NOT have workspaces field (use pnpm-workspace.yaml)"
+    )
   }
 }
 ```
@@ -657,17 +716,21 @@ function validateWorkspace() {
 **Problem**: Type errors appear randomly, imports fail
 
 **Solution**: Verbatim base config, documented inheritance
+
 ```json
 // Root tsconfig.json: Base only, NO references
 // App tsconfig.json: Extends root, adds references
 ```
 
 **Validation**:
+
 ```typescript
 function validateTsConfig() {
-  const rootTsConfig = JSON.parse(readFileSync('tsconfig.json', 'utf-8'))
+  const rootTsConfig = JSON.parse(readFileSync("tsconfig.json", "utf-8"))
   if (rootTsConfig.references) {
-    throw new Error('Root tsconfig.json must NOT have references (use solution-style)')
+    throw new Error(
+      "Root tsconfig.json must NOT have references (use solution-style)"
+    )
   }
 }
 ```
@@ -679,16 +742,19 @@ function validateTsConfig() {
 ### 7.1 Validation Scripts
 
 **`scripts/validate-verbatim.ts`**:
+
 - Validates all critical verbatim files
 - Provides clear error messages
 - Exits with code 1 on failure
 
 **`scripts/check-node-version.ts`**:
+
 - Validates Node version consistency
 - Checks all version files match
 - Validates against package.json
 
 **`scripts/check-workspace.ts`**:
+
 - Validates workspace definition
 - Ensures no duplication
 - Checks package paths exist
@@ -696,6 +762,7 @@ function validateTsConfig() {
 ### 7.2 VS Code Tasks
 
 **`.vscode/tasks.json`**:
+
 ```json
 {
   "version": "2.0.0",
@@ -713,6 +780,7 @@ function validateTsConfig() {
 ### 7.3 Package Scripts
 
 **`package.json`**:
+
 ```json
 {
   "scripts": {
@@ -731,11 +799,13 @@ function validateTsConfig() {
 ### Issue: "Node version mismatch"
 
 **Symptoms**:
+
 - Build fails in CI but works locally
 - TypeScript errors appear randomly
 - Package resolution fails
 
 **Solution**:
+
 ```bash
 # 1. Check all version files match
 cat .node-version .nvmrc package.json | grep -i "20"
@@ -751,11 +821,13 @@ echo "20.18.0" > .nvmrc
 ### Issue: "pnpm scripts not running"
 
 **Symptoms**:
+
 - Pre-commit hooks don't run
 - Post-install scripts skipped
 - Lifecycle scripts ignored
 
 **Solution**:
+
 ```bash
 # 1. Check .npmrc has enable-pre-post-scripts
 cat .npmrc | grep enable-pre-post-scripts
@@ -770,11 +842,13 @@ pnpm validate:verbatim
 ### Issue: "Workspace packages not found"
 
 **Symptoms**:
+
 - Import errors for workspace packages
-- TypeScript can't resolve @mythic/* packages
+- TypeScript can't resolve @mythic/\* packages
 - Build fails with "module not found"
 
 **Solution**:
+
 ```bash
 # 1. Check pnpm-workspace.yaml exists and is correct
 cat pnpm-workspace.yaml
@@ -790,11 +864,13 @@ pnpm install
 ### Issue: "TypeScript config errors"
 
 **Symptoms**:
+
 - Type errors in one app but not another
 - Import resolution fails
 - Build succeeds but type-check fails
 
 **Solution**:
+
 ```bash
 # 1. Check root tsconfig.json has NO references
 cat tsconfig.json | grep references
@@ -813,16 +889,19 @@ pnpm type-check
 ### Targets
 
 **✅ Zero Config Drift**:
+
 - All critical files match verbatim templates
 - Pre-commit hooks prevent mismatches
 - CI/CD validates on every PR
 
 **✅ Fast Debugging**:
+
 - Config issues caught before commit
 - Clear error messages point to exact files
 - Documentation explains every setting
 
 **✅ Team Confidence**:
+
 - Developers trust configs are correct
 - No "works on my machine" issues
 - Consistent behavior across environments
@@ -830,6 +909,7 @@ pnpm type-check
 ### Monitoring
 
 **Track**:
+
 - Number of verbatim validation failures
 - Time spent debugging config issues
 - Config-related build failures
@@ -873,18 +953,19 @@ pnpm type-check
 
 ---
 
-**Last Updated**: 2026-01-11
-**Status**: 🔒 **SEALED** - Governance-Grade - Implementation Complete
-**Sealed Date**: 2026-01-11
-**Version**: 1.0.0
+**Last Updated**: 2026-01-11 **Status**: 🔒 **SEALED** - Governance-Grade -
+Implementation Complete **Sealed Date**: 2026-01-11 **Version**: 1.0.0
 
 ---
 
 ## Document Seal Verification
 
-**Hash**: `sha256:TO_BE_COMPUTED` (run `pnpm tsx scripts/compute-doc-hash.ts docs/architecture/ELITE_VERBATIM_STRATEGY.md` to compute)
+**Hash**: `sha256:TO_BE_COMPUTED` (run
+`pnpm tsx scripts/compute-doc-hash.ts docs/architecture/ELITE_VERBATIM_STRATEGY.md`
+to compute)
 
 **Verification**:
+
 ```bash
 # Compute document hash
 pnpm tsx scripts/compute-doc-hash.ts docs/architecture/ELITE_VERBATIM_STRATEGY.md
@@ -893,7 +974,9 @@ pnpm tsx scripts/compute-doc-hash.ts docs/architecture/ELITE_VERBATIM_STRATEGY.m
 # Hash must match exactly for document integrity
 ```
 
-**Amendment Process**: This document is sealed (L2 Operational). Changes require:
+**Amendment Process**: This document is sealed (L2 Operational). Changes
+require:
+
 1. Architecture team review
 2. Update version number
 3. Recompute and update hash

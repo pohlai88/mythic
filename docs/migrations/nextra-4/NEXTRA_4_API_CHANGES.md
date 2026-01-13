@@ -1,7 +1,6 @@
 # Nextra 4: API & Component Changes Guide
 
-**Date**: 2025-01-27
-**Status**: ✅ **Documented - Changes Verified**
+**Date**: 2025-01-27 **Status**: ✅ **Documented - Changes Verified**
 
 **Reference**: Nextra 4 Migration Guide - Various API Changes
 
@@ -9,7 +8,8 @@
 
 ## Overview
 
-Nextra 4 introduces several API changes, component renames, and improvements. This guide documents all changes and verifies current implementation.
+Nextra 4 introduces several API changes, component renames, and improvements.
+This guide documents all changes and verifies current implementation.
 
 ---
 
@@ -22,10 +22,11 @@ Nextra 4 introduces several API changes, component renames, and improvements. Th
 **Current Status**: ✅ **COMPLIANT**
 
 **File**: `package.json`
+
 ```json
 {
   "dependencies": {
-    "next": "^16.1.1"  // ✅ >= 14
+    "next": "^16.1.1" // ✅ >= 14
   }
 }
 ```
@@ -36,15 +37,17 @@ Nextra 4 introduces several API changes, component renames, and improvements. Th
 
 **Nextra 4 requires**: `moduleResolution: "bundler"` in `tsconfig.json`
 
-**Reason**: `typesVersions` fields from Nextra packages were removed. TypeScript needs `bundler` resolution.
+**Reason**: `typesVersions` fields from Nextra packages were removed. TypeScript
+needs `bundler` resolution.
 
 **Current Status**: ✅ **COMPLIANT**
 
 **File**: `tsconfig.json`
+
 ```json
 {
   "compilerOptions": {
-    "moduleResolution": "bundler"  // ✅ Already configured
+    "moduleResolution": "bundler" // ✅ Already configured
   }
 }
 ```
@@ -52,6 +55,7 @@ Nextra 4 introduces several API changes, component renames, and improvements. Th
 **Verification**: ✅ **PASS** - No type errors
 
 **Migration Note**: If you had `moduleResolution: "node"`, you would see:
+
 ```
 Type error: Cannot find module 'nextra/components' or its corresponding type declarations.
 ```
@@ -69,14 +73,16 @@ Type error: Cannot find module 'nextra/components' or its corresponding type dec
 ### How It Works
 
 **Import**:
+
 ```tsx
-import { Pre, withIcons } from 'nextra/components'
+import { Pre, withIcons } from "nextra/components"
 ```
 
 **Usage**:
+
 ```tsx
 const docsComponents = getDocsMDXComponents({
-  pre: withIcons(Pre, { js: MyCustomIcon })
+  pre: withIcons(Pre, { js: MyCustomIcon }),
 })
 ```
 
@@ -92,8 +98,9 @@ const docsComponents = getDocsMDXComponents({
 **Status**: ⚠️ **NOT CONFIGURED** - Using defaults
 
 **Current**:
+
 ```tsx
-import { useMDXComponents as getDocsMDXComponents } from 'nextra-theme-docs'
+import { useMDXComponents as getDocsMDXComponents } from "nextra-theme-docs"
 
 const docsComponents = getDocsMDXComponents()
 ```
@@ -101,11 +108,11 @@ const docsComponents = getDocsMDXComponents()
 **Optional Enhancement**: Can add custom icons:
 
 ```tsx
-import { Pre, withIcons } from 'nextra/components'
-import { MyCustomIcon } from './icons'
+import { Pre, withIcons } from "nextra/components"
+import { MyCustomIcon } from "./icons"
 
 const docsComponents = getDocsMDXComponents({
-  pre: withIcons(Pre, { js: MyCustomIcon, ts: MyCustomIcon })
+  pre: withIcons(Pre, { js: MyCustomIcon, ts: MyCustomIcon }),
 })
 ```
 
@@ -118,6 +125,7 @@ const docsComponents = getDocsMDXComponents({
 ### What Changed
 
 **Nextra 4**: All external Markdown links in MDX files now:
+
 - Open in new tab automatically
 - Include `rel="noreferrer"` attribute
 - Display visual ↗ suffix icon
@@ -125,11 +133,13 @@ const docsComponents = getDocsMDXComponents({
 ### Example
 
 **MDX File**:
+
 ```mdx
 [dimaMachina](https://github.com/dimaMachina)
 ```
 
 **Compiled HTML**:
+
 ```html
 <a href="https://github.com/dimaMachina" target="_blank" rel="noreferrer">
   dimaMachina&thinsp;
@@ -149,7 +159,8 @@ const docsComponents = getDocsMDXComponents({
 
 ### What Changed
 
-**Nextra 4**: `::selection` styles now use primary color from `color` prop on `<Head>` component.
+**Nextra 4**: `::selection` styles now use primary color from `color` prop on
+`<Head>` component.
 
 ### Current Implementation
 
@@ -158,18 +169,19 @@ const docsComponents = getDocsMDXComponents({
 **Status**: ⚠️ **NOT CONFIGURED** - Using default selection color
 
 **Current**:
+
 ```tsx
-<Head backgroundColor={{ dark: '#0f172a', light: '#fefce8' }} />
+<Head backgroundColor={{ dark: "#0f172a", light: "#fefce8" }} />
 ```
 
 **Optional Enhancement**: Can add `color` prop:
 
 ```tsx
 <Head
-  backgroundColor={{ dark: '#0f172a', light: '#fefce8' }}
+  backgroundColor={{ dark: "#0f172a", light: "#fefce8" }}
   color={{
     hue: { dark: 120, light: 0 },
-    saturation: { dark: 100, light: 100 }
+    saturation: { dark: 100, light: 100 },
   }}
 />
 ```
@@ -182,15 +194,17 @@ const docsComponents = getDocsMDXComponents({
 
 ### What Changed
 
-**Nextra 4**: `<Th>`, `<Tr>`, and `<Td>` components removed and attached to `<Table>`.
+**Nextra 4**: `<Th>`, `<Tr>`, and `<Td>` components removed and attached to
+`<Table>`.
 
 ### Migration
 
 **Before (Nextra 3)**:
-```tsx
-import { Table, Th, Tr, Td } from 'nextra/components'
 
-<Table>
+```tsx
+import { Table, Th, Tr, Td } from "nextra/components"
+
+;<Table>
   <thead>
     <Tr>
       <Th>Items</Th>
@@ -200,10 +214,11 @@ import { Table, Th, Tr, Td } from 'nextra/components'
 ```
 
 **After (Nextra 4)**:
-```tsx
-import { Table } from 'nextra/components'
 
-<Table>
+```tsx
+import { Table } from "nextra/components"
+
+;<Table>
   <thead>
     <Table.Tr>
       <Table.Th>Items</Table.Th>
@@ -219,6 +234,7 @@ import { Table } from 'nextra/components'
 **Status**: ✅ **CUSTOM COMPONENT** - Using custom Table implementation
 
 **Current**:
+
 ```tsx
 // Custom Table component with Table.Th, Table.Tr, Table.Td
 export const Table = {
@@ -232,7 +248,8 @@ export const Table = {
 
 **Verification**: ✅ **PASS** - Custom component already uses correct pattern
 
-**Note**: If using Nextra's Table component, would need to migrate to `Table.Th`, `Table.Tr`, `Table.Td`.
+**Note**: If using Nextra's Table component, would need to migrate to
+`Table.Th`, `Table.Tr`, `Table.Td`.
 
 ---
 
@@ -240,16 +257,19 @@ export const Table = {
 
 ### What Changed
 
-**Nextra 4**: `compileMdx` now returns `Promise<string>` instead of `Promise<object>`.
+**Nextra 4**: `compileMdx` now returns `Promise<string>` instead of
+`Promise<object>`.
 
 ### Migration
 
 **Before (Nextra 3)**:
+
 ```tsx
 const { result: rawJs } = await compileMdx(rawMdx)
 ```
 
 **After (Nextra 4)**:
+
 ```tsx
 const rawJs = await compileMdx(rawMdx)
 ```
@@ -261,6 +281,7 @@ const rawJs = await compileMdx(rawMdx)
 **Status**: ✅ **CORRECT** - Already using new API
 
 **Current**:
+
 ```tsx
 const rawJs = await compileMdx(data, { filePath })
 ```
@@ -274,6 +295,7 @@ const rawJs = await compileMdx(data, { filePath })
 ### What Changed
 
 **Nextra 4**:
+
 - `<RemoteContent>` renamed to `<MDXRemote>`
 - Moved from `nextra/components` to `nextra/mdx-remote`
 - No longer need to manually pass default components
@@ -281,6 +303,7 @@ const rawJs = await compileMdx(data, { filePath })
 ### Migration
 
 **Before (Nextra 3)**:
+
 ```tsx
 import { RemoteContent } from 'nextra/components'
 
@@ -291,6 +314,7 @@ import { RemoteContent } from 'nextra/components'
 ```
 
 **After (Nextra 4)**:
+
 ```tsx
 import { MDXRemote } from 'nextra/mdx-remote'
 
@@ -308,8 +332,9 @@ import { MDXRemote } from 'nextra/mdx-remote'
 **Status**: ⚠️ **USING OLD API** - Uses `next-mdx-remote` directly
 
 **Current**:
+
 ```tsx
-import { MDXRemote } from 'next-mdx-remote'
+import { MDXRemote } from "next-mdx-remote"
 
 export function serializeMDX(content: string) {
   return serialize(content, {
@@ -321,7 +346,8 @@ export function serializeMDX(content: string) {
 }
 ```
 
-**Note**: This is a custom implementation using `next-mdx-remote` directly, not Nextra's `MDXRemote`. This is fine for custom use cases.
+**Note**: This is a custom implementation using `next-mdx-remote` directly, not
+Nextra's `MDXRemote`. This is fine for custom use cases.
 
 **For Remote Docs**: Using `evaluate()` from `nextra/evaluate` which is correct.
 
@@ -333,11 +359,14 @@ export function serializeMDX(content: string) {
 
 ### What Changed
 
-**Nextra 4**: Imports from `nextra/components`, `nextra-theme-docs`, and `nextra-theme-blog` are now optimized internally with Next.js' `optimizePackageImports` option.
+**Nextra 4**: Imports from `nextra/components`, `nextra-theme-docs`, and
+`nextra-theme-blog` are now optimized internally with Next.js'
+`optimizePackageImports` option.
 
 ### Impact
 
 **✅ Benefits**:
+
 - Improved bundle size
 - Better tree-shaking
 - Faster builds
@@ -350,18 +379,21 @@ export function serializeMDX(content: string) {
 
 ### What Changed
 
-**Nextra 4**: Nextra's `useRouter` hook removed. Use Next.js' `useRouter` instead.
+**Nextra 4**: Nextra's `useRouter` hook removed. Use Next.js' `useRouter`
+instead.
 
 ### Migration
 
 **Before (Nextra 3)**:
+
 ```tsx
-import { useRouter } from 'nextra/hooks'
+import { useRouter } from "nextra/hooks"
 ```
 
 **After (Nextra 4)**:
+
 ```tsx
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
 ```
 
 ### Current Implementation
@@ -463,5 +495,5 @@ $ grep -r "compileMdx" app/
 
 ---
 
-**Last Updated**: 2025-01-27
-**Status**: ✅ **COMPLIANT** - All required changes verified
+**Last Updated**: 2025-01-27 **Status**: ✅ **COMPLIANT** - All required changes
+verified

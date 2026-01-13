@@ -5,9 +5,9 @@
  * Can be called from client components
  */
 
-'use server'
+"use server"
 
-import { getCurrentUserId, getCurrentUser } from '@/src/lib/auth'
+import { getCurrentUserId, getCurrentUser } from "@/src/lib/auth"
 
 /**
  * Get current user ID (Server Action)

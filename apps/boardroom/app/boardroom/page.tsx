@@ -5,18 +5,18 @@
  * Dual-Screen Strategy: Pool Table (60%) + Strategy Drawer (40%)
  */
 
-import { Suspense } from 'react'
-import { BoardRoomClient } from './BoardRoomClient'
-import { getProposals } from '@/app/actions/proposals'
-import type { Metadata } from 'next'
+import { Suspense } from "react"
+import { BoardRoomClient } from "./BoardRoomClient"
+import { getProposals } from "@/app/actions/proposals"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: 'BoardRoom',
-  description: 'Executive Board Decision Engine - High-Frequency Decision Making',
+  title: "BoardRoom",
+  description: "Executive Board Decision Engine - High-Frequency Decision Making",
   openGraph: {
-    title: 'BoardRoom - Executive Decision Engine',
-    description: 'High-Frequency Decision Engine for Executive Governance',
-    type: 'website',
+    title: "BoardRoom - Executive Decision Engine",
+    description: "High-Frequency Decision Engine for Executive Governance",
+    type: "website",
   },
 }
 
@@ -31,14 +31,13 @@ export default async function BoardRoomPage() {
     // Only log non-connection errors in production
     // Connection errors are expected in development when DB isn't running
     const isConnectionError =
-      err instanceof Error &&
-      err.message.includes('Database connection failed')
+      err instanceof Error && err.message.includes("Database connection failed")
 
-    if (!isConnectionError || process.env.NODE_ENV === 'development') {
+    if (!isConnectionError || process.env.NODE_ENV === "development") {
       // In development, log all errors for debugging
       // In production, only log unexpected errors
-      if (process.env.NODE_ENV === 'development' || !isConnectionError) {
-        console.error('Error fetching proposals:', err)
+      if (process.env.NODE_ENV === "development" || !isConnectionError) {
+        console.error("Error fetching proposals:", err)
       }
     }
 

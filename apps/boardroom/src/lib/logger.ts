@@ -5,7 +5,7 @@
  * Following KISS and DRY principles
  */
 
-import { createLogger } from '@mythic/monitoring/logger'
+import { createLogger } from "@mythic/monitoring/logger"
 
 /**
  * Create script logger

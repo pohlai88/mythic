@@ -3,8 +3,10 @@
 ## 📊 Executive Summary
 
 **Current Status:**
+
 - ✅ **Version**: `zod@4.3.5` (Latest stable)
-- ✅ **Import Path**: Using `'zod'` (should migrate to `'zod/v4'` for explicit version)
+- ✅ **Import Path**: Using `'zod'` (should migrate to `'zod/v4'` for explicit
+  version)
 - 📈 **Utilization**: ~25% of available features
 - 🎯 **Optimization Potential**: High
 
@@ -13,6 +15,7 @@
 ## 🔍 Version Validation
 
 ### Installed Version
+
 ```json
 {
   "zod": "4.3.5"
@@ -20,10 +23,12 @@
 ```
 
 ### Recommended Import Path
-**Current:** `import { z } from 'zod'`
-**Recommended:** `import { z } from 'zod/v4'` (explicit version path)
 
-**Why?** Zod 4 recommends using `/v4` suffix for explicit versioning and future-proofing.
+**Current:** `import { z } from 'zod'` **Recommended:**
+`import { z } from 'zod/v4'` (explicit version path)
+
+**Why?** Zod 4 recommends using `/v4` suffix for explicit versioning and
+future-proofing.
 
 ---
 
@@ -31,18 +36,21 @@
 
 ### Category 1: Core Parsing Methods
 
-| Feature             | Status           | Usage                 | Recommendation                 |
-| ------------------- | ---------------- | --------------------- | ------------------------------ |
+| Feature             | Status            | Usage                 | Recommendation                 |
+| ------------------- | ----------------- | --------------------- | ------------------------------ |
 | `.parse()`          | ✅ **IDENTICAL**  | Used in REST, GraphQL | Keep using                     |
 | `.safeParse()`      | ⚠️ **APPLICABLE** | Not used              | **Add for error handling**     |
 | `.parseAsync()`     | ⚠️ **APPLICABLE** | Not used              | **Add for async validation**   |
 | `.safeParseAsync()` | ⚠️ **APPLICABLE** | Not used              | **Add for async safe parsing** |
 
 **Current Usage:**
+
 - ✅ `userSchema.parse(input)` - Used in REST API
-- ❌ `userSchema.safeParse(input)` - Not used (should use for better error handling)
+- ❌ `userSchema.safeParse(input)` - Not used (should use for better error
+  handling)
 
 **Optimization:**
+
 ```typescript
 // Current (throws errors)
 const validated = schema.parse(input)
@@ -60,8 +68,8 @@ if (!result.success) {
 
 #### String Schema Methods
 
-| Feature          | Status           | Usage                    | Recommendation                      |
-| ---------------- | ---------------- | ------------------------ | ----------------------------------- |
+| Feature          | Status            | Usage                    | Recommendation                      |
+| ---------------- | ----------------- | ------------------------ | ----------------------------------- |
 | `z.string()`     | ✅ **IDENTICAL**  | Used extensively         | Keep using                          |
 | `.min()`         | ✅ **IDENTICAL**  | Used in user schemas     | Keep using                          |
 | `.max()`         | ✅ **IDENTICAL**  | Used in user schemas     | Keep using                          |
@@ -83,12 +91,13 @@ if (!result.success) {
 | `.cuid2()`       | ❌ **IGNORE**     | Not relevant             | Skip                                |
 
 **Optimization Examples:**
+
 ```typescript
 // Add input sanitization
 export const createUserInputSchema = z.object({
   email: z.string().email().toLowerCase().trim(),
   name: z.string().min(1).max(255).trim(),
-  password: z.string().min(8).regex(/[A-Z]/, 'Must contain uppercase'),
+  password: z.string().min(8).regex(/[A-Z]/, "Must contain uppercase"),
 })
 
 // Add URL validation
@@ -100,8 +109,8 @@ export const resourceIdSchema = z.string().uuid()
 
 #### Number Schema Methods
 
-| Feature          | Status           | Usage                        | Recommendation                         |
-| ---------------- | ---------------- | ---------------------------- | -------------------------------------- |
+| Feature          | Status            | Usage                        | Recommendation                         |
+| ---------------- | ----------------- | ---------------------------- | -------------------------------------- |
 | `z.number()`     | ✅ **IDENTICAL**  | Used in pagination           | Keep using                             |
 | `.min()`         | ✅ **IDENTICAL**  | Used in pagination           | Keep using                             |
 | `.max()`         | ✅ **IDENTICAL**  | Used in pagination           | Keep using                             |
@@ -115,6 +124,7 @@ export const resourceIdSchema = z.string().uuid()
 | `.multipleOf()`  | ⚠️ **APPLICABLE** | Not used                     | **Add for divisibility checks**        |
 
 **Optimization Examples:**
+
 ```typescript
 // Add safe integer validation
 export const userIdSchema = z.number().int().positive().safe()
@@ -125,14 +135,14 @@ export const priceSchema = z.number().finite().positive()
 
 #### Boolean Schema Methods
 
-| Feature       | Status          | Usage               | Recommendation |
-| ------------- | --------------- | ------------------- | -------------- |
+| Feature       | Status           | Usage               | Recommendation |
+| ------------- | ---------------- | ------------------- | -------------- |
 | `z.boolean()` | ✅ **IDENTICAL** | Used in user schema | Keep using     |
 
 #### Date Schema Methods
 
-| Feature    | Status           | Usage                            | Recommendation                    |
-| ---------- | ---------------- | -------------------------------- | --------------------------------- |
+| Feature    | Status            | Usage                            | Recommendation                    |
+| ---------- | ----------------- | -------------------------------- | --------------------------------- |
 | `z.date()` | ⚠️ **APPLICABLE** | Not used (using string.datetime) | **Consider for type safety**      |
 | `.min()`   | ⚠️ **APPLICABLE** | Not used                         | **Add for date range validation** |
 | `.max()`   | ⚠️ **APPLICABLE** | Not used                         | **Add for date range validation** |
@@ -143,8 +153,8 @@ export const priceSchema = z.number().finite().positive()
 
 #### Object Schema Methods
 
-| Feature          | Status           | Usage                     | Recommendation                              |
-| ---------------- | ---------------- | ------------------------- | ------------------------------------------- |
+| Feature          | Status            | Usage                     | Recommendation                              |
+| ---------------- | ----------------- | ------------------------- | ------------------------------------------- |
 | `z.object()`     | ✅ **IDENTICAL**  | Used extensively          | Keep using                                  |
 | `.extend()`      | ✅ **IDENTICAL**  | Used in user query schema | Keep using                                  |
 | `.pick()`        | ⚠️ **APPLICABLE** | Not used                  | **Add for field selection**                 |
@@ -158,6 +168,7 @@ export const priceSchema = z.number().finite().positive()
 | `.catchall()`    | ⚠️ **APPLICABLE** | Not used                  | **Add for dynamic keys**                    |
 
 **Optimization Examples:**
+
 ```typescript
 // Add field selection
 export const publicUserSchema = userResponseSchema.pick({
@@ -178,8 +189,8 @@ export const strictUserSchema = userResponseSchema.strict()
 
 #### Array Schema Methods
 
-| Feature       | Status           | Usage                       | Recommendation               |
-| ------------- | ---------------- | --------------------------- | ---------------------------- |
+| Feature       | Status            | Usage                       | Recommendation               |
+| ------------- | ----------------- | --------------------------- | ---------------------------- |
 | `z.array()`   | ✅ **IDENTICAL**  | Used in paginated responses | Keep using                   |
 | `.min()`      | ⚠️ **APPLICABLE** | Not used                    | **Add for minimum items**    |
 | `.max()`      | ⚠️ **APPLICABLE** | Not used                    | **Add for maximum items**    |
@@ -188,6 +199,7 @@ export const strictUserSchema = userResponseSchema.strict()
 | `.element`    | ⚠️ **APPLICABLE** | Not used                    | **Add for element access**   |
 
 **Optimization Examples:**
+
 ```typescript
 // Add non-empty validation
 export const tagsSchema = z.array(z.string()).nonempty()
@@ -198,11 +210,12 @@ export const coordinatesSchema = z.array(z.number()).length(2)
 
 #### Tuple Schema Methods
 
-| Feature     | Status           | Usage    | Recommendation                  |
-| ----------- | ---------------- | -------- | ------------------------------- |
+| Feature     | Status            | Usage    | Recommendation                  |
+| ----------- | ----------------- | -------- | ------------------------------- |
 | `z.tuple()` | ⚠️ **APPLICABLE** | Not used | **Add for fixed-length arrays** |
 
 **Optimization Examples:**
+
 ```typescript
 // Add tuple for coordinates
 export const coordinatesSchema = z.tuple([z.number(), z.number()])
@@ -210,8 +223,8 @@ export const coordinatesSchema = z.tuple([z.number(), z.number()])
 
 #### Enum Schema Methods
 
-| Feature          | Status           | Usage                      | Recommendation               |
-| ---------------- | ---------------- | -------------------------- | ---------------------------- |
+| Feature          | Status            | Usage                      | Recommendation               |
+| ---------------- | ----------------- | -------------------------- | ---------------------------- |
 | `z.enum()`       | ✅ **IDENTICAL**  | Used in pagination (order) | Keep using                   |
 | `z.nativeEnum()` | ⚠️ **APPLICABLE** | Not used                   | **Add for TypeScript enums** |
 
@@ -221,34 +234,36 @@ export const coordinatesSchema = z.tuple([z.number(), z.number()])
 
 #### Template Literals (NEW in Zod 4)
 
-| Feature               | Status           | Usage    | Recommendation               |
-| --------------------- | ---------------- | -------- | ---------------------------- |
+| Feature               | Status            | Usage    | Recommendation               |
+| --------------------- | ----------------- | -------- | ---------------------------- |
 | `z.templateLiteral()` | ⚠️ **APPLICABLE** | Not used | **Add for string templates** |
 
 **Optimization Examples:**
+
 ```typescript
 // Add template literal for CSS units
-const cssUnits = z.enum(['px', 'em', 'rem', '%'])
+const cssUnits = z.enum(["px", "em", "rem", "%"])
 const cssValue = z.templateLiteral([z.number(), cssUnits])
 // Type: `${number}px` | `${number}em` | `${number}rem` | `${number}%`
 
 // Add template literal for email-like patterns
 const emailPattern = z.templateLiteral([
   z.string().min(1),
-  '@',
+  "@",
   z.string().max(64),
 ])
 ```
 
 #### Union & Intersection
 
-| Feature                  | Status           | Usage    | Recommendation             |
-| ------------------------ | ---------------- | -------- | -------------------------- |
+| Feature                  | Status            | Usage    | Recommendation             |
+| ------------------------ | ----------------- | -------- | -------------------------- |
 | `z.union()`              | ⚠️ **APPLICABLE** | Not used | **Add for multiple types** |
 | `z.intersection()`       | ⚠️ **APPLICABLE** | Not used | **Add for type merging**   |
 | `z.discriminatedUnion()` | ⚠️ **APPLICABLE** | Not used | **Add for tagged unions**  |
 
 **Optimization Examples:**
+
 ```typescript
 // Add union for multiple types
 export const idSchema = z.union([
@@ -257,26 +272,27 @@ export const idSchema = z.union([
 ])
 
 // Add discriminated union for events
-export const eventSchema = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('user.created'), userId: z.number() }),
-  z.object({ type: z.literal('user.updated'), userId: z.number() }),
+export const eventSchema = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("user.created"), userId: z.number() }),
+  z.object({ type: z.literal("user.updated"), userId: z.number() }),
 ])
 ```
 
 #### Literal & Branded Types
 
-| Feature       | Status           | Usage    | Recommendation            |
-| ------------- | ---------------- | -------- | ------------------------- |
+| Feature       | Status            | Usage    | Recommendation            |
+| ------------- | ----------------- | -------- | ------------------------- |
 | `z.literal()` | ⚠️ **APPLICABLE** | Not used | **Add for exact values**  |
 | `.brand()`    | ⚠️ **APPLICABLE** | Not used | **Add for type branding** |
 
 **Optimization Examples:**
+
 ```typescript
 // Add literal for exact values
-export const statusSchema = z.literal('active')
+export const statusSchema = z.literal("active")
 
 // Add branded types for type safety
-export const userIdSchema = z.number().int().positive().brand<'UserId'>()
+export const userIdSchema = z.number().int().positive().brand<"UserId">()
 export type UserId = z.infer<typeof userIdSchema>
 ```
 
@@ -284,8 +300,8 @@ export type UserId = z.infer<typeof userIdSchema>
 
 ### Category 5: Transformation & Refinement
 
-| Feature          | Status           | Usage                           | Recommendation                 |
-| ---------------- | ---------------- | ------------------------------- | ------------------------------ |
+| Feature          | Status            | Usage                           | Recommendation                 |
+| ---------------- | ----------------- | ------------------------------- | ------------------------------ |
 | `.transform()`   | ⚠️ **APPLICABLE** | Used in REST API (id transform) | **Expand usage**               |
 | `.refine()`      | ⚠️ **APPLICABLE** | Not used                        | **Add for custom validation**  |
 | `.superRefine()` | ⚠️ **APPLICABLE** | Not used                        | **Add for complex validation** |
@@ -294,21 +310,20 @@ export type UserId = z.infer<typeof userIdSchema>
 | `.pipe()`        | ⚠️ **APPLICABLE** | Not used                        | **Add for schema composition** |
 
 **Optimization Examples:**
+
 ```typescript
 // Add custom validation
-export const passwordSchema = z.string()
+export const passwordSchema = z
+  .string()
   .min(8)
-  .refine(
-    (val) => /[A-Z]/.test(val),
-    { message: 'Must contain uppercase letter' }
-  )
-  .refine(
-    (val) => /[0-9]/.test(val),
-    { message: 'Must contain number' }
-  )
+  .refine((val) => /[A-Z]/.test(val), {
+    message: "Must contain uppercase letter",
+  })
+  .refine((val) => /[0-9]/.test(val), { message: "Must contain number" })
 
 // Add schema composition
-export const emailSchema = z.string()
+export const emailSchema = z
+  .string()
   .email()
   .pipe(z.string().toLowerCase().trim())
 ```
@@ -317,8 +332,8 @@ export const emailSchema = z.string()
 
 ### Category 6: Wrapper Methods
 
-| Feature          | Status           | Usage               | Recommendation                |
-| ---------------- | ---------------- | ------------------- | ----------------------------- |
+| Feature          | Status            | Usage               | Recommendation                |
+| ---------------- | ----------------- | ------------------- | ----------------------------- |
 | `.optional()`    | ✅ **IDENTICAL**  | Used extensively    | Keep using                    |
 | `.nullable()`    | ✅ **IDENTICAL**  | Used in user schema | Keep using                    |
 | `.nullish()`     | ⚠️ **APPLICABLE** | Not used            | **Add for null or undefined** |
@@ -328,6 +343,7 @@ export const emailSchema = z.string()
 | `.nonoptional()` | ⚠️ **APPLICABLE** | Not used            | **Add for required fields**   |
 
 **Optimization Examples:**
+
 ```typescript
 // Add nullish for optional null
 export const optionalNameSchema = z.string().nullish()
@@ -343,8 +359,8 @@ export const configSchema = z.object({...}).readonly()
 
 ### Category 7: Coercion & Preprocessing
 
-| Feature              | Status           | Usage              | Recommendation               |
-| -------------------- | ---------------- | ------------------ | ---------------------------- |
+| Feature              | Status            | Usage              | Recommendation               |
+| -------------------- | ----------------- | ------------------ | ---------------------------- |
 | `z.coerce.string()`  | ⚠️ **APPLICABLE** | Not used           | **Add for type coercion**    |
 | `z.coerce.number()`  | ✅ **IDENTICAL**  | Used in pagination | Keep using                   |
 | `z.coerce.boolean()` | ⚠️ **APPLICABLE** | Not used           | **Add for boolean coercion** |
@@ -352,6 +368,7 @@ export const configSchema = z.object({...}).readonly()
 | `.preprocess()`      | ⚠️ **APPLICABLE** | Not used           | **Add for preprocessing**    |
 
 **Optimization Examples:**
+
 ```typescript
 // Add boolean coercion for query params
 export const activeFilterSchema = z.coerce.boolean().optional()
@@ -364,33 +381,34 @@ export const dateParamSchema = z.coerce.date()
 
 ### Category 8: Metadata & Documentation
 
-| Feature       | Status           | Usage               | Recommendation              |
-| ------------- | ---------------- | ------------------- | --------------------------- |
+| Feature       | Status            | Usage               | Recommendation              |
+| ------------- | ----------------- | ------------------- | --------------------------- |
 | `.describe()` | ✅ **IDENTICAL**  | Used in API schemas | Keep using                  |
 | `.meta()`     | ⚠️ **APPLICABLE** | Not used            | **Add for custom metadata** |
 | `.register()` | ⚠️ **APPLICABLE** | Not used            | **Add for schema registry** |
 
 **Optimization Examples:**
+
 ```typescript
 // Add metadata
 export const userSchema = z.object({
   email: z.string().email().meta({
-    example: 'user@example.com',
-    format: 'email',
+    example: "user@example.com",
+    format: "email",
   }),
 })
 
 // Add to registry
 const registry = new Map()
-userSchema.register(registry, { name: 'User' })
+userSchema.register(registry, { name: "User" })
 ```
 
 ---
 
 ### Category 9: Utility Methods
 
-| Feature         | Status           | Usage                  | Recommendation              |
-| --------------- | ---------------- | ---------------------- | --------------------------- |
+| Feature         | Status            | Usage                  | Recommendation              |
+| --------------- | ----------------- | ---------------------- | --------------------------- |
 | `z.infer<>`     | ✅ **IDENTICAL**  | Used extensively       | Keep using                  |
 | `.clone()`      | ⚠️ **APPLICABLE** | Not used               | **Add for schema copying**  |
 | `.isOptional()` | ⚠️ **APPLICABLE** | Not used               | **Add for runtime checks**  |
@@ -399,6 +417,7 @@ userSchema.register(registry, { name: 'User' })
 | `z.ZodIssue`    | ⚠️ **APPLICABLE** | Not used               | **Add for detailed errors** |
 
 **Optimization Examples:**
+
 ```typescript
 // Add runtime checks
 if (schema.isOptional()) {
@@ -410,7 +429,7 @@ try {
   schema.parse(input)
 } catch (error) {
   if (error instanceof z.ZodError) {
-    error.issues.forEach(issue => {
+    error.issues.forEach((issue) => {
       console.log(issue.path, issue.message)
     })
   }
@@ -421,8 +440,8 @@ try {
 
 ### Category 10: Integration Features
 
-| Feature              | Status           | Usage                     | Recommendation          |
-| -------------------- | ---------------- | ------------------------- | ----------------------- |
+| Feature              | Status            | Usage                     | Recommendation          |
+| -------------------- | ----------------- | ------------------------- | ----------------------- |
 | `drizzle-zod`        | ✅ **IDENTICAL**  | Used in schema generation | Keep using              |
 | `zod-to-openapi`     | ✅ **IDENTICAL**  | Used in API docs          | Keep using              |
 | `zod-to-json-schema` | ⚠️ **APPLICABLE** | Installed but not used    | **Add for JSON Schema** |
@@ -470,11 +489,12 @@ try {
 ### High Priority (Implement First)
 
 1. **Migrate to `/v4` import path**
+
    ```typescript
    // Change from:
-   import { z } from 'zod'
+   import { z } from "zod"
    // To:
-   import { z } from 'zod/v4'
+   import { z } from "zod/v4"
    ```
 
 2. **Use `.safeParse()` for better error handling**
@@ -513,21 +533,25 @@ try {
 ## 📝 Implementation Plan
 
 ### Phase 1: Foundation (Week 1)
+
 - [ ] Migrate all imports to `'zod/v4'`
 - [ ] Replace `.parse()` with `.safeParse()`
 - [ ] Add input sanitization (`.trim()`, `.toLowerCase()`)
 
 ### Phase 2: Validation Enhancement (Week 2)
+
 - [ ] Add `.refine()` for custom validations
 - [ ] Implement `.pick()` and `.omit()` patterns
 - [ ] Add array validation (`.min()`, `.max()`, `.nonempty()`)
 
 ### Phase 3: Advanced Features (Week 3)
+
 - [ ] Add template literals
 - [ ] Implement discriminated unions
 - [ ] Add coercion for query parameters
 
 ### Phase 4: Optimization (Week 4)
+
 - [ ] Add branded types
 - [ ] Implement schema registry
 - [ ] Add comprehensive error handling
@@ -543,6 +567,5 @@ try {
 
 ---
 
-**Last Updated**: 2024-12-19
-**Zod Version**: 4.3.5
-**Analysis Status**: Complete
+**Last Updated**: 2024-12-19 **Zod Version**: 4.3.5 **Analysis Status**:
+Complete

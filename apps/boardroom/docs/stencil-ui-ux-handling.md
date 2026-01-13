@@ -2,7 +2,10 @@
 
 ## Executive Summary
 
-The BoardRoom application uses a **contract-first, schema-driven approach** for handling stencils in the UI/UX layer. Stencils are **living schema templates** that dynamically generate:
+The BoardRoom application uses a **contract-first, schema-driven approach** for
+handling stencils in the UI/UX layer. Stencils are **living schema templates**
+that dynamically generate:
+
 1. **Type-safe form schemas** (via Zod)
 2. **React Hook Form integration** (for form state management)
 3. **Real-time validation** (onChange mode)
@@ -44,21 +47,25 @@ export interface StencilDefinition {
 export interface StencilField {
   id: string
   label: string
-  type: 'string' | 'number' | 'date' | 'enum' | 'jsonb'
+  type: "string" | "number" | "date" | "enum" | "jsonb"
   required: boolean
-  validationRule?: string  // e.g., "min:50000|max:500000"
-  options?: string[]       // For enum type
+  validationRule?: string // e.g., "min:50000|max:500000"
+  options?: string[] // For enum type
 }
 ```
 
 **Reasoning:**
+
 - **Machine-readable structure** enables programmatic form generation
 - **Versioned** to support schema evolution
 - **Validation rules** stored as strings for flexibility
 - **Type-safe** via TypeScript interfaces
 
-**Evidence:** See default stencils in `apps/boardroom/src/codex/index.ts:134-209`:
-- `hiring_request_v2` with fields: `job_title`, `level`, `annual_salary`, `department`, `justification`
+**Evidence:** See default stencils in
+`apps/boardroom/src/codex/index.ts:134-209`:
+
+- `hiring_request_v2` with fields: `job_title`, `level`, `annual_salary`,
+  `department`, `justification`
 - `budget_expansion_v1` with fields: `department`, `amount`, `quarter`, `reason`
 
 ---
@@ -68,7 +75,9 @@ export interface StencilField {
 **Location:** `apps/boardroom/src/lib/zod/stencil-schemas.ts:158-166`
 
 ```typescript
-export function createStencilSchema(stencil: StencilDefinition): z.ZodObject<Record<string, z.ZodTypeAny>> {
+export function createStencilSchema(
+  stencil: StencilDefinition
+): z.ZodObject<Record<string, z.ZodTypeAny>> {
   const shape: Record<string, z.ZodTypeAny> = {}
 
   for (const field of stencil.fields) {
@@ -80,24 +89,31 @@ export function createStencilSchema(stencil: StencilDefinition): z.ZodObject<Rec
 ```
 
 **How it works:**
-1. **Iterates through stencil fields** (`apps/boardroom/src/lib/zod/stencil-schemas.ts:14-61`)
+
+1. **Iterates through stencil fields**
+   (`apps/boardroom/src/lib/zod/stencil-schemas.ts:14-61`)
 2. **Maps field types to Zod schemas:**
    - `string` → `z.string()`
    - `number` → `z.number()`
    - `date` → `z.union([z.string().datetime(), z.string().date(), z.date()])`
    - `enum` → `z.enum(field.options)`
    - `jsonb` → `z.record(z.string(), z.unknown())`
-3. **Applies validation rules** (`apps/boardroom/src/lib/zod/stencil-schemas.ts:66-151`):
+3. **Applies validation rules**
+   (`apps/boardroom/src/lib/zod/stencil-schemas.ts:66-151`):
    - Parses `validationRule` string (e.g., `"min:50000|max:500000"`)
-   - Applies Zod validators: `.min()`, `.max()`, `.email()`, `.url()`, `.regex()`
+   - Applies Zod validators: `.min()`, `.max()`, `.email()`, `.url()`,
+     `.regex()`
 4. **Handles required/optional** via `.optional()` modifier
 
 **Reasoning:**
+
 - **Single source of truth:** Stencil definition → Zod schema → TypeScript types
 - **Runtime validation** ensures data integrity before submission
 - **Type inference** via `z.infer<>` provides compile-time safety
 
-**Evidence:** See validation rule parsing in `apps/boardroom/src/lib/zod/stencil-schemas.ts:82-98`:
+**Evidence:** See validation rule parsing in
+`apps/boardroom/src/lib/zod/stencil-schemas.ts:82-98`:
+
 ```typescript
 case 'min':
   if (fieldType === 'number') {
@@ -122,7 +138,7 @@ export function useStencilForm<T extends StencilDefinition>(stencil: T) {
 
   const form = useForm<ProposalDataFromStencil<T>>({
     resolver: zodResolver(schema),
-    mode: 'onChange', // Validate on change for better UX
+    mode: "onChange", // Validate on change for better UX
     defaultValues: getDefaultValues(stencil),
   })
 
@@ -131,10 +147,12 @@ export function useStencilForm<T extends StencilDefinition>(stencil: T) {
 ```
 
 **How it works:**
+
 1. **Generates Zod schema** from stencil definition
 2. **Integrates with React Hook Form** via `zodResolver`
 3. **Sets validation mode** to `onChange` for real-time feedback
-4. **Provides default values** based on field types (`apps/boardroom/src/lib/forms/use-stencil-form.ts:41-65`):
+4. **Provides default values** based on field types
+   (`apps/boardroom/src/lib/forms/use-stencil-form.ts:41-65`):
    - `string` → `''`
    - `number` → `0`
    - `date` → `YYYY-MM-DD` format
@@ -142,12 +160,15 @@ export function useStencilForm<T extends StencilDefinition>(stencil: T) {
    - `jsonb` → `{}`
 
 **Reasoning:**
+
 - **Type-safe form state** via `ProposalDataFromStencil<T>` type
 - **Real-time validation** improves UX (errors shown immediately)
 - **Uncontrolled components** reduce re-renders (React Hook Form pattern)
 - **Automatic error handling** via Zod error messages
 
-**Evidence:** See example usage in `apps/boardroom/src/lib/forms/use-stencil-form.ts:16-24`:
+**Evidence:** See example usage in
+`apps/boardroom/src/lib/forms/use-stencil-form.ts:16-24`:
+
 ```typescript
 const { register, handleSubmit, formState: { errors } } = useStencilForm(stencil)
 
@@ -199,6 +220,7 @@ export function CodexStencilViewer({ stencil, className }: CodexStencilViewerPro
 ```
 
 **How it works:**
+
 1. **Displays stencil metadata:** name, version, ID
 2. **Renders field definitions** with:
    - Field label and type
@@ -208,11 +230,15 @@ export function CodexStencilViewer({ stencil, className }: CodexStencilViewerPro
 3. **Shows required approvers** as badges
 
 **Reasoning:**
-- **Transparency:** Users can see what fields are required before filling the form
+
+- **Transparency:** Users can see what fields are required before filling the
+  form
 - **Documentation:** Visual representation of schema structure
 - **Debugging:** Helps developers understand stencil structure
 
-**Evidence:** See `FieldDefinition` component in `apps/boardroom/components/CodexStencilViewer.tsx:62-88`:
+**Evidence:** See `FieldDefinition` component in
+`apps/boardroom/components/CodexStencilViewer.tsx:62-88`:
+
 ```typescript
 function FieldDefinition({ field }: { field: StencilField }) {
   return (
@@ -265,12 +291,20 @@ export function validateProposalDataWithZod(
   const errors: string[] = []
   for (const issue of result.error.issues) {
     const fieldPath = issue.path[0]
-    const field = fieldPath ? stencil.fields.find((f) => f.id === String(fieldPath)) : undefined
-    const fieldLabel = field?.label || (fieldPath ? String(fieldPath) : 'field')
+    const field = fieldPath
+      ? stencil.fields.find((f) => f.id === String(fieldPath))
+      : undefined
+    const fieldLabel = field?.label || (fieldPath ? String(fieldPath) : "field")
 
-    if (issue.code === 'invalid_type') {
-      errors.push(`${fieldLabel} must be of type ${field?.type || 'valid type'}`)
-    } else if (issue.code === 'too_small' && 'type' in issue && issue.type === 'string') {
+    if (issue.code === "invalid_type") {
+      errors.push(
+        `${fieldLabel} must be of type ${field?.type || "valid type"}`
+      )
+    } else if (
+      issue.code === "too_small" &&
+      "type" in issue &&
+      issue.type === "string"
+    ) {
       errors.push(`${fieldLabel} is required`)
     } else {
       errors.push(`${fieldLabel}: ${issue.message}`)
@@ -282,12 +316,14 @@ export function validateProposalDataWithZod(
 ```
 
 **How it works:**
+
 1. **Validates data** against generated Zod schema
 2. **Maps Zod errors** to user-friendly messages
 3. **Uses field labels** instead of field IDs for better UX
 4. **Returns structured error object** for UI display
 
 **Reasoning:**
+
 - **User-friendly messages:** Field labels instead of technical IDs
 - **Structured errors:** Can be displayed per-field in forms
 - **Type-safe:** Returns `zodError` for programmatic handling
@@ -297,15 +333,22 @@ export function validateProposalDataWithZod(
 ## Current Implementation Status
 
 ### ✅ Implemented:
+
 1. **Stencil definition structure** (`apps/boardroom/src/codex/index.ts`)
 2. **Zod schema generation** (`apps/boardroom/src/lib/zod/stencil-schemas.ts`)
-3. **React Hook Form integration** (`apps/boardroom/src/lib/forms/use-stencil-form.ts`)
-4. **Visual stencil viewer** (`apps/boardroom/components/CodexStencilViewer.tsx`)
-5. **Validation error handling** (`apps/boardroom/src/lib/zod/stencil-schemas.ts:173-209`)
+3. **React Hook Form integration**
+   (`apps/boardroom/src/lib/forms/use-stencil-form.ts`)
+4. **Visual stencil viewer**
+   (`apps/boardroom/components/CodexStencilViewer.tsx`)
+5. **Validation error handling**
+   (`apps/boardroom/src/lib/zod/stencil-schemas.ts:173-209`)
 
 ### ⚠️ Partially Implemented:
-1. **Dynamic form field rendering:** Hook exists but no component that automatically renders fields
-   - **Evidence:** `useStencilForm` provides form state, but no `<DynamicStencilForm>` component found
+
+1. **Dynamic form field rendering:** Hook exists but no component that
+   automatically renders fields
+   - **Evidence:** `useStencilForm` provides form state, but no
+     `<DynamicStencilForm>` component found
    - **Gap:** Need component that maps `stencil.fields` to actual form inputs
 
 2. **Stencil loading in UI:** `StrategyDrawer` has TODO comments
@@ -316,6 +359,7 @@ export function validateProposalDataWithZod(
      ```
 
 ### ❌ Missing:
+
 1. **Dynamic form field component** that:
    - Takes `stencil` and `useStencilForm` hook
    - Renders appropriate input types based on `field.type`
@@ -378,6 +422,7 @@ export function DynamicStencilForm({
 ### 2. Integrate with PrimeReact (Per Phase 13 Plan)
 
 Use PrimeReact components for better UX:
+
 - `InputText` for strings
 - `InputNumber` for numbers
 - `Calendar` for dates
@@ -385,7 +430,9 @@ Use PrimeReact components for better UX:
 
 ### 3. Connect to Server Actions
 
-Use `useValidatedFormAction` from `apps/boardroom/src/lib/forms/validated-form-action.ts` to connect form submission to `createProposal` action.
+Use `useValidatedFormAction` from
+`apps/boardroom/src/lib/forms/validated-form-action.ts` to connect form
+submission to `createProposal` action.
 
 ---
 
@@ -393,17 +440,25 @@ Use `useValidatedFormAction` from `apps/boardroom/src/lib/forms/validated-form-a
 
 **How UI/UX handles frontend stencils:**
 
-1. **Schema-Driven:** Stencils define structure → Zod schemas provide validation → React Hook Form manages state
-2. **Type-Safe:** TypeScript types inferred from Zod schemas ensure compile-time safety
+1. **Schema-Driven:** Stencils define structure → Zod schemas provide validation
+   → React Hook Form manages state
+2. **Type-Safe:** TypeScript types inferred from Zod schemas ensure compile-time
+   safety
 3. **Real-Time Validation:** `onChange` mode provides immediate feedback
 4. **Visual Transparency:** `CodexStencilViewer` displays schema structure
-5. **User-Friendly Errors:** Validation errors use field labels, not technical IDs
+5. **User-Friendly Errors:** Validation errors use field labels, not technical
+   IDs
 
 **Evidence Chain:**
+
 - ✅ Stencil definitions exist (`apps/boardroom/src/codex/index.ts`)
-- ✅ Zod schema generation works (`apps/boardroom/src/lib/zod/stencil-schemas.ts`)
-- ✅ React Hook Form integration complete (`apps/boardroom/src/lib/forms/use-stencil-form.ts`)
-- ✅ Visual viewer component exists (`apps/boardroom/components/CodexStencilViewer.tsx`)
+- ✅ Zod schema generation works
+  (`apps/boardroom/src/lib/zod/stencil-schemas.ts`)
+- ✅ React Hook Form integration complete
+  (`apps/boardroom/src/lib/forms/use-stencil-form.ts`)
+- ✅ Visual viewer component exists
+  (`apps/boardroom/components/CodexStencilViewer.tsx`)
 - ⚠️ Dynamic form rendering component missing (needs implementation)
 
-**Architecture Pattern:** Contract-First → Schema Generation → Form State → UI Rendering
+**Architecture Pattern:** Contract-First → Schema Generation → Form State → UI
+Rendering

@@ -9,7 +9,7 @@
  *   const dbUrl = env.DATABASE_URL
  */
 
-import { z as z4 } from 'zod/v4'
+import { z as z4 } from "zod/v4"
 
 /**
  * Environment variable schema
@@ -21,97 +21,93 @@ const envSchema = z4.object({
   // Database Configuration
   DATABASE_URL: z4
     .string()
-    .url('DATABASE_URL must be a valid URL')
+    .url("DATABASE_URL must be a valid URL")
     .optional()
-    .describe('PostgreSQL connection string (for Neon, Supabase, etc.)'),
+    .describe("PostgreSQL connection string (for Neon, Supabase, etc.)"),
 
   // Alternative Database Configuration (if DATABASE_URL not provided)
   DB_HOST: z4
     .string()
-    .min(1, 'DB_HOST is required if DATABASE_URL is not provided')
+    .min(1, "DB_HOST is required if DATABASE_URL is not provided")
     .optional()
-    .default('localhost')
-    .describe('Database host'),
+    .default("localhost")
+    .describe("Database host"),
 
   DB_PORT: z4
     .string()
     .optional()
-    .default('5432')
-    .refine((val) => /^\d+$/.test(val), 'DB_PORT must be a number')
+    .default("5432")
+    .refine((val) => /^\d+$/.test(val), "DB_PORT must be a number")
     .transform((val) => Number.parseInt(val, 10))
     .pipe(z4.number().int().min(1).max(65535))
-    .describe('Database port'),
+    .describe("Database port"),
 
   DB_USER: z4
     .string()
-    .min(1, 'DB_USER is required if DATABASE_URL is not provided')
+    .min(1, "DB_USER is required if DATABASE_URL is not provided")
     .optional()
-    .default('postgres')
-    .describe('Database user'),
+    .default("postgres")
+    .describe("Database user"),
 
-  DB_PASSWORD: z4
-    .string()
-    .optional()
-    .default('')
-    .describe('Database password'),
+  DB_PASSWORD: z4.string().optional().default("").describe("Database password"),
 
   DB_NAME: z4
     .string()
-    .min(1, 'DB_NAME is required if DATABASE_URL is not provided')
+    .min(1, "DB_NAME is required if DATABASE_URL is not provided")
     .optional()
-    .default('mythic')
-    .describe('Database name'),
+    .default("mythic")
+    .describe("Database name"),
 
   DB_SSL: z4
     .string()
     .optional()
-    .default('false')
-    .transform((val) => val === 'true')
+    .default("false")
+    .transform((val) => val === "true")
     .pipe(z4.boolean())
-    .describe('Enable SSL for database connection'),
+    .describe("Enable SSL for database connection"),
 
   // Node Environment
   NODE_ENV: z4
-    .enum(['development', 'production', 'test'])
+    .enum(["development", "production", "test"])
     .optional()
-    .default('development')
-    .describe('Node environment'),
+    .default("development")
+    .describe("Node environment"),
 
   // Next.js Configuration
   NEXT_PUBLIC_APP_URL: z4
     .string()
-    .url('NEXT_PUBLIC_APP_URL must be a valid URL')
+    .url("NEXT_PUBLIC_APP_URL must be a valid URL")
     .optional()
-    .describe('Public application URL'),
+    .describe("Public application URL"),
 
   // Analytics Configuration (Self-Hosting)
   ANALYTICS_ENABLED: z4
     .string()
-    .default('true')
-    .transform((val) => val === 'true')
+    .default("true")
+    .transform((val) => val === "true")
     .pipe(z4.boolean())
-    .describe('Enable analytics logging'),
+    .describe("Enable analytics logging"),
 
   ANALYTICS_ENDPOINT: z4
     .string()
-    .url('ANALYTICS_ENDPOINT must be a valid URL')
-    .default('http://localhost:3000/api/analytics')
-    .describe('Analytics service endpoint (self-hosted)'),
+    .url("ANALYTICS_ENDPOINT must be a valid URL")
+    .default("http://localhost:3000/api/analytics")
+    .describe("Analytics service endpoint (self-hosted)"),
 
   ANALYTICS_API_KEY: z4
     .string()
-    .min(1, 'ANALYTICS_API_KEY is required if analytics enabled')
+    .min(1, "ANALYTICS_API_KEY is required if analytics enabled")
     .optional()
-    .describe('API key for analytics service authentication'),
+    .describe("API key for analytics service authentication"),
 
   ANALYTICS_RETENTION_DAYS: z4
     .string()
     .optional()
-    .default('90')
-    .refine((val) => /^\d+$/.test(val), 'ANALYTICS_RETENTION_DAYS must be a number')
+    .default("90")
+    .refine((val) => /^\d+$/.test(val), "ANALYTICS_RETENTION_DAYS must be a number")
     .transform((val: string) => Number.parseInt(val, 10))
     .pipe(z4.number().int().min(1).max(365))
-    .describe('Analytics data retention period in days'),
+    .describe("Analytics data retention period in days"),
 })
 
 /**
@@ -122,9 +118,9 @@ const envSchema = z4.object({
 const refinedEnvSchema = envSchema.superRefine((data, ctx) => {
   // If DATABASE_URL is not provided, all DB_* vars must be provided
   if (!data.DATABASE_URL) {
-    if (!data.DB_HOST || data.DB_HOST === 'localhost') {
+    if (!data.DB_HOST || data.DB_HOST === "localhost") {
       // Allow localhost as default, but warn if other vars missing
-      if (!data.DB_NAME || data.DB_NAME === 'mythic') {
+      if (!data.DB_NAME || data.DB_NAME === "mythic") {
         // This is OK - using defaults
       }
     }
@@ -210,81 +206,75 @@ export function getDatabaseUrl(): string {
 
       // Optimize for Neon serverless
       // Ensure pooler endpoint for serverless (better connection pooling)
-      if (url.hostname.includes('.neon.tech') && !url.hostname.includes('-pooler')) {
+      if (url.hostname.includes(".neon.tech") && !url.hostname.includes("-pooler")) {
         // Convert direct endpoint to pooler endpoint
-        url.hostname = url.hostname.replace(
-          /^ep-([^-]+)-([^.]+)\./,
-          'ep-$1-$2-pooler.'
-        )
+        url.hostname = url.hostname.replace(/^ep-([^-]+)-([^.]+)\./, "ep-$1-$2-pooler.")
       }
 
       // Add serverless-optimized parameters
-      url.searchParams.set('sslmode', 'require')
+      url.searchParams.set("sslmode", "require")
 
       // Preserve channel_binding if present (Neon security requirement)
-      if (!url.searchParams.has('channel_binding') && url.hostname.includes('.neon.tech')) {
-        url.searchParams.set('channel_binding', 'require')
+      if (!url.searchParams.has("channel_binding") && url.hostname.includes(".neon.tech")) {
+        url.searchParams.set("channel_binding", "require")
       }
 
       // Optimize connection timeout for serverless
       // Production: 5s (faster failover), Development: 10s (more lenient)
-      const timeout = process.env.NODE_ENV === 'production' ? '5' : '10'
-      if (!url.searchParams.has('connect_timeout')) {
-        url.searchParams.set('connect_timeout', timeout)
+      const timeout = process.env.NODE_ENV === "production" ? "5" : "10"
+      if (!url.searchParams.has("connect_timeout")) {
+        url.searchParams.set("connect_timeout", timeout)
       } else {
         // Override if set but not optimal for production
-        if (process.env.NODE_ENV === 'production') {
-          const currentTimeout = Number.parseInt(url.searchParams.get('connect_timeout') || '10')
+        if (process.env.NODE_ENV === "production") {
+          const currentTimeout = Number.parseInt(url.searchParams.get("connect_timeout") || "10")
           if (currentTimeout > 5) {
-            url.searchParams.set('connect_timeout', '5')
+            url.searchParams.set("connect_timeout", "5")
           }
         }
       }
 
       // Add pool timeout (0 = unlimited, optimal for serverless)
-      if (!url.searchParams.has('pool_timeout')) {
-        url.searchParams.set('pool_timeout', '0')
+      if (!url.searchParams.has("pool_timeout")) {
+        url.searchParams.set("pool_timeout", "0")
       }
 
       return url.toString()
     } catch {
       throw new Error(
-        'DATABASE_URL is not a valid URL. Please check your .env file.\n' +
-        'Expected format: postgresql://user:password@host:port/database?sslmode=require'
+        "DATABASE_URL is not a valid URL. Please check your .env file.\n" +
+          "Expected format: postgresql://user:password@host:port/database?sslmode=require"
       )
     }
   }
 
   // Validate individual variables are set (not just defaults)
-  const hasIndividualConfig =
-    process.env.DB_HOST &&
-    process.env.DB_USER &&
-    process.env.DB_NAME
+  const hasIndividualConfig = process.env.DB_HOST && process.env.DB_USER && process.env.DB_NAME
 
   if (!hasIndividualConfig) {
     throw new Error(
-      'Database configuration is missing. Please set one of the following:\n\n' +
-      'Option 1 (Recommended): DATABASE_URL\n' +
-      '  DATABASE_URL=postgresql://user:password@host:port/database?sslmode=require\n\n' +
-      'Option 2: Individual variables\n' +
-      '  DB_HOST=localhost (or your database host)\n' +
-      '  DB_PORT=5432\n' +
-      '  DB_USER=postgres (or your database user)\n' +
-      '  DB_PASSWORD=your_password\n' +
-      '  DB_NAME=mythic (or your database name)\n' +
-      '  DB_SSL=false (or true for cloud databases)\n\n' +
-      'See docs/architecture/ENVIRONMENT_VARIABLES.md for more details.'
+      "Database configuration is missing. Please set one of the following:\n\n" +
+        "Option 1 (Recommended): DATABASE_URL\n" +
+        "  DATABASE_URL=postgresql://user:password@host:port/database?sslmode=require\n\n" +
+        "Option 2: Individual variables\n" +
+        "  DB_HOST=localhost (or your database host)\n" +
+        "  DB_PORT=5432\n" +
+        "  DB_USER=postgres (or your database user)\n" +
+        "  DB_PASSWORD=your_password\n" +
+        "  DB_NAME=mythic (or your database name)\n" +
+        "  DB_SSL=false (or true for cloud databases)\n\n" +
+        "See docs/architecture/ENVIRONMENT_VARIABLES.md for more details."
     )
   }
 
   // Construct connection string from individual vars
   const params = new URLSearchParams()
   if (env.DB_SSL) {
-    params.set('sslmode', 'require')
+    params.set("sslmode", "require")
   }
 
   const query = params.toString()
-  return `postgresql://${env.DB_USER}:${env.DB_PASSWORD}@${env.DB_HOST}:${env.DB_PORT}/${env.DB_NAME}${query ? `?${query}` : ''}`
+  return `postgresql://${env.DB_USER}:${env.DB_PASSWORD}@${env.DB_HOST}:${env.DB_PORT}/${env.DB_NAME}${query ? `?${query}` : ""}`
 }
 
 /**
@@ -302,7 +292,7 @@ export function getDatabaseConfig() {
         user: parsed.username,
         password: parsed.password,
         database: parsed.pathname.slice(1), // Remove leading '/'
-        ssl: parsed.searchParams.get('sslmode') === 'require' || parsed.searchParams.has('sslmode'),
+        ssl: parsed.searchParams.get("sslmode") === "require" || parsed.searchParams.has("sslmode"),
       }
     } catch {
       // Fallback to individual vars if URL parsing fails

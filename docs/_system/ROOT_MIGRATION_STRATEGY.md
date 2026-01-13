@@ -10,9 +10,8 @@ tags: [migration, root-directory, documentation-governance]
 
 # Root Directory Migration Strategy (Optimized)
 
-**Generated**: 2026-01-10
-**Status**: ACTIVE
-**Purpose**: Optimize root directory to essential files only, migrate others to designated locations
+**Generated**: 2026-01-10 **Status**: ACTIVE **Purpose**: Optimize root
+directory to essential files only, migrate others to designated locations
 
 ---
 
@@ -21,19 +20,27 @@ tags: [migration, root-directory, documentation-governance]
 ### Root Directory Files (11 total)
 
 **Essential (Keep in Root)**:
+
 1. ✅ `README.md` - Project overview (REQUIRED)
 2. ✅ `QUICK_START.md` - Getting started guide (REQUIRED)
 3. ✅ `QUICK_REFERENCE.md` - Quick reference (RECOMMENDED)
 
-**System Documentation (8 files - Migrate to docs/reference/)**:
-4. ⚠️ `CURSOR_SYSTEM_ARCHITECTURE.md` → `docs/architecture/DOC-XXXX_system-architecture.md`
-5. ⚠️ `CURSOR_OPTIMIZATION_QUICK_REF.md` → `docs/reference/DOC-XXXX_cursor-optimization-quick-ref.md`
-6. ⚠️ `DOCUMENTATION_ORGANIZATION_STRATEGY.md` → `docs/_system/DOC-XXXX_documentation-organization-strategy.md`
-7. ⚠️ `DOCUMENTATION_ORGANIZATION_QUICK_START.md` → `docs/_system/DOC-XXXX_documentation-organization-quick-start.md`
-8. ⚠️ `README_FEATURES.md` → `docs/reference/DOC-XXXX_features-reference.md`
-9. ⚠️ `NEXTJS_CONFIGURATION_VALIDATION.md` → `docs/reference/DOC-XXXX_nextjs-configuration-validation.md`
-10. ⚠️ `EXTERNAL_DEPENDENCIES_SOLUTION.md` → `docs/reference/DOC-XXXX_external-dependencies-solution.md`
-11. ⚠️ `TEST_REPORT_CUSTOMIZATION.md` → `docs/reference/DOC-XXXX_test-report-customization.md`
+**System Documentation (8 files - Migrate to docs/reference/)**: 4. ⚠️
+`CURSOR_SYSTEM_ARCHITECTURE.md` →
+`docs/architecture/DOC-XXXX_system-architecture.md` 5. ⚠️
+`CURSOR_OPTIMIZATION_QUICK_REF.md` →
+`docs/reference/DOC-XXXX_cursor-optimization-quick-ref.md` 6. ⚠️
+`DOCUMENTATION_ORGANIZATION_STRATEGY.md` →
+`docs/_system/DOC-XXXX_documentation-organization-strategy.md` 7. ⚠️
+`DOCUMENTATION_ORGANIZATION_QUICK_START.md` →
+`docs/_system/DOC-XXXX_documentation-organization-quick-start.md` 8. ⚠️
+`README_FEATURES.md` → `docs/reference/DOC-XXXX_features-reference.md` 9. ⚠️
+`NEXTJS_CONFIGURATION_VALIDATION.md` →
+`docs/reference/DOC-XXXX_nextjs-configuration-validation.md` 10. ⚠️
+`EXTERNAL_DEPENDENCIES_SOLUTION.md` →
+`docs/reference/DOC-XXXX_external-dependencies-solution.md` 11. ⚠️
+`TEST_REPORT_CUSTOMIZATION.md` →
+`docs/reference/DOC-XXXX_test-report-customization.md`
 
 ---
 
@@ -50,6 +57,7 @@ tags: [migration, root-directory, documentation-governance]
 ```
 
 **Rationale**:
+
 - These are the first files developers encounter
 - Essential for onboarding and discovery
 - All other documentation should be in designated directories
@@ -57,6 +65,7 @@ tags: [migration, root-directory, documentation-governance]
 ### 2.2 Prohibited Files
 
 **ALL other markdown files in root are PROHIBITED**:
+
 - System architecture docs → `docs/architecture/`
 - Reference documentation → `docs/reference/`
 - Strategy documents → `docs/_system/` or `docs/governance/`
@@ -79,16 +88,16 @@ For each file to migrate, generate a DOC-XXXX identifier:
 
 **File → New Path Mapping**:
 
-| Current File | New Path | DOC ID |
-|--------------|----------|--------|
-| `CURSOR_SYSTEM_ARCHITECTURE.md` | `docs/architecture/DOC-0100_system-architecture.md` | DOC-0100 |
-| `CURSOR_OPTIMIZATION_QUICK_REF.md` | `docs/reference/DOC-0101_cursor-optimization-quick-ref.md` | DOC-0101 |
-| `DOCUMENTATION_ORGANIZATION_STRATEGY.md` | `docs/_system/DOC-0102_documentation-organization-strategy.md` | DOC-0102 |
+| Current File                                | New Path                                                          | DOC ID   |
+| ------------------------------------------- | ----------------------------------------------------------------- | -------- |
+| `CURSOR_SYSTEM_ARCHITECTURE.md`             | `docs/architecture/DOC-0100_system-architecture.md`               | DOC-0100 |
+| `CURSOR_OPTIMIZATION_QUICK_REF.md`          | `docs/reference/DOC-0101_cursor-optimization-quick-ref.md`        | DOC-0101 |
+| `DOCUMENTATION_ORGANIZATION_STRATEGY.md`    | `docs/_system/DOC-0102_documentation-organization-strategy.md`    | DOC-0102 |
 | `DOCUMENTATION_ORGANIZATION_QUICK_START.md` | `docs/_system/DOC-0103_documentation-organization-quick-start.md` | DOC-0103 |
-| `README_FEATURES.md` | `docs/reference/DOC-0104_features-reference.md` | DOC-0104 |
-| `NEXTJS_CONFIGURATION_VALIDATION.md` | `docs/reference/DOC-0105_nextjs-configuration-validation.md` | DOC-0105 |
-| `EXTERNAL_DEPENDENCIES_SOLUTION.md` | `docs/reference/DOC-0106_external-dependencies-solution.md` | DOC-0106 |
-| `TEST_REPORT_CUSTOMIZATION.md` | `docs/reference/DOC-0107_test-report-customization.md` | DOC-0107 |
+| `README_FEATURES.md`                        | `docs/reference/DOC-0104_features-reference.md`                   | DOC-0104 |
+| `NEXTJS_CONFIGURATION_VALIDATION.md`        | `docs/reference/DOC-0105_nextjs-configuration-validation.md`      | DOC-0105 |
+| `EXTERNAL_DEPENDENCIES_SOLUTION.md`         | `docs/reference/DOC-0106_external-dependencies-solution.md`       | DOC-0106 |
+| `TEST_REPORT_CUSTOMIZATION.md`              | `docs/reference/DOC-0107_test-report-customization.md`            | DOC-0107 |
 
 ### Phase 2: Add Frontmatter to Migrated Files
 
@@ -110,6 +119,7 @@ migrated_from: [original-root-path]
 ### Phase 3: Update Links
 
 **Files that reference root docs** (need link updates):
+
 - `README.md` - Update links to new paths
 - `QUICK_START.md` - Update links to new paths
 - `QUICK_REFERENCE.md` - Update links to new paths
@@ -117,11 +127,14 @@ migrated_from: [original-root-path]
 - Any other files referencing these docs
 
 **Link Update Pattern**:
+
 ```markdown
 # Before
+
 [Cursor System Architecture](./CURSOR_SYSTEM_ARCHITECTURE.md)
 
 # After
+
 [Cursor System Architecture](./docs/architecture/DOC-0100_system-architecture.md)
 ```
 
@@ -134,7 +147,8 @@ For backward compatibility, create minimal stubs in root:
 
 **Status**: MOVED
 
-This document has been moved to: [docs/architecture/DOC-0100_system-architecture.md](./docs/architecture/DOC-0100_system-architecture.md)
+This document has been moved to:
+[docs/architecture/DOC-0100_system-architecture.md](./docs/architecture/DOC-0100_system-architecture.md)
 
 Please update your bookmarks and links.
 ```
@@ -148,8 +162,9 @@ Please update your bookmarks and links.
 ### 4.1 Update `scripts/validate-docs-naming.ts`
 
 **Current**:
+
 ```typescript
-const ROOT_EXCEPTIONS = ['README.md', 'QUICK_START.md', 'QUICK_REFERENCE.md']
+const ROOT_EXCEPTIONS = ["README.md", "QUICK_START.md", "QUICK_REFERENCE.md"]
 ```
 
 **Keep as-is** (already correct - only 3 files allowed).
@@ -163,8 +178,9 @@ Add check to reject ALL other markdown files in root:
 if (!location && !ROOT_EXCEPTIONS.includes(filename)) {
   violations.push({
     file,
-    reason: 'Documentation not allowed in root directory (only README.md, QUICK_START.md, QUICK_REFERENCE.md allowed)',
-    location: 'root',
+    reason:
+      "Documentation not allowed in root directory (only README.md, QUICK_START.md, QUICK_REFERENCE.md allowed)",
+    location: "root",
   })
   stats.invalid++
   continue
@@ -178,8 +194,10 @@ if (!location && !ROOT_EXCEPTIONS.includes(filename)) {
 ### 5.1 Update `.cursor/rules/022_documentation-governance.mdc`
 
 **Current** (line 47-50):
+
 ```markdown
 **Exception**: Only 3 files allowed in root:
+
 - `README.md` (project overview)
 - `QUICK_START.md` (getting started)
 - `QUICK_REFERENCE.md` (quick reference)
@@ -190,8 +208,10 @@ if (!location && !ROOT_EXCEPTIONS.includes(filename)) {
 ### 5.2 Update `.cursor/rules/010_docs-directory-policy.mdc`
 
 **Current** (line 13-17):
+
 ```markdown
 ✅ **Root Directory** (essential only, max 11 files)
+
 - README.md (required)
 - QUICK_START.md (required)
 - QUICK_REFERENCE.md (recommended)
@@ -199,8 +219,10 @@ if (!location && !ROOT_EXCEPTIONS.includes(filename)) {
 ```
 
 **Update to**:
+
 ```markdown
 ✅ **Root Directory** (essential only, STRICT 3 files)
+
 - README.md (required)
 - QUICK_START.md (required)
 - QUICK_REFERENCE.md (recommended)
@@ -210,8 +232,9 @@ if (!location && !ROOT_EXCEPTIONS.includes(filename)) {
 ### 5.3 Update `.cursor/rules/000_master-cursor-defaults.mdc`
 
 **Current** (line 52):
+
 ```markdown
-- / (root)           (except README.md, QUICK_START.md, QUICK_REFERENCE.md)
+- / (root) (except README.md, QUICK_START.md, QUICK_REFERENCE.md)
 ```
 
 **Keep as-is** (already correct).
@@ -221,22 +244,33 @@ if (!location && !ROOT_EXCEPTIONS.includes(filename)) {
 ## 6. Execution Checklist
 
 ### Pre-Migration
+
 - [ ] Verify git clean state
 - [ ] Backup current state (git commit)
 - [ ] Generate DOC-XXXX IDs for all 8 files
 - [ ] Identify all files that link to root docs
 
 ### Migration
-- [ ] Move `CURSOR_SYSTEM_ARCHITECTURE.md` → `docs/architecture/DOC-0100_system-architecture.md`
-- [ ] Move `CURSOR_OPTIMIZATION_QUICK_REF.md` → `docs/reference/DOC-0101_cursor-optimization-quick-ref.md`
-- [ ] Move `DOCUMENTATION_ORGANIZATION_STRATEGY.md` → `docs/_system/DOC-0102_documentation-organization-strategy.md`
-- [ ] Move `DOCUMENTATION_ORGANIZATION_QUICK_START.md` → `docs/_system/DOC-0103_documentation-organization-quick-start.md`
-- [ ] Move `README_FEATURES.md` → `docs/reference/DOC-0104_features-reference.md`
-- [ ] Move `NEXTJS_CONFIGURATION_VALIDATION.md` → `docs/reference/DOC-0105_nextjs-configuration-validation.md`
-- [ ] Move `EXTERNAL_DEPENDENCIES_SOLUTION.md` → `docs/reference/DOC-0106_external-dependencies-solution.md`
-- [ ] Move `TEST_REPORT_CUSTOMIZATION.md` → `docs/reference/DOC-0107_test-report-customization.md`
+
+- [ ] Move `CURSOR_SYSTEM_ARCHITECTURE.md` →
+      `docs/architecture/DOC-0100_system-architecture.md`
+- [ ] Move `CURSOR_OPTIMIZATION_QUICK_REF.md` →
+      `docs/reference/DOC-0101_cursor-optimization-quick-ref.md`
+- [ ] Move `DOCUMENTATION_ORGANIZATION_STRATEGY.md` →
+      `docs/_system/DOC-0102_documentation-organization-strategy.md`
+- [ ] Move `DOCUMENTATION_ORGANIZATION_QUICK_START.md` →
+      `docs/_system/DOC-0103_documentation-organization-quick-start.md`
+- [ ] Move `README_FEATURES.md` →
+      `docs/reference/DOC-0104_features-reference.md`
+- [ ] Move `NEXTJS_CONFIGURATION_VALIDATION.md` →
+      `docs/reference/DOC-0105_nextjs-configuration-validation.md`
+- [ ] Move `EXTERNAL_DEPENDENCIES_SOLUTION.md` →
+      `docs/reference/DOC-0106_external-dependencies-solution.md`
+- [ ] Move `TEST_REPORT_CUSTOMIZATION.md` →
+      `docs/reference/DOC-0107_test-report-customization.md`
 
 ### Post-Migration
+
 - [ ] Add frontmatter to all migrated files
 - [ ] Update all links in `README.md`
 - [ ] Update all links in `QUICK_START.md`
@@ -249,6 +283,7 @@ if (!location && !ROOT_EXCEPTIONS.includes(filename)) {
 - [ ] Update `.cursorignore` if needed
 
 ### Optional: Redirect Stubs
+
 - [ ] Create redirect stubs in root (if backward compatibility needed)
 - [ ] Document stub removal timeline (e.g., after 30 days)
 
@@ -257,6 +292,7 @@ if (!location && !ROOT_EXCEPTIONS.includes(filename)) {
 ## 7. Success Criteria
 
 ### Quantitative
+
 - ✅ Root directory: 3 files (down from 11)
 - ✅ All 8 files migrated to designated directories
 - ✅ All files have proper DOC-XXXX naming
@@ -265,6 +301,7 @@ if (!location && !ROOT_EXCEPTIONS.includes(filename)) {
 - ✅ Validation script passes
 
 ### Qualitative
+
 - ✅ Clear separation: root = onboarding, docs/ = reference
 - ✅ Improved discoverability (docs organized by type)
 - ✅ Governance compliance (strict 3-file limit)
@@ -294,17 +331,18 @@ git reset --hard [commit-before-migration]
 ### Ongoing Enforcement
 
 **Pre-commit Hook**:
+
 - Validates root has only 3 files
 - Blocks new markdown files in root
 - Enforces DOC-XXXX naming for migrated files
 
 **CI/CD**:
+
 - Validates root directory structure
 - Checks for broken links
 - Verifies frontmatter compliance
 
 ---
 
-**Status**: Ready for execution
-**Risk Level**: 🟢 LOW (reversible moves, no deletions)
-**Estimated Time**: 1-2 hours (with verification)
+**Status**: Ready for execution **Risk Level**: 🟢 LOW (reversible moves, no
+deletions) **Estimated Time**: 1-2 hours (with verification)

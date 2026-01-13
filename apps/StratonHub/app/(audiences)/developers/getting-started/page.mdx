@@ -1,0 +1,133 @@
+---
+title: Getting Started
+description: Environment setup, repository structure, and development workflow
+audience: developers
+type: tutorial
+published: true
+last_updated: 2026-01-13
+---
+
+# Getting Started
+
+> Set up your development environment and understand the repository structure.
+
+## Prerequisites
+
+- **Node.js**: v20.11+ (LTS recommended)
+- **pnpm**: v8.15+ (workspace package manager)
+- **Git**: v2.40+
+- **Editor**: VS Code with recommended extensions
+
+## Quick Start
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/mythic/nexus-canon.git
+cd nexus-canon
+```
+
+### 2. Install Dependencies
+
+```bash
+pnpm install
+```
+
+### 3. Set Up Environment
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` with your local configuration.
+
+### 4. Start Development Server
+
+```bash
+pnpm dev
+```
+
+The StratonHub documentation site runs at `http://localhost:3000`.
+
+## Repository Structure
+
+```
+mythic/
+├── apps/
+│   ├── StratonHub/      # Documentation hub (you are here)
+│   └── boardroom/       # BoardRoom application
+├── packages/
+│   ├── design-system/   # AXIS design tokens
+│   ├── shared-utils/    # Shared utilities
+│   └── shared-types/    # TypeScript definitions
+├── docs/                # Root-level documentation
+└── scripts/             # Build and validation scripts
+```
+
+## Development Workflow
+
+### Branch Naming
+
+```
+feature/ISSUE-123-short-description
+fix/ISSUE-456-bug-description
+docs/ISSUE-789-documentation-update
+```
+
+### Commit Convention
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat(boardroom): add proposal voting
+fix(auth): resolve session timeout issue
+docs(stratonhub): update API reference
+```
+
+### Pre-commit Checks
+
+The repository runs automated checks before each commit:
+
+- TypeScript type checking
+- ESLint linting
+- Documentation validation
+- Search index build
+
+## Next Steps
+
+- [Architecture Overview](/developers/architecture) — System boundaries and
+  design
+- [API Reference](/developers/api) — Interface contracts
+- [Execution Guides](/developers/guides) — Task-focused procedures
+
+## Troubleshooting
+
+### pnpm install fails
+
+```bash
+# Clear pnpm cache
+pnpm store prune
+
+# Remove node_modules and reinstall
+rm -rf node_modules
+pnpm install
+```
+
+### TypeScript errors after pull
+
+```bash
+# Rebuild TypeScript references
+pnpm type-check
+```
+
+### Search not working
+
+```bash
+# Rebuild search index
+pnpm search:build-index
+```
+
+## Related
+
+- [Architecture](/developers/architecture)
+- [API Reference](/developers/api)

@@ -18,19 +18,21 @@
 
 ## Executive Preamble — The Trinity of Truth
 
-To eliminate ambiguity and prevent semantic drift, this Constitution establishes a single, unified
-frame of reference for all stakeholders. The system is governed by three non-competing layers:
+To eliminate ambiguity and prevent semantic drift, this Constitution establishes
+a single, unified frame of reference for all stakeholders. The system is
+governed by three non-competing layers:
 
-1. **The Doctrine (NexusCanon):** The immutable architectural and governance laws.
-2. **The Philosophy (Digital Atelier):** The soul of the system—software designed to preserve
-   craftsmanship.
+1. **The Doctrine (NexusCanon):** The immutable architectural and governance
+   laws.
+2. **The Philosophy (Digital Atelier):** The soul of the system—software
+   designed to preserve craftsmanship.
 3. **The Product (Axis):** The execution vehicle delivered to the enterprise.
 
 ### The Mandate
 
-We acknowledge that core business workflows are not features, but **Timeless Accounting Truths**.
-The "3-Way Match" is a 1,000-year-old law. NexusCanon does not design these truths; it codifies them
-into a System of Record.
+We acknowledge that core business workflows are not features, but **Timeless
+Accounting Truths**. The "3-Way Match" is a 1,000-year-old law. NexusCanon does
+not design these truths; it codifies them into a System of Record.
 
 ---
 
@@ -40,15 +42,15 @@ into a System of Record.
 
 ### 1.1 The Prime Monad
 
-The system **SHALL** execute as a **Single Indivisible Runtime**. The distributed microservices
-paradigm is explicitly rejected to prevent state fragmentation, network latency, and cognitive
-overhead.
+The system **SHALL** execute as a **Single Indivisible Runtime**. The
+distributed microservices paradigm is explicitly rejected to prevent state
+fragmentation, network latency, and cognitive overhead.
 
-**The Law:** The application logic, database access, and UI rendering must exist within a unified
-memory space (Monorepo) to guarantee Atomic Truth.
+**The Law:** The application logic, database access, and UI rendering must exist
+within a unified memory space (Monorepo) to guarantee Atomic Truth.
 
-**The Exception:** Segregation is only permitted via **The Vectors** (External Adapters) or **The
-Atlas** (Infrastructure shedding).
+**The Exception:** Segregation is only permitted via **The Vectors** (External
+Adapters) or **The Atlas** (Infrastructure shedding).
 
 **Engineering Standards:**
 
@@ -60,18 +62,20 @@ Atlas** (Infrastructure shedding).
 
 ### 1.2 Law of Atomic Truth
 
-All business-critical actions spanning multiple domains SHALL execute as a single, unbreakable
-transaction following ACID principles:
+All business-critical actions spanning multiple domains SHALL execute as a
+single, unbreakable transaction following ACID principles:
 
 - **Atomicity:** All or nothing.
-- **Consistency:** The database moves from one valid state to another valid state.
+- **Consistency:** The database moves from one valid state to another valid
+  state.
 - **Isolation:** Transactions do not leak intermediate states.
 - **Durability:** Committed data is permanent.
 
 ### 1.3 Amendment — Isomorphic Sovereignty (The Titan & The Olympian)
 
-We recognize two valid manifestations of the Prime Monad. The Code Logic (**The Codex**) must be
-written to be **Isomorphic**—capable of running on either runtime:
+We recognize two valid manifestations of the Prime Monad. The Code Logic (**The
+Codex**) must be written to be **Isomorphic**—capable of running on either
+runtime:
 
 - **Manifestation A: The Titan (Node.js/Next.js)**
   - The Commercial Standard
@@ -89,7 +93,8 @@ This ensures longevity without sacrificing present-day execution.
 
 ## Part II — The Domains of Authority (The Layering)
 
-We reject generic terms like "Frontend" or "Backend." We recognize **7 Domains of Authority**.
+We reject generic terms like "Frontend" or "Backend." We recognize **7 Domains
+of Authority**.
 
 | Domain            | Standard Term    | The NexusCanon Definition                                                                                                                             |
 | ----------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -122,11 +127,12 @@ The Codex separates the **Why** from the **How**.
 
 **The Mechanism of Extension:**
 
-- **Dual-Metadata:** Distinguishes "Technical Type" (decimal) from "Business Concept" (Wholesale
-  Price).
-- **The Manifest:** A dynamic configuration (JSON/YAML) that maps Concepts to Columns.
-- **Hot-Swappable Schema:** Business users can add fields via The Manifest. The system utilizes
-  JSONB or Sparse Columns to adapt without code deployment.
+- **Dual-Metadata:** Distinguishes "Technical Type" (decimal) from "Business
+  Concept" (Wholesale Price).
+- **The Manifest:** A dynamic configuration (JSON/YAML) that maps Concepts to
+  Columns.
+- **Hot-Swappable Schema:** Business users can add fields via The Manifest. The
+  system utilizes JSONB or Sparse Columns to adapt without code deployment.
 
 ---
 
@@ -164,9 +170,10 @@ Every mutation must be signed by the **6W1H forensic signature**:
 
 **Mantra:** Compliance is a Variable.
 
-- **Rule:** The system never blocks a business-critical action unless physically impossible.
-- **Segregation of Duties (SoD):** Violations are permitted but flagged with a permanent Risk Marker
-  in the Chronos Trace.
+- **Rule:** The system never blocks a business-critical action unless physically
+  impossible.
+- **Segregation of Duties (SoD):** Violations are permitted but flagged with a
+  permanent Risk Marker in the Chronos Trace.
 
 ### 3.4 The Operational Mechanics (The Dirty Laundry)
 
@@ -176,10 +183,11 @@ To prevent entropy, we formally name the mechanical subsystems.
 
 **Mantra:** Sanitize the Foreign.
 
-External systems (Stripe, Legacy ERPs) are "Barbarians." They communicate through The Vector Ports.
+External systems (Stripe, Legacy ERPs) are "Barbarians." They communicate
+through The Vector Ports.
 
-**Law:** No external data touches The Loom until it passes through a Vector Adapter and is validated
-against The Codex.
+**Law:** No external data touches The Loom until it passes through a Vector
+Adapter and is validated against The Codex.
 
 #### 3.4.2 The Tempo (Scheduling)
 
@@ -187,35 +195,36 @@ against The Codex.
 
 We do not use random "Cron Jobs." We use The Tempo.
 
-**Law:** The Tempo is a rhythmic trigger (Heartbeat) that wakes the Prime Monad to perform
-maintenance. It is defined in code, not in OS crontabs.
+**Law:** The Tempo is a rhythmic trigger (Heartbeat) that wakes the Prime Monad
+to perform maintenance. It is defined in code, not in OS crontabs.
 
 #### 3.4.3 The Vault (Secrets)
 
 **Mantra:** Invisible Ink.
 
-**Law:** Secrets (API Keys, Certs) are never committed to code. They are injected by The Atlas at
-runtime into the process environment.
+**Law:** Secrets (API Keys, Certs) are never committed to code. They are
+injected by The Atlas at runtime into the process environment.
 
 #### 3.4.4 The Archive (Storage)
 
 **Mantra:** Reference vs. Matter.
 
-**Law:** The Loom stores the Reference (URL/Pointer). The Archive (S3/Blob) stores the Matter
-(Files/Images). Never store binary data in The Loom.
+**Law:** The Loom stores the Reference (URL/Pointer). The Archive (S3/Blob)
+stores the Matter (Files/Images). Never store binary data in The Loom.
 
 #### 3.4.5 The Rosetta (Internationalization)
 
 **Mantra:** Content is Data.
 
-**Law:** We do not hardcode text. We register Keys (BTN_SUBMIT) in The Codex. The Rosetta projects
-the correct locale (EN/VN) via The Prism.
+**Law:** We do not hardcode text. We register Keys (BTN_SUBMIT) in The Codex.
+The Rosetta projects the correct locale (EN/VN) via The Prism.
 
 #### 3.4.6 The Herald (Notifications)
 
 **Mantra:** Fire and Forget.
 
-**Law:** The Monad generates the message intent. The Herald delivers it asynchronously (Email/SMS).
+**Law:** The Monad generates the message intent. The Herald delivers it
+asynchronously (Email/SMS).
 
 ---
 
@@ -225,21 +234,22 @@ the correct locale (EN/VN) via The Prism.
 
 ### 4.1 The Physics of Luxury
 
-- **Golden Ratio Timing:** Animations must adhere to natural physics ($1.618$s decay), giving
-  "weight" to digital objects.
+- **Golden Ratio Timing:** Animations must adhere to natural physics ($1.618$s
+  decay), giving "weight" to digital objects.
 - **Partial Prerendering (PPR):** Content streams in; the frame never flickers.
 - **Zero-Bundle HTML:** Use React Server Components (RSC) for instant paint.
 
 ### 4.2 The Thumb Zone
 
-- **One-Handed Law:** Critical actions must be executable with one hand ("Heads-Up" operation).
+- **One-Handed Law:** Critical actions must be executable with one hand
+  ("Heads-Up" operation).
 
 ---
 
 ## Part V — The Repository Guidelines
 
-We define two valid repository structures. **Standard A** is the primary commercial vehicle.
-**Standard B** is the reference implementation for purity.
+We define two valid repository structures. **Standard A** is the primary
+commercial vehicle. **Standard B** is the reference implementation for purity.
 
 ### Standard A: The Titan (Next.js v16 + Turborepo)
 
@@ -327,7 +337,8 @@ We define two valid repository structures. **Standard A** is the primary commerc
 
 **Mantra:** One Monad. Two Faces.
 
-We distinguish the Governance Layer from the Execution Layer to serve distinct market needs.
+We distinguish the Governance Layer from the Execution Layer to serve distinct
+market needs.
 
 ### 6.1 The Quorum
 
@@ -363,25 +374,29 @@ We distinguish the Governance Layer from the Execution Layer to serve distinct m
 
 ### Drift Enforcement (The Code of Veto)
 
-Any Pull Request (PR) **SHALL be rejected immediately** if it violates the following:
+Any Pull Request (PR) **SHALL be rejected immediately** if it violates the
+following:
 
-1. **The Monad Breach:** Introducing a new "Service" or container without Council approval.
+1. **The Monad Breach:** Introducing a new "Service" or container without
+   Council approval.
 
 2. **The Codex Bypass:** Writing business logic inside a UI Component (`.tsx`).
 
-3. **The Loom Violation:** Performing a Database Mutation (INSERT/UPDATE) inside a generic utility
-   or UI file.
+3. **The Loom Violation:** Performing a Database Mutation (INSERT/UPDATE) inside
+   a generic utility or UI file.
 
-4. **The Chronos Omission:** A mutation that lacks a `trace()` call (6W1H signature).
+4. **The Chronos Omission:** A mutation that lacks a `trace()` call (6W1H
+   signature).
 
-5. **The Vector Leak:** Calling an external API (`fetch`) directly without wrapping it in a Vector
-   Adapter.
+5. **The Vector Leak:** Calling an external API (`fetch`) directly without
+   wrapping it in a Vector Adapter.
 
 ---
 
 ## Part VIII — Engineering Quick Reference
 
-**Status:** Operational Reference **Mantra:** A Place for Everything, and Everything in its Place.
+**Status:** Operational Reference **Mantra:** A Place for Everything, and
+Everything in its Place.
 
 ### 8.1 The Core Logic (Where Code Lives)
 
@@ -440,22 +455,26 @@ Any Pull Request (PR) **SHALL be rejected immediately** if it violates the follo
 
 ### Appendix B: The Narrative Arc
 
-Modern enterprise systems break under complexity. They fragment truth and block operations. We build
-the Digital Atelier to restore craftsmanship through Atomic Truth and Sensorial Design.
+Modern enterprise systems break under complexity. They fragment truth and block
+operations. We build the Digital Atelier to restore craftsmanship through Atomic
+Truth and Sensorial Design.
 
 ### Appendix C: VC / PE Narrative
 
 - **The Problem:** ERPs are bureaucratic anchors.
-- **The Moat:** NexusCanon (Architecture) + The Quorum (Compliance) + The Cobalt (UX).
+- **The Moat:** NexusCanon (Architecture) + The Quorum (Compliance) + The Cobalt
+  (UX).
 - **The Product:** Axis (The System of Record).
 
 ### Appendix D: Enforced Repository Structure
 
-See Part V for complete directory trees for both Standard A (Titan) and Standard B (Olympian).
+See Part V for complete directory trees for both Standard A (Titan) and Standard
+B (Olympian).
 
 ### Appendix E: Drift Enforcement Rule
 
-See Part VII - Drift Enforcement (The Code of Veto) for complete PR rejection criteria.
+See Part VII - Drift Enforcement (The Code of Veto) for complete PR rejection
+criteria.
 
 ### Appendix F: Public One-Pager
 
@@ -480,12 +499,13 @@ See Part VII - Drift Enforcement (The Code of Veto) for complete PR rejection cr
 
 ### Appendix H: CI / Architectural Enforcement Rules
 
-❌ **No** internal HTTP calls. ❌ **No** direct DB access from UI (Cobalt). ❌ **No** business logic
-in UI components. ❌ **No** secrets in code. ❌ **No** external API calls without Vector adapter.
+❌ **No** internal HTTP calls. ❌ **No** direct DB access from UI (Cobalt). ❌
+**No** business logic in UI components. ❌ **No** secrets in code. ❌ **No**
+external API calls without Vector adapter.
 
-✅ **All** Mutations wrapped in BEGIN...COMMIT. ✅ **Chronos** Trace required for all state changes.
-✅ **Isomorphic** Codex (runs on both Node & Deno). ✅ **Biome** formatting enforced. ✅ **Zod**
-validation on all inputs.
+✅ **All** Mutations wrapped in BEGIN...COMMIT. ✅ **Chronos** Trace required
+for all state changes. ✅ **Isomorphic** Codex (runs on both Node & Deno). ✅
+**Biome** formatting enforced. ✅ **Zod** validation on all inputs.
 
 ### Appendix I: Conceptual Map
 

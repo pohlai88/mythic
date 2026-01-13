@@ -18,6 +18,7 @@ tags: [reference, turborepo, monorepo, optimization]
 ## 🎯 Overview
 
 This workspace has been optimized for **TurboRepo** to provide:
+
 - ⚡ **Faster builds** through intelligent caching
 - 🔄 **Task parallelization** for concurrent execution
 - 📦 **Output caching** to skip unchanged work
@@ -33,6 +34,7 @@ This workspace has been optimized for **TurboRepo** to provide:
 ### 1. TurboRepo Installation
 
 **Added to `package.json`:**
+
 ```json
 {
   "devDependencies": {
@@ -42,6 +44,7 @@ This workspace has been optimized for **TurboRepo** to provide:
 ```
 
 **Install:**
+
 ```bash
 pnpm install
 ```
@@ -53,6 +56,7 @@ pnpm install
 **File:** `turbo.json` (created)
 
 **Key Features:**
+
 - ✅ **Build caching** - Caches `.next` output (excludes cache dir)
 - ✅ **Lint caching** - Caches ESLint results
 - ✅ **Type-check caching** - Caches TypeScript compilation
@@ -65,12 +69,14 @@ pnpm install
 ### 3. Scripts Configuration
 
 **Standard Scripts (TurboRepo automatically caches):**
+
 - `pnpm build` → Next.js build (cached by Turbo)
 - `pnpm lint` → ESLint (cached by Turbo)
 - `pnpm type-check` → TypeScript check (cached by Turbo)
 - `pnpm analyze` → Bundle analysis (depends on build)
 
 **Turbo-Specific Commands:**
+
 - `pnpm turbo run build` → Explicit Turbo execution
 - `pnpm turbo run lint type-check` → Parallel execution
 - `pnpm turbo` → Turbo CLI access
@@ -81,25 +87,27 @@ pnpm install
 
 ### Task Definitions
 
-| Task | Cached | Dependencies | Outputs |
-|------|--------|--------------|---------|
-| `build` | ✅ Yes | None | `.next/**` (excludes cache) |
-| `lint` | ✅ Yes | None | None |
-| `type-check` | ✅ Yes | None | None |
-| `format:check` | ✅ Yes | None | None |
-| `analyze` | ❌ No | `build` | `.next/analyze/**` |
-| `verify` | ❌ No | `build`, `lint`, `type-check` | None |
-| `dev` | ❌ No | None | Persistent |
-| `start` | ❌ No | `build` | Persistent |
+| Task           | Cached | Dependencies                  | Outputs                     |
+| -------------- | ------ | ----------------------------- | --------------------------- |
+| `build`        | ✅ Yes | None                          | `.next/**` (excludes cache) |
+| `lint`         | ✅ Yes | None                          | None                        |
+| `type-check`   | ✅ Yes | None                          | None                        |
+| `format:check` | ✅ Yes | None                          | None                        |
+| `analyze`      | ❌ No  | `build`                       | `.next/analyze/**`          |
+| `verify`       | ❌ No  | `build`, `lint`, `type-check` | None                        |
+| `dev`          | ❌ No  | None                          | Persistent                  |
+| `start`        | ❌ No  | `build`                       | Persistent                  |
 
 ### Caching Strategy
 
 **Build Outputs:**
+
 - ✅ Caches `.next` directory
 - ❌ Excludes `.next/cache` (Next.js internal cache)
 - ❌ Excludes `.next/static/chunks` (dynamic content)
 
 **Cache Invalidation:**
+
 - Changes to `package.json` → Invalidates all caches
 - Changes to `tsconfig.json` → Invalidates type-check & build
 - Changes to `next.config.js` → Invalidates build
@@ -113,6 +121,7 @@ pnpm install
 ### Basic Commands
 
 **Standard Scripts (TurboRepo automatically caches):**
+
 ```bash
 # Build with Turbo caching (automatic)
 pnpm build
@@ -125,6 +134,7 @@ pnpm type-check
 ```
 
 **Turbo-Specific Commands:**
+
 ```bash
 # Run multiple tasks in parallel
 pnpm turbo run lint type-check
@@ -168,19 +178,19 @@ pnpm verify
 
 ### Build Performance
 
-| Scenario | Before | After | Improvement |
-|----------|--------|-------|-------------|
-| **Cold Build** | ~2-3 min | ~2-3 min | Baseline |
-| **Cached Build** (no changes) | ~2-3 min | ~5-10 sec | **95% faster** |
+| Scenario                           | Before   | After      | Improvement    |
+| ---------------------------------- | -------- | ---------- | -------------- |
+| **Cold Build**                     | ~2-3 min | ~2-3 min   | Baseline       |
+| **Cached Build** (no changes)      | ~2-3 min | ~5-10 sec  | **95% faster** |
 | **Partial Build** (source changes) | ~2-3 min | ~30-60 sec | **70% faster** |
-| **Config Change** | ~2-3 min | ~2-3 min | Baseline |
+| **Config Change**                  | ~2-3 min | ~2-3 min   | Baseline       |
 
 ### Task Execution
 
-| Scenario | Before | After |
-|----------|--------|-------|
+| Scenario                                   | Before   | After    |
+| ------------------------------------------ | -------- | -------- | -------------- |
 | **Sequential** (lint → type-check → build) | ~4-5 min | ~4-5 min |
-| **Parallel** (lint + type-check → build) | ~4-5 min | ~2-3 min | **40% faster** |
+| **Parallel** (lint + type-check → build)   | ~4-5 min | ~2-3 min | **40% faster** |
 
 ### CI/CD Performance
 
@@ -197,6 +207,7 @@ pnpm verify
 **For Team/CI Sharing:**
 
 Update `turbo.json`:
+
 ```json
 {
   "remoteCache": {
@@ -207,11 +218,13 @@ Update `turbo.json`:
 ```
 
 **Setup:**
+
 1. Create Vercel account (free tier available)
 2. Link project: `pnpm turbo login`
 3. Link repo: `pnpm turbo link`
 
 **Benefits:**
+
 - Share cache across team members
 - CI/CD uses same cache
 - Faster builds for everyone
@@ -221,21 +234,23 @@ Update `turbo.json`:
 ### Task Dependencies
 
 **Current Configuration:**
+
 ```json
 {
   "build": {
-    "dependsOn": ["^build"]  // Waits for dependencies (none in single package)
+    "dependsOn": ["^build"] // Waits for dependencies (none in single package)
   },
   "analyze": {
-    "dependsOn": ["build"]   // Runs after build
+    "dependsOn": ["build"] // Runs after build
   },
   "verify": {
-    "dependsOn": ["build", "lint", "type-check"]  // Runs after all checks
+    "dependsOn": ["build", "lint", "type-check"] // Runs after all checks
   }
 }
 ```
 
 **Benefits:**
+
 - Ensures correct execution order
 - Parallel execution where possible
 - Automatic dependency resolution
@@ -247,12 +262,14 @@ Update `turbo.json`:
 ### 1. Intelligent Caching
 
 **What Gets Cached:**
+
 - ✅ Build outputs (`.next` directory)
 - ✅ Lint results
 - ✅ Type-check results
 - ✅ Format check results
 
 **What Doesn't Get Cached:**
+
 - ❌ Development server (`dev`)
 - ❌ Production server (`start`)
 - ❌ Formatting (`format` - modifies files)
@@ -261,11 +278,13 @@ Update `turbo.json`:
 ### 2. Output Optimization
 
 **Build Outputs:**
+
 - Caches `.next` but excludes:
   - `.next/cache` (Next.js internal cache)
   - `.next/static/chunks` (dynamic, changes per build)
 
 **Why:**
+
 - Prevents cache bloat
 - Ensures fresh dynamic content
 - Maintains Next.js cache efficiency
@@ -273,11 +292,13 @@ Update `turbo.json`:
 ### 3. Environment Variable Tracking
 
 **Tracked Variables:**
+
 - `NODE_ENV`
 - `NEXT_PUBLIC_*` (public env vars)
 - `VERCEL_*` (Vercel-specific)
 
 **Impact:**
+
 - Cache invalidates when env vars change
 - Ensures correct builds for different environments
 - Prevents stale cache issues
@@ -285,6 +306,7 @@ Update `turbo.json`:
 ### 4. Global Dependencies
 
 **Tracked Files:**
+
 - `package.json` - Dependency changes
 - `pnpm-lock.yaml` - Lock file changes
 - `tsconfig.json` - TypeScript config
@@ -293,6 +315,7 @@ Update `turbo.json`:
 - `.prettierrc` - Prettier config
 
 **Impact:**
+
 - Cache invalidates when configs change
 - Ensures builds reflect configuration
 - Prevents configuration drift
@@ -304,6 +327,7 @@ Update `turbo.json`:
 ### How TurboRepo Works
 
 **Standard Scripts (No Changes Needed):**
+
 ```bash
 pnpm build        # Next.js build (TurboRepo automatically caches)
 pnpm lint         # ESLint (TurboRepo automatically caches)
@@ -311,12 +335,14 @@ pnpm type-check   # TypeScript (TurboRepo automatically caches)
 ```
 
 **TurboRepo automatically:**
+
 - ✅ Intercepts script execution
 - ✅ Caches outputs based on `turbo.json` config
 - ✅ Skips tasks when cache is valid
 - ✅ Runs tasks when cache is invalid
 
 **Explicit Turbo Commands:**
+
 ```bash
 # Run with Turbo explicitly
 pnpm turbo run build
@@ -339,6 +365,7 @@ pnpm build
 ```
 
 **Expected:**
+
 - Build runs normally
 - Cache created in `.turbo` directory
 - Takes normal build time
@@ -350,6 +377,7 @@ pnpm build
 ```
 
 **Expected:**
+
 - Build completes in seconds
 - "FULL TURBO" message
 - Uses cached output
@@ -365,6 +393,7 @@ pnpm build
 ```
 
 **Expected:**
+
 - Only changed files rebuild
 - Faster than full rebuild
 - Cache partially used
@@ -378,6 +407,7 @@ pnpm build
 ```
 
 **Expected:**
+
 - Full rebuild (config change)
 - Cache invalidated
 - Normal build time
@@ -416,11 +446,13 @@ pnpm turbo run build --force
 ### Cache Hit Rate
 
 **Check cache effectiveness:**
+
 ```bash
 pnpm turbo run build --summarize
 ```
 
 **Output shows:**
+
 - Tasks executed
 - Cache hits
 - Cache misses
@@ -429,11 +461,13 @@ pnpm turbo run build --summarize
 ### Build Time Comparison
 
 **Without Turbo:**
+
 ```bash
 time pnpm build:next
 ```
 
 **With Turbo (cached):**
+
 ```bash
 time pnpm build
 ```
@@ -447,10 +481,12 @@ time pnpm build
 ### Issue: Cache Not Working
 
 **Symptoms:**
+
 - Builds always take full time
 - No `.turbo` directory created
 
 **Solutions:**
+
 1. Check `turbo.json` exists
 2. Verify `turbo` is installed: `pnpm list turbo`
 3. Check file permissions
@@ -459,10 +495,12 @@ time pnpm build
 ### Issue: Stale Cache
 
 **Symptoms:**
+
 - Changes not reflected in build
 - Old content appears
 
 **Solutions:**
+
 1. Clear cache: `rm -rf .turbo`
 2. Force rebuild: `pnpm turbo run build --force`
 3. Check `globalDependencies` in `turbo.json`
@@ -470,10 +508,12 @@ time pnpm build
 ### Issue: Cache Too Large
 
 **Symptoms:**
+
 - `.turbo` directory growing large
 - Disk space issues
 
 **Solutions:**
+
 1. Review `outputs` in `turbo.json`
 2. Exclude unnecessary files
 3. Clear cache periodically
@@ -486,12 +526,14 @@ time pnpm build
 ### 1. Cache Strategy
 
 **Do Cache:**
+
 - ✅ Build outputs
 - ✅ Lint results
 - ✅ Type-check results
 - ✅ Test results (if added)
 
 **Don't Cache:**
+
 - ❌ Development servers
 - ❌ File-modifying tasks (format, fix)
 - ❌ Verification scripts
@@ -499,11 +541,13 @@ time pnpm build
 ### 2. Output Configuration
 
 **Include:**
+
 - Build artifacts (`.next`)
 - Generated files
 - Test reports
 
 **Exclude:**
+
 - Internal caches (`.next/cache`)
 - Temporary files
 - Log files
@@ -511,11 +555,13 @@ time pnpm build
 ### 3. Environment Variables
 
 **Track:**
+
 - Build-time variables
 - Public variables (`NEXT_PUBLIC_*`)
 - Platform variables (`VERCEL_*`)
 
 **Don't Track:**
+
 - Secrets (never in cache)
 - Runtime-only variables
 - Development-only variables
@@ -527,12 +573,14 @@ time pnpm build
 ### 1. Remote Cache Setup
 
 **When Ready:**
+
 1. Set up Vercel account
 2. Link TurboRepo: `pnpm turbo login`
 3. Enable remote cache in `turbo.json`
 4. Share cache across team/CI
 
 **Benefits:**
+
 - Team-wide cache sharing
 - CI/CD speed improvements
 - Consistent builds
@@ -540,12 +588,14 @@ time pnpm build
 ### 2. Monorepo Migration
 
 **If Converting to Monorepo:**
+
 1. Create `pnpm-workspace.yaml`
 2. Move to `apps/docs` or `packages/docs`
 3. Update `turbo.json` for multiple packages
 4. Configure workspace dependencies
 
 **Current Setup:**
+
 - ✅ Ready for monorepo migration
 - ✅ TurboRepo already configured
 - ✅ Just need workspace structure
@@ -553,6 +603,7 @@ time pnpm build
 ### 3. Additional Tasks
 
 **Potential Additions:**
+
 - `test` - Unit/integration tests
 - `test:e2e` - End-to-end tests
 - `storybook` - Component documentation
@@ -583,6 +634,5 @@ After setup:
 
 ---
 
-**Last Updated:** 2024-12-19
-**Status:** ✅ **TurboRepo Optimized**
-**Next Step:** Run `pnpm install` then `pnpm build` to test
+**Last Updated:** 2024-12-19 **Status:** ✅ **TurboRepo Optimized** **Next
+Step:** Run `pnpm install` then `pnpm build` to test

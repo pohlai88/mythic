@@ -1,25 +1,28 @@
 # Turbo Token Retrieval - When Only Team is Shown
 
-**Status**: ✅ Active | **Last Updated**: 2026-01-11
-**Purpose**: Get Turbo token when only team name is displayed
+**Status**: ✅ Active | **Last Updated**: 2026-01-11 **Purpose**: Get Turbo
+token when only team name is displayed
 
 ---
 
 ## Your Current Situation
 
 You ran `turbo link` and saw:
+
 ```
 ✓ Team: your-team-name
 ```
 
 But **no token was shown**. Your `.turbo/config.json` shows:
+
 ```json
 {
   "teamId": "team_05yVsWPh4ZJT3Q8u4sM6W2OP"
 }
 ```
 
-**This is normal** - Turbo sometimes doesn't display or store the token locally for security.
+**This is normal** - Turbo sometimes doesn't display or store the token locally
+for security.
 
 ---
 
@@ -45,6 +48,7 @@ pnpm turbo link
 ```
 
 **When prompted**, the token might appear in:
+
 - Terminal output (look carefully)
 - Browser redirect URL
 - Vercel dashboard after linking
@@ -54,11 +58,13 @@ pnpm turbo link
 ## Important: Turbo Token vs Vercel Token
 
 ### Turbo Token (What You Need)
+
 - Format: `tur_xxxxxxxxxxxxx`
 - Purpose: Turborepo remote cache
 - Obtained via: `turbo login` + `turbo link`
 
 ### Vercel API Token (Different)
+
 - Format: `vercel_xxxxxxxxxxxxx` or similar
 - Purpose: Vercel platform API
 - Obtained via: Vercel dashboard
@@ -72,11 +78,13 @@ pnpm turbo link
 ### Option 1: Test Without Token
 
 Turbo remote cache **works without explicit token** if:
+
 - You're logged in via `turbo login`
 - Repository is linked via `turbo link`
 - Team is configured
 
 **Try building**:
+
 ```bash
 pnpm build
 ```
@@ -88,6 +96,7 @@ If you see "Remote cache hit" messages, it's working without explicit token!
 ### Option 2: Use Team ID Instead
 
 Your config shows:
+
 ```json
 {
   "teamId": "team_05yVsWPh4ZJT3Q8u4sM6W2OP"
@@ -95,6 +104,7 @@ Your config shows:
 ```
 
 For CI/CD, you might only need:
+
 - `TURBO_TEAM` = `team_05yVsWPh4ZJT3Q8u4sM6W2OP` (from config)
 - `TURBO_TOKEN` = May not be required if auth is via Vercel
 
@@ -134,17 +144,20 @@ pnpm build
 # ⚠ Remote cache miss
 ```
 
-If you see cache messages, **it's working!** Token might be stored in Vercel's auth cache.
+If you see cache messages, **it's working!** Token might be stored in Vercel's
+auth cache.
 
 ---
 
 ## Summary
 
 **Your situation**:
+
 - ✅ Team ID: `team_05yVsWPh4ZJT3Q8u4sM6W2OP` (found in config)
 - ❓ Token: Not shown in output or config
 
 **Solutions**:
+
 1. **Test first**: Try building - remote cache might work without explicit token
 2. **Re-link**: Run `pnpm turbo unlink` then `pnpm turbo link` again
 3. **Vercel Dashboard**: Check Settings → Tokens
@@ -152,5 +165,4 @@ If you see cache messages, **it's working!** Token might be stored in Vercel's a
 
 ---
 
-**Last Updated**: 2026-01-11
-**Status**: ✅ Active Guide
+**Last Updated**: 2026-01-11 **Status**: ✅ Active Guide

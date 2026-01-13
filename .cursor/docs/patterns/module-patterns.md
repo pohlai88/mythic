@@ -29,16 +29,19 @@ src/modules/user/
 ## Code Patterns
 
 ### Error Handling
+
 - Use CustomError class (search for `extends Error` in codebase)
 - Never throw generic Error objects
 - Include error codes and context
 
 ### Logging
+
 - Use project-standard logger (Winston, Pino, etc.)
 - **Never use `console.log` in production code**
 - Include context in log messages
 
 ### Testing
+
 - Create `[name].spec.ts` matching existing test style
 - Test both success and error cases
 - Use project's testing framework

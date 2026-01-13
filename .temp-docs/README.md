@@ -1,6 +1,7 @@
 # Temporary Documentation Holding Area
 
-This directory holds **temporary documentation** that is still in draft or review stage.
+This directory holds **temporary documentation** that is still in draft or
+review stage.
 
 ## Rules
 
@@ -8,9 +9,11 @@ This directory holds **temporary documentation** that is still in draft or revie
    - Example: `TEMP-20260106-1430_meeting-notes.md`
 
 2. **Expiration**: 7 days maximum
-   - Documents older than 7 days will be **automatically deleted** by pre-commit hook
+   - Documents older than 7 days will be **automatically deleted** by pre-commit
+     hook
 
 3. **Migration**: Move to permanent location before expiration
+
    ```bash
    .temp-docs/TEMP-20260106-1430_api-design.md
      ↓

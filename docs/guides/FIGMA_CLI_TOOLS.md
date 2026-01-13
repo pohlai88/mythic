@@ -8,7 +8,8 @@
 
 ## Overview
 
-This guide covers all Figma CLI tools available in the project, including installation, configuration, and usage.
+This guide covers all Figma CLI tools available in the project, including
+installation, configuration, and usage.
 
 ---
 
@@ -19,6 +20,7 @@ This guide covers all Figma CLI tools available in the project, including instal
 **Purpose**: Design token synchronization (Figma → Code)
 
 **Usage**:
+
 ```bash
 pnpm tokens:sync
 pnpm tokens:full-sync
@@ -33,6 +35,7 @@ pnpm tokens:full-sync
 **Purpose**: Model Context Protocol integration for AI agents
 
 **Usage**:
+
 ```bash
 # Via Cursor MCP or:
 pnpm tokens:sync-mcp --json=figma-variables.json
@@ -50,6 +53,7 @@ pnpm tokens:full-sync-mcp
 **Installation**: ✅ Installed globally (or via npx)
 
 **Usage**:
+
 ```bash
 # Initialize Code Connect
 pnpm figma:code-connect --init
@@ -72,6 +76,7 @@ pnpm figma:code-connect --validate
 **Installation**: ✅ Installed as dev dependency
 
 **Usage**:
+
 ```bash
 # Export components
 pnpm figma:export-components --file-key=<key>
@@ -160,6 +165,7 @@ FIGMA_FILE_KEY=your_figma_file_key_here
 ### Figma Export Config
 
 Edit `figma-export.config.js` to customize:
+
 - Export paths
 - Output formats
 - Component filters
@@ -229,7 +235,8 @@ echo $FIGMA_API_TOKEN
 
 - **Handoff Integration**: `docs/guides/HANDOFF_INTEGRATION.md`
 - **Figma MCP Integration**: `docs/guides/FIGMA_MCP_INTEGRATION.md`
-- **Figma CLI Tools Reference**: `.temp-docs/TEMP-20260111-FIGMA-CLI-TOOLS-REFERENCE.md`
+- **Figma CLI Tools Reference**:
+  `.temp-docs/TEMP-20260111-FIGMA-CLI-TOOLS-REFERENCE.md`
 - **Setup Complete**: `.temp-docs/TEMP-20260111-FIGMA-CLI-SETUP-COMPLETE.md`
 
 ---

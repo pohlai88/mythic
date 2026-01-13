@@ -4,6 +4,7 @@ description: Template for reference documentation following Diataxis framework
 audience: developers
 type: reference
 published: true
+last_updated: 2026-01-13
 ---
 
 # [API/Component/Concept] Reference
@@ -24,11 +25,11 @@ import { [Component/Function] } from '[package/path]'
 
 ### Properties / Parameters
 
-| Property   | Type     | Required | Default | Description |
-| ---------- | -------- | -------- | ------- | ----------- |
-| `prop1`    | `string` | Yes      | -       | Description |
-| `prop2`    | `number` | No       | `0`     | Description |
-| `prop3`    | `boolean`| No       | `false` | Description |
+| Property | Type      | Required | Default | Description |
+| -------- | --------- | -------- | ------- | ----------- |
+| `prop1`  | `string`  | Yes      | -       | Description |
+| `prop2`  | `number`  | No       | `0`     | Description |
+| `prop3`  | `boolean` | No       | `false` | Description |
 
 ### Methods / Functions
 
@@ -37,6 +38,7 @@ import { [Component/Function] } from '[package/path]'
 Description of what this method does.
 
 **Parameters**:
+
 - `param1`: Description
 - `param2`: Description (optional)
 
@@ -45,7 +47,7 @@ Description of what this method does.
 **Example**:
 
 ```typescript
-const result = await methodName('value', 42)
+const result = await methodName("value", 42)
 ```
 
 ## Examples
@@ -91,12 +93,12 @@ type Result = {
 }
 ```
 
-## Related
+## See Also
 
-- [How-To: Using This Component](/how-to/use-component) - Task-oriented guide
-- [Tutorial: Building with This Component](/tutorials/build-with-component) - Step-by-step learning
-- [Explanation: Why This Design](/explanation/design-rationale) - Background information
+- [Execution Guides](/developers/guides) — Task-oriented procedures
+- [Getting Started](/developers/getting-started) — Development setup
+- [Architecture](/developers/architecture) — System design and rationale
 
 ---
 
-**Last Updated**: [YYYY-MM-DD]
+**Last Updated**: [Update this date when you modify the content]

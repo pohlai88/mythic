@@ -1,0 +1,399 @@
+---
+description: "Invisible Governance - UX Freeze Zones, Refuse List, and Silence Budget enforcement for AI assistants"
+globs: "apps/StratonHub/**/*"
+alwaysApply: false
+priority: 35
+---
+
+# Invisible Governance (AI Enforcement)
+
+**Purpose**: Machine-enforceable rules for AI assistants working in the Luxury UX system.
+**Authority**: This rule is design law. Violations must be rejected.
+**Status**: MANDATORY
+
+---
+
+## 1. UX Freeze Zones
+
+### Frozen Files (ADR Required)
+
+These files are governance-protected. ANY modification requires:
+1. Approved ADR in `docs/governance/decisions/`
+2. Reference to ADR number in commit message
+3. Silence budget update
+
+**FROZEN FILES:**
+```
+apps/StratonHub/store/use-reader-prefs.ts
+apps/StratonHub/hooks/use-scroll-memory.ts
+packages/design-system/src/tokens/axis-base.css
+packages/design-system/src/tokens/axis-theme.css
+```
+
+**AI Behavior:**
+- ❌ REJECT: Direct modifications without ADR reference
+- ✅ ALLOW: Modifications with explicit ADR approval mentioned
+
+### Frozen Patterns (Never Modify)
+
+These CSS patterns are design law:
+
+| Pattern            | Location      | Purpose             |
+| ------------------ | ------------- | ------------------- |
+| `prose-axis`       | globals.css   | Typography law      |
+| `card-axis`        | axis-base.css | Card contract       |
+| `btn-axis`         | axis-base.css | Button contract     |
+| `h1-apex`          | axis-base.css | Authority hierarchy |
+| `pause-authority`  | globals.css   | Spacing semantics   |
+| `breathing rhythm` | globals.css   | Animation timing    |
+
+**AI Behavior:**
+- ❌ REJECT: Modifications to frozen pattern definitions
+- ✅ ALLOW: Using frozen patterns (applying classes)
+
+---
+
+## 2. Refuse List (Features to NEVER Implement)
+
+### Absolute Refusals (No Exceptions)
+
+**NEVER suggest or implement these features:**
+
+| Category        | Refused Feature                               |
+| --------------- | --------------------------------------------- |
+| Animation       | Page transition effects                       |
+| Animation       | Parallax scrolling                            |
+| Animation       | Auto-playing animations                       |
+| Navigation      | "Scroll to top" buttons                       |
+| Navigation      | Infinite scroll                               |
+| Feedback        | Toast notifications                           |
+| Feedback        | Success/error banners (use inline)            |
+| Gamification    | Reading progress bars                         |
+| Gamification    | Achievement badges                            |
+| Social          | Share buttons                                 |
+| Social          | Comment sections                              |
+| Social          | Like/reaction buttons                         |
+| Personalization | "Recommended for you"                         |
+| Personalization | Custom themes beyond dark/light               |
+| Onboarding      | Feature tours/walkthroughs                    |
+| Onboarding      | Welcome modals                                |
+| Commercial      | Newsletter signup popups                      |
+| Commercial      | "Upgrade to Pro" banners                      |
+| Technical       | Drop shadows on cards                         |
+| Technical       | Rounded corners > 2px                         |
+| Technical       | Gradient backgrounds (except text-divergence) |
+| Technical       | Glassmorphism/blur effects                    |
+
+**AI Behavior:**
+- ❌ REJECT: Any request to implement refused features
+- ✅ RESPOND: "This feature is on the Refuse List. See docs/governance/REFUSE_LIST.md"
+- ✅ SUGGEST: Alternative approaches that respect reader focus
+
+### Pattern Detection
+
+When user requests resemble refused patterns:
+
+```
+User: "Add a progress bar showing how far through the article they are"
+AI: "Reading progress bars are on the Refuse List (Gamification category).
+     Rationale: Readers are not players.
+     Alternative: The scroll position itself shows progress naturally."
+
+User: "Add share buttons to each article"
+AI: "Share buttons are on the Refuse List (Social category).
+     Rationale: Content speaks for itself. The URL is shareable.
+     Alternative: No action needed - browsers have native sharing."
+```
+
+---
+
+## 3. Silence Budget Enforcement
+
+### Cost Table (Apply to All Proposals)
+
+When suggesting new UI elements, calculate the silence cost:
+
+| Element Type            | Cost      |
+| ----------------------- | --------- |
+| New visible UI element  | -5 units  |
+| New animation           | -10 units |
+| New interactive control | -8 units  |
+| New tooltip/popover     | -3 units  |
+| New modal/dialog        | -15 units |
+| New navigation item     | -5 units  |
+| New preference option   | -8 units  |
+
+### Credit Table (Suggest Removals)
+
+When adding elements, suggest offsetting removals:
+
+| Action                   | Credit        |
+| ------------------------ | ------------- |
+| Remove UI element        | +5 units      |
+| Remove animation         | +10 units     |
+| Consolidate controls     | +3 units/each |
+| Remove preference option | +8 units      |
+
+**AI Behavior:**
+- ✅ CALCULATE: Include silence budget impact in proposals
+- ✅ SUGGEST: Offsetting removals when adding elements
+- ⚠️ WARN: When proposal costs > 10 units
+
+### Budget Statement Template
+
+Include this in proposals:
+
+```markdown
+## Silence Budget Impact
+
+| Action                      | Units   |
+| --------------------------- | ------- |
+| [Describe addition/removal] | [+/-X]  |
+| **Net Impact**              | **[X]** |
+```
+
+---
+
+## 4. Component Contracts
+
+### Shell Rules
+
+Shells are governance-protected layout components:
+
+- ❌ NEVER add `className` prop to Shell interfaces
+- ❌ NEVER add `style` prop to Shell interfaces
+- ❌ NEVER add business logic to Shells
+- ❌ NEVER fetch data in Shells
+- ✅ Shells receive children and compose layout only
+
+### Block Rules
+
+Blocks are composable content components:
+
+- ❌ NEVER import Zustand stores directly in Blocks
+- ✅ Blocks receive all data via props
+- ✅ Blocks may define internal state for UI interactions
+- ❌ NEVER define new CSS utilities in Blocks
+
+### Store Rules
+
+Zustand stores are client-only:
+
+- ❌ NEVER import stores in Server Components
+- ❌ NEVER read store state during server render
+- ✅ Only import in 'use client' components
+- ✅ Only read after useEffect mount
+- ✅ Reader preferences are ADVISORY only (never affect structure)
+
+---
+
+## 5. Reader Respect Rules
+
+### Motion
+
+- ✅ ALWAYS include `prefers-reduced-motion` guards
+- ❌ NEVER add animations < 500ms (Rush Veto)
+- ❌ NEVER add auto-playing animations
+- ❌ NEVER add entrance animations on scroll
+
+### Interruption
+
+- ❌ NEVER add modals without explicit user action
+- ❌ NEVER add toast notifications
+- ❌ NEVER add popups or overlays
+- ❌ NEVER add required interactions before content
+
+### Degradation
+
+- ✅ ALWAYS ensure content works without JS
+- ✅ ALWAYS provide static fallbacks for animations
+- ✅ ALWAYS use `@supports` for progressive enhancement
+
+---
+
+## 6. Negative Capability Test
+
+Before implementing ANY new feature, apply this test:
+
+> "Why would this feature be missed if never built?"
+
+**Weak answers (REJECT):**
+- "It would be nice to have"
+- "Other sites have it"
+- "It's a common pattern"
+- "Users might want it"
+
+**Strong answers (CONSIDER):**
+- "Users cannot complete task X without it"
+- "Support tickets show this causes measurable pain"
+- "Accessibility requires this element"
+
+**AI Behavior:**
+- ✅ APPLY: Negative Capability Test to new feature requests
+- ⚠️ CHALLENGE: Weak justifications
+- ✅ PROCEED: Only with strong justification
+
+---
+
+## 7. ADR Reference Requirement
+
+When modifying frozen zones, require ADR reference:
+
+```markdown
+// Before modifying frozen file
+// ADR: docs/governance/decisions/ADR-XXX-title.md
+// Approved: YYYY-MM-DD
+// Rationale: [Brief explanation]
+```
+
+**AI Behavior:**
+- ⚠️ ASK: "This file is in a freeze zone. Do you have an approved ADR?"
+- ❌ REJECT: Modifications without ADR reference
+- ✅ PROCEED: With explicit ADR approval
+
+---
+
+## 8. Luxury UX Principles (Reference)
+
+The Four Laws (from LUXURY_UX_CHARTER.md):
+
+1. **Invisible Presence**: The best luxury is invisible
+2. **Effortless Depth**: Complexity must feel natural
+3. **Temporal Respect**: Every millisecond of friction is debt
+4. **Negative Capability**: Define by what we refuse
+
+**AI Behavior:**
+- ✅ ALIGN: All suggestions with these principles
+- ⚠️ WARN: When suggestion violates a principle
+- ✅ CITE: Relevant principle when explaining decisions
+
+---
+
+## 9. Concept + Intake Enforcement (Phase 0)
+
+**Before any new page or component is proposed, it must belong to a Concept and pass Intake.**
+
+See: `docs/concepts/` for Concept Registry
+See: `docs/governance/INTAKE_CHECKLIST.md` for Intake
+
+### Concept Prerequisite
+
+Before Intake, identify the Concept:
+
+| Work Type                         | Concept               |
+| --------------------------------- | --------------------- |
+| Technical docs, reference, guides | Documentation Surface |
+| *More Concepts to be added*       | —                     |
+
+**If Concept is unclear → STOP. Define Concept first.**
+
+### The 3 Classification Questions
+
+Ask these before discussing ANY new UI:
+
+1. **What decision or understanding must the user leave with?**
+2. **Is this informational, navigational, or authoritative?**
+3. **What happens if this page does not exist?**
+
+### Single-Sentence Intent Test
+
+Require this sentence:
+
+> "This page exists so that the user can __________."
+
+If the sentence cannot be written clearly → REJECT request.
+
+### Shell Lock
+
+Once classified, lock the Shell immediately:
+
+| Classification              | Shell         |
+| --------------------------- | ------------- |
+| Authoritative / Reference   | DocShell      |
+| Orientation / Navigation    | PageShell     |
+| System State / Confirmation | CenteredShell |
+
+**After Shell lock, do not discuss layout alternatives.**
+
+### Mixed Intent Rule
+
+**If intent is mixed, split into multiple pages or reject.**
+
+Signs of mixed intent:
+- "Overview + detailed reference"
+- "Tutorial with reference tables"
+- "Explanation that's also a how-to"
+
+**AI Behavior:**
+- ✅ ASK: The 3 classification questions before any page proposal
+- ✅ REQUIRE: Single-sentence intent test
+- ❌ REJECT: Vague or unclear answers
+- ❌ REJECT: Mixed intent (force split)
+- ✅ LOCK: Shell immediately after classification
+
+---
+
+## 10. Governance Documentation References
+
+| Document                                     | Purpose                        |
+| -------------------------------------------- | ------------------------------ |
+| `docs/governance/INTAKE_CHECKLIST.md`        | Pre-design classification gate |
+| `docs/governance/REFUSE_LIST.md`             | Features never to add          |
+| `docs/governance/SILENCE_BUDGET.md`          | UI element cost tracking       |
+| `docs/governance/UX_RATIFICATION_PROCESS.md` | Change approval process        |
+| `docs/governance/UX_REGRESSION_CHECKLIST.md` | Decay detection                |
+| `docs/LUXURY_UX_CHARTER.md`                  | Design philosophy              |
+
+---
+
+## 11. Quick Reference for AI Assistants
+
+### When User Asks to Add New Page/Component
+
+1. **INTAKE FIRST** → Ask the 3 classification questions
+2. Require single-sentence intent test → If unclear, REJECT
+3. Check for mixed intent → If mixed, SPLIT or REJECT
+4. Lock Shell → No layout discussion until locked
+5. Check Refuse List → If listed, REJECT
+6. Apply Negative Capability Test → If weak, CHALLENGE
+7. Calculate Silence Budget → If > 10 units, WARN
+8. Check if modifies frozen zone → If yes, require ADR
+9. Verify degradation path → Must work without JS
+10. Include budget statement in proposal
+
+### When User Asks to Add Feature
+
+1. Check Refuse List → If listed, REJECT
+2. Apply Negative Capability Test → If weak, CHALLENGE
+3. Calculate Silence Budget → If > 10 units, WARN
+4. Check if modifies frozen zone → If yes, require ADR
+5. Verify degradation path → Must work without JS
+6. Include budget statement in proposal
+
+### When User Asks to Modify Frozen Zone
+
+1. Ask for ADR reference
+2. If no ADR, suggest ratification process
+3. If ADR exists, verify it's approved
+4. Include ADR reference in code comments
+5. Update silence budget if applicable
+
+### Standard Rejection Response
+
+```
+"This feature is on the Refuse List.
+
+Category: [Category]
+Feature: [Feature name]
+Rationale: [Why it's refused]
+
+See: docs/governance/REFUSE_LIST.md
+
+Alternative: [Suggest reader-respecting alternative]"
+```
+
+---
+
+**Status**: MANDATORY
+**Version**: 1.0.0
+**Authority**: Invisible Governance System

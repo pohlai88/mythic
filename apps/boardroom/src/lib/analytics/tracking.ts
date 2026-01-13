@@ -5,11 +5,11 @@
  * in route handlers and sending to analytics service.
  */
 
-import { env } from '@/src/lib/env'
-import { analyticsEventSchema, createAnalyticsEvent } from './service'
-import { hashIPSync } from './privacy'
-import { extractProposalId, extractUserId, getIPAddress } from './utils'
-import type { NextRequest, NextResponse } from 'next/server'
+import { env } from "@/src/lib/env"
+import { analyticsEventSchema, createAnalyticsEvent } from "./service"
+import { hashIPSync } from "./privacy"
+import { extractProposalId, extractUserId, getIPAddress } from "./utils"
+import type { NextRequest, NextResponse } from "next/server"
 
 /**
  * Track response metrics and send to analytics
@@ -54,11 +54,11 @@ export async function trackResponseMetrics(options: {
     const analyticsEvent = createAnalyticsEvent({
       requestId: options.requestId,
       pathname: options.pathname,
-      method: options.method as 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'OPTIONS',
+      method: options.method as "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS",
       timestamp: new Date().toISOString(),
       responseTime: options.responseTime,
       statusCode: options.statusCode,
-      userAgent: requestHeaders.get('user-agent') || undefined,
+      userAgent: requestHeaders.get("user-agent") || undefined,
       ipHash,
       isValidRequest: true, // If we got here, request was valid
       proposalId,
@@ -69,16 +69,16 @@ export async function trackResponseMetrics(options: {
     const result = analyticsEventSchema.safeParse(analyticsEvent)
     if (!result.success) {
       // Log error but don't throw - analytics failures shouldn't break the app
-      console.error('Analytics event validation failed:', result.error.issues)
+      console.error("Analytics event validation failed:", result.error.issues)
       return
     }
     const validatedEvent = result.data
 
     // Send to analytics endpoint (non-blocking)
     await fetch(env.ANALYTICS_ENDPOINT, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(env.ANALYTICS_API_KEY && {
           Authorization: `Bearer ${env.ANALYTICS_API_KEY}`,
         }),
@@ -87,8 +87,8 @@ export async function trackResponseMetrics(options: {
     })
   } catch (error) {
     // Don't throw - analytics failures shouldn't affect response
-    if (env.NODE_ENV === 'development') {
-      console.error('Analytics tracking failed:', error)
+    if (env.NODE_ENV === "development") {
+      console.error("Analytics tracking failed:", error)
     }
   }
 }
@@ -110,11 +110,11 @@ export function withPerformanceTracking<
   T extends (
     req: NextRequest,
     context: { params: Promise<Record<string, string>> }
-  ) => Promise<NextResponse>
+  ) => Promise<NextResponse>,
 >(handler: T): T {
   return (async (req, context) => {
     const startTime = Date.now()
-    const requestId = req.headers.get('x-request-id') || crypto.randomUUID()
+    const requestId = req.headers.get("x-request-id") || crypto.randomUUID()
     const pathname = req.nextUrl.pathname
     const method = req.method
 
@@ -138,8 +138,8 @@ export function withPerformanceTracking<
         startTime,
       }).catch((error) => {
         // Silently fail - analytics shouldn't affect response
-        if (env.NODE_ENV === 'development') {
-          console.error('Background analytics tracking failed:', error)
+        if (env.NODE_ENV === "development") {
+          console.error("Background analytics tracking failed:", error)
         }
       })
 

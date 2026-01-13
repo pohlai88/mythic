@@ -113,9 +113,9 @@ pnpm add -D tailwindcss@next
 ### Button
 
 ```tsx
-import { Button } from '@/components/design-system'
+import { Button } from "@/components/design-system"
 
-<Button variant="primary" size="md">
+;<Button variant="primary" size="md">
   Click Me
 </Button>
 ```
@@ -123,9 +123,9 @@ import { Button } from '@/components/design-system'
 ### Card
 
 ```tsx
-import { Card } from '@/components/design-system'
+import { Card } from "@/components/design-system"
 
-<Card elevation="md" padding="lg" hover>
+;<Card elevation="md" padding="lg" hover>
   <h3>Card Title</h3>
   <p>Card content</p>
 </Card>
@@ -136,7 +136,7 @@ import { Card } from '@/components/design-system'
 ## TypeScript Token Access
 
 ```typescript
-import { colors, spacing, typography } from '@/lib/design-system/tokens'
+import { colors, spacing, typography } from "@/lib/design-system/tokens"
 
 const primaryColor = colors.primary[500]
 const padding = spacing[4]
@@ -167,4 +167,6 @@ const fontSize = typography.fontSize.lg
 
 ---
 
-**See**: [DOC-0126_tailwind-v4-design-system.md](./DOC-0126_tailwind-v4-design-system.md) for complete documentation.
+**See**:
+[DOC-0126_tailwind-v4-design-system.md](./DOC-0126_tailwind-v4-design-system.md)
+for complete documentation.

@@ -8,24 +8,26 @@
 
 ## Executive Summary
 
-**Strategic Shift:** Transform What-If from "simple budget conflict detection" to "decisiveness
-enablement" by integrating with the Case Template system and adding variance tracking (Budgeted vs
-Planned vs Actual).
+**Strategic Shift:** Transform What-If from "simple budget conflict detection"
+to "decisiveness enablement" by integrating with the Case Template system and
+adding variance tracking (Budgeted vs Planned vs Actual).
 
-**Problem:** With 50+ pending proposals, managers can't analyze impact across portfolio. What-If was
-just "will this proposal fit?" But executives need deeper insights: "Is this hire overrunning
-because we miscalculated, or because market rates changed? How can we predict future variances?"
+**Problem:** With 50+ pending proposals, managers can't analyze impact across
+portfolio. What-If was just "will this proposal fit?" But executives need deeper
+insights: "Is this hire overrunning because we miscalculated, or because market
+rates changed? How can we predict future variances?"
 
-**Solution:** Every Case gets a "What-If Planning" section (built into Codex Stencils). As time
-progresses, actual outcomes are tracked against budgeted/planned forecasts. This creates a
-**Tri-Vector** learning loop: Past (Budgeted) → Present (Planned) → Future (Actual).
+**Solution:** Every Case gets a "What-If Planning" section (built into Codex
+Stencils). As time progresses, actual outcomes are tracked against
+budgeted/planned forecasts. This creates a **Tri-Vector** learning loop: Past
+(Budgeted) → Present (Planned) → Future (Actual).
 
-**Outcome:** Managers come to CEO meetings with **"Know-How" (what happened)** and **"Know-Why" (why
-it happened)**, not just approval requests. CEO can then pool 50+ cases into 3-4 strategic scenarios
-and make portfolio-level decisions.
+**Outcome:** Managers come to CEO meetings with **"Know-How" (what happened)**
+and **"Know-Why" (why it happened)**, not just approval requests. CEO can then
+pool 50+ cases into 3-4 strategic scenarios and make portfolio-level decisions.
 
-**Phase 1 Impact:** MEDIUM effort, VERY HIGH value. Transforms organizational decision-making
-culture.
+**Phase 1 Impact:** MEDIUM effort, VERY HIGH value. Transforms organizational
+decision-making culture.
 
 ---
 
@@ -54,9 +56,11 @@ Manager: "I don't know..."
 
 ### Why This Matters
 
-- **50+ pending proposals** = CEO needs intelligence to prioritize approval order
+- **50+ pending proposals** = CEO needs intelligence to prioritize approval
+  order
 - **Budget overruns** = Costs money and trust
-- **No variance learning** = Keep repeating same mistakes (hiring always overruns by 12%)
+- **No variance learning** = Keep repeating same mistakes (hiring always
+  overruns by 12%)
 - **Reactive governance** = Approving without knowing downstream impact
 
 ---
@@ -99,7 +103,8 @@ Every proposal has three time perspectives:
 
 ### Feature 1: Case Template What-If Planning
 
-Each Codex Stencil (Hiring, Capex, Marketing, etc.) now includes planning sections:
+Each Codex Stencil (Hiring, Capex, Marketing, etc.) now includes planning
+sections:
 
 #### Hiring Request Template Example
 
@@ -131,10 +136,11 @@ export const HIRING_REQUEST_WHATIF = {
       "Team Fit": "95% match on tech stack",
     },
   },
-};
+}
 ```
 
-Manager fills this out when creating proposal. It takes 5 extra minutes but enables:
+Manager fills this out when creating proposal. It takes 5 extra minutes but
+enables:
 
 - CEO to understand manager's expectations
 - Automatic variance tracking over time
@@ -173,7 +179,7 @@ export const case_whatif_budgets = pgTable("case_whatif_budgets", {
 
   created_at: timestamp("created_at"),
   updated_at: timestamp("updated_at"),
-});
+})
 
 // Milestone tracking (e.g., "30-day review", "Q1 review", "annual review")
 export const case_whatif_milestones = pgTable("case_whatif_milestones", {
@@ -193,12 +199,13 @@ export const case_whatif_milestones = pgTable("case_whatif_milestones", {
   notes: text("notes"), // Reviewer observations
   reviewed_by: uuid("reviewed_by"),
   reviewed_at: timestamp("reviewed_at"),
-});
+})
 ```
 
 ### Feature 3: Scenario Manager Dashboard
 
-Manager sees their cases with Tri-Vector visualization. This is the "Know-How" view.
+Manager sees their cases with Tri-Vector visualization. This is the "Know-How"
+view.
 
 ```typescript
 // Example: Manager's Engineering Hiring Dashboard
@@ -207,7 +214,7 @@ Interface WhatIfScenarioCard {
   case_number: "CASE-2501",
   title: "Senior Engineer Hire - Alice Chen",
   status: "active",
-  
+
   past: {                    // Budgeted
     label: "📋 Budgeted",
     total: 205_500,
@@ -219,7 +226,7 @@ Interface WhatIfScenarioCard {
     },
     date: "2026-01-01"
   },
-  
+
   present: {                 // Planned
     label: "📊 Planned",
     total: 215_000,          // Higher due to market rates
@@ -230,7 +237,7 @@ Interface WhatIfScenarioCard {
     },
     date: "2026-02-15"       // Approval time
   },
-  
+
   future: {                  // Actual (as of today)
     label: "🎯 Actual (Now)",
     current_total: 220_000,
@@ -238,11 +245,11 @@ Interface WhatIfScenarioCard {
     variance_from_budgeted: 14_500,
     variance_pct: 7.1,
     variance_status: "warning",  // Within 5-10% is warning
-    
+
     // Visual indicator
     color: "#ff9800"          // Orange = warning
   },
-  
+
   next_milestone: {
     label: "Q1 Review",
     scheduled_date: "2026-04-01",
@@ -418,9 +425,10 @@ CREATE INDEX idx_milestone_whatif ON case_whatif_milestones(whatif_budget_id);
 
 **Your Requirement:**
 
-> "Everything shall be planned unless specifically mentioned. We need budgeted, planned,
-> actual—similar to past-present-future. Draw important analysis figures at dashboard or scenario
-> manager. Give managers Know-How and Know-Why, not just asking for approval."
+> "Everything shall be planned unless specifically mentioned. We need budgeted,
+> planned, actual—similar to past-present-future. Draw important analysis
+> figures at dashboard or scenario manager. Give managers Know-How and Know-Why,
+> not just asking for approval."
 
 **Oracle Delivers:**
 
@@ -447,13 +455,13 @@ What-If variance data feeds into portfolio analytics dashboard.
 
 ### Integrates With: The Compass (Weapon 7)
 
-When hiring case approved, to-dos can reference variance targets: "Train new hire to 75%
-productivity by day 90"
+When hiring case approved, to-dos can reference variance targets: "Train new
+hire to 75% productivity by day 90"
 
 ### Integrates With: The Herald (Weapon 9)
 
-CEO can broadcast variance learnings: "Q4 hiring averaged 12% overrun due to market conditions.
-Adjusting Q1 budget accordingly."
+CEO can broadcast variance learnings: "Q4 hiring averaged 12% overrun due to
+market conditions. Adjusting Q1 budget accordingly."
 
 ---
 
@@ -479,44 +487,49 @@ Adjusting Q1 budget accordingly."
 
 ### Risk 1: "Budgeted/Planned is extra work"
 
-**Mitigation:** Use pre-filled defaults from past similar cases. Most fields auto-calculated.
+**Mitigation:** Use pre-filled defaults from past similar cases. Most fields
+auto-calculated.
 
 ### Risk 2: "Variance tracking requires discipline (milestone reviews)"
 
-**Mitigation:** Automated reminders. CEO can delegate to Guardian role. Milestone reviews <15 min.
+**Mitigation:** Automated reminders. CEO can delegate to Guardian role.
+Milestone reviews <15 min.
 
 ### Risk 3: "50+ scenarios = analysis paralysis"
 
-**Mitigation:** Start with 3-4 named scenarios (Aggressive, Conservative, Balanced). AI recommends
-best.
+**Mitigation:** Start with 3-4 named scenarios (Aggressive, Conservative,
+Balanced). AI recommends best.
 
 ### Risk 4: "Variance models are inaccurate"
 
-**Mitigation:** Phase 1 has no ML (humans review). Phase 2 adds ML learning from actual variance
-patterns.
+**Mitigation:** Phase 1 has no ML (humans review). Phase 2 adds ML learning from
+actual variance patterns.
 
 ---
 
 ## Next Steps
 
-1. **Review & Validate** — Confirm case template What-If sections make sense for your use cases
-2. **Design Workflow** — Detail how managers fill budgeted/planned sections (forms, defaults,
-   examples)
+1. **Review & Validate** — Confirm case template What-If sections make sense for
+   your use cases
+2. **Design Workflow** — Detail how managers fill budgeted/planned sections
+   (forms, defaults, examples)
 3. **Create Mockups** — Design Tri-Vector card UI for scenario manager dashboard
 4. **Database Migration** — Plan schema migration for active proposals
-5. **API Development** — Build endpoints for plan creation, variance updates, milestone reviews
+5. **API Development** — Build endpoints for plan creation, variance updates,
+   milestone reviews
 6. **Phase 1 Sprint** — 2-3 week sprint to deliver single-case variance tracking
 
 ---
 
 ## Questions for Strategic Alignment
 
-1. **Case Review Frequency:** Should milestone reviews be quarterly, semi-annual, or annual? (Can
-   vary by stencil type)
-2. **Variance Thresholds:** At what % overrun do we escalate to CEO? (Recommend 10% default,
-   configurable)
-3. **Learning Loop:** Who owns variance analysis (Guardian? CFO?)? How often do we review patterns?
-4. **Portfolio Limits:** What's the max number of cases to pool in one scenario? (Recommend 10-15 to
-   avoid paralysis)
-5. **Automation:** Should Oracle suggest recommendation automatically, or present data for manual
-   decision?
+1. **Case Review Frequency:** Should milestone reviews be quarterly,
+   semi-annual, or annual? (Can vary by stencil type)
+2. **Variance Thresholds:** At what % overrun do we escalate to CEO? (Recommend
+   10% default, configurable)
+3. **Learning Loop:** Who owns variance analysis (Guardian? CFO?)? How often do
+   we review patterns?
+4. **Portfolio Limits:** What's the max number of cases to pool in one scenario?
+   (Recommend 10-15 to avoid paralysis)
+5. **Automation:** Should Oracle suggest recommendation automatically, or
+   present data for manual decision?

@@ -12,7 +12,7 @@ export {
   enforceGlobalConfigSecurity,
   type UserConfig,
   type GlobalConfig,
-} from './user-config-schema'
+} from "./user-config-schema"
 
 export {
   parseUserConfig,
@@ -20,4 +20,4 @@ export {
   safeParseUserConfig,
   safeParseGlobalConfig,
   mergeUserConfig,
-} from './validate-config'
+} from "./validate-config"

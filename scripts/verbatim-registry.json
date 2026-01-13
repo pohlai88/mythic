@@ -29,7 +29,7 @@
     {
       "path": "pnpm-workspace.yaml",
       "category": "critical",
-      "template": "packages:\n  - \"apps/*\"\n  - \"packages/*\"\n\n# Monorepo structure:\n# - apps/docs: Nextra documentation site\n# - apps/boardroom: The Apex (Executive Board Decision Engine MVP)\n# - packages/design-system: Axis Visual Canon design system\n# - packages/shared-types: Shared TypeScript types and Zod schemas\n# - packages/shared-utils: Shared utility functions\n# - packages/config: Shared configuration (ESLint, TypeScript, etc.)",
+      "template": "packages:\n  - \"apps/*\"\n  - \"packages/*\"\n\n# Monorepo structure:\n# - apps/docs: Nextra documentation site\n# - apps/boardroom: The Apex (Executive Board Decision Engine MVP)\n# - packages/design-system: Axis Visual Canon design system\n# - packages/shared-types: Shared TypeScript types and Zod schemas\n# - packages/shared-utils: Shared utility functions\n# - packages/Monorepo/Config: Shared configuration (ESLint, TypeScript, etc.)",
       "validation": "must-not-have-workspaces-in-package-json",
       "documentation": "docs/architecture/ROOT_CONFIG_ELITE_MANAGEMENT.md#pnpm-workspace",
       "description": "Workspace definition (canonical source of truth)"

@@ -1,57 +1,253 @@
 /**
  * Global Styles for Documentation System
+ * StratonHub — The Apex Governance Layer
  *
- * Tailwind CSS v4 with design system tokens (CSS-First Configuration)
- * Reference: https://tailwindcss.com/docs
- * Reference: @rules/033_design-system-constitution.mdc
+ * ⚠️ SYSTEM LAYERING:
+ * 1. Tailwind Framework
+ * 2. Axis Design System (Theme & Base)
+ * 3. Local Domain Overrides (Diataxis)
  */
 
-/* Step 1: Import Tailwind CSS (processes first) */
 @import "tailwindcss";
 
-/* Step 2: Import shared design tokens */
-@import "@mythic/design-system/tokens/theme.css";
+/* --------------------------------------------------------------------------
+ * INGEST DESIGN SYSTEM (SSOT)
+ * --------------------------------------------------------------------------
+ */
+@import "@mythic/tailwindcss-v4-design-system/tokens/axis-theme.css";
+@import "@mythic/tailwindcss-v4-design-system/tokens/axis-base.css";
+@source "../../packages/TailwindCSS-V4/Design-System/src";
 
-/* Step 3: Scan shared packages for utilities */
-@source "../../packages/design-system";
-
+/* --------------------------------------------------------------------------
+ * LOCAL DOMAIN CONFIGURATION
+ * --------------------------------------------------------------------------
+ */
 @theme {
-  /* Core Colors - Design System Tokens */
-  --color-void: 240 10% 4%;
-  --color-obsidian: 240 10% 8%;
-  --color-charcoal: 240 10% 15%;
-  --color-parchment: 40 20% 96%;
-  --color-ash: 240 5% 65%;
-  --color-gold: 40 45% 55%;
-  --color-ember: 15 70% 50%;
+  /*
+   * Diataxis Document Type Colors
+   * Format: HSL Channels (H S% L%) - Matching Axis System Pattern
+   * Usage: color: hsl(var(--color-diataxis-tutorial))
+   */
 
-  /* Font Families */
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-serif: "Cormorant Garamond", "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-
-  /* Diátaxis Document Type Colors */
+  /* Tutorial (Blue: Learning-oriented) */
   --color-diataxis-tutorial: 204 96% 48%;
   --color-diataxis-tutorial-bg: 204 96% 97%;
   --color-diataxis-tutorial-border: 204 96% 78%;
 
+  /* How-To (Green: Task-oriented) */
   --color-diataxis-howto: 142 76% 47%;
   --color-diataxis-howto-bg: 142 76% 96%;
   --color-diataxis-howto-border: 142 76% 74%;
 
+  /* Reference (Gray: Information-oriented) */
   --color-diataxis-reference: 0 0% 45%;
   --color-diataxis-reference-bg: 0 0% 98%;
   --color-diataxis-reference-border: 0 0% 83%;
 
+  /* Explanation (Amber: Understanding-oriented) */
   --color-diataxis-explanation: 48 96% 47%;
   --color-diataxis-explanation-bg: 48 96% 96%;
   --color-diataxis-explanation-border: 48 96% 74%;
 
-  /* Documentation-Specific Spacing */
-  --spacing-doc-section: 2rem;
-  --spacing-doc-content: 1.5rem;
-  --spacing-doc-card: 1rem;
+  /*
+   * Documentation Layout Scale
+   */
+  --spacing-doc-section: 2rem; /* 32px */
+  --spacing-doc-content: 1.5rem; /* 24px */
+  --spacing-doc-card: 1rem; /* 16px */
 }
 
-/* Required for math rendering */
+/* --------------------------------------------------------------------------
+ * SILENT KILLERS: Luxury Typography Enhancements
+ * Pure CSS, zero runtime cost, progressive enhancement
+ * --------------------------------------------------------------------------
+ */
+
+/* SILENT KILLER #1: Quiet Links
+ * Links shouldn't shout. Underline is 30% opacity at rest.
+ * Blooms to full visibility on hover.
+ * Luxury means calm defaults with responsive interaction.
+ */
+.prose-axis a {
+  color: inherit;
+  text-decoration: none;
+  text-decoration-color: hsl(var(--color-gold) / 0.3);
+  text-underline-offset: 4px;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 700ms ease-out;
+}
+
+.prose-axis a:hover {
+  text-decoration-color: hsl(var(--color-gold) / 1);
+}
+
+/* SILENT KILLER #2: Breathing Vertical Rhythm
+ * Increases spacing as user scrolls deeper into documentation.
+ * Uses CSS Scroll-Driven Animations (Chrome 115+, Edge 115+).
+ * Falls back gracefully to static spacing in unsupported browsers.
+ *
+ * LUXURY RULE: Never force motion. Respects prefers-reduced-motion.
+ */
+@supports (animation-timeline: scroll()) {
+  html {
+    scroll-timeline: --page-scroll block;
+  }
+
+  /* Prose elements "breathe" - margins expand with scroll depth */
+  .prose-axis > * {
+    animation: breathe linear both;
+    animation-timeline: --page-scroll;
+    animation-range: entry 10% cover 80%;
+  }
+
+  @keyframes breathe {
+    from {
+      margin-bottom: 1.5rem;
+    }
+    to {
+      margin-bottom: 2.25rem;
+    }
+  }
+}
+
+/* ACCESSIBILITY: Respect reduced motion preferences
+ * Luxury means never forcing motion on users who don't want it.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .prose-axis > *,
+  .gold-dot * {
+    animation: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * APEX PROTOTYPE CANONICAL TYPOGRAPHY
+ * Matches: .cursor/product/.TheApexPrototype.html
+ *
+ * Core Principles:
+ * - H1: font-weight 300 (Light), tracking -0.03em, Signal White
+ * - Authority Pause: 5rem after H1 (not 4rem)
+ * - Intro blockquote: Muted, subordinate (opacity 0.7)
+ * - Clear visual hierarchy step-down
+ * --------------------------------------------------------------------------
+ */
+
+/* H1: Forensic Typography (Apex Prototype Canonical)
+ * - font-weight: 300 (Light)
+ * - letter-spacing: -0.03em (tracking-axis)
+ * - color: #fdfdfc (Signal White)
+ * - margin-bottom: 5rem (Authority Pause)
+ */
+.prose-axis > h1:first-child {
+  font-weight: 300;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #fdfdfc; /* Signal White - optical clarity */
+  margin-bottom: 5rem; /* Authority Pause - canonical */
+}
+
+/* Intro Blockquote: Muted, Subordinate
+ * The first blockquote after H1 is the "intro" - must be visually subordinate.
+ * This prevents intro text from competing with the H1.
+ */
+.prose-axis > h1:first-child + blockquote,
+.prose-axis > blockquote:first-of-type {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  font-style: normal;
+  font-weight: 300;
+  color: hsl(var(--color-ash));
+  opacity: 0.7;
+  max-width: 480px;
+  border-left: none;
+  padding-left: 0;
+  margin-bottom: 3rem;
+}
+
+/* The first element after H1 receives delayed entry */
+.prose-axis > h1:first-child + *:not(blockquote) {
+  margin-top: 0;
+  padding-top: 1rem;
+}
+
+/* Section Authority: H2 - Clear step-down from H1
+ * - font-weight: 500 (Medium)
+ * - font-size: 1.1rem
+ * - tracking-tight
+ */
+.prose-axis > h2 {
+  font-weight: 500;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Subsection: H3 - Compact, deliberate spacing */
+.prose-axis > h3 {
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Block-level Authority Pause utility (for use outside prose) */
+.pause-authority {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.pause-section {
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* --------------------------------------------------------------------------
+ * READER PREFERENCES: Data-Attribute Driven Layout
+ * Hydration-safe pattern - CSS responds to Zustand state via data-attributes
+ * No conditional rendering = no layout shift
+ * --------------------------------------------------------------------------
+ */
+
+/* Width modes: prose (65ch centered) vs axis (with sidebar) */
+.doc-layout[data-width="prose"] {
+  max-width: var(--container-prose);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.doc-layout[data-width="axis"] {
+  max-width: var(--container-axis);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Font scale modes: normal vs relaxed (accessibility) */
+.doc-layout[data-scale="normal"] {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.doc-layout[data-scale="relaxed"] {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+/* Code wrap preference */
+.doc-layout[data-code-wrap="true"] pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.doc-layout[data-code-wrap="false"] pre {
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* --------------------------------------------------------------------------
+ * THIRD PARTY DEPENDENCIES
+ * --------------------------------------------------------------------------
+ */
 @import "katex/dist/katex.min.css";

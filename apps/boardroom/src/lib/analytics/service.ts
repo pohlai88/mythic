@@ -5,7 +5,7 @@
  * Following the analytics service architecture for self-hosting.
  */
 
-import { z as z4 } from 'zod/v4'
+import { z as z4 } from "zod/v4"
 
 /**
  * Analytics Event Schema
@@ -15,30 +15,32 @@ import { z as z4 } from 'zod/v4'
  */
 export const analyticsEventSchema = z4.object({
   // Request metadata
-  requestId: z4.string().uuid().describe('Unique request identifier'),
-  pathname: z4.string().describe('Request pathname'),
-  method: z4.enum(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS']).describe('HTTP method'),
-  timestamp: z4.string().datetime().describe('ISO 8601 timestamp'),
+  requestId: z4.string().uuid().describe("Unique request identifier"),
+  pathname: z4.string().describe("Request pathname"),
+  method: z4
+    .enum(["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"])
+    .describe("HTTP method"),
+  timestamp: z4.string().datetime().describe("ISO 8601 timestamp"),
 
   // Performance metrics
-  responseTime: z4.number().optional().describe('Response time in milliseconds'),
-  statusCode: z4.number().int().min(100).max(599).optional().describe('HTTP status code'),
+  responseTime: z4.number().optional().describe("Response time in milliseconds"),
+  statusCode: z4.number().int().min(100).max(599).optional().describe("HTTP status code"),
 
   // User context (anonymized)
-  userAgent: z4.string().optional().describe('User agent string'),
-  ipHash: z4.string().optional().describe('SHA-256 hash of IP address (privacy-preserving)'),
-  country: z4.string().length(2).optional().describe('ISO 3166-1 alpha-2 country code'),
+  userAgent: z4.string().optional().describe("User agent string"),
+  ipHash: z4.string().optional().describe("SHA-256 hash of IP address (privacy-preserving)"),
+  country: z4.string().length(2).optional().describe("ISO 3166-1 alpha-2 country code"),
 
   // Security context
-  isValidRequest: z4.boolean().describe('Whether request passed validation'),
-  validationErrors: z4.array(z4.string()).optional().describe('Validation error messages'),
+  isValidRequest: z4.boolean().describe("Whether request passed validation"),
+  validationErrors: z4.array(z4.string()).optional().describe("Validation error messages"),
 
   // Correlation IDs
-  proposalId: z4.string().uuid().optional().describe('Link to Thanos events (proposal ID)'),
-  userId: z4.string().uuid().optional().describe('Link to user (if authenticated)'),
+  proposalId: z4.string().uuid().optional().describe("Link to Thanos events (proposal ID)"),
+  userId: z4.string().uuid().optional().describe("Link to user (if authenticated)"),
 
   // Custom metadata
-  metadata: z4.record(z4.string(), z4.unknown()).optional().describe('Additional metadata'),
+  metadata: z4.record(z4.string(), z4.unknown()).optional().describe("Additional metadata"),
 })
 
 export type AnalyticsEvent = z4.infer<typeof analyticsEventSchema>
@@ -77,7 +79,7 @@ export function createAnalyticsEvent(data: {
   return {
     requestId: data.requestId,
     pathname: data.pathname,
-    method: data.method as AnalyticsEvent['method'],
+    method: data.method as AnalyticsEvent["method"],
     timestamp: data.timestamp || new Date().toISOString(),
     responseTime: data.responseTime,
     statusCode: data.statusCode,

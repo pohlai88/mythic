@@ -2,14 +2,14 @@
 
 ## Quick Reference Summary
 
-**Total Features Analyzed**: 95
-**Version**: zod@4.3.5 (Latest)
+**Total Features Analyzed**: 95 **Version**: zod@4.3.5 (Latest)
 
 ---
 
 ## 📊 Feature Breakdown
 
 ### ✅ IDENTICAL (27 features - 28%)
+
 **Currently Used - Keep Using**
 
 | Feature                 | Location             | Usage                |
@@ -43,14 +43,17 @@
 ---
 
 ### ⚠️ APPLICABLE (61 features - 64%)
+
 **Should Adopt - High Value**
 
 #### Core Parsing (3)
+
 - `.safeParse()` - Better error handling
 - `.parseAsync()` - Async validation
 - `.safeParseAsync()` - Async safe parsing
 
 #### String Methods (10)
+
 - `.length()` - Exact length validation
 - `.url()` - URL validation
 - `.uuid()` - UUID validation
@@ -63,6 +66,7 @@
 - `.date()` - Date-only validation
 
 #### Number Methods (5)
+
 - `.negative()` - Negative number validation
 - `.nonnegative()` - Zero-or-positive
 - `.finite()` - Finite number check
@@ -70,11 +74,13 @@
 - `.multipleOf()` - Divisibility check
 
 #### Date Methods (3)
+
 - `z.date()` - Date object validation
 - `.min()` - Minimum date
 - `.max()` - Maximum date
 
 #### Object Methods (7)
+
 - `.pick()` - Field selection
 - `.omit()` - Field exclusion
 - `.required()` - Make optional fields required
@@ -84,6 +90,7 @@
 - `.catchall()` - Dynamic keys
 
 #### Array Methods (5)
+
 - `.min()` - Minimum items
 - `.max()` - Maximum items
 - `.length()` - Exact length
@@ -91,24 +98,30 @@
 - `.element` - Element access
 
 #### Tuple (1)
+
 - `z.tuple()` - Fixed-length arrays
 
 #### Enum (1)
+
 - `z.nativeEnum()` - TypeScript enum support
 
 #### Template Literals (1)
+
 - `z.templateLiteral()` - String templates (NEW in Zod 4)
 
 #### Union/Intersection (3)
+
 - `z.union()` - Multiple types
 - `z.intersection()` - Type merging
 - `z.discriminatedUnion()` - Tagged unions
 
 #### Literal/Branded (2)
+
 - `z.literal()` - Exact values
 - `.brand()` - Type branding
 
 #### Transformation (5)
+
 - `.refine()` - Custom validation
 - `.superRefine()` - Complex validation
 - `.check()` - Simple checks
@@ -116,33 +129,39 @@
 - `.pipe()` - Schema composition
 
 #### Wrappers (4)
+
 - `.nullish()` - Null or undefined
 - `.readonly()` - Immutable types
 - `.catch()` - Error recovery
 - `.nonoptional()` - Required fields
 
 #### Coercion (4)
+
 - `z.coerce.string()` - String coercion
 - `z.coerce.boolean()` - Boolean coercion
 - `z.coerce.date()` - Date coercion
 - `.preprocess()` - Preprocessing
 
 #### Metadata (2)
+
 - `.meta()` - Custom metadata
 - `.register()` - Schema registry
 
 #### Utilities (4)
+
 - `.clone()` - Schema copying
 - `.isOptional()` - Runtime checks
 - `.isNullable()` - Runtime checks
 - `z.ZodIssue` - Detailed errors
 
 #### Integration (1)
+
 - `zod-to-json-schema` - JSON Schema generation (installed but unused)
 
 ---
 
 ### ❌ IGNORE (7 features - 7%)
+
 **Not Relevant - Skip**
 
 | Feature            | Reason                          |
@@ -184,18 +203,21 @@ Target Utilization: 92% (88/95 features)
 ## 🔄 Migration Checklist
 
 ### Immediate Actions
+
 - [ ] Migrate imports: `'zod'` → `'zod/v4'`
 - [ ] Replace `.parse()` with `.safeParse()`
 - [ ] Add `.trim()` to all string inputs
 - [ ] Add `.toLowerCase()` to email/username fields
 
 ### Short-term (1-2 weeks)
+
 - [ ] Add `.pick()` and `.omit()` patterns
 - [ ] Implement `.refine()` for custom validations
 - [ ] Add `.url()` for URL fields
 - [ ] Add `.nonempty()` for required arrays
 
 ### Medium-term (1 month)
+
 - [ ] Add template literals
 - [ ] Implement discriminated unions
 - [ ] Add coercion for query parameters
@@ -203,4 +225,5 @@ Target Utilization: 92% (88/95 features)
 
 ---
 
-**See [ZOD_OPTIMIZATION_ANALYSIS.md](./ZOD_OPTIMIZATION_ANALYSIS.md) for detailed analysis and examples.**
+**See [ZOD_OPTIMIZATION_ANALYSIS.md](./ZOD_OPTIMIZATION_ANALYSIS.md) for
+detailed analysis and examples.**

@@ -1,9 +1,15 @@
 .next
 node_modules
-.env
+# Environment variables - ONLY root .env is allowed
+# All other .env files are forbidden
 .env.local
 .env*.local
 .env.fixed
+.env.development
+.env.production
+.env.test
+apps/**/.env*
+packages/**/.env*
 env.EXAMPLE
 
 # Build artifacts

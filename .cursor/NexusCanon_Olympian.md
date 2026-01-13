@@ -18,8 +18,8 @@
 
 ## Part I — Why Deno IS The Prime Monad
 
-The Constitution demands specific laws that Node.js struggles to enforce, but Deno enforces by
-default.
+The Constitution demands specific laws that Node.js struggles to enforce, but
+Deno enforces by default.
 
 ### 1.1 Constitutional Alignment Matrix
 
@@ -40,7 +40,8 @@ default.
 **Deno is the ultimate physical manifestation of The Prime Monad.**
 
 - **For Internal Tooling & Scripts:** Deno is superior.
-- **For Customer-Facing Product:** Node.js/Next.js is currently safer (ecosystem + hiring).
+- **For Customer-Facing Product:** Node.js/Next.js is currently safer
+  (ecosystem + hiring).
 - **For The Future:** Deno is the correct long-term bet.
 
 ---
@@ -49,8 +50,8 @@ default.
 
 ### Amendment 1.1.A — Isomorphic Sovereignty
 
-The Constitution Section 1.3 establishes dual runtime support. This amendment provides
-implementation details.
+The Constitution Section 1.3 establishes dual runtime support. This amendment
+provides implementation details.
 
 **The Law:** The system shall execute on **two sanctioned runtimes**:
 
@@ -64,8 +65,8 @@ implementation details.
    - Rationale: Security-by-default, zero-config, TypeScript-native
    - Trade-off: Smaller ecosystem for greater purity
 
-**The Codex MUST be Isomorphic:** Business logic written in `/canon/codex` must run on both runtimes
-without modification.
+**The Codex MUST be Isomorphic:** Business logic written in `/canon/codex` must
+run on both runtimes without modification.
 
 ---
 
@@ -246,7 +247,8 @@ We build the system so that **The Codex is runtime-agnostic**.
 
 #### 5.3.1 biome.json (The Single Source of Truth)
 
-Replaces Prettier and ESLint. Runs instantly. Enforces NexusCanon style across both runtimes.
+Replaces Prettier and ESLint. Runs instantly. Enforces NexusCanon style across
+both runtimes.
 
 ```json
 {
@@ -390,7 +392,8 @@ Ensures Deno scripts and Next.js app work together without mixing dependencies.
 - Archive Next.js implementation
 - Full commitment to Olympian standard
 
-**Fallback:** If Node.js remains superior, keep dual-runtime strategy indefinitely
+**Fallback:** If Node.js remains superior, keep dual-runtime strategy
+indefinitely
 
 ---
 
@@ -439,11 +442,11 @@ deno run \
 // /lib/adapters/stripe.ts
 // REQUIRES: --allow-net=api.stripe.com
 
-import Stripe from "npm:stripe";
+import Stripe from "npm:stripe"
 
 export const stripe = new Stripe(Deno.env.get("STRIPE_KEY")!, {
   apiVersion: "2023-10-16",
-});
+})
 
 // This file can ONLY access stripe.com due to permission scoping
 ```
@@ -458,18 +461,18 @@ No Jest, no Mocha, no configuration required.
 
 ```typescript
 // /tests/unit/codex/pricing.test.ts
-import { assertEquals } from "@std/assert";
-import { calculatePrice } from "@canon/codex/pricing.ts";
+import { assertEquals } from "@std/assert"
+import { calculatePrice } from "@canon/codex/pricing.ts"
 
 Deno.test("pricing calculation validates minimum price", () => {
-  const result = calculatePrice({ basePrice: 100, discount: 0.1 });
-  assertEquals(result, 90);
-});
+  const result = calculatePrice({ basePrice: 100, discount: 0.1 })
+  assertEquals(result, 90)
+})
 
 Deno.test("pricing calculation rejects negative prices", () => {
-  const result = calculatePrice({ basePrice: -100, discount: 0 });
-  assertEquals(result, 0); // Codex rule: Price must be >= 0
-});
+  const result = calculatePrice({ basePrice: -100, discount: 0 })
+  assertEquals(result, 0) // Codex rule: Price must be >= 0
+})
 ```
 
 **Run tests:**
@@ -495,7 +498,8 @@ deno bench --allow-all
 
 ## Ratification
 
-This document is the **Olympian Implementation Guide** for the NexusCanon Constitution.
+This document is the **Olympian Implementation Guide** for the NexusCanon
+Constitution.
 
 > **Deno is the Purity Standard.**
 >

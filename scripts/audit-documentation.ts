@@ -10,53 +10,58 @@
  * - Provides consolidation recommendations
  */
 
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
-import { glob } from 'glob'
-import chalk from 'chalk'
+import { existsSync, readFileSync, writeFileSync } from "node:fs"
+import { join } from "node:path"
+import { glob } from "glob"
+import chalk from "chalk"
 
 // Simple frontmatter parser (basic YAML parsing)
 function parseFrontmatter(content: string): { data: Record<string, any>; content: string } {
   const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/
   const match = content.match(frontmatterRegex)
-  
+
   if (!match) {
     return { data: {}, content }
   }
-  
+
   const yamlContent = match[1]
   const bodyContent = match[2]
-  
+
   // Simple YAML parser (basic key-value pairs)
   const data: Record<string, any> = {}
-  yamlContent.split('\n').forEach(line => {
+  yamlContent.split("\n").forEach((line) => {
     const trimmed = line.trim()
-    if (!trimmed || trimmed.startsWith('#')) return
-    
-    const colonIndex = trimmed.indexOf(':')
+    if (!trimmed || trimmed.startsWith("#")) return
+
+    const colonIndex = trimmed.indexOf(":")
     if (colonIndex > 0) {
       const key = trimmed.substring(0, colonIndex).trim()
       let value = trimmed.substring(colonIndex + 1).trim()
-      
+
       // Remove quotes
-      if ((value.startsWith('"') && value.endsWith('"')) || 
-          (value.startsWith("'") && value.endsWith("'"))) {
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
         value = value.slice(1, -1)
       }
-      
+
       // Parse arrays
-      if (value.startsWith('[') && value.endsWith(']')) {
-        value = value.slice(1, -1).split(',').map(v => v.trim().replace(/['"]/g, ''))
+      if (value.startsWith("[") && value.endsWith("]")) {
+        value = value
+          .slice(1, -1)
+          .split(",")
+          .map((v) => v.trim().replace(/['"]/g, ""))
       }
-      
+
       // Parse booleans
-      if (value === 'true') value = true
-      if (value === 'false') value = false
-      
+      if (value === "true") value = true
+      if (value === "false") value = false
+
       data[key] = value
     }
   })
-  
+
   return { data, content: bodyContent }
 }
 
@@ -83,42 +88,37 @@ interface AuditResult {
 interface DuplicateCluster {
   topic: string
   files: string[]
-  similarity: 'high' | 'medium' | 'low'
+  similarity: "high" | "medium" | "low"
   recommendation: string
 }
 
 interface DRYViolation {
   content: string
   locations: string[]
-  severity: 'high' | 'medium' | 'low'
+  severity: "high" | "medium" | "low"
   recommendation: string
 }
 
 interface Recommendation {
-  type: 'consolidate' | 'cross-reference' | 'archive' | 'split'
-  priority: 'high' | 'medium' | 'low'
+  type: "consolidate" | "cross-reference" | "archive" | "split"
+  priority: "high" | "medium" | "low"
   files: string[]
   description: string
 }
 
 // Documentation directories to scan
-const DOC_DIRS = [
-  'docs/**/*.md',
-  'docs/**/*.mdx',
-  'content/**/*.mdx',
-  '.cursor/docs/**/*.md',
-]
+const DOC_DIRS = ["docs/**/*.md", "docs/**/*.mdx", "content/**/*.mdx", ".cursor/docs/**/*.md"]
 
 // Exclude patterns
 const EXCLUDE = [
-  '**/node_modules/**',
-  '**/.next/**',
-  '**/dist/**',
-  '**/build/**',
-  'docs/migrations/**',
-  'docs/changelog/**',
-  '.cursor/archive/**',
-  '.cursor/work/**',
+  "**/node_modules/**",
+  "**/.next/**",
+  "**/dist/**",
+  "**/build/**",
+  "docs/migrations/**",
+  "docs/changelog/**",
+  ".cursor/archive/**",
+  ".cursor/work/**",
 ]
 
 async function scanDocumentation(): Promise<DocMetadata[]> {
@@ -127,7 +127,7 @@ async function scanDocumentation(): Promise<DocMetadata[]> {
 
   for (const file of files) {
     try {
-      const content = readFileSync(file, 'utf-8')
+      const content = readFileSync(file, "utf-8")
       const parsed = parseFrontmatter(content)
       const frontmatter = parsed.data
 
@@ -135,7 +135,8 @@ async function scanDocumentation(): Promise<DocMetadata[]> {
       const category = extractCategory(file)
 
       // Extract title
-      const title = frontmatter.title || extractTitle(content) || file.split('/').pop() || 'Untitled'
+      const title =
+        frontmatter.title || extractTitle(content) || file.split("/").pop() || "Untitled"
 
       // Extract tags
       const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : []
@@ -145,7 +146,7 @@ async function scanDocumentation(): Promise<DocMetadata[]> {
         title,
         category,
         tags,
-        purpose: frontmatter.purpose || frontmatter.description || '',
+        purpose: frontmatter.purpose || frontmatter.description || "",
         sourceOfTruth: frontmatter.source_of_truth === true,
         duplicates: [],
         similarTopics: [],
@@ -159,15 +160,15 @@ async function scanDocumentation(): Promise<DocMetadata[]> {
 }
 
 function extractCategory(path: string): string {
-  if (path.includes('/architecture/')) return 'Architecture'
-  if (path.includes('/api/')) return 'API'
-  if (path.includes('/guides/')) return 'Guides'
-  if (path.includes('/reference/')) return 'Reference'
-  if (path.includes('/governance/')) return 'Governance'
-  if (path.includes('/_system/')) return 'System'
-  if (path.includes('/content/')) return 'Public'
-  if (path.startsWith('docs/')) return 'Documentation'
-  return 'Other'
+  if (path.includes("/architecture/")) return "Architecture"
+  if (path.includes("/api/")) return "API"
+  if (path.includes("/guides/")) return "Guides"
+  if (path.includes("/reference/")) return "Reference"
+  if (path.includes("/governance/")) return "Governance"
+  if (path.includes("/_system/")) return "System"
+  if (path.includes("/content/")) return "Public"
+  if (path.startsWith("docs/")) return "Documentation"
+  return "Other"
 }
 
 function extractTitle(content: string): string | null {
@@ -210,39 +211,44 @@ function extractTopic(doc: DocMetadata): string {
   const path = doc.path.toLowerCase()
 
   // Common topics
-  if (title.includes('turbopack') || path.includes('turbopack')) return 'Turbopack'
-  if (title.includes('turborepo') || path.includes('turborepo')) return 'Turborepo'
-  if (title.includes('getting started') || title.includes('quick start')) return 'Getting Started'
-  if (title.includes('migration') || path.includes('migration')) return 'Migration'
-  if (title.includes('organization') || title.includes('strategy')) return 'Documentation Organization'
-  if (title.includes('architecture') || path.includes('architecture')) return 'Architecture'
-  if (title.includes('api') || path.includes('/api/')) return 'API'
+  if (title.includes("turbopack") || path.includes("turbopack")) return "Turbopack"
+  if (title.includes("turborepo") || path.includes("turborepo")) return "Turborepo"
+  if (title.includes("getting started") || title.includes("quick start")) return "Getting Started"
+  if (title.includes("migration") || path.includes("migration")) return "Migration"
+  if (title.includes("organization") || title.includes("strategy"))
+    return "Documentation Organization"
+  if (title.includes("architecture") || path.includes("architecture")) return "Architecture"
+  if (title.includes("api") || path.includes("/api/")) return "API"
 
   // Default: use first significant word from title
-  const words = doc.title.split(/\s+/).filter(w => w.length > 3)
-  return words[0]?.toLowerCase() || 'other'
+  const words = doc.title.split(/\s+/).filter((w) => w.length > 3)
+  return words[0]?.toLowerCase() || "other"
 }
 
-function determineSimilarity(files: string[], metadata: DocMetadata[]): 'high' | 'medium' | 'low' {
+function determineSimilarity(files: string[], metadata: DocMetadata[]): "high" | "medium" | "low" {
   // Simplified similarity detection
   // In production, use more sophisticated text similarity algorithms
-  const titles = files.map(f => {
-    const doc = metadata.find(m => m.path === f)
-    return doc?.title.toLowerCase() || ''
+  const titles = files.map((f) => {
+    const doc = metadata.find((m) => m.path === f)
+    return doc?.title.toLowerCase() || ""
   })
 
   // Check for exact matches or high similarity
   const uniqueTitles = new Set(titles)
-  if (uniqueTitles.size === 1) return 'high'
-  if (uniqueTitles.size < titles.length) return 'medium'
-  return 'low'
+  if (uniqueTitles.size === 1) return "high"
+  if (uniqueTitles.size < titles.length) return "medium"
+  return "low"
 }
 
-function generateRecommendation(topic: string, files: string[], similarity: 'high' | 'medium' | 'low'): string {
-  if (similarity === 'high') {
+function generateRecommendation(
+  topic: string,
+  files: string[],
+  similarity: "high" | "medium" | "low"
+): string {
+  if (similarity === "high") {
     return `CONSOLIDATE: Merge ${files.length} files into single source of truth`
   }
-  if (similarity === 'medium') {
+  if (similarity === "medium") {
     return `CROSS-REFERENCE: Add links between ${files.length} related files`
   }
   return `REVIEW: ${files.length} files cover similar topic - verify distinct purposes`
@@ -257,11 +263,11 @@ function detectDRYViolations(metadata: DocMetadata[]): DRYViolation[] {
   for (const doc of metadata) {
     // Simplified: check for common repeated phrases
     const commonPhrases = [
-      'getting started',
-      'quick start',
-      'installation',
-      'configuration',
-      'best practices',
+      "getting started",
+      "quick start",
+      "installation",
+      "configuration",
+      "best practices",
     ]
 
     for (const phrase of commonPhrases) {
@@ -280,7 +286,7 @@ function detectDRYViolations(metadata: DocMetadata[]): DRYViolation[] {
       violations.push({
         content,
         locations,
-        severity: locations.length > 2 ? 'high' : 'medium',
+        severity: locations.length > 2 ? "high" : "medium",
         recommendation: `Ensure ${content} content is not duplicated - use cross-references or shared snippets`,
       })
     }
@@ -291,16 +297,16 @@ function detectDRYViolations(metadata: DocMetadata[]): DRYViolation[] {
 
 function generateRecommendations(
   duplicates: DuplicateCluster[],
-  violations: DRYViolation[],
+  violations: DRYViolation[]
 ): Recommendation[] {
   const recommendations: Recommendation[] = []
 
   // High priority: consolidate duplicates
   for (const cluster of duplicates) {
-    if (cluster.similarity === 'high') {
+    if (cluster.similarity === "high") {
       recommendations.push({
-        type: 'consolidate',
-        priority: 'high',
+        type: "consolidate",
+        priority: "high",
         files: cluster.files,
         description: cluster.recommendation,
       })
@@ -309,10 +315,10 @@ function generateRecommendations(
 
   // Medium priority: add cross-references
   for (const cluster of duplicates) {
-    if (cluster.similarity === 'medium') {
+    if (cluster.similarity === "medium") {
       recommendations.push({
-        type: 'cross-reference',
-        priority: 'medium',
+        type: "cross-reference",
+        priority: "medium",
         files: cluster.files,
         description: cluster.recommendation,
       })
@@ -321,10 +327,10 @@ function generateRecommendations(
 
   // High priority: fix DRY violations
   for (const violation of violations) {
-    if (violation.severity === 'high') {
+    if (violation.severity === "high") {
       recommendations.push({
-        type: 'consolidate',
-        priority: 'high',
+        type: "consolidate",
+        priority: "high",
         files: violation.locations,
         description: violation.recommendation,
       })
@@ -335,18 +341,18 @@ function generateRecommendations(
 }
 
 async function main() {
-  console.log(chalk.bold('\n📋 Documentation 360° Audit\n'))
+  console.log(chalk.bold("\n📋 Documentation 360° Audit\n"))
 
-  console.log(chalk.cyan('Scanning documentation files...'))
+  console.log(chalk.cyan("Scanning documentation files..."))
   const metadata = await scanDocumentation()
 
-  console.log(chalk.cyan('Detecting duplicates...'))
+  console.log(chalk.cyan("Detecting duplicates..."))
   const duplicates = detectDuplicates(metadata)
 
-  console.log(chalk.cyan('Detecting DRY violations...'))
+  console.log(chalk.cyan("Detecting DRY violations..."))
   const violations = detectDRYViolations(metadata)
 
-  console.log(chalk.cyan('Generating recommendations...'))
+  console.log(chalk.cyan("Generating recommendations..."))
   const recommendations = generateRecommendations(duplicates, violations)
 
   // Generate report
@@ -365,7 +371,7 @@ async function main() {
   }
 
   // Print summary
-  console.log(chalk.bold('\n📊 Audit Summary\n'))
+  console.log(chalk.bold("\n📊 Audit Summary\n"))
   console.log(`Total Documents: ${result.total}`)
   console.log(`Categories: ${Object.keys(result.byCategory).length}`)
   console.log(`Duplicate Clusters: ${chalk.yellow(result.duplicates.length)}`)
@@ -374,74 +380,74 @@ async function main() {
 
   // Print duplicates
   if (result.duplicates.length > 0) {
-    console.log(chalk.bold('\n⚠️  Duplicate Clusters\n'))
+    console.log(chalk.bold("\n⚠️  Duplicate Clusters\n"))
     for (const cluster of result.duplicates) {
       console.log(chalk.yellow(`Topic: ${cluster.topic}`))
       console.log(`  Files: ${cluster.files.length}`)
       console.log(`  Similarity: ${cluster.similarity}`)
       console.log(`  Recommendation: ${cluster.recommendation}`)
-      cluster.files.forEach(f => console.log(`    - ${f}`))
+      cluster.files.forEach((f) => console.log(`    - ${f}`))
       console.log()
     }
   }
 
   // Print DRY violations
   if (result.violations.length > 0) {
-    console.log(chalk.bold('\n⚠️  DRY Violations\n'))
+    console.log(chalk.bold("\n⚠️  DRY Violations\n"))
     for (const violation of result.violations) {
       console.log(chalk.red(`Content: ${violation.content}`))
       console.log(`  Severity: ${violation.severity}`)
       console.log(`  Locations: ${violation.locations.length}`)
       console.log(`  Recommendation: ${violation.recommendation}`)
-      violation.locations.forEach(l => console.log(`    - ${l}`))
+      violation.locations.forEach((l) => console.log(`    - ${l}`))
       console.log()
     }
   }
 
   // Print recommendations
   if (result.recommendations.length > 0) {
-    console.log(chalk.bold('\n💡 Recommendations\n'))
+    console.log(chalk.bold("\n💡 Recommendations\n"))
     const byPriority = {
-      high: result.recommendations.filter(r => r.priority === 'high'),
-      medium: result.recommendations.filter(r => r.priority === 'medium'),
-      low: result.recommendations.filter(r => r.priority === 'low'),
+      high: result.recommendations.filter((r) => r.priority === "high"),
+      medium: result.recommendations.filter((r) => r.priority === "medium"),
+      low: result.recommendations.filter((r) => r.priority === "low"),
     }
 
     if (byPriority.high.length > 0) {
-      console.log(chalk.red.bold('HIGH PRIORITY\n'))
-      byPriority.high.forEach(r => {
+      console.log(chalk.red.bold("HIGH PRIORITY\n"))
+      byPriority.high.forEach((r) => {
         console.log(chalk.red(`  ${r.type.toUpperCase()}: ${r.description}`))
-        r.files.forEach(f => console.log(`    - ${f}`))
+        r.files.forEach((f) => console.log(`    - ${f}`))
       })
       console.log()
     }
 
     if (byPriority.medium.length > 0) {
-      console.log(chalk.yellow.bold('MEDIUM PRIORITY\n'))
-      byPriority.medium.forEach(r => {
+      console.log(chalk.yellow.bold("MEDIUM PRIORITY\n"))
+      byPriority.medium.forEach((r) => {
         console.log(chalk.yellow(`  ${r.type.toUpperCase()}: ${r.description}`))
-        r.files.forEach(f => console.log(`    - ${f}`))
+        r.files.forEach((f) => console.log(`    - ${f}`))
       })
       console.log()
     }
   }
 
   // Save report
-  const reportPath = 'docs/_system/AUDIT_REPORT.json'
+  const reportPath = "docs/_system/AUDIT_REPORT.json"
   writeFileSync(reportPath, JSON.stringify(result, null, 2))
   console.log(chalk.green(`\n✅ Audit report saved to ${reportPath}\n`))
 
   // Exit with error if violations found
   if (result.duplicates.length > 0 || result.violations.length > 0) {
-    console.log(chalk.yellow('⚠️  Issues detected. Review recommendations above.\n'))
+    console.log(chalk.yellow("⚠️  Issues detected. Review recommendations above.\n"))
     process.exit(1)
   }
 
-  console.log(chalk.green('✅ No issues detected. Documentation is DRY-compliant.\n'))
+  console.log(chalk.green("✅ No issues detected. Documentation is DRY-compliant.\n"))
   process.exit(0)
 }
 
 main().catch((error) => {
-  console.error(chalk.red('\n❌ Audit failed:'), error)
+  console.error(chalk.red("\n❌ Audit failed:"), error)
   process.exit(1)
 })

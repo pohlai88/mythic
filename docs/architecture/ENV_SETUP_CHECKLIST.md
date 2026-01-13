@@ -1,7 +1,7 @@
 # Environment Variables Setup Checklist
 
-**Status**: ✅ Active | **Last Updated**: 2026-01-11
-**Purpose**: Quick checklist to verify all required environment variables are set
+**Status**: ✅ Active | **Last Updated**: 2026-01-11 **Purpose**: Quick
+checklist to verify all required environment variables are set
 
 ---
 
@@ -33,6 +33,7 @@ grep -E "^(DATABASE_URL|DB_HOST|DB_USER|DB_PASSWORD)" .env > /dev/null && echo "
   - `DB_SSL` (default: `false`)
 
 **Quick Test**:
+
 ```bash
 pnpm db:setup
 ```
@@ -48,7 +49,8 @@ pnpm db:setup
 
 ### Next.js Public Variables
 
-- [ ] **`NEXT_PUBLIC_SITE_URL`** - Site URL for sitemap/SEO (used in `apps/docs/app/sitemap.ts`)
+- [ ] **`NEXT_PUBLIC_SITE_URL`** - Site URL for sitemap/SEO (used in
+      `apps/docs/app/sitemap.ts`)
 - [ ] **`NEXT_PUBLIC_APP_URL`** - App base URL
 - [ ] **`NEXT_PUBLIC_VERCEL_ANALYTICS_ID`** - Vercel Analytics ID
 
@@ -127,6 +129,7 @@ pnpm db:setup
 ```
 
 Expected output:
+
 ```
 ✅ Database connection successful
 ✅ Database schema already exists
@@ -156,19 +159,25 @@ pnpm dev:boardroom
 ## Common Issues
 
 ### Issue: "DATABASE_URL is not defined"
-**Solution**: 
+
+**Solution**:
+
 1. Check `.env` file exists in project root
 2. Verify `DATABASE_URL` or `DB_*` variables are set
 3. Restart dev server after adding variables
 
 ### Issue: "Database connection failed"
+
 **Solution**:
+
 1. Verify PostgreSQL is running
 2. Check credentials in `.env` are correct
 3. Test connection: `pnpm db:setup`
 
-### Issue: "NEXT_PUBLIC_* variables not available in browser"
+### Issue: "NEXT*PUBLIC*\* variables not available in browser"
+
 **Solution**:
+
 1. Ensure variable name starts with `NEXT_PUBLIC_`
 2. Restart dev server after adding variable
 3. Check variable is in root `.env` or app-specific `.env.local`
@@ -180,19 +189,21 @@ pnpm dev:boardroom
 Based on codebase analysis, ensure your `.env` has:
 
 **Required**:
+
 - ✅ `DATABASE_URL` OR `DB_*` variables
 
 **Recommended**:
+
 - ✅ `NODE_ENV=development`
 - ✅ `LOG_LEVEL=debug` (or `info` for production)
 - ✅ `NEXT_PUBLIC_SITE_URL` (for sitemap generation)
 
 **Optional**:
+
 - ⚠️ `TURBO_TOKEN` / `TURBO_TEAM` (for remote cache)
 - ⚠️ `NEXT_PUBLIC_APP_URL` (for app URLs)
 - ⚠️ `ANALYZE=true` (for bundle analysis)
 
 ---
 
-**Last Updated**: 2026-01-11
-**Status**: ✅ Active
+**Last Updated**: 2026-01-11 **Status**: ✅ Active

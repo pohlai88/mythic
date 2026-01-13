@@ -5,8 +5,8 @@
  * Ensures cache integrity by validating data against schemas on retrieval.
  */
 
-import { z as z4 } from 'zod/v4'
-import { unstable_cache } from 'next/cache'
+import { z as z4 } from "zod/v4"
+import { unstable_cache } from "next/cache"
 
 /**
  * Cache options type
@@ -32,12 +32,8 @@ export type CacheOptions = Parameters<typeof unstable_cache>[2]
  */
 export function createValidatedCache<
   TSchema extends z4.ZodTypeAny,
-  TArgs extends readonly unknown[]
->(
-  schema: TSchema,
-  fn: (...args: TArgs) => Promise<z4.infer<TSchema>>,
-  options?: CacheOptions
-) {
+  TArgs extends readonly unknown[],
+>(schema: TSchema, fn: (...args: TArgs) => Promise<z4.infer<TSchema>>, options?: CacheOptions) {
   return unstable_cache(
     async (...args: TArgs) => {
       const result = await fn(...args)
@@ -47,12 +43,12 @@ export function createValidatedCache<
 
       if (!validationResult.success) {
         // Log error in development, throw in production
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Cache validation failed:', validationResult.error.issues)
+        if (process.env.NODE_ENV === "development") {
+          console.error("Cache validation failed:", validationResult.error.issues)
         }
         // Re-throw to prevent invalid cached data from being used
         throw new Error(
-          `Cache validation failed: ${validationResult.error.issues[0]?.message || 'Invalid cached data'}`
+          `Cache validation failed: ${validationResult.error.issues[0]?.message || "Invalid cached data"}`
         )
       }
 
@@ -71,7 +67,7 @@ export function createValidatedCache<
  */
 export function createValidatedCacheWithFallback<
   TSchema extends z4.ZodTypeAny,
-  TArgs extends readonly unknown[]
+  TArgs extends readonly unknown[],
 >(
   schema: TSchema,
   fn: (...args: TArgs) => Promise<z4.infer<TSchema>>,
@@ -85,13 +81,13 @@ export function createValidatedCacheWithFallback<
         const validationResult = schema.safeParse(result)
 
         if (!validationResult.success) {
-          console.warn('Cache validation failed, using fallback:', validationResult.error.issues)
+          console.warn("Cache validation failed, using fallback:", validationResult.error.issues)
           return fallback
         }
 
         return validationResult.data
       } catch (error) {
-        console.error('Cache function error, using fallback:', error)
+        console.error("Cache function error, using fallback:", error)
         return fallback
       }
     },

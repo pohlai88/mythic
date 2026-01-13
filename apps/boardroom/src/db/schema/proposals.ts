@@ -4,31 +4,31 @@
  * Core proposal table for The Apex Decision Engine
  */
 
-import { boolean, jsonb, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
-import { relations } from 'drizzle-orm'
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
-import { z as z4 } from 'zod/v4'
-import { proposalStatusSchema } from '@mythic/shared-types/boardroom'
-import { circles } from './circles'
-import { boardComments } from './comments'
-import { thanosEvents } from './thanos'
-import { proposalStencils } from './stencils'
+import { boolean, jsonb, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
+import { relations } from "drizzle-orm"
+import { createInsertSchema, createSelectSchema } from "drizzle-zod"
+import { z as z4 } from "zod/v4"
+import { proposalStatusSchema } from "@mythic/shared-types/boardroom"
+import { circles } from "./circles"
+import { boardComments } from "./comments"
+import { thanosEvents } from "./thanos"
+import { proposalStencils } from "./stencils"
 
-export const proposals = pgTable('proposals', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  caseNumber: varchar('case_number', { length: 50 }).notNull().unique(),
-  stencilId: varchar('stencil_id', { length: 100 }).notNull(),
-  circleId: uuid('circle_id').notNull(),
-  status: varchar('status', { length: 20 }).notNull().default('DRAFT'),
-  submittedBy: uuid('submitted_by').notNull(),
-  data: jsonb('data').notNull(), // Structured proposal data
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  approvedAt: timestamp('approved_at'),
-  vetoedAt: timestamp('vetoed_at'),
-  approvedBy: uuid('approved_by'),
-  vetoedBy: uuid('vetoed_by'),
-  vetoReason: text('veto_reason'),
+export const proposals = pgTable("proposals", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  caseNumber: varchar("case_number", { length: 50 }).notNull().unique(),
+  stencilId: varchar("stencil_id", { length: 100 }).notNull(),
+  circleId: uuid("circle_id").notNull(),
+  status: varchar("status", { length: 20 }).notNull().default("DRAFT"),
+  submittedBy: uuid("submitted_by").notNull(),
+  data: jsonb("data").notNull(), // Structured proposal data
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  approvedAt: timestamp("approved_at"),
+  vetoedAt: timestamp("vetoed_at"),
+  approvedBy: uuid("approved_by"),
+  vetoedBy: uuid("vetoed_by"),
+  vetoReason: text("veto_reason"),
 })
 
 // Base Zod schemas from Drizzle
@@ -53,31 +53,31 @@ export const insertProposalSchema = baseInsertProposalSchema
       return true // Allow undefined (will be generated)
     },
     {
-      message: 'Case number must match format: CASE-YYYY-NNNNNN',
-      path: ['caseNumber'],
+      message: "Case number must match format: CASE-YYYY-NNNNNN",
+      path: ["caseNumber"],
     }
   )
   .refine(
     (data) => {
       // Business logic: status transitions
       // DRAFT can be created, but other statuses require specific conditions
-      if (data.status && data.status !== 'DRAFT') {
+      if (data.status && data.status !== "DRAFT") {
         // If status is not DRAFT, ensure required fields are present
-        if (data.status === 'APPROVED' && !data.approvedBy) {
+        if (data.status === "APPROVED" && !data.approvedBy) {
           return false
         }
-        if (data.status === 'VETOED' && (!data.vetoedBy || !data.vetoReason)) {
+        if (data.status === "VETOED" && (!data.vetoedBy || !data.vetoReason)) {
           return false
         }
       }
       return true
     },
     {
-      message: 'Invalid status transition or missing required fields',
-      path: ['status'],
+      message: "Invalid status transition or missing required fields",
+      path: ["status"],
     }
   )
-  .describe('Proposal creation schema with business rules validation')
+  .describe("Proposal creation schema with business rules validation")
 
 // Enhanced select schema with additional refinements
 export const selectProposalSchema = baseSelectProposalSchema
@@ -90,43 +90,43 @@ export const selectProposalSchema = baseSelectProposalSchema
       return true
     },
     {
-      message: 'Updated timestamp must be after creation timestamp',
-      path: ['updatedAt'],
+      message: "Updated timestamp must be after creation timestamp",
+      path: ["updatedAt"],
     }
   )
   .refine(
     (data) => {
       // Business logic: if approved, must have approvedBy and approvedAt
-      if (data.status === 'APPROVED') {
+      if (data.status === "APPROVED") {
         return !!(data.approvedBy && data.approvedAt)
       }
       return true
     },
     {
-      message: 'Approved proposals must have approvedBy and approvedAt',
-      path: ['status'],
+      message: "Approved proposals must have approvedBy and approvedAt",
+      path: ["status"],
     }
   )
   .refine(
     (data) => {
       // Business logic: if vetoed, must have vetoedBy, vetoReason, and vetoedAt
-      if (data.status === 'VETOED') {
+      if (data.status === "VETOED") {
         return !!(data.vetoedBy && data.vetoReason && data.vetoedAt)
       }
       return true
     },
     {
-      message: 'Vetoed proposals must have vetoedBy, vetoReason, and vetoedAt',
-      path: ['status'],
+      message: "Vetoed proposals must have vetoedBy, vetoReason, and vetoedAt",
+      path: ["status"],
     }
   )
-  .describe('Proposal selection schema for database queries with business rules')
+  .describe("Proposal selection schema for database queries with business rules")
 
 // Transformation pipeline: Insert → Select → Shared Types
 // This allows chaining validations and transformations
 export const proposalInputSchema = insertProposalSchema
   .pipe(selectProposalSchema)
-  .describe('Proposal input transformation pipeline')
+  .describe("Proposal input transformation pipeline")
 
 // Relations for Drizzle relational queries API
 export const proposalsRelations = relations(proposals, ({ one, many }) => ({

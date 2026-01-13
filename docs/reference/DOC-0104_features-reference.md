@@ -11,8 +11,7 @@ migrated_from: README_FEATURES.md
 
 # Nextra Maximum Features - Quick Reference
 
-**Date:** 2024-12-19
-**Status:** ✅ All Features Enabled
+**Date:** 2024-12-19 **Status:** ✅ All Features Enabled
 
 ---
 
@@ -70,7 +69,7 @@ pnpm dev
 ### Tabs
 
 ```mdx
-<Tabs items={['Tab 1', 'Tab 2']}>
+<Tabs items={["Tab 1", "Tab 2"]}>
   <div>Content 1</div>
   <div>Content 2</div>
 </Tabs>
@@ -91,9 +90,7 @@ $$
 ### Code Blocks
 
 ```mdx
-\`\`\`javascript
-// Your code here
-\`\`\`
+\`\`\`javascript // Your code here \`\`\`
 ```
 
 ---
@@ -106,5 +103,4 @@ $$
 
 ---
 
-**Last Updated:** 2024-12-19
-**Status:** ✅ **Maximum Features Enabled**
+**Last Updated:** 2024-12-19 **Status:** ✅ **Maximum Features Enabled**

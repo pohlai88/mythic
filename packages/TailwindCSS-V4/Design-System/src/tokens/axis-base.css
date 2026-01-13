@@ -1,0 +1,502 @@
+/**
+ * Axis Base Styles & Utilities
+ *
+ * Global laws and component primitives for Axis Visual Canon design system.
+ * Import this after axis-theme.css in your app's globals.css
+ *
+ * ⚠️ CONSTITUTION RULE: This file provides base styles and utilities.
+ * Do NOT duplicate or override these in apps - use app-specific @theme overrides only.
+ *
+ * Usage:
+ *   @import "@mythic/design-system/tokens/axis-theme.css";
+ *   @import "@mythic/design-system/tokens/axis-base.css";
+
+
+/* ============================================================================
+ * BASE LAYER: Global Laws
+ * ============================================================================ */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+    border-color: hsl(var(--color-divider));
+  }
+
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: geometricPrecision;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: hsl(var(--color-bg));
+    color: hsl(var(--color-text));
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Focus: Gold Ring */
+  :focus-visible {
+    outline: 2px solid hsl(var(--color-accent) / 0.8);
+    outline-offset: 3px;
+  }
+
+  /* Selection: Gold Highlight */
+  ::selection {
+    background-color: hsl(var(--color-accent) / 0.25);
+    color: hsl(var(--color-signal));
+  }
+}
+
+/* ============================================================================
+ * UTILITIES: Axis Primitives
+ * ============================================================================ */
+
+/* 1. The "Divergence" Text Gradient */
+@utility text-divergence {
+  background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.45) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 2. The Apex H1 (Canonical Heading) */
+@utility h1-apex {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: var(--text-h1);
+  line-height: var(--leading-h1);
+  letter-spacing: var(--tracking-axis); /* -3% */
+  color: hsl(var(--color-signal));
+}
+
+/* 3. System Status Microtype */
+@utility micro-status {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-ultra);
+  text-transform: uppercase;
+  color: hsl(var(--color-accent));
+  opacity: 0.9;
+}
+
+/* 4. Axis Card (Obsidian & Gravity) */
+@utility card-axis {
+  background-color: hsl(var(--color-surface));
+  border: 1px solid hsl(var(--color-divider));
+  transition-property: transform, background-color, border-color;
+  transition-duration: 0.8s;
+  transition-timing-function: var(--ease-gravity);
+
+  &:hover {
+    border-color: hsl(var(--color-accent));
+    background-color: hsl(var(--color-obsidian-hover));
+    transform: translateY(-2px);
+  }
+}
+
+/* 5. Mechanical Link Button */
+@utility btn-axis {
+  font-family: var(--font-mono);
+  font-size: var(--text-btn);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: hsl(var(--color-accent));
+  border-bottom: 1px solid hsl(var(--color-accent) / 0.35);
+  padding-bottom: 4px;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
+
+  &:hover {
+    border-bottom-color: hsl(var(--color-accent));
+    color: hsl(var(--color-text));
+  }
+}
+
+/* ============================================================================
+ * CONTAINER WIDTH UTILITIES - CLOSED SET
+ * No escape hatches. Pages use these tokens only.
+ * ============================================================================ */
+
+/* 6. Container Widths */
+@utility max-w-axis {
+  max-width: var(--container-axis);
+}
+
+@utility max-w-prose {
+  max-width: var(--container-prose);
+}
+
+@utility max-w-narrow {
+  max-width: var(--container-narrow);
+}
+
+@utility max-w-wide {
+  max-width: var(--container-wide);
+}
+
+/* ============================================================================
+ * SHELL UTILITIES - Layout Primitives for Shells Only
+ * ============================================================================ */
+
+/* 7. Shell Padding - Responsive insets for page shells */
+@utility shell-pad {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+
+  @media (min-width: 768px) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+@utility shell-pad-tight {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+@utility shell-pad-loose {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+
+  @media (min-width: 768px) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+/* 8. Surface Utilities - Background + Text + Selection (complete surface treatment) */
+@utility surface-void {
+  background-color: hsl(var(--color-void));
+  color: hsl(var(--color-text));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  &::selection {
+    background-color: hsl(var(--color-accent) / 0.25);
+    color: hsl(var(--color-signal));
+  }
+}
+
+@utility surface-obsidian {
+  background-color: hsl(var(--color-surface));
+  color: hsl(var(--color-text));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  &::selection {
+    background-color: hsl(var(--color-accent) / 0.25);
+    color: hsl(var(--color-signal));
+  }
+}
+
+/* ============================================================================
+ * PROSE UTILITIES - Typography for MDX/Documentation Content
+ * Includes Silent Killers: Hanging Punctuation, Quiet Links
+ * ============================================================================ */
+
+/* 9. Prose Axis - Complete typography treatment for documentation */
+@utility prose-axis {
+  max-width: var(--container-prose);
+
+  /* --- Heading Rhythm --- */
+  & h1,
+  & h2,
+  & h3,
+  & h4,
+  & h5,
+  & h6 {
+    color: hsl(var(--color-signal));
+    letter-spacing: var(--tracking-h3);
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+    font-weight: 500;
+  }
+
+  & h1 {
+    font-size: var(--text-h1);
+    letter-spacing: var(--tracking-axis);
+    font-weight: 300;
+    margin-top: 0;
+  }
+
+  & h2 {
+    font-size: var(--text-h2);
+  }
+
+  & h3 {
+    font-size: var(--text-h3);
+  }
+
+  /* --- Paragraph Rhythm --- */
+  & p {
+    color: hsl(var(--color-text));
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    margin-bottom: 1.5em;
+  }
+
+  /* --- SILENT KILLER #3: Quiet Links --- */
+  /* Links are subtle at rest, bold on hover. Respects reading flow. */
+  & a:not(.btn-axis) {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: hsl(var(--color-accent) / 0.3);
+    text-underline-offset: 3px;
+    transition:
+      text-decoration-color 0.3s ease,
+      color 0.3s ease;
+
+    &:hover {
+      color: hsl(var(--color-accent));
+      text-decoration-color: hsl(var(--color-accent));
+    }
+  }
+
+  /* --- SILENT KILLER #1: Hanging Punctuation --- */
+  /* Quotes and bullets "hang" in the margin for optical alignment. */
+  & blockquote {
+    position: relative;
+    padding-left: 1.5rem;
+    margin: 2em 0;
+    border-left: 2px solid hsl(var(--color-accent) / 0.3);
+    font-style: italic;
+    color: hsl(var(--color-muted));
+
+    &::before {
+      content: '"';
+      position: absolute;
+      left: -0.6rem;
+      top: -0.5rem;
+      font-size: 2.5em;
+      color: hsl(var(--color-accent) / 0.2);
+      font-family: Georgia, serif;
+      font-style: normal;
+    }
+  }
+
+  & ul,
+  & ol {
+    padding-left: 0;
+    list-style-position: outside;
+    margin-left: 1.5rem;
+    margin-bottom: 1.5em;
+  }
+
+  & li {
+    margin-bottom: 0.5em;
+    color: hsl(var(--color-text));
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+
+  & li::marker {
+    color: hsl(var(--color-accent) / 0.6);
+  }
+
+  /* --- Code Blocks --- */
+  & pre {
+    background-color: hsl(var(--color-surface));
+    border: 1px solid hsl(var(--color-divider));
+    padding: 1.5rem;
+    overflow-x: auto;
+    margin: 2em 0;
+  }
+
+  & code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+  }
+
+  & :not(pre) > code {
+    background-color: hsl(var(--color-surface));
+    padding: 0.2em 0.4em;
+    border: 1px solid hsl(var(--color-divider));
+  }
+
+  /* --- Horizontal Rules --- */
+  & hr {
+    border: none;
+    height: 1px;
+    background-color: hsl(var(--color-divider));
+    margin: 3em 0;
+  }
+
+  /* --- Tables --- */
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2em 0;
+  }
+
+  & th,
+  & td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid hsl(var(--color-divider));
+  }
+
+  & th {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+    color: hsl(var(--color-muted));
+  }
+
+  & td {
+    font-size: var(--text-body);
+    color: hsl(var(--color-text));
+  }
+}
+
+/* ============================================================================
+ * INTELLIGENCE LAYER
+ * ============================================================================
+ * Context-aware classes for ERP/Business logic.
+ * Kept in @layer utilities to support complex @apply composition.
+ */
+@layer utilities {
+  /* --- Vector Types --- */
+  .vector-past {
+    @apply opacity-60 text-ash;
+  }
+  .vector-present {
+    @apply text-gold;
+  }
+  .vector-future {
+    @apply opacity-80;
+  }
+
+  /* --- Risk Status --- */
+  .risk-on-track {
+    @apply bg-emerald-500/10 text-emerald-400 border-emerald-500/30;
+  }
+  .risk-warning {
+    @apply bg-gold/10 text-gold border-gold/30;
+  }
+  .risk-overrun {
+    @apply bg-amber-500/10 text-amber-400 border-amber-500/30;
+  }
+  .risk-underrun {
+    @apply bg-blue-500/10 text-blue-400 border-blue-500/30;
+  }
+  .risk-critical {
+    @apply bg-ember/20 text-ember border-ember animate-pulse;
+  }
+
+  /* --- Proposal Status --- */
+  .status-draft {
+    @apply bg-ash/10 text-ash border-ash/30;
+  }
+  .status-listening {
+    @apply bg-gold/10 text-gold border-gold/30;
+  }
+  .status-approved {
+    @apply bg-emerald-500/10 text-emerald-400 border-emerald-500/30;
+  }
+  .status-vetoed {
+    @apply bg-ember/10 text-ember border-ember/30;
+  }
+  .status-archived {
+    @apply bg-charcoal/10 text-charcoal border-charcoal/30;
+  }
+
+  /* --- Priority Levels --- */
+  .priority-high {
+    @apply bg-ember/10 text-ember;
+  }
+  .priority-medium {
+    @apply bg-gold/10 text-gold;
+  }
+  .priority-low {
+    @apply bg-ash/10 text-ash;
+  }
+  .priority-normal {
+    @apply bg-ash/10 text-ash;
+  }
+  .priority-urgent {
+    @apply bg-ember/20 text-ember animate-pulse;
+  }
+
+  /* --- Transitions --- */
+  .transition-illuminate {
+    @apply transition-all duration-[1200ms] ease-out;
+  }
+  .transition-commit {
+    @apply transition-all duration-[1618ms] ease-out;
+  }
+  .transition-hover-intelligent {
+    @apply transition-all duration-[700ms] ease-out;
+  }
+
+  /* --- Roles & Broadcasts --- */
+  .role-sovereign {
+    @apply bg-gold/10 text-gold border-gold/30;
+  }
+  .role-council {
+    @apply bg-blue-500/10 text-blue-400 border-blue-500/30;
+  }
+  .broadcast-emergency {
+    @apply bg-ember/20 text-ember border-ember animate-pulse;
+  }
+
+  /* --- Data States --- */
+  .data-loading {
+    @apply opacity-60 animate-pulse;
+  }
+  .data-error {
+    @apply bg-ember/10 text-ember border-ember/30;
+  }
+  .data-empty {
+    @apply opacity-60 text-ash;
+  }
+
+  /* --- Financial --- */
+  .financial-profitable {
+    @apply bg-emerald-500/10 text-emerald-400;
+  }
+  .financial-loss {
+    @apply bg-ember/10 text-ember;
+  }
+
+  /* --- Inventory --- */
+  .inventory-in-stock {
+    @apply bg-emerald-500/10 text-emerald-400;
+  }
+  .inventory-low-stock {
+    @apply bg-gold/10 text-gold;
+  }
+  .inventory-out-of-stock {
+    @apply bg-ember/10 text-ember;
+  }
+
+  /* --- Notifications --- */
+  .notification-info {
+    @apply bg-blue-500/10 text-blue-400 border-blue-500/30;
+  }
+  .notification-success {
+    @apply bg-emerald-500/10 text-emerald-400 border-emerald-500/30;
+  }
+  .notification-warning {
+    @apply bg-gold/10 text-gold border-gold/30;
+  }
+  .notification-error {
+    @apply bg-ember/10 text-ember border-ember/30;
+  }
+}

@@ -10,7 +10,9 @@
 
 ## 1) Canonicalization & Document Hash
 
-**Canonicalization Rules (consistent with AXIS Visual Constitution ratification):**
+**Canonicalization Rules (consistent with AXIS Visual Constitution
+ratification):**
+
 - UTF-8 encoding
 - LF line endings (`\n`)
 - Trim trailing whitespace per line
@@ -18,17 +20,20 @@
 - Final newline at EOF
 
 **Computed Document Hash (SHA-256):**
+
 ```
 sha256:<TO_BE_COMPUTED_AND_FILLED>
 ```
 
-> ⚠️ Any textual change to the Registry document invalidates this hash and requires recomputation.
+> ⚠️ Any textual change to the Registry document invalidates this hash and
+> requires recomputation.
 
 ---
 
 ## 2) Ready-to-Append Ledger Envelope (JSON)
 
 > **Instructions:**
+>
 > - Fill `entry_id` with a UUID at append time
 > - Fill `actor.identity` with a public key fingerprint: `fp:sha256:<hex>`
 > - Fill `artifact_ref` with the computed document hash
@@ -50,9 +55,7 @@ sha256:<TO_BE_COMPUTED_AND_FILLED>
     "artifact_type": "DOC",
     "artifact_ref": "AXIS_Design_Mode_Registry_v1.0@sha256:REPLACE_WITH_DOC_HASH"
   },
-  "scope_declaration": [
-    "AXIS Design Mode Registry v1.0"
-  ],
+  "scope_declaration": ["AXIS Design Mode Registry v1.0"],
   "payload": {
     "amendment_id": null,
     "signatories": [
@@ -92,20 +95,24 @@ sha256:<TO_BE_COMPUTED_AND_FILLED>
 
 ## 3) Human Summary (for notification & rollup)
 
-**What changed:** AXIS Design Mode Registry v1.0 is now ratified and authoritative.  
-**Impact:** No AXIS Design Mode may exist or be used unless registered, versioned, and ratified.  
-**Enforcement:** Titan (`TITAN-CI-AXIS01`) now validates mode existence and version against the Registry.
+**What changed:** AXIS Design Mode Registry v1.0 is now ratified and
+authoritative.  
+**Impact:** No AXIS Design Mode may exist or be used unless registered,
+versioned, and ratified.  
+**Enforcement:** Titan (`TITAN-CI-AXIS01`) now validates mode existence and
+version against the Registry.
 
 ---
 
 ## 4) Post-Append Operational Checklist
 
-1. Append this entry to the primary ledger (append-only).  
-2. Enable Titan to reference the Registry for enforcement.  
-3. Run a verification sweep and record results as a `TITAN_AUDIT_RUN` entry.  
-4. Publish a weekly governance rollup referencing the ledger entry ID.  
+1. Append this entry to the primary ledger (append-only).
+2. Enable Titan to reference the Registry for enforcement.
+3. Run a verification sweep and record results as a `TITAN_AUDIT_RUN` entry.
+4. Publish a weekly governance rollup referencing the ledger entry ID.
 5. Archive the snapshot in the weekly governance bundle.
 
 ---
 
-> This ledger entry formally closes the governance loop for Design Mode authority in AXIS.
+> This ledger entry formally closes the governance loop for Design Mode
+> authority in AXIS.

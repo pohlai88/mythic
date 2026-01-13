@@ -16,9 +16,8 @@ export {
   useProposal,
   useApproveProposal,
   useVetoProposal,
-} from './proposals'
+} from "./proposals"
 
-export type {
-  // Types are re-exported from proposals.ts via named exports
-  // Import types directly from the module if needed
-} from './proposals'
+export type {} from // Types are re-exported from proposals.ts via named exports
+// Import types directly from the module if needed
+"./proposals"

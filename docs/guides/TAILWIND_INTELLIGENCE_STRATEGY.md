@@ -1,8 +1,6 @@
 # Tailwind Intelligence: World-Class Strategy & Optimization
 
-**Status**: ✅ **STRATEGIC FRAMEWORK**
-**Date**: 2026-01-11
-**Version**: 1.0.0
+**Status**: ✅ **STRATEGIC FRAMEWORK** **Date**: 2026-01-11 **Version**: 1.0.0
 
 ---
 
@@ -12,7 +10,8 @@
 
 **Optimal Coverage**: **70-85%** (not 100%)
 
-**Maximization Strategy**: Use intelligence where it adds semantic value, avoid it for simple styling.
+**Maximization Strategy**: Use intelligence where it adds semantic value, avoid
+it for simple styling.
 
 ---
 
@@ -21,6 +20,7 @@
 ### 1. ❌ Full Coverage (100%) - NOT RECOMMENDED
 
 **Why Not**:
+
 - Over-engineering simple styling
 - Performance overhead (unnecessary function calls)
 - Reduced readability for static styles
@@ -28,6 +28,7 @@
 - Increases bundle size unnecessarily
 
 **Example of Over-Use**:
+
 ```tsx
 // ❌ BAD: Using intelligence for simple static styling
 <div className={intelligentStatusStyles('APPROVED', 'border')}>
@@ -45,6 +46,7 @@
 ### 2. ❌ No Coverage (0%) - NOT RECOMMENDED
 
 **Why Not**:
+
 - Misses semantic value of context-aware styling
 - Inconsistent styling patterns
 - Manual maintenance of status/risk mappings
@@ -52,6 +54,7 @@
 - Harder to maintain design system consistency
 
 **Example of Under-Use**:
+
 ```tsx
 // ❌ BAD: Manual status styling (hard to maintain)
 <div className={status === 'APPROVED' ? 'border-green-500' : 'border-red-500'}>
@@ -69,6 +72,7 @@
 ### 3. ✅ Hybrid Approach (70-85%) - **OPTIMAL**
 
 **Why Optimal**:
+
 - ✅ Uses intelligence where it adds semantic value
 - ✅ Uses simple classes for static/layout styling
 - ✅ Balances maintainability with performance
@@ -84,6 +88,7 @@
 ### ✅ **USE INTELLIGENCE** for:
 
 #### 1. **Context-Aware Styling** (Status, Risk, Priority)
+
 ```tsx
 // ✅ Status-based styling
 <div className={intelligentStatusStyles(proposal.status, 'badge')}>
@@ -102,22 +107,30 @@
 ```
 
 #### 2. **Data-Driven Styling** (Calculated Values)
+
 ```tsx
 // ✅ Variance-based styling (calculated from data)
-<div className={intelligentVarianceStyles(budgetedVariance, 'text')}>
+<div className={intelligentVarianceStyles(budgetedVariance, "text")}>
   Variance: {budgetedVariance}%
 </div>
 ```
 
 #### 3. **State-Aware Components** (Dynamic UI)
+
 ```tsx
 // ✅ Loading/Error states
-<div className={intelligentStatusStyles(isLoading ? 'LISTENING' : 'APPROVED', 'border')}>
-  {isLoading ? 'Loading...' : 'Complete'}
+<div
+  className={intelligentStatusStyles(
+    isLoading ? "LISTENING" : "APPROVED",
+    "border"
+  )}
+>
+  {isLoading ? "Loading..." : "Complete"}
 </div>
 ```
 
 #### 4. **Semantic Document Types** (Diátaxis)
+
 ```tsx
 // ✅ Document type styling (semantic meaning)
 <DocumentTypeBadge type="tutorial" />
@@ -125,6 +138,7 @@
 ```
 
 #### 5. **Interactive Elements** (Buttons, Inputs)
+
 ```tsx
 // ✅ Button styling (context-aware)
 <button className={intelligentButtonStyles('primary', 'md')}>
@@ -142,6 +156,7 @@
 ### ❌ **DON'T USE INTELLIGENCE** for:
 
 #### 1. **Static Layout Styling**
+
 ```tsx
 // ❌ BAD: Intelligence for layout
 <div className={intelligentStatusStyles('APPROVED', 'border')}>
@@ -155,6 +170,7 @@
 ```
 
 #### 2. **Simple Utility Classes**
+
 ```tsx
 // ❌ BAD: Over-engineering
 <div className={intelligentStatusStyles('APPROVED', 'text')}>
@@ -168,6 +184,7 @@
 ```
 
 #### 3. **Non-Semantic Styling**
+
 ```tsx
 // ❌ BAD: No semantic meaning
 <div className={intelligentStatusStyles('APPROVED', 'border')}>
@@ -181,6 +198,7 @@
 ```
 
 #### 4. **Performance-Critical Paths** (When Simple is Faster)
+
 ```tsx
 // ❌ BAD: Unnecessary function call
 <div className={intelligentStatusStyles('APPROVED', 'text')}>
@@ -194,10 +212,11 @@
 ```
 
 #### 5. **Redirect/Simple Pages** (No Styling Needed)
+
 ```tsx
 // ✅ GOOD: No styling needed
 export default function RedirectPage() {
-  redirect('/target')
+  redirect("/target")
 }
 ```
 
@@ -207,15 +226,15 @@ export default function RedirectPage() {
 
 ### World-Class Standards
 
-| Category | Target Coverage | Current | Status |
-|----------|----------------|---------|--------|
-| **Context-Aware Components** | 100% | 100% | ✅ Optimal |
-| **Status/Risk/Priority Styling** | 100% | 100% | ✅ Optimal |
-| **Data-Driven Styling** | 100% | 100% | ✅ Optimal |
-| **Interactive Elements** | 90%+ | 90%+ | ✅ Optimal |
-| **Static Layout Styling** | 0% | 0% | ✅ Optimal |
-| **Simple Utility Classes** | 0% | 0% | ✅ Optimal |
-| **Overall Coverage** | **70-85%** | **83%** | ✅ **OPTIMAL** |
+| Category                         | Target Coverage | Current | Status         |
+| -------------------------------- | --------------- | ------- | -------------- |
+| **Context-Aware Components**     | 100%            | 100%    | ✅ Optimal     |
+| **Status/Risk/Priority Styling** | 100%            | 100%    | ✅ Optimal     |
+| **Data-Driven Styling**          | 100%            | 100%    | ✅ Optimal     |
+| **Interactive Elements**         | 90%+            | 90%+    | ✅ Optimal     |
+| **Static Layout Styling**        | 0%              | 0%      | ✅ Optimal     |
+| **Simple Utility Classes**       | 0%              | 0%      | ✅ Optimal     |
+| **Overall Coverage**             | **70-85%**      | **83%** | ✅ **OPTIMAL** |
 
 ---
 
@@ -243,15 +262,16 @@ export default function RedirectPage() {
 
 ```tsx
 // ✅ GOOD: Centralized mapping
-const statusStyles = intelligentStatusStyles(status, 'badge')
+const statusStyles = intelligentStatusStyles(status, "badge")
 
 // ❌ BAD: Scattered manual mappings
-const statusStyles = status === 'APPROVED' ? 'bg-green-500' : 'bg-red-500'
+const statusStyles = status === "APPROVED" ? "bg-green-500" : "bg-red-500"
 ```
 
 ### 3. **Performance Balance** ✅
 
-**Principle**: Use intelligence where it adds value, avoid where it adds overhead.
+**Principle**: Use intelligence where it adds value, avoid where it adds
+overhead.
 
 ```tsx
 // ✅ GOOD: Intelligence for dynamic content
@@ -291,24 +311,26 @@ const statusStyles = status === 'APPROVED' ? 'bg-green-500' : 'bg-red-500'
 
 #### By Component Type
 
-| Component Type | Intelligence Usage | Coverage | Status |
-|----------------|-------------------|----------|--------|
-| **Status Components** | ✅ All | 100% | ✅ Optimal |
-| **Risk Components** | ✅ All | 100% | ✅ Optimal |
-| **Variance Components** | ✅ All | 100% | ✅ Optimal |
-| **Button Components** | ✅ Most | 90%+ | ✅ Optimal |
-| **Input Components** | ✅ Most | 90%+ | ✅ Optimal |
-| **Layout Components** | ❌ None | 0% | ✅ Optimal |
-| **Static Pages** | ⚠️ Some | 17% | ✅ Optimal |
+| Component Type          | Intelligence Usage | Coverage | Status     |
+| ----------------------- | ------------------ | -------- | ---------- |
+| **Status Components**   | ✅ All             | 100%     | ✅ Optimal |
+| **Risk Components**     | ✅ All             | 100%     | ✅ Optimal |
+| **Variance Components** | ✅ All             | 100%     | ✅ Optimal |
+| **Button Components**   | ✅ Most            | 90%+     | ✅ Optimal |
+| **Input Components**    | ✅ Most            | 90%+     | ✅ Optimal |
+| **Layout Components**   | ❌ None            | 0%       | ✅ Optimal |
+| **Static Pages**        | ⚠️ Some            | 17%      | ✅ Optimal |
 
 #### By App
 
 **Boardroom App**: **90%+** ✅
+
 - ✅ All status/risk/variance components use intelligence
 - ✅ All interactive elements use intelligence
 - ✅ Layout components use simple classes
 
 **Docs App**: **100%** ✅ (of applicable components)
+
 - ✅ All Diátaxis components use intelligence
 - ✅ Document type styling uses intelligence
 - ✅ Static pages use simple classes
@@ -319,7 +341,8 @@ const statusStyles = status === 'APPROVED' ? 'bg-green-500' : 'bg-red-500'
 
 ### 1. **Semantic Over Syntax** ✅
 
-Use intelligence when styling reflects business logic, not just visual appearance.
+Use intelligence when styling reflects business logic, not just visual
+appearance.
 
 ```tsx
 // ✅ SEMANTIC: Status reflects proposal state
@@ -335,10 +358,10 @@ Use intelligence to avoid repeating status/risk mappings across components.
 
 ```tsx
 // ✅ DRY: Single source of truth
-const styles = intelligentStatusStyles(status, 'badge')
+const styles = intelligentStatusStyles(status, "badge")
 
 // ❌ REPEATED: Manual mapping in each component
-const styles = status === 'APPROVED' ? 'bg-green-500' : 'bg-red-500'
+const styles = status === "APPROVED" ? "bg-green-500" : "bg-red-500"
 ```
 
 ### 3. **Type Safety** ✅
@@ -404,13 +427,13 @@ Use intelligence where it adds value, not everywhere.
 
 ### World-Class Design Systems
 
-| System | Intelligence Coverage | Approach |
-|--------|---------------------|----------|
-| **Material Design** | ~75% | Hybrid (semantic components) |
-| **Ant Design** | ~80% | Hybrid (context-aware) |
-| **Chakra UI** | ~70% | Hybrid (theme-aware) |
-| **Tailwind UI** | ~65% | Hybrid (utility-first) |
-| **Our Implementation** | **83%** | **Hybrid** ✅ |
+| System                 | Intelligence Coverage | Approach                     |
+| ---------------------- | --------------------- | ---------------------------- |
+| **Material Design**    | ~75%                  | Hybrid (semantic components) |
+| **Ant Design**         | ~80%                  | Hybrid (context-aware)       |
+| **Chakra UI**          | ~70%                  | Hybrid (theme-aware)         |
+| **Tailwind UI**        | ~65%                  | Hybrid (utility-first)       |
+| **Our Implementation** | **83%**               | **Hybrid** ✅                |
 
 **Conclusion**: Our 83% coverage aligns with world-class standards.
 
@@ -423,6 +446,7 @@ Use intelligence where it adds value, not everywhere.
 **Current Coverage**: **83%** ✅ (Optimal)
 
 **Maximization Effect**:
+
 - ✅ **Semantic Value**: Intelligence used where it adds meaning
 - ✅ **Performance**: Simple classes where intelligence adds overhead
 - ✅ **Maintainability**: Single source of truth for styling logic
@@ -439,7 +463,6 @@ Use intelligence where it adds value, not everywhere.
 
 ---
 
-**Status**: ✅ **OPTIMAL - WORLD-CLASS STANDARD**
-**Coverage**: **83%** (Optimal Range: 70-85%)
-**Strategy**: **HYBRID** (Semantic Value First)
-**Last Updated**: 2026-01-11
+**Status**: ✅ **OPTIMAL - WORLD-CLASS STANDARD** **Coverage**: **83%** (Optimal
+Range: 70-85%) **Strategy**: **HYBRID** (Semantic Value First) **Last Updated**:
+2026-01-11

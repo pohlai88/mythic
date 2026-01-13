@@ -4,24 +4,24 @@
  * Manages reusable templates for common broadcast types.
  */
 
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { broadcastTemplates } from '@/src/db/schema'
-import { eq } from 'drizzle-orm'
-import { z as z4 } from 'zod/v4'
-import { validateActionInput } from '@/src/lib/actions/validate-action'
-import type { BroadcastTemplate } from '@/src/db/schema/broadcast-templates'
+import { db } from "@/src/db"
+import { broadcastTemplates } from "@/src/db/schema"
+import { eq } from "drizzle-orm"
+import { z as z4 } from "zod/v4"
+import { validateActionInput } from "@/src/lib/actions/validate-action"
+import type { BroadcastTemplate } from "@/src/db/schema/broadcast-templates"
 
 /**
  * Input schema for creating template
  */
 const createTemplateInputSchema = z4.object({
   name: z4.string().min(1),
-  type: z4.enum(['approval', 'veto', 'announcement', 'poll', 'emergency']),
+  type: z4.enum(["approval", "veto", "announcement", "poll", "emergency"]),
   titleTemplate: z4.string().min(1),
   messageTemplate: z4.string().optional(),
-  defaultAudience: z4.string().default('all'),
+  defaultAudience: z4.string().default("all"),
   defaultSticky: z4.boolean().default(true),
   variables: z4.record(z4.string()).optional(),
 })
@@ -39,14 +39,11 @@ const useTemplateInputSchema = z4.object({
  */
 export async function getBroadcastTemplates() {
   try {
-    const templates = await db
-      .select()
-      .from(broadcastTemplates)
-      .orderBy(broadcastTemplates.name)
+    const templates = await db.select().from(broadcastTemplates).orderBy(broadcastTemplates.name)
 
     return templates
   } catch (error) {
-    console.error('Error fetching templates:', error)
+    console.error("Error fetching templates:", error)
     return []
   }
 }
@@ -64,7 +61,7 @@ export async function getBroadcastTemplate(templateId: string) {
 
     return template || null
   } catch (error) {
-    console.error('Error fetching template:', error)
+    console.error("Error fetching template:", error)
     return null
   }
 }
@@ -77,7 +74,7 @@ export async function createBroadcastTemplate(
 ): Promise<{ success: boolean; templateId?: string; error?: string }> {
   const inputResult = validateActionInput(input, createTemplateInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   try {
@@ -95,13 +92,13 @@ export async function createBroadcastTemplate(
       .returning()
 
     if (!template) {
-      return { success: false, error: 'Failed to create template' }
+      return { success: false, error: "Failed to create template" }
     }
 
     return { success: true, templateId: template.id }
   } catch (error) {
-    console.error('Error creating template:', error)
-    return { success: false, error: 'Failed to create template' }
+    console.error("Error creating template:", error)
+    return { success: false, error: "Failed to create template" }
   }
 }
 
@@ -117,13 +114,13 @@ export function renderTemplate(
 
   // Replace variables in title
   for (const [key, value] of Object.entries(variables)) {
-    title = title.replace(new RegExp(`\\{${key}\\}`, 'g'), value)
+    title = title.replace(new RegExp(`\\{${key}\\}`, "g"), value)
   }
 
   // Replace variables in message
   if (message) {
     for (const [key, value] of Object.entries(variables)) {
-      message = message.replace(new RegExp(`\\{${key}\\}`, 'g'), value)
+      message = message.replace(new RegExp(`\\{${key}\\}`, "g"), value)
     }
   }
 
@@ -135,7 +132,13 @@ export function renderTemplate(
  */
 export async function useBroadcastTemplate(
   input: unknown
-): Promise<{ title: string; message: string | null; type: string; audience: string; sticky: boolean } | null> {
+): Promise<{
+  title: string
+  message: string | null
+  type: string
+  audience: string
+  sticky: boolean
+} | null> {
   const inputResult = validateActionInput(input, useTemplateInputSchema)
   if (!inputResult.success) {
     return null

@@ -1,8 +1,0 @@
-{
-  "*.{ts,tsx,js,jsx}": [
-    "eslint --fix --max-warnings 0",
-    "prettier --write"
-  ],
-  "*.{md,mdx,mdc}": ["markdownlint-cli2 --fix"],
-  "*.{json,jsonc,css,scss}": ["prettier --write"]
-}

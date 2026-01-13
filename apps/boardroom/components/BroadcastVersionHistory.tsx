@@ -5,16 +5,13 @@
  * Shows change tracking and audit trail.
  */
 
-'use client'
+"use client"
 
-import { Card } from '@mythic/design-system'
-import { cn } from '@mythic/shared-utils'
-import { badges } from '@/src/lib'
-import { useState, useEffect, memo } from 'react'
-import {
-  getBroadcastVersions,
-  type BroadcastVersionData,
-} from '@/app/actions/broadcast-versions'
+import { Card } from "@mythic/tailwindcss-v4-design-system"
+import { cn } from "@mythic/nextjs-shared-utils"
+import { badges } from "@/src/lib"
+import { useState, useEffect, memo } from "react"
+import { getBroadcastVersions, type BroadcastVersionData } from "@/app/actions/broadcast-versions"
 
 interface BroadcastVersionHistoryProps {
   broadcastId: string
@@ -42,7 +39,7 @@ export const BroadcastVersionHistory = memo(function BroadcastVersionHistory({
           }
         }
       } catch (error) {
-        console.error('Error loading versions:', error)
+        console.error("Error loading versions:", error)
       } finally {
         setLoading(false)
       }
@@ -53,7 +50,7 @@ export const BroadcastVersionHistory = memo(function BroadcastVersionHistory({
 
   if (loading) {
     return (
-      <Card elevation="sm" className={cn('p-4', className)}>
+      <Card elevation="sm" className={cn("p-4", className)}>
         <div className="text-ash text-sm">Loading version history...</div>
       </Card>
     )
@@ -61,7 +58,7 @@ export const BroadcastVersionHistory = memo(function BroadcastVersionHistory({
 
   if (versions.length === 0) {
     return (
-      <Card elevation="sm" className={cn('p-4', className)}>
+      <Card elevation="sm" className={cn("p-4", className)}>
         <div className="text-ash text-sm">No version history available.</div>
       </Card>
     )
@@ -70,7 +67,7 @@ export const BroadcastVersionHistory = memo(function BroadcastVersionHistory({
   const selectedVersionData = versions.find((v) => v.versionNumber === selectedVersion)
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn("space-y-4", className)}>
       <div className="flex items-center justify-between">
         <h3 className="font-serif text-lg text-parchment">Version History</h3>
         <span className="text-sm text-ash">{versions.length} version(s)</span>
@@ -86,16 +83,14 @@ export const BroadcastVersionHistory = memo(function BroadcastVersionHistory({
                 key={version.id}
                 onClick={() => setSelectedVersion(version.versionNumber)}
                 className={cn(
-                  'w-full text-left p-3 rounded-xs border transition-hover-intelligent',
+                  "w-full text-left p-3 rounded-xs border transition-hover-intelligent",
                   selectedVersion === version.versionNumber
-                    ? 'border-gold bg-obsidian'
-                    : 'border-charcoal hover:border-gold'
+                    ? "border-gold bg-obsidian"
+                    : "border-charcoal hover:border-gold"
                 )}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-mono text-parchment">
-                    v{version.versionNumber}
-                  </span>
+                  <span className="text-sm font-mono text-parchment">v{version.versionNumber}</span>
                   <span className="text-xs text-ash">
                     {new Date(version.changedAt).toLocaleDateString()}
                   </span>
@@ -104,9 +99,7 @@ export const BroadcastVersionHistory = memo(function BroadcastVersionHistory({
                   Changed by: User {version.changedBy.slice(0, 8)}
                 </div>
                 {version.changeReason && (
-                  <div className="text-xs text-ash mt-1 italic">
-                    {version.changeReason}
-                  </div>
+                  <div className="text-xs text-ash mt-1 italic">{version.changeReason}</div>
                 )}
               </button>
             ))}
@@ -153,10 +146,7 @@ export const BroadcastVersionHistory = memo(function BroadcastVersionHistory({
                   <div className="text-xs text-ash mb-1">Categories</div>
                   <div className="flex flex-wrap gap-1">
                     {selectedVersionData.categories.map((cat) => (
-                      <span
-                        key={cat}
-                        className={badges.category}
-                      >
+                      <span key={cat} className={badges.category}>
                         {cat}
                       </span>
                     ))}
@@ -168,10 +158,7 @@ export const BroadcastVersionHistory = memo(function BroadcastVersionHistory({
                   <div className="text-xs text-ash mb-1">Tags</div>
                   <div className="flex flex-wrap gap-1">
                     {selectedVersionData.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className={badges.category}
-                      >
+                      <span key={tag} className={badges.category}>
                         {tag}
                       </span>
                     ))}

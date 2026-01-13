@@ -14,9 +14,12 @@ tags: [reference, cursor, best-practices, optimization, evidence-based]
 
 ## Executive Summary
 
-After implementing a comprehensive Cursor optimization system with 32 rules, 5 hooks, and multiple integrations, this guide presents evidence-based best practices for maximizing Cursor's capabilities.
+After implementing a comprehensive Cursor optimization system with 32 rules, 5
+hooks, and multiple integrations, this guide presents evidence-based best
+practices for maximizing Cursor's capabilities.
 
 **Key Findings:**
+
 - ✅ 3-layer documentation model reduces context confusion by 80%
 - ✅ Hook-based automation reduces manual validation time by 90%
 - ✅ Targeted indexing improves AI accuracy by 60%
@@ -54,12 +57,14 @@ Layer 3: Local Documentation (REFERENCED)
 ### Evidence
 
 **Before Optimization:**
+
 - 20+ indexed docs
 - AI accuracy: 40% on project-specific questions
 - Context confusion: High
 - Response time: Slow
 
 **After Optimization:**
+
 - 3-5 indexed docs (frameworks only)
 - AI accuracy: 85% on project-specific questions
 - Context confusion: Minimal
@@ -67,9 +72,12 @@ Layer 3: Local Documentation (REFERENCED)
 
 ### Reasoning
 
-1. **External Docs (Indexed)**: Framework knowledge changes slowly, benefits from deep indexing
-2. **Rules (Applied)**: Project patterns need automatic enforcement, not manual reference
-3. **Local Docs (Referenced)**: Detailed patterns used on-demand, not constant context
+1. **External Docs (Indexed)**: Framework knowledge changes slowly, benefits
+   from deep indexing
+2. **Rules (Applied)**: Project patterns need automatic enforcement, not manual
+   reference
+3. **Local Docs (Referenced)**: Detailed patterns used on-demand, not constant
+   context
 
 **ROI:** 60% accuracy improvement with 75% less indexed content.
 
@@ -93,15 +101,9 @@ Layer 3: Local Documentation (REFERENCED)
       { "command": "./.cursor/hooks/format-code.sh" },
       { "command": "./.cursor/hooks/update-docs.sh" }
     ],
-    "beforeShellExecution": [
-      { "command": "./.cursor/hooks/audit-command.sh" }
-    ],
-    "beforeSubmitPrompt": [
-      { "command": "./.cursor/hooks/validate-prompt.sh" }
-    ],
-    "afterAgentResponse": [
-      { "command": "./.cursor/hooks/log-activity.sh" }
-    ]
+    "beforeShellExecution": [{ "command": "./.cursor/hooks/audit-command.sh" }],
+    "beforeSubmitPrompt": [{ "command": "./.cursor/hooks/validate-prompt.sh" }],
+    "afterAgentResponse": [{ "command": "./.cursor/hooks/log-activity.sh" }]
   }
 }
 ```
@@ -109,6 +111,7 @@ Layer 3: Local Documentation (REFERENCED)
 ### Evidence
 
 **Time Savings:**
+
 - Manual code formatting: 2-5 min per file → 0 seconds (automated)
 - Documentation updates: 10-30 min per change → <1 second (automated)
 - Security scanning: 5-10 min per commit → 0 seconds (pre-commit)
@@ -131,7 +134,8 @@ Layer 3: Local Documentation (REFERENCED)
 
 ### Evidence-Based Decision
 
-**Problem:** Large monolithic rules are hard to maintain and apply inconsistently.
+**Problem:** Large monolithic rules are hard to maintain and apply
+inconsistently.
 
 **Solution:** Focused rules with clear numbering and cross-references.
 
@@ -153,28 +157,32 @@ Layer 3: Local Documentation (REFERENCED)
 ```markdown
 ---
 description: Brief description (1 line)
-globs: "*.ts,*.tsx"                  # Targeted application
-alwaysApply: false                   # Conditional loading
+globs: "*.ts,*.tsx" # Targeted application
+alwaysApply: false # Conditional loading
 ---
 
 # Rule Name
 
 **Reference Documentation:**
-- @docs/patterns/module-patterns.md  # Cross-reference
-- @rules/001_core-safety.mdc         # Related rules
+
+- @docs/patterns/module-patterns.md # Cross-reference
+- @rules/001_core-safety.mdc # Related rules
 
 ## Implementation
+
 [Focused content on ONE concern]
 ```
 
 ### Evidence
 
 **Rule Effectiveness:**
+
 - Monolithic rules (500+ lines): 40% compliance
 - Focused rules (<100 lines): 95% compliance
 - Cross-referenced rules: +30% comprehension
 
 **Pattern Detection:**
+
 - Rules with glob patterns: 85% accurate targeting
 - Rules with alwaysApply=true: 60% unnecessary overhead
 - Rules with cross-references: +40% context accuracy
@@ -229,10 +237,12 @@ alwaysApply: false                   # Conditional loading
 ### Evidence
 
 **Indexing Performance:**
+
 - Index all files: 10GB, 30s query time, 50% accuracy
 - Index strategically: 2GB, 2s query time, 85% accuracy
 
 **Query Accuracy by Type:**
+
 - Source code queries: 85% accuracy (indexed)
 - Test code queries: 30% accuracy (excluded, rarely needed)
 - Build artifact queries: 0% relevance (excluded)
@@ -259,6 +269,7 @@ alwaysApply: false                   # Conditional loading
 ### Implementation
 
 **Context Budget:**
+
 ```
 Total: 1M tokens
 ├── Rules: 50K tokens (5%) - Always loaded
@@ -270,11 +281,13 @@ Total: 1M tokens
 ### Evidence
 
 **Performance Metrics:**
+
 - Response time: 5s → 1.5s (3.3x faster)
 - Context relevance: 60% → 90% (+30%)
 - Cost per query: $0.15 → $0.05 (3x cheaper)
 
 **Context Utilization:**
+
 - Before: 900K used, 40% relevant
 - After: 750K used, 90% relevant
 
@@ -328,7 +341,5 @@ Cost Reduction: 67% █████████████░░░░░░░
 
 ---
 
-**Status**: ✅ Production Validated
-**Last Updated**: 2026-01-06
-**Evidence Period**: 6 months real-world usage
-**Confidence Level**: High (data-driven)
+**Status**: ✅ Production Validated **Last Updated**: 2026-01-06 **Evidence
+Period**: 6 months real-world usage **Confidence Level**: High (data-driven)

@@ -97,6 +97,22 @@ fi
 echo "✅ Design system sealing validation passed"
 echo ""
 
+# Validate intelligence CSS classes
+echo "🔍 Validating intelligence CSS classes..."
+pnpm validate:intelligence-classes
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Intelligence CSS classes validation failed!"
+  echo "All intelligence CSS classes MUST be defined in axis-base.css"
+  echo "See: packages/design-system/DESIGN_SYSTEM_TOKEN_CONSTITUTION.md"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Intelligence CSS classes validation passed"
+echo ""
+
 # Validate CSS file locking
 echo "🔒 Validating CSS file locking..."
 pnpm validate:css-files
@@ -112,8 +128,7 @@ fi
 echo "✅ CSS file locking validation passed"
 echo ""
 
-# Run lint-staged for staged files
-npx lint-staged
+# Code formatting is handled by individual app/package lint scripts via turbo
 
 # Validate README files (README-only policy)
 echo "📋 Validating README files..."
@@ -146,11 +161,11 @@ echo "✅ README-only policy: Compliant"
 echo ""
 
 # Check for markdown files in root (except allowed ones)
-ROOT_MD_FILES=$(git diff --cached --name-only --diff-filter=A | grep -E '^[^/]+\.md$' | grep -vE '^(README|QUICK_START|QUICK_REFERENCE)\.md$' || true)
+ROOT_MD_FILES=$(git diff --cached --name-only --diff-filter=A | grep -E '^[^/]+\.md$' | grep -vE '^README\.md$' || true)
 
 if [ -n "$ROOT_MD_FILES" ]; then
   echo "❌ Error: Cannot commit markdown files to root directory"
-  echo "Allowed files: README.md, QUICK_START.md, QUICK_REFERENCE.md"
+  echo "Allowed files: README.md only"
   echo "Found files:"
   echo "$ROOT_MD_FILES"
   echo ""
@@ -164,3 +179,19 @@ if [ -n "$ROOT_MD_FILES" ]; then
   echo "Or run: pnpm organize-docs"
   exit 1
 fi
+
+# Validate environment file policy (ONLY root .env is allowed)
+echo "🔍 Validating environment file policy..."
+pnpm validate:env-files
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Environment file validation failed!"
+  echo "Only C:\\AI-BOS\\mythic\\.env is allowed"
+  echo "See: .cursor/rules/060_security-secrets.mdc"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Environment file policy: Compliant"
+echo ""

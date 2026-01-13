@@ -1,8 +1,21 @@
 {
+  "$schema": "https://json-schema.org/draft-07/schema#",
   "name": "Developers Layout",
   "version": "1.0.0",
-  "description": "Layout wireframe for developers documentation section",
+  "description": "Layout wireframe for developers documentation section. Follows Next.js App Router conventions and Tailwind CSS v4 design system tokens.",
   "audience": "developers",
+  "designSystem": {
+    "tokens": "@mythic/tailwindcss-v4-design-system/tokens/axis-theme.css",
+    "colors": {
+      "background": "bg-obsidian",
+      "border": "border-charcoal",
+      "text": "text-parchment"
+    },
+    "spacing": {
+      "sidebarWidth": "w-64",
+      "padding": "p-8"
+    }
+  },
   "components": [
     {
       "type": "Navbar",
@@ -16,7 +29,8 @@
       "styling": {
         "background": "bg-obsidian",
         "border": "border-b border-charcoal",
-        "height": "h-16"
+        "height": "h-16",
+        "zIndex": "z-50"
       }
     },
     {
@@ -33,8 +47,8 @@
         "border": "border-r border-charcoal",
         "responsive": {
           "mobile": "hidden",
-          "tablet": "collapsible",
-          "desktop": "visible"
+          "tablet": "lg:hidden lg:block",
+          "desktop": "block"
         }
       }
     },
@@ -46,11 +60,11 @@
         "padding": "p-8"
       },
       "styling": {
-        "margin": "ml-64",
+        "margin": "lg:ml-64",
         "responsive": {
-          "mobile": "ml-0",
-          "tablet": "ml-0",
-          "desktop": "ml-64"
+          "mobile": "ml-0 px-4",
+          "tablet": "ml-0 px-6",
+          "desktop": "ml-64 px-8"
         }
       }
     },
@@ -60,29 +74,46 @@
         "shortcut": "Cmd+K",
         "fuzzySearch": true
       },
-      "position": "overlay"
+      "position": "overlay",
+      "styling": {
+        "zIndex": "z-50"
+      }
     }
   ],
   "responsive": {
     "mobile": {
       "layout": "stack",
       "sidebar": "hidden",
-      "content": "full-width"
+      "content": "full-width",
+      "breakpoint": "sm"
     },
     "tablet": {
       "layout": "sidebar-collapsible",
       "sidebar": "collapsible",
-      "content": "adaptive"
+      "content": "adaptive",
+      "breakpoint": "md"
     },
     "desktop": {
       "layout": "sidebar-fixed",
       "sidebar": "fixed",
-      "content": "with-sidebar"
+      "content": "with-sidebar",
+      "breakpoint": "lg"
     }
   },
   "breakpoints": {
-    "mobile": "640px",
-    "tablet": "768px",
-    "desktop": "1024px"
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
+    "2xl": "1536px",
+    "note": "Tailwind CSS v4 default breakpoints - use design system tokens for custom breakpoints"
+  },
+  "nextjs": {
+    "appRouter": true,
+    "serverComponents": true,
+    "metadata": {
+      "title": "Developer Documentation",
+      "description": "Documentation for developers"
+    }
   }
 }

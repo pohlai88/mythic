@@ -1,6 +1,8 @@
 # Cursor Configuration & Best Practices
 
-Welcome to the Cursor configuration directory. This directory contains rules, documentation, and best practices for maximizing Cursor AI's effectiveness in this project.
+Welcome to the Cursor configuration directory. This directory contains rules,
+documentation, and best practices for maximizing Cursor AI's effectiveness in
+this project.
 
 ---
 
@@ -53,29 +55,32 @@ Welcome to the Cursor configuration directory. This directory contains rules, do
 
 ### What Each File Contains
 
-| File | Purpose | When to Read |
-|------|---------|--------------|
-| `QUICK_REFERENCE.md` | One-page cheat sheet | Daily reference |
-| `STRATEGY_OVERVIEW.md` | Visual strategy guide | Understanding the big picture |
-| `BEST_PRACTICES_STRATEGY.md` | Complete guide | Initial setup, deep dive |
-| `DOCUMENTATION_INDEXING_QUICK_START.md` | 5-min setup | First-time setup |
-| `docs/CURSOR_DOCUMENTATION_INDEXING_GUIDE.md` | Detailed how-to | Troubleshooting, advanced usage |
+| File                                          | Purpose               | When to Read                    |
+| --------------------------------------------- | --------------------- | ------------------------------- |
+| `QUICK_REFERENCE.md`                          | One-page cheat sheet  | Daily reference                 |
+| `STRATEGY_OVERVIEW.md`                        | Visual strategy guide | Understanding the big picture   |
+| `BEST_PRACTICES_STRATEGY.md`                  | Complete guide        | Initial setup, deep dive        |
+| `DOCUMENTATION_INDEXING_QUICK_START.md`       | 5-min setup           | First-time setup                |
+| `docs/CURSOR_DOCUMENTATION_INDEXING_GUIDE.md` | Detailed how-to       | Troubleshooting, advanced usage |
 
 ---
 
 ## 🎯 Core Principles
 
 ### 1. Documentation Indexing
+
 - **Index 3-5 external docs** (framework knowledge)
 - **Store local docs** in `.cursor/docs/` (project patterns)
 - **Reference local docs** in rules (don't index them)
 
 ### 2. Rules Organization
+
 - **Keep rules focused** (<100 lines each)
 - **Use specific globs** (scope appropriately)
 - **Reference documentation** (link to local docs)
 
 ### 3. Integration
+
 - **External docs** = Framework knowledge
 - **Rules** = Project application
 - **Local docs** = Detailed patterns
@@ -85,9 +90,11 @@ Welcome to the Cursor configuration directory. This directory contains rules, do
 ## 📋 Current Configuration
 
 ### Indexed External Documentation
-*(Add via Settings > Features > Docs)*
+
+_(Add via Settings > Features > Docs)_
 
 **Recommended:**
+
 - ✅ Next.js Documentation: `https://nextjs.org/docs`
 - ✅ React Documentation: `https://react.dev`
 - ✅ Supabase Documentation: `https://supabase.com/docs`
@@ -131,11 +138,13 @@ Welcome to the Cursor configuration directory. This directory contains rules, do
 ### When to Update
 
 **Update Documentation When:**
+
 - Framework versions change
 - Project architecture evolves
 - New patterns emerge
 
 **Update Rules When:**
+
 - AI doesn't follow expected patterns
 - Project structure changes
 - Rules become too long (>100 lines)
@@ -145,16 +154,19 @@ Welcome to the Cursor configuration directory. This directory contains rules, do
 ## 🎓 Learning Path
 
 ### Beginner
+
 1. Read `QUICK_REFERENCE.md`
 2. Follow `DOCUMENTATION_INDEXING_QUICK_START.md`
 3. Test with sample queries
 
 ### Intermediate
+
 1. Read `STRATEGY_OVERVIEW.md`
 2. Review existing rules
 3. Create domain-specific rules
 
 ### Advanced
+
 1. Read `BEST_PRACTICES_STRATEGY.md`
 2. Optimize documentation structure
 3. Create custom rule hierarchies
@@ -189,18 +201,23 @@ When adding new rules or documentation:
 ## ❓ FAQ
 
 ### Q: How many external docs should I index?
+
 **A:** 3-5 maximum. Too many dilutes context.
 
 ### Q: Should I index local docs?
+
 **A:** No. Store them in `.cursor/docs/` and reference in rules.
 
 ### Q: How long should rules be?
+
 **A:** Keep under 100 lines. Split large rules into multiple focused ones.
 
 ### Q: When should I use `alwaysApply: true`?
+
 **A:** Only for truly universal rules. Most rules should use specific globs.
 
 ### Q: How do I test if rules are working?
+
 **A:** Ask Cursor questions and verify it follows your documented patterns.
 
 ---

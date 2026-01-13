@@ -1,13 +1,15 @@
 # Nextra 4: Additional Optional Features - Detailed Explanation
 
-**Date**: 2025-01-27
-**Purpose**: Explain optional features and improve rating/prioritization system
+**Date**: 2025-01-27 **Purpose**: Explain optional features and improve
+rating/prioritization system
 
 ---
 
 ## 🎯 Overview
 
-This document explains **4 additional optional features** found in Nextra 4 component migration, providing detailed reasoning for why they're optional and when to use them.
+This document explains **4 additional optional features** found in Nextra 4
+component migration, providing detailed reasoning for why they're optional and
+when to use them.
 
 ---
 
@@ -21,20 +23,24 @@ This document explains **4 additional optional features** found in Nextra 4 comp
 
 **Purpose**: Whitelist HTML elements to be replaced with custom MDX components.
 
-**Default Behavior**: Nextra only replaces `<details>` and `<summary>` by default.
+**Default Behavior**: Nextra only replaces `<details>` and `<summary>` by
+default.
 
-**With Configuration**: Can extend to replace any HTML element (e.g., `h1`, `h2`, `blockquote`).
+**With Configuration**: Can extend to replace any HTML element (e.g., `h1`,
+`h2`, `blockquote`).
 
 #### How It Works
 
 **Configuration** (`next.config.mjs`):
+
 ```javascript
 const withNextra = nextra({
-  whiteListTagsStyling: ['h1', 'h2', 'blockquote']
+  whiteListTagsStyling: ["h1", "h2", "blockquote"],
 })
 ```
 
 **Effect**:
+
 - `<h1>` → Custom `h1` component from `mdx-components.tsx`
 - `<h2>` → Custom `h2` component from `mdx-components.tsx`
 - `<blockquote>` → Custom `blockquote` component from `mdx-components.tsx`
@@ -42,7 +48,8 @@ const withNextra = nextra({
 #### Why It's Optional
 
 1. **✅ Default Behavior Works**
-   - Default replacement (`<details>`, `<summary>`) is sufficient for most use cases
+   - Default replacement (`<details>`, `<summary>`) is sufficient for most use
+     cases
    - HTML elements render correctly without replacement
    - **No functionality is lost** without configuration
 
@@ -77,11 +84,11 @@ const withNextra = nextra({
 
 #### Current Status
 
-**Configuration**: Not configured
-**Impact**: None - HTML elements render normally
-**Action**: None required
+**Configuration**: Not configured **Impact**: None - HTML elements render
+normally **Action**: None required
 
-**Rating**: ⚠️ **Low Priority** - Only needed for specific customization requirements
+**Rating**: ⚠️ **Low Priority** - Only needed for specific customization
+requirements
 
 ---
 
@@ -91,9 +98,11 @@ const withNextra = nextra({
 
 #### What It Is
 
-**Purpose**: Resolve conflicts between folders and index pages in Page File Convention.
+**Purpose**: Resolve conflicts between folders and index pages in Page File
+Convention.
 
 **Problem**: In Nextra 2/3, you could have:
+
 ```
 app/
 ├── docs/
@@ -101,11 +110,13 @@ app/
 └── docs.mdx  ← Same level as folder (conflicts!)
 ```
 
-**Solution**: Use `asIndexPage: true` in front matter to mark a page as the index for its folder.
+**Solution**: Use `asIndexPage: true` in front matter to mark a page as the
+index for its folder.
 
 #### How It Works
 
 **Page File Convention** (`app/docs/page.mdx`):
+
 ```mdx
 ---
 asIndexPage: true
@@ -116,6 +127,7 @@ title: Documentation
 ```
 
 **Content Directory Convention** (`content/docs/index.mdx`):
+
 ```mdx
 ---
 asIndexPage: true
@@ -163,11 +175,11 @@ title: Documentation
 
 #### Current Status
 
-**Usage**: Not used
-**Impact**: None - No conflicts found
-**Action**: None required
+**Usage**: Not used **Impact**: None - No conflicts found **Action**: None
+required
 
-**Rating**: ⚠️ **Very Low Priority** - Only needed during migration or if conflicts arise
+**Rating**: ⚠️ **Very Low Priority** - Only needed during migration or if
+conflicts arise
 
 ---
 
@@ -177,33 +189,33 @@ title: Documentation
 
 #### What It Is
 
-**Purpose**: Automatically display all subpages of a route as cards on an index page.
+**Purpose**: Automatically display all subpages of a route as cards on an index
+page.
 
-**Use Case**: Create an index page that shows all subpages as clickable cards with icons.
+**Use Case**: Create an index page that shows all subpages as clickable cards
+with icons.
 
 #### How It Works
 
 **Index Page** (`app/my-route/page.mdx`):
+
 ```mdx
-import { Cards } from 'nextra/components'
-import { MDXRemote } from 'nextra/mdx-remote'
-import { createIndexPage, getPageMap } from 'nextra/page-map'
-import { MyIcon } from '../path/to/your/icons'
+import { Cards } from "nextra/components"
+import { MDXRemote } from "nextra/mdx-remote"
+import { createIndexPage, getPageMap } from "nextra/page-map"
+import { MyIcon } from "../path/to/your/icons"
 
 <MDXRemote
-  compiledSource={
-    await createIndexPage(
-      await getPageMap('/my-route')
-    )
-  }
+  compiledSource={await createIndexPage(await getPageMap("/my-route"))}
   components={{
     Cards,
-    MyIcon
+    MyIcon,
   }}
 />
 ```
 
 **Subpage** (`app/my-route/demo/page.mdx`):
+
 ```mdx
 ---
 icon: MyIcon
@@ -253,8 +265,7 @@ icon: MyIcon
 
 #### Current Status
 
-**Implementation**: Not implemented
-**Impact**: None - Sidebar navigation works
+**Implementation**: Not implemented **Impact**: None - Sidebar navigation works
 **Action**: None required
 
 **Rating**: ⚠️ **Medium Priority** - Useful for UX enhancement but not essential
@@ -270,6 +281,7 @@ icon: MyIcon
 **Purpose**: Determines which title appears in sidebar navigation.
 
 **Priority Order** (highest to lowest):
+
 1. **Non-empty title** from `_meta` file
 2. **`sidebarTitle`** in front matter
 3. **`title`** in front matter
@@ -300,9 +312,8 @@ icon: MyIcon
 
 #### Current Status
 
-**Status**: ✅ **AUTOMATIC** - Working correctly
-**Impact**: High - Determines sidebar titles
-**Action**: None required (automatic)
+**Status**: ✅ **AUTOMATIC** - Working correctly **Impact**: High - Determines
+sidebar titles **Action**: None required (automatic)
 
 **Rating**: ✅ **Automatic** - Not optional, always active
 
@@ -312,24 +323,25 @@ icon: MyIcon
 
 ### Current Rating Issues
 
-**Problem**: All optional features marked with same ⚠️ symbol, no priority differentiation.
+**Problem**: All optional features marked with same ⚠️ symbol, no priority
+differentiation.
 
 **Solution**: Implement **priority-based rating system**.
 
 ### Proposed Rating System
 
-| Rating                  | Symbol | Meaning                      | When to Use               |
-| ----------------------- | ------ | ---------------------------- | ------------------------- |
-| **✅ Automatic**         | ✅      | Always active, no config     | Core functionality        |
-| **🔴 High Priority**     | 🔴      | Should implement if relevant | High impact features      |
-| **🟡 Medium Priority**   | 🟡      | Consider if use case matches | Nice-to-have enhancements |
-| **🟢 Low Priority**      | 🟢      | Only if specific need        | Very specific use cases   |
-| **⚪ Very Low Priority** | ⚪      | Rarely needed                | Migration/edge cases      |
+| Rating                   | Symbol | Meaning                      | When to Use               |
+| ------------------------ | ------ | ---------------------------- | ------------------------- |
+| **✅ Automatic**         | ✅     | Always active, no config     | Core functionality        |
+| **🔴 High Priority**     | 🔴     | Should implement if relevant | High impact features      |
+| **🟡 Medium Priority**   | 🟡     | Consider if use case matches | Nice-to-have enhancements |
+| **🟢 Low Priority**      | 🟢     | Only if specific need        | Very specific use cases   |
+| **⚪ Very Low Priority** | ⚪     | Rarely needed                | Migration/edge cases      |
 
 ### Re-Rated Features
 
-| Feature                    | Old Rating | New Rating              | Reasoning                                |
-| -------------------------- | ---------- | ----------------------- | ---------------------------------------- |
+| Feature                    | Old Rating  | New Rating               | Reasoning                                |
+| -------------------------- | ----------- | ------------------------ | ---------------------------------------- |
 | **Sidebar Title Priority** | ⚠️ Optional | ✅ **Automatic**         | Always active, core functionality        |
 | **List Subpages**          | ⚠️ Optional | 🟡 **Medium Priority**   | UX enhancement, useful but not essential |
 | **whiteListTagsStyling**   | ⚠️ Optional | 🟢 **Low Priority**      | Specific customization need              |
@@ -373,8 +385,8 @@ icon: MyIcon
 
 ### When to Implement Each Feature
 
-| Feature                    | Implement If...            | Don't Implement If... |
-| -------------------------- | -------------------------- | --------------------- |
+| Feature                    | Implement If...             | Don't Implement If... |
+| -------------------------- | --------------------------- | --------------------- |
 | **Sidebar Title Priority** | ✅ Always (automatic)       | N/A                   |
 | **List Subpages**          | 🟡 You want card navigation | Sidebar is sufficient |
 | **whiteListTagsStyling**   | 🟢 You need custom elements | CSS styling is enough |
@@ -402,12 +414,12 @@ icon: MyIcon
 
 ## 📊 Summary Table
 
-| Feature                    | Status           | Priority        | Impact   | Action Required             |
-| -------------------------- | ---------------- | --------------- | -------- | --------------------------- |
-| **Sidebar Title Priority** | ✅ Automatic      | ✅ Always Active | High     | None                        |
+| Feature                    | Status            | Priority         | Impact   | Action Required              |
+| -------------------------- | ----------------- | ---------------- | -------- | ---------------------------- |
+| **Sidebar Title Priority** | ✅ Automatic      | ✅ Always Active | High     | None                         |
 | **List Subpages**          | ✅ Implemented    | 🟡 Medium        | Medium   | ✅ Done - Added to `/guides` |
-| **whiteListTagsStyling**   | ⚠️ Not Configured | 🟢 Low           | Low      | Skip                        |
-| **asIndexPage**            | ⚠️ Not Used       | ⚪ Very Low      | Very Low | Skip                        |
+| **whiteListTagsStyling**   | ⚠️ Not Configured | 🟢 Low           | Low      | Skip                         |
+| **asIndexPage**            | ⚠️ Not Used       | ⚪ Very Low      | Very Low | Skip                         |
 
 ---
 
@@ -416,6 +428,7 @@ icon: MyIcon
 ### Rating System Improvement
 
 **✅ Improved**: Priority-based rating system provides clearer guidance:
+
 - **Automatic**: Always active features
 - **Medium Priority**: Consider for UX enhancement
 - **Low Priority**: Only if specific need
@@ -424,13 +437,15 @@ icon: MyIcon
 ### Current Project Status
 
 **✅ Optimal**: Current implementation is correct:
+
 - Automatic features working ✅
 - Optional features skipped appropriately ✅
 - No unnecessary complexity ✅
 
-**Recommendation**: Keep current approach. Only implement optional features when specific requirements arise.
+**Recommendation**: Keep current approach. Only implement optional features when
+specific requirements arise.
 
 ---
 
-**Last Updated**: 2025-01-27
-**Status**: ✅ **Documented** - Optional features explained with improved priority ratings
+**Last Updated**: 2025-01-27 **Status**: ✅ **Documented** - Optional features
+explained with improved priority ratings

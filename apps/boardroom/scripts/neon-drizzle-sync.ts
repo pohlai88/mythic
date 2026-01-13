@@ -1,6 +1,6 @@
 /**
  * Neon + Drizzle Synergistic Integration Script
- * 
+ *
  * Combines Neon CLI and Drizzle for maximum functionality:
  * - Automatic connection string sync
  * - Branch-based environment management
@@ -9,9 +9,9 @@
  * - Point-in-time recovery support
  */
 
-import { execSync } from 'child_process'
-import { existsSync, readFileSync, writeFileSync } from 'fs'
-import { join, resolve } from 'path'
+import { execSync } from "child_process"
+import { existsSync, readFileSync, writeFileSync } from "fs"
+import { join, resolve } from "path"
 
 interface NeonProject {
   id: string
@@ -30,7 +30,7 @@ interface SyncConfig {
   branch?: string
   database?: string
   role?: string
-  environment: 'development' | 'staging' | 'production'
+  environment: "development" | "staging" | "production"
   autoPush?: boolean
   autoMigrate?: boolean
 }
@@ -41,7 +41,7 @@ interface SyncConfig {
 function getNeonProjectId(): string | null {
   try {
     // Try to get from context
-    const contextOutput = execSync('neonctl set-context', { encoding: 'utf-8', stdio: 'pipe' })
+    const contextOutput = execSync("neonctl set-context", { encoding: "utf-8", stdio: "pipe" })
     const projectMatch = contextOutput.match(/project-id:\s*([^\s]+)/)
     if (projectMatch) {
       return projectMatch[1]
@@ -52,7 +52,7 @@ function getNeonProjectId(): string | null {
 
   // Try to get from projects list
   try {
-    const projectsOutput = execSync('neonctl projects list --output json', { encoding: 'utf-8' })
+    const projectsOutput = execSync("neonctl projects list --output json", { encoding: "utf-8" })
     const projects: NeonProject[] = JSON.parse(projectsOutput)
     if (projects.length > 0) {
       return projects[0].id
@@ -68,14 +68,10 @@ function getNeonProjectId(): string | null {
  * Get connection string from Neon CLI
  */
 function getNeonConnectionString(config: SyncConfig): string {
-  const args = [
-    'connection-string',
-    '--pooled',
-    '--ssl', 'require',
-  ]
+  const args = ["connection-string", "--pooled", "--ssl", "require"]
 
   if (config.projectId) {
-    args.push('--project-id', config.projectId)
+    args.push("--project-id", config.projectId)
   }
 
   if (config.branch) {
@@ -83,17 +79,17 @@ function getNeonConnectionString(config: SyncConfig): string {
   }
 
   if (config.database) {
-    args.push('--database-name', config.database)
+    args.push("--database-name", config.database)
   }
 
   if (config.role) {
-    args.push('--role-name', config.role)
+    args.push("--role-name", config.role)
   }
 
   try {
-    const connectionString = execSync(`neonctl ${args.join(' ')}`, {
-      encoding: 'utf-8',
-      stdio: 'pipe',
+    const connectionString = execSync(`neonctl ${args.join(" ")}`, {
+      encoding: "utf-8",
+      stdio: "pipe",
     }).trim()
 
     return connectionString
@@ -106,23 +102,20 @@ function getNeonConnectionString(config: SyncConfig): string {
  * Update .env file with connection string
  */
 function updateEnvFile(connectionString: string, envPath: string): void {
-  let envContent = ''
+  let envContent = ""
 
   if (existsSync(envPath)) {
-    envContent = readFileSync(envPath, 'utf-8')
+    envContent = readFileSync(envPath, "utf-8")
   }
 
   // Update or add DATABASE_URL
-  if (envContent.includes('DATABASE_URL=')) {
-    envContent = envContent.replace(
-      /DATABASE_URL=.*/,
-      `DATABASE_URL=${connectionString}`
-    )
+  if (envContent.includes("DATABASE_URL=")) {
+    envContent = envContent.replace(/DATABASE_URL=.*/, `DATABASE_URL=${connectionString}`)
   } else {
     envContent += `\nDATABASE_URL=${connectionString}\n`
   }
 
-  writeFileSync(envPath, envContent, 'utf-8')
+  writeFileSync(envPath, envContent, "utf-8")
   console.log(`✅ Updated .env file: ${envPath}`)
 }
 
@@ -131,9 +124,9 @@ function updateEnvFile(connectionString: string, envPath: string): void {
  */
 function pushSchema(): void {
   try {
-    console.log('📤 Pushing schema to database...')
-    execSync('pnpm db:push', { stdio: 'inherit' })
-    console.log('✅ Schema pushed successfully')
+    console.log("📤 Pushing schema to database...")
+    execSync("pnpm db:push", { stdio: "inherit" })
+    console.log("✅ Schema pushed successfully")
   } catch (error) {
     throw new Error(`Failed to push schema: ${error}`)
   }
@@ -144,9 +137,9 @@ function pushSchema(): void {
  */
 function generateMigrations(): void {
   try {
-    console.log('📝 Generating migrations...')
-    execSync('pnpm db:generate', { stdio: 'inherit' })
-    console.log('✅ Migrations generated successfully')
+    console.log("📝 Generating migrations...")
+    execSync("pnpm db:generate", { stdio: "inherit" })
+    console.log("✅ Migrations generated successfully")
   } catch (error) {
     throw new Error(`Failed to generate migrations: ${error}`)
   }
@@ -157,9 +150,9 @@ function generateMigrations(): void {
  */
 function runMigrations(): void {
   try {
-    console.log('🚀 Running migrations...')
-    execSync('pnpm db:migrate', { stdio: 'inherit' })
-    console.log('✅ Migrations completed successfully')
+    console.log("🚀 Running migrations...")
+    execSync("pnpm db:migrate", { stdio: "inherit" })
+    console.log("✅ Migrations completed successfully")
   } catch (error) {
     throw new Error(`Failed to run migrations: ${error}`)
   }
@@ -169,10 +162,10 @@ function runMigrations(): void {
  * Main sync function
  */
 function sync(config: SyncConfig): void {
-  console.log('🔄 Neon + Drizzle Synergistic Sync\n')
+  console.log("🔄 Neon + Drizzle Synergistic Sync\n")
   console.log(`Environment: ${config.environment}`)
-  console.log(`Project ID: ${config.projectId || 'auto-detect'}`)
-  console.log(`Branch: ${config.branch || 'default'}\n`)
+  console.log(`Project ID: ${config.projectId || "auto-detect"}`)
+  console.log(`Branch: ${config.branch || "default"}\n`)
 
   // Get project ID if not provided
   if (!config.projectId) {
@@ -181,19 +174,19 @@ function sync(config: SyncConfig): void {
       config.projectId = projectId
       console.log(`📋 Auto-detected project: ${projectId}\n`)
     } else {
-      throw new Error('Project ID not found. Set --project-id or configure Neon context.')
+      throw new Error("Project ID not found. Set --project-id or configure Neon context.")
     }
   }
 
   // Get connection string from Neon
-  console.log('🔗 Getting connection string from Neon...')
+  console.log("🔗 Getting connection string from Neon...")
   const connectionString = getNeonConnectionString(config)
   console.log(`✅ Connection string retrieved\n`)
 
   // Update .env file
   const cwd = process.cwd()
-  const rootEnv = resolve(cwd, '..', '..', '.env')
-  const appEnv = join(cwd, '.env')
+  const rootEnv = resolve(cwd, "..", "..", ".env")
+  const appEnv = join(cwd, ".env")
   const envPath = existsSync(rootEnv) ? rootEnv : appEnv
 
   updateEnvFile(connectionString, envPath)
@@ -209,11 +202,11 @@ function sync(config: SyncConfig): void {
     runMigrations()
   }
 
-  console.log('\n✅ Sync completed successfully!')
-  console.log('\nNext steps:')
-  console.log('  - Validate: pnpm validate:db')
-  console.log('  - Push schema: pnpm db:push')
-  console.log('  - Open Studio: pnpm db:studio')
+  console.log("\n✅ Sync completed successfully!")
+  console.log("\nNext steps:")
+  console.log("  - Validate: pnpm validate:db")
+  console.log("  - Push schema: pnpm db:push")
+  console.log("  - Open Studio: pnpm db:studio")
 }
 
 /**
@@ -222,7 +215,7 @@ function sync(config: SyncConfig): void {
 function main() {
   const args = process.argv.slice(2)
   const config: SyncConfig = {
-    environment: 'development',
+    environment: "development",
     autoPush: false,
     autoMigrate: false,
   }
@@ -230,29 +223,29 @@ function main() {
   for (let i = 0; i < args.length; i++) {
     const arg = args[i]
     switch (arg) {
-      case '--project-id':
+      case "--project-id":
         config.projectId = args[++i]
         break
-      case '--branch':
+      case "--branch":
         config.branch = args[++i]
         break
-      case '--database':
+      case "--database":
         config.database = args[++i]
         break
-      case '--role':
+      case "--role":
         config.role = args[++i]
         break
-      case '--env':
-      case '--environment':
-        config.environment = args[++i] as SyncConfig['environment']
+      case "--env":
+      case "--environment":
+        config.environment = args[++i] as SyncConfig["environment"]
         break
-      case '--auto-push':
+      case "--auto-push":
         config.autoPush = true
         break
-      case '--auto-migrate':
+      case "--auto-migrate":
         config.autoMigrate = true
         break
-      case '--help':
+      case "--help":
         console.log(`
 Neon + Drizzle Synergistic Sync
 
@@ -286,7 +279,7 @@ Examples:
   try {
     sync(config)
   } catch (error) {
-    console.error('❌ Sync failed:', error instanceof Error ? error.message : error)
+    console.error("❌ Sync failed:", error instanceof Error ? error.message : error)
     process.exit(1)
   }
 }

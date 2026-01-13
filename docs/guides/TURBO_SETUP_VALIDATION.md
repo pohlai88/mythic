@@ -1,7 +1,7 @@
 # Turbo Remote Cache Setup Validation
 
-**Status**: ✅ Validation Guide | **Last Updated**: 2026-01-11
-**Purpose**: Validate Turbo remote cache setup is complete
+**Status**: ✅ Validation Guide | **Last Updated**: 2026-01-11 **Purpose**:
+Validate Turbo remote cache setup is complete
 
 ---
 
@@ -15,6 +15,7 @@ Get-Content .turbo\config.json
 ```
 
 **Expected**:
+
 ```json
 {
   "teamId": "team_xxxxxxxxxxxxx",
@@ -23,6 +24,7 @@ Get-Content .turbo\config.json
 ```
 
 **Status**:
+
 - ✅ `teamId` present
 - ✅ `token` present (starts with `tur_`)
 
@@ -31,6 +33,7 @@ Get-Content .turbo\config.json
 ### ✅ Step 2: Verify Token Format
 
 **Token should**:
+
 - Start with `tur_`
 - Be alphanumeric after prefix
 - Be ~20-30 characters long
@@ -85,14 +88,14 @@ TURBO_TEAM=team_xxxxxxxxxxxxx
 
 ## Validation Results
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| Config file exists | ⏳ Checking | `.turbo/config.json` |
-| Team ID present | ⏳ Checking | Should be `team_...` |
-| Token present | ⏳ Checking | Should be `tur_...` |
-| Token format valid | ⏳ Checking | Starts with `tur_` |
-| Added to .env | ⏳ Checking | For local development |
-| Added to GitHub Secrets | ⏳ Pending | For CI/CD |
+| Check                   | Status      | Notes                 |
+| ----------------------- | ----------- | --------------------- |
+| Config file exists      | ⏳ Checking | `.turbo/config.json`  |
+| Team ID present         | ⏳ Checking | Should be `team_...`  |
+| Token present           | ⏳ Checking | Should be `tur_...`   |
+| Token format valid      | ⏳ Checking | Starts with `tur_`    |
+| Added to .env           | ⏳ Checking | For local development |
+| Added to GitHub Secrets | ⏳ Pending  | For CI/CD             |
 
 ---
 
@@ -101,12 +104,14 @@ TURBO_TEAM=team_xxxxxxxxxxxxx
 ### If All Checks Pass ✅
 
 1. **Test locally**:
+
    ```bash
    pnpm build
    pnpm turbo:summary
    ```
 
 2. **Push to GitHub**:
+
    ```bash
    git add .
    git commit -m "Add Turbo remote cache configuration"
@@ -132,12 +137,12 @@ TURBO_TEAM=team_xxxxxxxxxxxxx
 
 ### Issue: Remote cache not working
 
-**Solution**: 
+**Solution**:
+
 1. Verify token in `.env` file
 2. Check GitHub Secrets are set
 3. Restart dev server / CI workflow
 
 ---
 
-**Last Updated**: 2026-01-11
-**Status**: ✅ Validation Guide Ready
+**Last Updated**: 2026-01-11 **Status**: ✅ Validation Guide Ready

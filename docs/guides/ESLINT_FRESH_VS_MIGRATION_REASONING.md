@@ -1,8 +1,7 @@
 # ESLint: Fresh Installation vs Migration from Biome - Reasoning
 
-**Version**: 1.0.0
-**Last Updated**: 2026-01-12
-**Status**: ✅ **Decision Support Document**
+**Version**: 1.0.0 **Last Updated**: 2026-01-12 **Status**: ✅ **Decision
+Support Document**
 
 ---
 
@@ -11,6 +10,7 @@
 **Recommendation**: **Fresh ESLint Installation** (not migration)
 
 **Key Reasoning**:
+
 1. **Clean slate** avoids carrying over Biome's configuration patterns
 2. **Modern ESLint 9** flat config is fundamentally different from Biome
 3. **Stability issues** with Biome suggest starting fresh is safer
@@ -35,18 +35,22 @@
 ### Current State
 
 **Biome Configuration**:
+
 - ✅ `biome.json` with comprehensive rules
 - ✅ VS Code integration configured
 - ✅ Formatting + linting in one tool
 - ✅ Turborepo-aware configuration
 
 **Known Issues** (from `BIOME_STABILITY_ANALYSIS.md`):
-- ⚠️ **Language server crashes**: "Cannot call write after a stream was destroyed"
+
+- ⚠️ **Language server crashes**: "Cannot call write after a stream was
+  destroyed"
 - ⚠️ **Stream management bugs**: GitHub issue #5837 (open/unresolved)
 - ⚠️ **Monorepo performance issues**: File watching problems
 - ⚠️ **Process lifecycle issues**: Daemon crashes disrupt workflow
 
 **Impact**:
+
 - High probability of crashes
 - Critical impact on developer productivity
 - Ongoing stability concerns
@@ -58,6 +62,7 @@
 ### What It Means
 
 **Fresh Installation** = Setting up ESLint from scratch with:
+
 - New ESLint 9 flat config (`eslint.config.mjs`)
 - Modern plugin ecosystem
 - Best practices for monorepo
@@ -69,17 +74,18 @@
 
 ```javascript
 // Fresh ESLint 9 flat config
-import js from "@eslint/js";
-import typescriptEslint from "typescript-eslint";
+import js from "@eslint/js"
+import typescriptEslint from "typescript-eslint"
 
 export default [
   js.configs.recommended,
   ...typescriptEslint.configs.recommended,
   // Modern, clean structure
-];
+]
 ```
 
 **Benefits**:
+
 - ✅ No legacy patterns to work around
 - ✅ Follows ESLint 9 best practices
 - ✅ Easier to maintain and understand
@@ -88,12 +94,14 @@ export default [
 #### 2. **Modern ESLint 9 Features**
 
 **Fresh installation enables**:
+
 - ✅ **Flat config** (modern, simpler than legacy)
 - ✅ **MCP integration** (v9.26.0+ only)
 - ✅ **Better TypeScript support** (typescript-eslint v8)
 - ✅ **Improved performance** (ESLint 9 optimizations)
 
 **Migration would require**:
+
 - ⚠️ Converting Biome patterns to ESLint (complex)
 - ⚠️ May miss modern ESLint features
 - ⚠️ Risk of carrying over problematic patterns
@@ -101,6 +109,7 @@ export default [
 #### 3. **Avoid Configuration Debt**
 
 **Biome patterns that don't translate well**:
+
 ```json
 // Biome-specific patterns
 {
@@ -120,6 +129,7 @@ export default [
 ```
 
 **ESLint equivalent (cleaner)**:
+
 ```javascript
 // ESLint flat config (more flexible)
 {
@@ -131,6 +141,7 @@ export default [
 ```
 
 **Why fresh is better**:
+
 - ✅ ESLint's file-based config is more intuitive
 - ✅ No need to translate Biome's JSON structure
 - ✅ Can use ESLint's native patterns from the start
@@ -138,12 +149,14 @@ export default [
 #### 4. **Stability & Reliability**
 
 **Fresh installation**:
+
 - ✅ Starts with proven, stable ESLint patterns
 - ✅ No risk of carrying over Biome's instability
 - ✅ Uses battle-tested configurations
 - ✅ Industry-standard setup
 
 **Migration risk**:
+
 - ⚠️ May inadvertently carry over problematic patterns
 - ⚠️ Unknown edge cases from Biome config
 - ⚠️ Harder to debug (mixed patterns)
@@ -151,12 +164,14 @@ export default [
 #### 5. **MCP Integration (Critical)**
 
 **ESLint MCP** (v9.26.0+):
+
 - ✅ **Only available** with fresh ESLint 9 setup
 - ✅ Enables AI-assisted linting in Cursor
 - ✅ Real-time code analysis
 - ✅ Context-aware fixes
 
 **Migration limitation**:
+
 - ❌ If migrating from older ESLint, may miss MCP
 - ❌ Complex migration may delay MCP adoption
 - ❌ Fresh install = immediate MCP access
@@ -164,6 +179,7 @@ export default [
 #### 6. **Monorepo Best Practices**
 
 **Fresh ESLint setup**:
+
 ```javascript
 // Root config (shared)
 export default [
@@ -180,12 +196,14 @@ export default [
 ```
 
 **Benefits**:
+
 - ✅ Clear separation of concerns
 - ✅ Easy to maintain across apps
 - ✅ Follows Turborepo patterns
 - ✅ Better caching strategy
 
 **Migration complexity**:
+
 - ⚠️ Biome's monorepo config may not translate cleanly
 - ⚠️ Risk of inconsistent rules across apps
 - ⚠️ Harder to maintain shared config
@@ -193,12 +211,14 @@ export default [
 #### 7. **Team Learning Curve**
 
 **Fresh installation**:
+
 - ✅ Team learns modern ESLint from scratch
 - ✅ No confusion from Biome patterns
 - ✅ Clear documentation path
 - ✅ Standard industry knowledge
 
 **Migration**:
+
 - ⚠️ Team needs to unlearn Biome patterns
 - ⚠️ May carry over Biome mental models
 - ⚠️ Harder to find community help (mixed patterns)
@@ -210,6 +230,7 @@ export default [
 ### What It Means
 
 **Migration** = Converting existing Biome configuration to ESLint:
+
 - Translating `biome.json` rules to ESLint rules
 - Maintaining existing rule patterns
 - Preserving current linting behavior
@@ -220,6 +241,7 @@ export default [
 #### 1. **Preserve Existing Rules**
 
 **Migration preserves**:
+
 - ✅ Current rule configurations
 - ✅ Team's established patterns
 - ✅ Existing overrides and exceptions
@@ -228,6 +250,7 @@ export default [
 #### 2. **Gradual Transition**
 
 **Migration allows**:
+
 - ✅ Run Biome and ESLint in parallel
 - ✅ Compare outputs side-by-side
 - ✅ Gradual rule-by-rule migration
@@ -236,6 +259,7 @@ export default [
 #### 3. **Less Disruption**
 
 **Migration benefits**:
+
 - ✅ Team keeps familiar patterns
 - ✅ Less learning curve
 - ✅ Can revert if issues arise
@@ -246,12 +270,14 @@ export default [
 #### 1. **Configuration Complexity**
 
 **Migration challenges**:
+
 - ⚠️ Biome rules don't map 1:1 to ESLint
 - ⚠️ Complex translation required
 - ⚠️ Risk of missing edge cases
 - ⚠️ Harder to maintain (mixed patterns)
 
 **Example translation difficulty**:
+
 ```json
 // Biome (simpler)
 {
@@ -278,6 +304,7 @@ export default [
 #### 2. **Carry Over Problems**
 
 **Migration risks**:
+
 - ⚠️ May carry over Biome's instability patterns
 - ⚠️ Unknown bugs from translation
 - ⚠️ Harder to debug (mixed origins)
@@ -286,6 +313,7 @@ export default [
 #### 3. **Miss Modern Features**
 
 **Migration limitations**:
+
 - ⚠️ May use legacy ESLint patterns
 - ⚠️ Miss ESLint 9 flat config benefits
 - ⚠️ Delayed MCP integration
@@ -294,6 +322,7 @@ export default [
 #### 4. **Maintenance Burden**
 
 **Migration maintenance**:
+
 - ⚠️ Need to maintain translation logic
 - ⚠️ Two config systems to understand
 - ⚠️ Harder to onboard new team members
@@ -305,18 +334,18 @@ export default [
 
 ### Side-by-Side Comparison
 
-| Factor                       | Fresh Installation    | Migration                   |
-| ---------------------------- | --------------------- | --------------------------- |
-| **Setup Time**               | 2-4 hours             | 4-8 hours                   |
-| **Configuration Complexity** | Low (modern patterns) | High (translation)          |
-| **Risk of Bugs**             | Low (proven patterns) | Medium (translation errors) |
-| **Maintenance**              | Easy (standard)       | Hard (mixed patterns)       |
-| **Team Learning**            | Clean slate           | Unlearn + learn             |
-| **MCP Integration**          | ✅ Immediate           | ⚠️ Delayed                   |
-| **Stability**                | ✅ High (proven)       | ⚠️ Medium (unknown)          |
-| **Monorepo Support**         | ✅ Excellent           | ⚠️ Good (if translated well) |
-| **Future-Proof**             | ✅ Yes (modern)        | ⚠️ Maybe (legacy patterns)   |
-| **Community Support**        | ✅ Extensive           | ⚠️ Limited (custom)          |
+| Factor                       | Fresh Installation    | Migration                    |
+| ---------------------------- | --------------------- | ---------------------------- |
+| **Setup Time**               | 2-4 hours             | 4-8 hours                    |
+| **Configuration Complexity** | Low (modern patterns) | High (translation)           |
+| **Risk of Bugs**             | Low (proven patterns) | Medium (translation errors)  |
+| **Maintenance**              | Easy (standard)       | Hard (mixed patterns)        |
+| **Team Learning**            | Clean slate           | Unlearn + learn              |
+| **MCP Integration**          | ✅ Immediate          | ⚠️ Delayed                   |
+| **Stability**                | ✅ High (proven)      | ⚠️ Medium (unknown)          |
+| **Monorepo Support**         | ✅ Excellent          | ⚠️ Good (if translated well) |
+| **Future-Proof**             | ✅ Yes (modern)       | ⚠️ Maybe (legacy patterns)   |
+| **Community Support**        | ✅ Extensive          | ⚠️ Limited (custom)          |
 
 ### Risk Assessment
 
@@ -388,51 +417,47 @@ export default [
 ### Phase 1: Fresh ESLint Installation (Week 1)
 
 **Steps**:
+
 1. ✅ Install ESLint 9.26.0+ with modern plugins
 2. ✅ Create fresh `eslint.config.mjs` (flat config)
 3. ✅ Configure for monorepo (shared + app-specific)
 4. ✅ Set up MCP integration
 5. ✅ Test on sample files
 
-**Time**: 2-4 hours
-**Risk**: Low
-**Benefit**: Clean, modern setup
+**Time**: 2-4 hours **Risk**: Low **Benefit**: Clean, modern setup
 
 ### Phase 2: Rule Mapping & Validation (Week 1-2)
 
 **Steps**:
+
 1. ✅ Map critical Biome rules to ESLint equivalents
 2. ✅ Run both tools in parallel (comparison)
 3. ✅ Adjust ESLint rules to match team preferences
 4. ✅ Document rule differences
 
-**Time**: 4-6 hours
-**Risk**: Low
-**Benefit**: Ensures coverage
+**Time**: 4-6 hours **Risk**: Low **Benefit**: Ensures coverage
 
 ### Phase 3: Gradual Adoption (Week 2-3)
 
 **Steps**:
+
 1. ✅ Enable ESLint for new files
 2. ✅ Migrate app-by-app (docs → boardroom → packages)
 3. ✅ Keep Biome for formatting (optional)
 4. ✅ Monitor for issues
 
-**Time**: Ongoing
-**Risk**: Low
-**Benefit**: Smooth transition
+**Time**: Ongoing **Risk**: Low **Benefit**: Smooth transition
 
 ### Phase 4: Complete Migration (Week 4)
 
 **Steps**:
+
 1. ✅ Remove Biome linting (keep formatting if desired)
 2. ✅ Update all scripts and CI/CD
 3. ✅ Update documentation
 4. ✅ Team training session
 
-**Time**: 2-3 hours
-**Risk**: Low
-**Benefit**: Single source of truth
+**Time**: 2-3 hours **Risk**: Low **Benefit**: Single source of truth
 
 ---
 
@@ -441,11 +466,13 @@ export default [
 ### 1. **Biome Stability Issues**
 
 **Your situation**:
+
 - ⚠️ Language server crashes (documented)
 - ⚠️ Stream management bugs (GitHub #5837)
 - ⚠️ Monorepo performance issues
 
 **Fresh installation benefit**:
+
 - ✅ Avoids carrying over problematic patterns
 - ✅ Starts with stable ESLint foundation
 - ✅ No risk of inheriting Biome's bugs
@@ -453,11 +480,13 @@ export default [
 ### 2. **Monorepo Complexity**
 
 **Your setup**:
+
 - Turborepo with multiple apps (`docs`, `boardroom`)
 - Shared packages
 - Complex dependency graph
 
 **Fresh installation benefit**:
+
 - ✅ ESLint has proven monorepo patterns
 - ✅ Better caching for Turborepo
 - ✅ Clearer config hierarchy
@@ -465,11 +494,13 @@ export default [
 ### 3. **MCP Integration Priority**
 
 **Your context**:
+
 - Already using Figma MCP
 - AI-assisted development workflow
 - Cursor IDE integration
 
 **Fresh installation benefit**:
+
 - ✅ Immediate MCP access (ESLint 9.26.0+)
 - ✅ Consistent MCP pattern (like Figma)
 - ✅ AI-powered linting in Cursor
@@ -477,11 +508,13 @@ export default [
 ### 4. **Team Productivity**
 
 **Current impact**:
+
 - Biome crashes disrupt workflow
 - Team frustration with instability
 - Need reliable linting
 
 **Fresh installation benefit**:
+
 - ✅ Stable, predictable ESLint
 - ✅ Better IDE integration
 - ✅ Industry-standard (easier to find help)
@@ -501,12 +534,14 @@ export default [
 5. **Long-term Maintainability**: Easier to maintain standard config
 
 **Migration Only If**:
+
 - ❌ You have extensive custom Biome rules that are critical
 - ❌ Team has strong Biome expertise (but stability issues suggest otherwise)
 - ❌ Time constraints require gradual transition (but fresh is actually faster)
 
-**For Your Specific Situation**:
-Given the documented Biome stability issues, language server crashes, and your need for reliable linting in a complex monorepo, **fresh installation is the clear choice**.
+**For Your Specific Situation**: Given the documented Biome stability issues,
+language server crashes, and your need for reliable linting in a complex
+monorepo, **fresh installation is the clear choice**.
 
 ---
 
@@ -520,6 +555,5 @@ Given the documented Biome stability issues, language server crashes, and your n
 
 ---
 
-**Status**: ✅ **Recommended - Fresh Installation**
-**Confidence**: **High** (88/100 score)
-**Timeline**: **2-4 weeks** (phased approach)
+**Status**: ✅ **Recommended - Fresh Installation** **Confidence**: **High**
+(88/100 score) **Timeline**: **2-4 weeks** (phased approach)

@@ -1,37 +1,36 @@
 # Contradictions Report
 
-**Generated**: 2026-01-10
-**Status**: Active Tracking
-**Purpose**: Log all detected contradictions for manual resolution
+**Generated**: 2026-01-10 **Status**: Active Tracking **Purpose**: Log all
+detected contradictions for manual resolution
 
 ---
 
 ## Summary
 
-| ID | Severity | Status | Category |
-|----|----------|--------|----------|
-| C-0001 | HIGH | Open | Documentation Storage Location |
-| C-0002 | MEDIUM | Open | Sealed vs Legacy Taxonomy |
-| C-0003 | MEDIUM | Open | Planning vs Documentation Directory |
-| C-0004 | LOW | Open | Root Directory File Count |
+| ID     | Severity | Status | Category                            |
+| ------ | -------- | ------ | ----------------------------------- |
+| C-0001 | HIGH     | Open   | Documentation Storage Location      |
+| C-0002 | MEDIUM   | Open   | Sealed vs Legacy Taxonomy           |
+| C-0003 | MEDIUM   | Open   | Planning vs Documentation Directory |
+| C-0004 | LOW      | Open   | Root Directory File Count           |
 
 ---
 
 ## C-0001 — Documentation Storage Location Conflict
 
-**Severity**: HIGH
-**Status**: Open
-**Discovered**: 2026-01-10
+**Severity**: HIGH **Status**: Open **Discovered**: 2026-01-10
 
 ### Conflict Description
 
 Three different locations contain governance documentation:
 
 **Location A**: `docs/` (intended for canonical internal docs)
+
 - Currently has migrations, changelog, reference, api, guides, architecture
 - Does NOT have governance subdirectory
 
 **Location B**: `content/governance/` (public-facing Nextra content)
+
 - Contains: `sealed/nexus-canon-constitution.mdx`
 - Contains: `sealed/titan-protocol.mdx`
 - Contains: `sealed/lbos-origin-paper.mdx`
@@ -39,6 +38,7 @@ Three different locations contain governance documentation:
 - Contains: `amendments/a-001-courts-charter.mdx`
 
 **Location C**: `.cursor/planing/` (planning/historical)
+
 - Contains: Multiple Legacy_Constitution files
 - Contains: Multiple Legacy_TitanProtocol files
 - Contains: Multiple planning playbook variants
@@ -48,6 +48,7 @@ Three different locations contain governance documentation:
 ### The Problem
 
 Which location is the **source of truth** for:
+
 - Constitution documents?
 - Titan Protocol?
 - LBOS Origin Paper?
@@ -64,16 +65,19 @@ Which location is the **source of truth** for:
 ### Options
 
 **Option A**: `content/governance/` is canonical (public-first)
+
 - Pro: Nextra provides versioning and public access
 - Pro: Already has sealed/ and active/ taxonomy
 - Con: Mixes public and internal docs
 
 **Option B**: `docs/governance/` is canonical (internal-first)
+
 - Pro: Separates internal from public docs
 - Pro: Aligns with docs/ directory structure
 - Con: Would need to create and migrate
 
 **Option C**: Hybrid (sealed in content/, working in .cursor/)
+
 - Pro: Clear separation of immutable vs mutable
 - Pro: Uses existing structure
 - Con: Two sources of truth
@@ -88,6 +92,7 @@ Which location is the **source of truth** for:
 4. Define: What happens to `.cursor/planing/` governance docs?
 
 **Proposed Resolution** (pending approval):
+
 - Canonical sealed docs: `content/governance/sealed/` (public, immutable)
 - Active working docs: `docs/governance/active/` (internal, mutable)
 - Historical/legacy: `.cursor/archive/governance/` (reference only)
@@ -96,20 +101,20 @@ Which location is the **source of truth** for:
 
 ## C-0002 — Sealed vs Legacy Taxonomy Conflict
 
-**Severity**: MEDIUM
-**Status**: Open
-**Discovered**: 2026-01-10
+**Severity**: MEDIUM **Status**: Open **Discovered**: 2026-01-10
 
 ### Conflict Description
 
 Two different markers are used for document status:
 
-**Marker 1**: "Legacy_" prefix in filename
+**Marker 1**: "Legacy\_" prefix in filename
+
 - Example: `Legacy_NexusCanon_Constitution.md`
 - Implies: This document is outdated/superseded
 - Found in: `.cursor/planing/` directory
 
 **Marker 2**: "sealed/" directory path
+
 - Example: `content/governance/sealed/nexus-canon-constitution.mdx`
 - Implies: This document is immutable/ratified
 - Found in: `content/governance/` directory
@@ -117,23 +122,27 @@ Two different markers are used for document status:
 ### The Problem
 
 Same document (Constitution) appears as both "Legacy" AND "sealed":
+
 - Is it superseded (legacy) or immutable (sealed)?
 - What's the relationship between these statuses?
 
 ### Possible Interpretations
 
 **Interpretation A**: Legacy refers to file format/location
-- "Legacy_" files are old versions in old location
+
+- "Legacy\_" files are old versions in old location
 - "sealed/" files are current ratified versions in new location
 - They're the same content, different states
 
 **Interpretation B**: Legacy refers to superseded content
-- "Legacy_" files were ratified but later superseded
+
+- "Legacy\_" files were ratified but later superseded
 - "sealed/" files are currently active and immutable
 - Different versions of same doc
 
 **Interpretation C**: No relationship
-- "Legacy_" is just a naming convention
+
+- "Legacy\_" is just a naming convention
 - "sealed/" is a governance state
 - Unrelated concepts
 
@@ -141,12 +150,13 @@ Same document (Constitution) appears as both "Legacy" AND "sealed":
 
 **Do NOT auto-resolve**. Need clear definition:
 
-1. Define: What does "Legacy_" prefix mean?
+1. Define: What does "Legacy\_" prefix mean?
 2. Define: What does "sealed/" directory mean?
 3. Define: Can a document be both legacy and sealed?
 4. Define: What's the migration path from legacy to sealed?
 
 **Proposed Taxonomy** (pending approval):
+
 - `sealed/` = Ratified, immutable, authoritative
 - `active/` = Working, mutable, under revision
 - `legacy/` = Superseded, historical, reference only
@@ -156,19 +166,19 @@ Same document (Constitution) appears as both "Legacy" AND "sealed":
 
 ## C-0003 — Planning vs Documentation Directory Conflict
 
-**Severity**: MEDIUM
-**Status**: Open
-**Discovered**: 2026-01-10
+**Severity**: MEDIUM **Status**: Open **Discovered**: 2026-01-10
 
 ### Conflict Description
 
 `.cursor/planing/` directory contains ~46 files, but serves unclear purpose:
 
 **Observation A**: Name suggests planning/temporary
+
 - Directory: `.cursor/planing/` (note: "planing" not "planning")
 - Implication: Temporary working documents
 
 **Observation B**: Contents suggest permanent docs
+
 - Contains: Constitution documents
 - Contains: Sealed protocols
 - Contains: Ratified amendments
@@ -178,6 +188,7 @@ Same document (Constitution) appears as both "Legacy" AND "sealed":
 ### The Problem
 
 Is `.cursor/planing/` for:
+
 - **Temporary planning** (should be cleaned regularly)?
 - **Permanent documentation** (should be kept)?
 - **Historical archive** (superseded docs)?
@@ -186,18 +197,21 @@ Is `.cursor/planing/` for:
 ### Files in Question
 
 **Clearly Planning** (temporary):
+
 1. Tool comparison reports
 2. Implementation strategies
 3. Search results
 4. Analysis documents
 
 **Clearly Documentation** (permanent):
+
 1. Constitution documents
 2. Sealed protocols
 3. Ratified amendments
 4. Core specifications
 
 **Ambiguous** (unknown):
+
 1. Planning playbook variants (3 versions)
 2. Registry specifications
 3. Ledger templates
@@ -213,6 +227,7 @@ Is `.cursor/planing/` for:
 4. Archive: Historical planning documents
 
 **Proposed Structure** (pending approval):
+
 ```
 .cursor/
 ├── planing/ → .cursor/work/ (active planning/analysis)
@@ -226,19 +241,20 @@ Is `.cursor/planing/` for:
 
 ## C-0004 — Root Directory File Count Conflict
 
-**Severity**: LOW
-**Status**: Open
-**Discovered**: 2026-01-10
+**Severity**: LOW **Status**: Open **Discovered**: 2026-01-10
 
 ### Conflict Description
 
 **Governance Rule 022** states:
+
 > "Exception: Only 3 files allowed in root:
+>
 > - README.md (project overview)
 > - QUICK_START.md (getting started)
 > - QUICK_REFERENCE.md (quick reference)"
 
 **Current Reality**: 11 files in root
+
 1. README.md ✅ (allowed)
 2. QUICK_START.md ✅ (allowed)
 3. QUICK_REFERENCE.md ✅ (allowed)
@@ -254,10 +270,11 @@ Is `.cursor/planing/` for:
 ### The Problem
 
 All 11 files serve essential purposes:
+
 - Developer onboarding (README, QUICK_START, QUICK_REFERENCE)
 - System architecture (CURSOR_SYSTEM_ARCHITECTURE)
 - Optimization guides (CURSOR_OPTIMIZATION_QUICK_REF)
-- Documentation strategy (DOCUMENTATION_ORGANIZATION_*)
+- Documentation strategy (DOCUMENTATION*ORGANIZATION*\*)
 - Configuration validation (NEXTJS_CONFIGURATION_VALIDATION)
 - Features reference (README_FEATURES)
 - Dependency solutions (EXTERNAL_DEPENDENCIES_SOLUTION)
@@ -268,14 +285,17 @@ But governance says max 3 files.
 ### Options
 
 **Option A**: Request exception for all 11 files
+
 - Pro: Keeps essential docs accessible
 - Con: Violates governance rule
 
 **Option B**: Consolidate into subdirectories
+
 - Pro: Follows governance rule
 - Con: Reduces discoverability of essential docs
 
 **Option C**: Amend governance rule
+
 - Pro: Aligns rule with reality
 - Con: Requires governance process
 
@@ -284,7 +304,9 @@ But governance says max 3 files.
 **Propose governance amendment**:
 
 Update governance rule 022 exception to:
+
 > "Exception: Root directory may contain:
+>
 > 1. README.md (required: project overview)
 > 2. QUICK_START.md (required: getting started)
 > 3. QUICK_REFERENCE.md (recommended: quick reference)
@@ -310,6 +332,7 @@ Update governance rule 022 exception to:
 4. **C-0004**: Request governance exception or consolidate
 
 **Blocked Actions** (pending resolution):
+
 - Cannot migrate duplicate constitution docs (C-0001)
 - Cannot archive legacy files (C-0002)
 - Cannot reorganize .cursor/planing/ (C-0003)

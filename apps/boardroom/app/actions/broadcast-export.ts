@@ -4,22 +4,22 @@
  * Exports broadcasts to various formats (CSV, JSON, PDF) for compliance and analytics.
  */
 
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { broadcasts, broadcastReads } from '@/src/db/schema'
-import { eq, and, gte, lte, or, like, desc } from 'drizzle-orm'
-import { z as z4 } from 'zod/v4'
-import { validateActionInput } from '@/src/lib/actions/validate-action'
+import { db } from "@/src/db"
+import { broadcasts, broadcastReads } from "@/src/db/schema"
+import { eq, and, gte, lte, or, like, desc } from "drizzle-orm"
+import { z as z4 } from "zod/v4"
+import { validateActionInput } from "@/src/lib/actions/validate-action"
 
 /**
  * Input schema for exporting broadcasts
  */
 const exportBroadcastsInputSchema = z4.object({
-  format: z4.enum(['csv', 'json', 'pdf']).default('csv'),
+  format: z4.enum(["csv", "json", "pdf"]).default("csv"),
   startDate: z4.date().optional(),
   endDate: z4.date().optional(),
-  type: z4.enum(['approval', 'veto', 'announcement', 'poll', 'emergency']).optional(),
+  type: z4.enum(["approval", "veto", "announcement", "poll", "emergency"]).optional(),
   category: z4.string().optional(),
   includeReads: z4.boolean().default(true),
   includeComments: z4.boolean().default(false),
@@ -34,18 +34,11 @@ export async function exportBroadcastsToCSV(
 ): Promise<{ success: boolean; data?: string; error?: string }> {
   const inputResult = validateActionInput(input, exportBroadcastsInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
-  const {
-    startDate,
-    endDate,
-    type,
-    category,
-    includeReads,
-    includeComments,
-    includeReactions,
-  } = inputResult.data
+  const { startDate, endDate, type, category, includeReads, includeComments, includeReactions } =
+    inputResult.data
 
   try {
     // Build query conditions
@@ -72,26 +65,26 @@ export async function exportBroadcastsToCSV(
 
     // Build CSV header
     const headers = [
-      'ID',
-      'Type',
-      'Title',
-      'Message',
-      'Audience',
-      'Priority',
-      'Created At',
-      'Created By',
-      'Expires At',
-      'Is Draft',
+      "ID",
+      "Type",
+      "Title",
+      "Message",
+      "Audience",
+      "Priority",
+      "Created At",
+      "Created By",
+      "Expires At",
+      "Is Draft",
     ]
 
     if (includeReads) {
-      headers.push('Read Count')
+      headers.push("Read Count")
     }
     if (includeComments) {
-      headers.push('Comment Count')
+      headers.push("Comment Count")
     }
     if (includeReactions) {
-      headers.push('Reaction Count')
+      headers.push("Reaction Count")
     }
 
     // Build CSV rows
@@ -101,13 +94,13 @@ export async function exportBroadcastsToCSV(
         broadcast.id,
         broadcast.type,
         broadcast.title,
-        broadcast.message || '',
+        broadcast.message || "",
         broadcast.audience,
-        broadcast.priority || 'normal',
+        broadcast.priority || "normal",
         broadcast.createdAt.toISOString(),
         broadcast.createdBy,
-        broadcast.expiresAt?.toISOString() || '',
-        broadcast.isDraft ? 'Yes' : 'No',
+        broadcast.expiresAt?.toISOString() || "",
+        broadcast.isDraft ? "Yes" : "No",
       ]
 
       if (includeReads) {
@@ -120,12 +113,12 @@ export async function exportBroadcastsToCSV(
 
       if (includeComments) {
         // TODO: Fetch comment count when comments are implemented
-        row.push('0')
+        row.push("0")
       }
 
       if (includeReactions) {
         // TODO: Fetch reaction count when reactions are implemented
-        row.push('0')
+        row.push("0")
       }
 
       rows.push(row)
@@ -133,7 +126,7 @@ export async function exportBroadcastsToCSV(
 
     // Escape CSV values
     const escapeCSV = (value: string): string => {
-      if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+      if (value.includes(",") || value.includes('"') || value.includes("\n")) {
         return `"${value.replace(/"/g, '""')}"`
       }
       return value
@@ -141,14 +134,14 @@ export async function exportBroadcastsToCSV(
 
     // Build CSV content
     const csvLines = [
-      headers.map(escapeCSV).join(','),
-      ...rows.map((row) => row.map(escapeCSV).join(',')),
+      headers.map(escapeCSV).join(","),
+      ...rows.map((row) => row.map(escapeCSV).join(",")),
     ]
 
-    return { success: true, data: csvLines.join('\n') }
+    return { success: true, data: csvLines.join("\n") }
   } catch (error) {
-    console.error('Error exporting broadcasts to CSV:', error)
-    return { success: false, error: 'Failed to export broadcasts' }
+    console.error("Error exporting broadcasts to CSV:", error)
+    return { success: false, error: "Failed to export broadcasts" }
   }
 }
 
@@ -160,18 +153,11 @@ export async function exportBroadcastsToJSON(
 ): Promise<{ success: boolean; data?: string; error?: string }> {
   const inputResult = validateActionInput(input, exportBroadcastsInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
-  const {
-    startDate,
-    endDate,
-    type,
-    category,
-    includeReads,
-    includeComments,
-    includeReactions,
-  } = inputResult.data
+  const { startDate, endDate, type, category, includeReads, includeComments, includeReactions } =
+    inputResult.data
 
   try {
     // Build query conditions
@@ -244,8 +230,8 @@ export async function exportBroadcastsToJSON(
 
     return { success: true, data: JSON.stringify(exportData, null, 2) }
   } catch (error) {
-    console.error('Error exporting broadcasts to JSON:', error)
-    return { success: false, error: 'Failed to export broadcasts' }
+    console.error("Error exporting broadcasts to JSON:", error)
+    return { success: false, error: "Failed to export broadcasts" }
   }
 }
 
@@ -266,7 +252,7 @@ export async function exportBroadcastsToPDF(
 
   return {
     success: false,
-    error: 'PDF export not yet implemented. Please use CSV or JSON format.',
+    error: "PDF export not yet implemented. Please use CSV or JSON format.",
   }
 }
 
@@ -278,31 +264,31 @@ export async function exportBroadcasts(
 ): Promise<{ success: boolean; data?: string; mimeType?: string; error?: string }> {
   const inputResult = validateActionInput(input, exportBroadcastsInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { format } = inputResult.data
 
   switch (format) {
-    case 'csv':
+    case "csv":
       const csvResult = await exportBroadcastsToCSV(input)
       return {
         ...csvResult,
-        mimeType: 'text/csv',
+        mimeType: "text/csv",
       }
-    case 'json':
+    case "json":
       const jsonResult = await exportBroadcastsToJSON(input)
       return {
         ...jsonResult,
-        mimeType: 'application/json',
+        mimeType: "application/json",
       }
-    case 'pdf':
+    case "pdf":
       const pdfResult = await exportBroadcastsToPDF(input)
       return {
         ...pdfResult,
-        mimeType: 'application/pdf',
+        mimeType: "application/pdf",
       }
     default:
-      return { success: false, error: 'Invalid format' }
+      return { success: false, error: "Invalid format" }
   }
 }

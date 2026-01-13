@@ -1,11 +1,15 @@
 packages:
   - "apps/*"
-  - "packages/*"
+  - "packages/*/*"
 
 # Monorepo structure:
-# - apps/docs: Nextra documentation site
+# - apps/StratonHub: StratonHub documentation site
 # - apps/boardroom: The Apex (Executive Board Decision Engine MVP)
-# - packages/design-system: Axis Visual Canon design system
-# - packages/shared-types: Shared TypeScript types and Zod schemas
-# - packages/shared-utils: Shared utility functions
-# - packages/config: Shared configuration (TypeScript, Tailwind, etc.)
+# - packages/TailwindCSS-V4/Design-System: Axis Visual Canon design system
+# - packages/TypeScript/Shared-Types: Shared TypeScript types and Zod schemas
+# - packages/NextJS/Shared-Utils: Shared utility functions
+# - packages/NextJS/Domain-Core: Next.js domain patterns
+# - packages/NodeJS/Monitoring: Node.js monitoring utilities
+# - packages/NodeJS/Performance: Node.js performance utilities
+# - packages/Monorepo/Config: Shared configuration (TypeScript, Tailwind, etc.)
+# - packages/Monorepo/Templates: Project templates and schemas

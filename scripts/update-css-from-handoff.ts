@@ -7,18 +7,18 @@
  * Usage: pnpm tokens:update-css
  */
 
-import { readFileSync, writeFileSync } from 'fs'
-import { join } from 'path'
+import { readFileSync, writeFileSync } from "fs"
+import { join } from "path"
 
-const HANDOFF_COLORS_FILE = 'packages/design-system/src/tokens/handoff-colors.ts'
-const THEME_CSS_FILE = 'packages/design-system/src/tokens/theme.css'
+const HANDOFF_COLORS_FILE = "packages/TailwindCSS-V4/Design-System/src/tokens/handoff-colors.ts"
+const THEME_CSS_FILE = "packages/TailwindCSS-V4/Design-System/src/tokens/theme.css"
 
 /**
  * Convert HEX color to HSL space-separated format (Tailwind v4)
  */
 function hexToHsl(hex: string): string {
   // Remove # if present
-  hex = hex.replace('#', '')
+  hex = hex.replace("#", "")
 
   // Convert to RGB (0-1 range)
   const r = parseInt(hex.substring(0, 2), 16) / 255
@@ -59,7 +59,7 @@ function hexToHsl(hex: string): string {
  */
 function extractHandoffColors(filePath: string): Record<string, string> {
   try {
-    const content = readFileSync(filePath, 'utf-8')
+    const content = readFileSync(filePath, "utf-8")
     const colors: Record<string, string> = {}
 
     // Match patterns like: void: { value: '#0a0a0b', ... }
@@ -80,22 +80,19 @@ function extractHandoffColors(filePath: string): Record<string, string> {
 /**
  * Update theme.css with HSL values from Handoff tokens
  */
-function updateThemeCss(
-  cssFilePath: string,
-  handoffColors: Record<string, string>
-): void {
+function updateThemeCss(cssFilePath: string, handoffColors: Record<string, string>): void {
   try {
-    let cssContent = readFileSync(cssFilePath, 'utf-8')
+    let cssContent = readFileSync(cssFilePath, "utf-8")
 
     // Color mapping: Handoff name → CSS variable name
     const colorMap: Record<string, string> = {
-      void: '--color-void',
-      obsidian: '--color-obsidian',
-      charcoal: '--color-charcoal',
-      parchment: '--color-parchment',
-      ash: '--color-ash',
-      gold: '--color-gold',
-      ember: '--color-ember',
+      void: "--color-void",
+      obsidian: "--color-obsidian",
+      charcoal: "--color-charcoal",
+      parchment: "--color-parchment",
+      ash: "--color-ash",
+      gold: "--color-gold",
+      ember: "--color-ember",
     }
 
     // Update each color in @theme block
@@ -106,7 +103,7 @@ function updateThemeCss(
 
         // Replace the CSS variable value
         // Match: --color-void: 240 10% 4%;
-        const regex = new RegExp(`(${cssVar}:\\s*)[^;]+`, 'g')
+        const regex = new RegExp(`(${cssVar}:\\s*)[^;]+`, "g")
         cssContent = cssContent.replace(regex, `$1${hslValue}`)
 
         console.log(`✅ Updated ${cssVar}: ${hexValue} → ${hslValue}`)
@@ -116,7 +113,7 @@ function updateThemeCss(
     }
 
     // Write updated CSS
-    writeFileSync(cssFilePath, cssContent, 'utf-8')
+    writeFileSync(cssFilePath, cssContent, "utf-8")
     console.log(`\n✅ Updated ${cssFilePath}`)
   } catch (error) {
     console.error(`Error updating ${cssFilePath}:`, error)
@@ -128,7 +125,7 @@ function updateThemeCss(
  * Main function
  */
 function main() {
-  console.log('🔄 Updating CSS from Handoff tokens...\n')
+  console.log("🔄 Updating CSS from Handoff tokens...\n")
 
   // Extract colors from Handoff file
   const handoffColors = extractHandoffColors(HANDOFF_COLORS_FILE)
@@ -137,8 +134,8 @@ function main() {
   // Update theme.css
   updateThemeCss(THEME_CSS_FILE, handoffColors)
 
-  console.log('\n✅ CSS update complete!')
-  console.log('📝 Apps will automatically pick up changes from theme.css (no build step needed)')
+  console.log("\n✅ CSS update complete!")
+  console.log("📝 Apps will automatically pick up changes from theme.css (no build step needed)")
 }
 
 // Run if executed directly

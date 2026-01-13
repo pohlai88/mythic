@@ -16,26 +16,29 @@
  */
 
 // Auth/RBAC Module
-export * from './auth'
+export * from "./auth"
 
 // Audit Trail Module
-export * from './audit'
+export * from "./audit"
 
 // Configuration Module
-export * from './config'
+export * from "./config"
 
 // Frontend Customization Module
-export * from './frontend'
+export * from "./frontend"
 
 // Realtime/WebSocket Module
-export * from './realtime'
+export * from "./realtime"
 
 // Vault/Encryption Module
-export * from './vault'
+export * from "./vault"
 
 // Tailwind Utilities (design tokens and responsive utilities)
-export * from './tailwind-utils'
-export * from './design-tokens'
+export * from "./tailwind-utils"
+export * from "./design-tokens"
+
+// Tailwind Intelligence (re-exported from @mythic/shared-utils)
+export * from "./tailwind-intelligence"
 
 // Note: Other modules (analytics, api, cache, metrics, stores, zod)
 // are not exported here to encourage specific imports for better tree-shaking.

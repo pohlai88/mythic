@@ -2,11 +2,16 @@
 
 ## Executive Summary
 
-The Prime Monad Architecture aligns well with Next.js App Router patterns, with opportunities to leverage Next.js-native features for RFL implementation. Key findings:
+The Prime Monad Architecture aligns well with Next.js App Router patterns, with
+opportunities to leverage Next.js-native features for RFL implementation. Key
+findings:
 
-- **Strong Alignment**: Server Components, Route Handlers, and monorepo structure match Next.js best practices
-- **RFL Enhancement Opportunity**: Next.js caching, streaming, and Server Components can enhance RFL without violating doctrine
-- **Minor Gaps**: Need to clarify RFL placement in Next.js app structure and client-side RFL boundaries
+- **Strong Alignment**: Server Components, Route Handlers, and monorepo
+  structure match Next.js best practices
+- **RFL Enhancement Opportunity**: Next.js caching, streaming, and Server
+  Components can enhance RFL without violating doctrine
+- **Minor Gaps**: Need to clarify RFL placement in Next.js app structure and
+  client-side RFL boundaries
 - **Future-Ready**: Dual-Kernel strategy compatible with Next.js evolution
 
 ---
@@ -65,7 +70,7 @@ export default async function InvoicePage({ params }) {
 
 ```typescript
 // app/api/invoices/[id]/sync/route.ts
-import { invoiceRFL } from '@mythic/domain-finance/rfl'
+import { invoiceRFL } from "@mythic/domain-finance/rfl"
 
 export async function POST(
   request: Request,
@@ -86,7 +91,8 @@ export async function POST(
 
 ### 1.3 Client-Side RFL (GAP IDENTIFIED)
 
-**Current Paper**: RFL placement is domain-embedded, but doesn't specify client vs server
+**Current Paper**: RFL placement is domain-embedded, but doesn't specify client
+vs server
 
 **Next.js Reality**:
 
@@ -140,8 +146,8 @@ export default async function InvoicePage({ params }) {
   const response = await fetch(`/api/invoices/${params.id}`, {
     next: {
       revalidate: 60, // TTL in seconds
-      tags: ['invoices'] // Cache tags for invalidation
-    }
+      tags: ["invoices"], // Cache tags for invalidation
+    },
   })
   const invoice = await response.json()
 
@@ -202,14 +208,14 @@ export default function InvoicesPage() {
 
 ```typescript
 // app/invoices/[id]/actions.ts (Server Actions - WRITE ONLY)
-'use server'
-import { invoiceLoom } from '@mythic/domain-finance/loom' // Write layer
+"use server"
+import { invoiceLoom } from "@mythic/domain-finance/loom" // Write layer
 
 export async function approveInvoice(id: string) {
   // This is WRITE - goes to Loom, not RFL
   await invoiceLoom.approve(id)
   // Invalidate RFL cache
-  revalidateTag('invoices')
+  revalidateTag("invoices")
 }
 ```
 
@@ -270,7 +276,8 @@ apps/web/
 
 ### 4.1 Conflict: RFL Metadata vs Next.js Cache
 
-**Issue**: RFL requires explicit `asOf`, `freshness` metadata, but Next.js cache is implicit
+**Issue**: RFL requires explicit `asOf`, `freshness` metadata, but Next.js cache
+is implicit
 
 **Resolution**:
 
@@ -331,6 +338,7 @@ export default async function InvoicePage({ params }) {
   const snapshot = await getInvoice(params.id)
   return <InvoiceDisplay snapshot={snapshot} />
 }
+```
 ````
 
 ### 11.2 Client Component RFL Consumption
@@ -339,8 +347,8 @@ Client Components use hooks or React Query:
 
 ```typescript
 // ✅ ALLOWED: Client Component with RFL hook
-'use client'
-import { useInvoiceRFL } from '@mythic/domain-finance/rfl/client'
+"use client"
+import { useInvoiceRFL } from "@mythic/domain-finance/rfl/client"
 
 export default function InvoiceClientPage({ id }) {
   const { snapshot, sync } = useInvoiceRFL(id)
@@ -366,12 +374,13 @@ Server Actions are the write layer, never RFL:
 
 ```typescript
 // ✅ CORRECT: Server Action writes to Loom
-'use server'
+"use server"
 export async function approveInvoice(id: string) {
   await invoiceLoom.approve(id) // Write, not RFL
-  revalidateTag('invoices') // Invalidate RFL cache
+  revalidateTag("invoices") // Invalidate RFL cache
 }
 ```
+
 ````
 
 ---
@@ -478,11 +487,13 @@ Add to Section 9 (Open Items):
 ### 9.1 RFL Persistence Technology (DECISION)
 
 **Decision**:
+
 - **Client RFL**: IndexedDB (production), localStorage (development)
 - **Server RFL**: In-memory cache (dev), Redis (production)
 - **Next.js Cache**: Use for Server Components (automatic)
 
 **Rationale**:
+
 - IndexedDB: Large capacity, async, persistent
 - Redis: Fast, shared across instances, TTL support
 - Next.js Cache: Zero config, automatic, streaming-ready
@@ -492,7 +503,8 @@ Add to Section 9 (Open Items):
 
 ## 10. Conclusion
 
-The Prime Monad Architecture paper is **highly compatible** with Next.js App Router patterns. Key strengths:
+The Prime Monad Architecture paper is **highly compatible** with Next.js App
+Router patterns. Key strengths:
 
 1. ✅ Server Components align with RFL read-only doctrine
 2. ✅ Route Handlers provide RFL sync endpoints
@@ -506,10 +518,12 @@ The Prime Monad Architecture paper is **highly compatible** with Next.js App Rou
 3. **Document Route Handlers** as RFL sync pattern
 4. **Keep Future Items RESERVED** (as currently marked)
 
-**No Breaking Changes Required**: The paper's architecture is Next.js-ready as-is, with clarifications enhancing implementation guidance.
+**No Breaking Changes Required**: The paper's architecture is Next.js-ready
+as-is, with clarifications enhancing implementation guidance.
 
 ---
 
 **Status**: Ready for implementation
 
-**Next Steps**: Add clarifications to paper, then proceed with Next.js app structure
+**Next Steps**: Add clarifications to paper, then proceed with Next.js app
+structure

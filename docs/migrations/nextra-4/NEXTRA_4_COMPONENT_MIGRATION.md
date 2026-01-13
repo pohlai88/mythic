@@ -1,7 +1,6 @@
 # Nextra 4: Component Migration & New Features Guide
 
-**Date**: 2025-01-27
-**Status**: ✅ **Documented - Changes Verified**
+**Date**: 2025-01-27 **Status**: ✅ **Documented - Changes Verified**
 
 **Reference**: Nextra 4 Migration Guide - Component Migration
 
@@ -9,7 +8,9 @@
 
 ## Overview
 
-Nextra 4 migrates several components from `nextra-theme-docs` to `nextra/components` and introduces new features for metadata, styling, and page organization.
+Nextra 4 migrates several components from `nextra-theme-docs` to
+`nextra/components` and introduces new features for metadata, styling, and page
+organization.
 
 ---
 
@@ -17,7 +18,8 @@ Nextra 4 migrates several components from `nextra-theme-docs` to `nextra/compone
 
 ### What Changed
 
-**Nextra 4**: Several components migrated from `nextra-theme-docs` to `nextra/components`:
+**Nextra 4**: Several components migrated from `nextra-theme-docs` to
+`nextra/components`:
 
 - `<Collapse>`
 - `<Details>`
@@ -31,6 +33,7 @@ Nextra 4 migrates several components from `nextra-theme-docs` to `nextra/compone
 ### Impact
 
 **✅ Benefits**:
+
 - Components accessible for custom themes
 - Consistent API across themes
 - Better component organization
@@ -43,7 +46,7 @@ Nextra 4 migrates several components from `nextra-theme-docs` to `nextra/compone
 
 ```tsx
 // ✅ Correct import path
-import { Banner, Head, Search } from 'nextra/components'
+import { Banner, Head, Search } from "nextra/components"
 ```
 
 **Verification**: ✅ **PASS** - Using correct import paths
@@ -61,17 +64,17 @@ import { Banner, Head, Search } from 'nextra/components'
 - ✅ **Favicon glyph** (`faviconGlyph` prop)
 - ✅ **Selection color** (based on primary color)
 
-**Previously**: These options were exclusive to `nextra-theme-docs`
-**Now**: Available for `nextra-theme-blog` and custom themes
+**Previously**: These options were exclusive to `nextra-theme-docs` **Now**:
+Available for `nextra-theme-blog` and custom themes
 
 ### Current Implementation
 
 **File**: `app/layout.tsx`
 
 ```tsx
-import { Head } from 'nextra/components'
+import { Head } from "nextra/components"
 
-<Head backgroundColor={{ dark: '#0f172a', light: '#fefce8' }} />
+;<Head backgroundColor={{ dark: "#0f172a", light: "#fefce8" }} />
 ```
 
 **Status**: ✅ **CORRECT** - Using `nextra/components`
@@ -80,10 +83,10 @@ import { Head } from 'nextra/components'
 
 ```tsx
 <Head
-  backgroundColor={{ dark: '#0f172a', light: '#fefce8' }}
+  backgroundColor={{ dark: "#0f172a", light: "#fefce8" }}
   color={{
     hue: { dark: 120, light: 0 },
-    saturation: { dark: 100, light: 100 }
+    saturation: { dark: 100, light: 100 },
   }}
   faviconGlyph="⚡"
 />
@@ -95,7 +98,8 @@ import { Head } from 'nextra/components'
 
 ### What Changed
 
-**Nextra 4**: All front matter fields are now exported as a `metadata` object in MDX files.
+**Nextra 4**: All front matter fields are now exported as a `metadata` object in
+MDX files.
 
 ### How It Works
 
@@ -111,10 +115,11 @@ description: Bar
 ```
 
 **Compiled to**:
+
 ```javascript
 export const metadata = {
-  title: 'Foo',
-  description: 'Bar'
+  title: "Foo",
+  description: "Bar",
 }
 ```
 
@@ -122,8 +127,8 @@ export const metadata = {
 
 ```mdx
 export const metadata = {
-  title: 'Foo',
-  description: 'Bar'
+  title: "Foo",
+  description: "Bar",
 }
 
 # Content
@@ -136,7 +141,7 @@ export const metadata = {
 title: Foo
 ---
 
-export const metadata = { description: 'Bar' }
+export const metadata = { description: "Bar" }
 ```
 
 ### Current Implementation
@@ -153,6 +158,7 @@ export async function generateMetadata({ params }) {
 ```
 
 **How It Works**:
+
 - Nextra automatically extracts front matter
 - Converts to `metadata` object
 - Used by `generateMetadata` function
@@ -165,7 +171,8 @@ export async function generateMetadata({ params }) {
 
 ### What Changed
 
-**Nextra 4**: New `whiteListTagsStyling` option allows whitelisting HTML elements to be replaced with components.
+**Nextra 4**: New `whiteListTagsStyling` option allows whitelisting HTML
+elements to be replaced with components.
 
 ### Default Behavior
 
@@ -176,16 +183,17 @@ export async function generateMetadata({ params }) {
 **File**: `next.config.mjs`
 
 ```javascript
-import nextra from 'nextra'
+import nextra from "nextra"
 
 const withNextra = nextra({
-  whiteListTagsStyling: ['h1', 'h2', 'blockquote']
+  whiteListTagsStyling: ["h1", "h2", "blockquote"],
 })
 ```
 
 ### Example Usage
 
 **MDX File**:
+
 ```mdx
 # Hello
 
@@ -193,7 +201,9 @@ const withNextra = nextra({
 ```
 
 **With `whiteListTagsStyling: ['h1']`**:
-- Both `# Hello` and `<h1>World</h1>` will be replaced with custom component from `mdx-components.js`
+
+- Both `# Hello` and `<h1>World</h1>` will be replaced with custom component
+  from `mdx-components.js`
 
 ### Current Implementation
 
@@ -202,6 +212,7 @@ const withNextra = nextra({
 **Status**: ⚠️ **NOT CONFIGURED** - Using defaults
 
 **Current**:
+
 ```javascript
 const withNextra = nextra({
   // whiteListTagsStyling not configured
@@ -212,7 +223,7 @@ const withNextra = nextra({
 **Optional Enhancement**: Can add if needed:
 
 ```javascript
-whiteListTagsStyling: ['h1', 'h2', 'blockquote']
+whiteListTagsStyling: ["h1", "h2", "blockquote"]
 ```
 
 ---
@@ -221,11 +232,13 @@ whiteListTagsStyling: ['h1', 'h2', 'blockquote']
 
 ### What Changed
 
-**Nextra 4**: New `asIndexPage` front matter option for folders with index pages.
+**Nextra 4**: New `asIndexPage` front matter option for folders with index
+pages.
 
 ### Problem
 
 **Nextra 2/3 Structure** (incompatible with Page File Convention):
+
 ```
 app/
 ├── docs/
@@ -240,6 +253,7 @@ app/
 **Nextra 4**: Use `asIndexPage: true` in front matter
 
 **Page File Convention**:
+
 ```mdx
 ---
 asIndexPage: true
@@ -252,6 +266,7 @@ title: Documentation
 **File**: `app/docs/page.mdx`
 
 **Content Directory Convention**:
+
 ```mdx
 ---
 asIndexPage: true
@@ -289,25 +304,22 @@ title: Documentation
 **File**: `app/my-route/page.mdx`
 
 ```mdx
-import { Cards } from 'nextra/components'
-import { MDXRemote } from 'nextra/mdx-remote'
-import { createIndexPage, getPageMap } from 'nextra/page-map'
-import { MyIcon } from '../path/to/your/icons'
+import { Cards } from "nextra/components"
+import { MDXRemote } from "nextra/mdx-remote"
+import { createIndexPage, getPageMap } from "nextra/page-map"
+import { MyIcon } from "../path/to/your/icons"
 
 <MDXRemote
-  compiledSource={
-    await createIndexPage(
-      await getPageMap('/my-route')
-    )
-  }
+  compiledSource={await createIndexPage(await getPageMap("/my-route"))}
   components={{
     Cards,
-    MyIcon
+    MyIcon,
   }}
 />
 ```
 
 **Subpage** (`app/my-route/demo/page.mdx`):
+
 ```mdx
 ---
 icon: MyIcon
@@ -323,19 +335,16 @@ icon: MyIcon
 **File**: `content/guides/index.mdx`
 
 **Implementation**:
+
 ```mdx
-import { Cards } from 'nextra/components'
-import { MDXRemote } from 'nextra/mdx-remote'
-import { createIndexPage, getPageMap } from 'nextra/page-map'
+import { Cards } from "nextra/components"
+import { MDXRemote } from "nextra/mdx-remote"
+import { createIndexPage, getPageMap } from "nextra/page-map"
 
 <MDXRemote
-  compiledSource={
-    await createIndexPage(
-      await getPageMap('/guides')
-    )
-  }
+  compiledSource={await createIndexPage(await getPageMap("/guides"))}
   components={{
-    Cards
+    Cards,
   }}
 />
 ```
@@ -358,34 +367,39 @@ import { createIndexPage, getPageMap } from 'nextra/page-map'
 
 ### Example Priority Order
 
-**1. _meta file**:
+**1. \_meta file**:
+
 ```javascript
 export default {
-  page: 'Custom Title from Meta'
+  page: "Custom Title from Meta",
 }
 ```
 
 **2. sidebarTitle in front matter**:
+
 ```mdx
 ---
-sidebarTitle: 'Custom Sidebar Title'
-title: 'Page Title'
+sidebarTitle: "Custom Sidebar Title"
+title: "Page Title"
 ---
 ```
 
 **3. title in front matter**:
+
 ```mdx
 ---
-title: 'Page Title'
+title: "Page Title"
 ---
 ```
 
 **4. First h1 heading** (NEW):
+
 ```mdx
 # Dima Machina
 ```
 
 **5. Filename** (fallback):
+
 ```
 my-page.mdx → "My Page"
 ```
@@ -491,5 +505,5 @@ $ grep -r "^---" content/ app/
 
 ---
 
-**Last Updated**: 2025-01-27
-**Status**: ✅ **COMPLIANT** - All required changes verified
+**Last Updated**: 2025-01-27 **Status**: ✅ **COMPLIANT** - All required changes
+verified

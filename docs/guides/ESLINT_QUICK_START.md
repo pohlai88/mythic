@@ -47,6 +47,7 @@ npx eslint --init
 ```
 
 **Then in Cursor Chat**:
+
 ```
 "Lint src/components/Button.tsx"
 "Fix all ESLint errors in this file"
@@ -94,21 +95,23 @@ Add to `.cursor/mcp.json` (see MCP section above).
 
 ## 🎯 Which Method Should I Use?
 
-| Scenario | Method |
-|----------|--------|
+| Scenario                  | Method                             |
+| ------------------------- | ---------------------------------- |
 | Setting up for first time | **Scaffold** (`npx eslint --init`) |
-| CI/CD pipelines | **CLI** |
-| Pre-commit hooks | **CLI** |
-| AI-assisted development | **MCP** |
-| Custom tooling | **Node.js API** |
+| CI/CD pipelines           | **CLI**                            |
+| Pre-commit hooks          | **CLI**                            |
+| AI-assisted development   | **MCP**                            |
+| Custom tooling            | **Node.js API**                    |
 
-**Recommendation**: Use **CLI** for standard workflows, add **MCP** for AI assistance.
+**Recommendation**: Use **CLI** for standard workflows, add **MCP** for AI
+assistance.
 
 ---
 
 ## 📚 Full Documentation
 
 See `docs/guides/ESLINT_INTEGRATION_BEST_PRACTICES.md` for:
+
 - Complete configuration examples
 - Monorepo best practices
 - Migration from Biome
@@ -118,6 +121,7 @@ See `docs/guides/ESLINT_INTEGRATION_BEST_PRACTICES.md` for:
 ---
 
 **Quick Links**:
+
 - [Full Guide](./ESLINT_INTEGRATION_BEST_PRACTICES.md)
 - [ESLint Docs](https://eslint.org/docs/latest/)
 - [ESLint MCP](https://eslint.org/docs/latest/use/mcp)

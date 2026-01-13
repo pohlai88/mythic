@@ -4,24 +4,24 @@
  * Displays and manages emoji reactions for broadcast announcements.
  */
 
-'use client'
+"use client"
 
-import { Card } from '@mythic/design-system'
-import { cn } from '@mythic/shared-utils'
-import { useState, useEffect, useCallback, memo } from 'react'
+import { Card } from "@mythic/tailwindcss-v4-design-system"
+import { cn } from "@mythic/nextjs-shared-utils"
+import { useState, useEffect, useCallback, memo } from "react"
 import {
   getBroadcastReactions,
   toggleBroadcastReaction,
   type ReactionData,
-} from '@/app/actions/broadcast-reactions'
-import { getCurrentUserIdAction } from '@/app/actions/session'
+} from "@/app/actions/broadcast-reactions"
+import { getCurrentUserIdAction } from "@/app/actions/session"
 
 interface BroadcastReactionsProps {
   broadcastId: string
   className?: string
 }
 
-const EMOJI_OPTIONS = ['👍', '❤️', '🎉', '👏', '🔥', '💯'] as const
+const EMOJI_OPTIONS = ["👍", "❤️", "🎉", "👏", "🔥", "💯"] as const
 
 export const BroadcastReactions = memo(function BroadcastReactions({
   broadcastId,
@@ -45,7 +45,7 @@ export const BroadcastReactions = memo(function BroadcastReactions({
           setReactions(result.reactions)
         }
       } catch (error) {
-        console.error('Error loading reactions:', error)
+        console.error("Error loading reactions:", error)
       } finally {
         setLoading(false)
       }
@@ -62,7 +62,7 @@ export const BroadcastReactions = memo(function BroadcastReactions({
         setReactions(result.reactions)
       }
     } catch (error) {
-      console.error('Error reloading reactions:', error)
+      console.error("Error reloading reactions:", error)
     }
   }, [broadcastId])
 
@@ -83,7 +83,7 @@ export const BroadcastReactions = memo(function BroadcastReactions({
           await reloadReactions()
         }
       } catch (error) {
-        console.error('Error toggling reaction:', error)
+        console.error("Error toggling reaction:", error)
       } finally {
         setToggling(null)
       }
@@ -103,14 +103,14 @@ export const BroadcastReactions = memo(function BroadcastReactions({
 
   if (loading) {
     return (
-      <Card elevation="sm" className={cn('p-2', className)}>
+      <Card elevation="sm" className={cn("p-2", className)}>
         <div className="text-ash text-xs">Loading reactions...</div>
       </Card>
     )
   }
 
   return (
-    <div className={cn('flex items-center gap-2', className)}>
+    <div className={cn("flex items-center gap-2", className)}>
       {/* Reaction buttons */}
       {EMOJI_OPTIONS.map((emoji) => {
         const reaction = reactions.find((r) => r.emoji === emoji)
@@ -124,25 +124,23 @@ export const BroadcastReactions = memo(function BroadcastReactions({
             onClick={() => handleToggleReaction(emoji)}
             disabled={!userId || isToggling}
             className={cn(
-              'flex items-center gap-1 px-2 py-1 rounded-xs border transition-hover-intelligent',
+              "flex items-center gap-1 px-2 py-1 rounded-xs border transition-hover-intelligent",
               isActive
-                ? 'border-gold bg-obsidian text-gold'
-                : 'border-charcoal hover:border-gold text-ash',
-              isToggling && 'opacity-50 cursor-wait'
+                ? "border-gold bg-obsidian text-gold"
+                : "border-charcoal hover:border-gold text-ash",
+              isToggling && "opacity-50 cursor-wait"
             )}
             aria-label={`React with ${emoji}`}
           >
             <span className="text-base">{emoji}</span>
-            {count > 0 && (
-              <span className="text-xs font-mono">{count}</span>
-            )}
+            {count > 0 && <span className="text-xs font-mono">{count}</span>}
           </button>
         )
       })}
 
       {/* Show additional reactions not in default list */}
       {reactions
-        .filter((r) => !EMOJI_OPTIONS.includes(r.emoji as typeof EMOJI_OPTIONS[number]))
+        .filter((r) => !EMOJI_OPTIONS.includes(r.emoji as (typeof EMOJI_OPTIONS)[number]))
         .map((reaction) => {
           const isActive = hasUserReacted(reaction.emoji)
           const isToggling = toggling === reaction.emoji
@@ -153,11 +151,11 @@ export const BroadcastReactions = memo(function BroadcastReactions({
               onClick={() => handleToggleReaction(reaction.emoji)}
               disabled={!userId || isToggling}
               className={cn(
-                'flex items-center gap-1 px-2 py-1 rounded-xs border transition-hover-intelligent',
+                "flex items-center gap-1 px-2 py-1 rounded-xs border transition-hover-intelligent",
                 isActive
-                  ? 'border-gold bg-obsidian text-gold'
-                  : 'border-charcoal hover:border-gold text-ash',
-                isToggling && 'opacity-50 cursor-wait'
+                  ? "border-gold bg-obsidian text-gold"
+                  : "border-charcoal hover:border-gold text-ash",
+                isToggling && "opacity-50 cursor-wait"
               )}
               aria-label={`React with ${reaction.emoji}`}
             >

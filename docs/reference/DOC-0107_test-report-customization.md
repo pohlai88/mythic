@@ -15,30 +15,41 @@ migrated_from: TEST_REPORT_CUSTOMIZATION.md
 
 ### Test 1: Dependency Check ✅ PASSED
 
-**Question:** Does the script use only built-in Node.js modules (no external dependencies)?
+**Question:** Does the script use only built-in Node.js modules (no external
+dependencies)?
 
 **Result:** ✅ **YES - Only Built-in Modules**
 
 ```typescript
 // Only uses Node.js built-in modules:
-import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
-import { basename, extname, join, relative } from 'path'
+import {
+  existsSync,
+  readFileSync,
+  readdirSync,
+  statSync,
+  writeFileSync,
+} from "fs"
+import { basename, extname, join, relative } from "path"
 ```
 
 **Dependencies:**
+
 - ✅ `fs` - Node.js built-in file system module
 - ✅ `path` - Node.js built-in path utilities
 - ❌ **NO external npm packages**
 - ❌ **NO third-party libraries**
 
-**Note:** Uses `tsx` to execute TypeScript, but that's just the runtime - the script itself has zero external dependencies.
+**Note:** Uses `tsx` to execute TypeScript, but that's just the runtime - the
+script itself has zero external dependencies.
 
 ---
 
 ### Test 2: Customization Preservation ✅ PASSED
 
 **Test Steps:**
+
 1. Manually customized `_meta.json`:
+
    ```json
    {
      "features": "Features Showcase (Custom Title)",
@@ -54,28 +65,33 @@ import { basename, extname, join, relative } from 'path'
 3. Checked result: ✅ **Customizations preserved!**
 
 **Result:**
+
 ```json
 {
-  "features": "Features Showcase (Custom Title)",  // ✅ Custom title preserved
-  "test-customization": {                           // ✅ Custom object preserved
+  "features": "Features Showcase (Custom Title)", // ✅ Custom title preserved
+  "test-customization": {
+    // ✅ Custom object preserved
     "title": "Custom Test Page",
     "type": "page"
   }
 }
 ```
 
-**Conclusion:** ✅ Script preserves manual customizations while adding new entries.
+**Conclusion:** ✅ Script preserves manual customizations while adding new
+entries.
 
 ---
 
 ### Test 3: New File Detection ✅ PASSED
 
 **Test Steps:**
+
 1. Created new file: `pages/test-customization.mdx`
 2. Ran `pnpm generate:meta`
 3. Checked `_meta.json`: ✅ **New file detected!**
 
 **Result:**
+
 - Before: 10 entries
 - After: 11 entries ✅
 - New entry: `"test-customization": "Test Customization"` ✅
@@ -89,13 +105,15 @@ import { basename, extname, join, relative } from 'path'
 **Available Customizations:**
 
 1. **Custom Titles:**
+
    ```json
    {
-     "features": "My Custom Title"  // Override auto-generated title
+     "features": "My Custom Title" // Override auto-generated title
    }
    ```
 
 2. **Custom Objects:**
+
    ```json
    {
      "custom-page": {
@@ -152,6 +170,7 @@ function generateMetaForDirectory(...) {
 ### Method 3: Configuration File (Future Enhancement)
 
 Could add a config file (optional):
+
 ```json
 // meta.config.json (optional)
 {
@@ -169,8 +188,8 @@ Could add a config file (optional):
 
 ### Runtime Dependencies
 
-| Dependency | Type     | Required?  | Purpose                                                                 |
-| ---------- | -------- | ---------- | ----------------------------------------------------------------------- |
+| Dependency | Type     | Required?   | Purpose                                                                 |
+| ---------- | -------- | ----------- | ----------------------------------------------------------------------- |
 | `fs`       | Built-in | ✅ Yes      | File system operations                                                  |
 | `path`     | Built-in | ✅ Yes      | Path utilities                                                          |
 | `tsx`      | External | ⚙️ Optional | TypeScript execution (can use `node --loader ts-node` or compile to JS) |
@@ -178,6 +197,7 @@ Could add a config file (optional):
 ### Alternative Execution Methods
 
 **Option 1: Compile to JavaScript (No tsx needed)**
+
 ```bash
 # Compile TypeScript to JavaScript
 tsc scripts/generate-meta.ts --outDir scripts --target es2020 --module commonjs
@@ -187,11 +207,13 @@ node scripts/generate-meta.js
 ```
 
 **Option 2: Use Node.js with TypeScript loader**
+
 ```bash
 node --loader ts-node/esm scripts/generate-meta.ts
 ```
 
 **Option 3: Use tsx (Current - Simplest)**
+
 ```bash
 tsx scripts/generate-meta.ts
 ```
@@ -203,6 +225,7 @@ tsx scripts/generate-meta.ts
 ### Example 1: Custom Title Mapping
 
 **Before:**
+
 ```json
 {
   "api-example": "Api Example"
@@ -210,6 +233,7 @@ tsx scripts/generate-meta.ts
 ```
 
 **After Customization:**
+
 ```json
 {
   "api-example": "API Reference Documentation"
@@ -223,6 +247,7 @@ tsx scripts/generate-meta.ts
 ### Example 2: Custom Entry with External Link
 
 **Manual Addition:**
+
 ```json
 {
   "external-docs": {
@@ -241,6 +266,7 @@ tsx scripts/generate-meta.ts
 ### Example 3: Reorder Entries
 
 **Before:**
+
 ```json
 {
   "about": "About",
@@ -249,6 +275,7 @@ tsx scripts/generate-meta.ts
 ```
 
 **After Manual Reorder:**
+
 ```json
 {
   "features": "Features",
@@ -262,8 +289,8 @@ tsx scripts/generate-meta.ts
 
 ## Test Summary
 
-| Test                           | Status   | Notes                          |
-| ------------------------------ | -------- | ------------------------------ |
+| Test                           | Status    | Notes                          |
+| ------------------------------ | --------- | ------------------------------ |
 | **Dependency Check**           | ✅ PASSED | Only Node.js built-in modules  |
 | **Customization Preservation** | ✅ PASSED | Manual edits preserved         |
 | **New File Detection**         | ✅ PASSED | Auto-detects new files         |

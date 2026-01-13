@@ -4,13 +4,13 @@
  * Handles draft broadcasts - broadcasts saved but not yet published.
  */
 
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { broadcasts } from '@/src/db/schema'
-import { eq, and, desc } from 'drizzle-orm'
-import { z as z4 } from 'zod/v4'
-import { validateActionInput } from '@/src/lib/actions/validate-action'
+import { db } from "@/src/db"
+import { broadcasts } from "@/src/db/schema"
+import { eq, and, desc } from "drizzle-orm"
+import { z as z4 } from "zod/v4"
+import { validateActionInput } from "@/src/lib/actions/validate-action"
 
 /**
  * Input schema for getting drafts
@@ -44,12 +44,7 @@ export async function getBroadcastDrafts(input: unknown) {
     const drafts = await db
       .select()
       .from(broadcasts)
-      .where(
-        and(
-          eq(broadcasts.createdBy, userId),
-          eq(broadcasts.isDraft, true)
-        )
-      )
+      .where(and(eq(broadcasts.createdBy, userId), eq(broadcasts.isDraft, true)))
       .orderBy(desc(broadcasts.createdAt))
       .limit(limit)
       .offset(offset)
@@ -57,12 +52,7 @@ export async function getBroadcastDrafts(input: unknown) {
     const totalResult = await db
       .select()
       .from(broadcasts)
-      .where(
-        and(
-          eq(broadcasts.createdBy, userId),
-          eq(broadcasts.isDraft, true)
-        )
-      )
+      .where(and(eq(broadcasts.createdBy, userId), eq(broadcasts.isDraft, true)))
 
     return {
       drafts: drafts.map((d) => ({
@@ -75,7 +65,7 @@ export async function getBroadcastDrafts(input: unknown) {
       total: totalResult.length,
     }
   } catch (error) {
-    console.error('Error fetching drafts:', error)
+    console.error("Error fetching drafts:", error)
     return { drafts: [], total: 0 }
   }
 }
@@ -85,12 +75,10 @@ export async function getBroadcastDrafts(input: unknown) {
  *
  * Sets isDraft to false and sticky to true (or specified value).
  */
-export async function publishDraft(
-  input: unknown
-): Promise<{ success: boolean; error?: string }> {
+export async function publishDraft(input: unknown): Promise<{ success: boolean; error?: string }> {
   const inputResult = validateActionInput(input, publishDraftInputSchema)
   if (!inputResult.success) {
-    return { success: false, error: 'Invalid input' }
+    return { success: false, error: "Invalid input" }
   }
 
   const { broadcastId, sticky } = inputResult.data
@@ -107,7 +95,7 @@ export async function publishDraft(
 
     return { success: true }
   } catch (error) {
-    console.error('Error publishing draft:', error)
-    return { success: false, error: 'Failed to publish draft' }
+    console.error("Error publishing draft:", error)
+    return { success: false, error: "Failed to publish draft" }
   }
 }

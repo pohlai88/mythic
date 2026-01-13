@@ -11,11 +11,11 @@
  * Blocks commits with invalid documentation names.
  */
 
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
-import { glob } from 'glob'
-import chalk from 'chalk'
-import crypto from 'node:crypto'
+import { existsSync, readFileSync, writeFileSync } from "node:fs"
+import { join } from "node:path"
+import { glob } from "glob"
+import chalk from "chalk"
+import crypto from "node:crypto"
 
 interface ValidationResult {
   valid: boolean
@@ -44,25 +44,13 @@ interface Stats {
 }
 
 // Allowed locations for documentation
-const ALLOWED_LOCATIONS = [
-  'docs/',
-  '.cursor/docs/',
-  'content/',
-  '.temp-docs/',
-]
+const ALLOWED_LOCATIONS = ["docs/", ".cursor/docs/", "content/", ".temp-docs/"]
 
 // Forbidden locations
-const FORBIDDEN_LOCATIONS = [
-  '.vscode/',
-  'scripts/',
-  'src/',
-  'app/',
-  'components/',
-  'lib/',
-]
+const FORBIDDEN_LOCATIONS = [".vscode/", "scripts/", "src/", "app/", "components/", "lib/"]
 
-// Root exceptions (only these 3 allowed)
-const ROOT_EXCEPTIONS = ['README.md', 'QUICK_START.md', 'QUICK_REFERENCE.md']
+// Root exceptions (only README.md allowed)
+const ROOT_EXCEPTIONS = ["README.md"]
 
 // Naming patterns
 const PATTERNS = {
@@ -87,21 +75,21 @@ async function validateDocumentation(): Promise<ValidationResult> {
   }
 
   // Find all markdown files
-  const files = await glob('**/*.{md,mdx}', {
-    ignore: ['node_modules/**', '.next/**', 'docs/migrations/**', 'docs/changelog/**'],
+  const files = await glob("**/*.{md,mdx}", {
+    ignore: ["node_modules/**", ".next/**", "docs/migrations/**", "docs/changelog/**"],
   })
 
   for (const file of files) {
     stats.total++
-    const filename = file.split('/').pop() || ''
-    const location = file.substring(0, file.lastIndexOf('/') + 1)
+    const filename = file.split("/").pop() || ""
+    const location = file.substring(0, file.lastIndexOf("/") + 1)
 
     // Check if in root directory
     if (!location && !ROOT_EXCEPTIONS.includes(filename)) {
       violations.push({
         file,
-        reason: `Documentation not allowed in root directory. Only these 3 files are allowed: ${ROOT_EXCEPTIONS.join(', ')}. Move to docs/, .cursor/docs/, or content/`,
-        location: 'root',
+        reason: `Documentation not allowed in root directory. Only these 3 files are allowed: ${ROOT_EXCEPTIONS.join(", ")}. Move to docs/, .cursor/docs/, or content/`,
+        location: "root",
       })
       stats.invalid++
       continue
@@ -114,13 +102,11 @@ async function validateDocumentation(): Promise<ValidationResult> {
     }
 
     // Check if in forbidden location
-    const inForbiddenLocation = FORBIDDEN_LOCATIONS.some((forbidden) =>
-      file.startsWith(forbidden),
-    )
+    const inForbiddenLocation = FORBIDDEN_LOCATIONS.some((forbidden) => file.startsWith(forbidden))
     if (inForbiddenLocation) {
       violations.push({
         file,
-        reason: 'Documentation in forbidden location',
+        reason: "Documentation in forbidden location",
         location,
       })
       stats.invalid++
@@ -132,7 +118,7 @@ async function validateDocumentation(): Promise<ValidationResult> {
     if (!inAllowedLocation) {
       violations.push({
         file,
-        reason: 'Documentation in non-allowed location',
+        reason: "Documentation in non-allowed location",
         location,
       })
       stats.invalid++
@@ -148,14 +134,14 @@ async function validateDocumentation(): Promise<ValidationResult> {
 
     if (!hasValidPattern) {
       // Exception for content/ directory (Nextra routing)
-      if (file.startsWith('content/') || file.includes('_meta')) {
+      if (file.startsWith("content/") || file.includes("_meta")) {
         stats.valid++
         continue
       }
 
       violations.push({
         file,
-        reason: 'Invalid naming pattern (missing DOC-XXXX, hash, or version prefix)',
+        reason: "Invalid naming pattern (missing DOC-XXXX, hash, or version prefix)",
         location,
       })
       stats.invalid++
@@ -212,45 +198,45 @@ async function validateDocumentation(): Promise<ValidationResult> {
 
 async function main() {
   const args = process.argv.slice(2)
-  const autoFix = args.includes('--fix') || args.includes('--auto-fix')
-  
-  console.log(chalk.bold('\n📋 Documentation Naming Validation\n'))
+  const autoFix = args.includes("--fix") || args.includes("--auto-fix")
+
+  console.log(chalk.bold("\n📋 Documentation Naming Validation\n"))
 
   const result = await validateDocumentation()
-  
+
   // Auto-fix mode
   if (autoFix && result.violations.length > 0) {
-    console.log(chalk.yellow('\n🔧 Auto-fix mode enabled\n'))
-    console.log(chalk.cyan('Running auto-fix script...\n'))
-    
+    console.log(chalk.yellow("\n🔧 Auto-fix mode enabled\n"))
+    console.log(chalk.cyan("Running auto-fix script...\n"))
+
     try {
-      const { execSync } = require('child_process')
-      execSync('tsx scripts/fix-docs-naming.ts --fix', { stdio: 'inherit' })
-      
+      const { execSync } = require("child_process")
+      execSync("tsx scripts/fix-docs-naming.ts --fix", { stdio: "inherit" })
+
       // Re-validate after fix
-      console.log(chalk.cyan('\nRe-validating after fixes...\n'))
+      console.log(chalk.cyan("\nRe-validating after fixes...\n"))
       const newResult = await validateDocumentation()
-      
+
       if (newResult.violations.length === 0) {
-        console.log(chalk.green.bold('✅ All violations fixed!\n'))
+        console.log(chalk.green.bold("✅ All violations fixed!\n"))
         process.exit(0)
       } else {
         console.log(chalk.yellow(`⚠️  ${newResult.violations.length} violations remain\n`))
       }
     } catch (error) {
-      console.error(chalk.red('Auto-fix failed:'), error)
+      console.error(chalk.red("Auto-fix failed:"), error)
       process.exit(1)
     }
   }
 
   // Print statistics
-  console.log(chalk.bold('Statistics:'))
+  console.log(chalk.bold("Statistics:"))
   console.log(`  Total documents: ${result.stats.total}`)
-  console.log(`  ${chalk.green('✓')} Valid: ${result.stats.valid}`)
-  console.log(`  ${chalk.red('✗')} Invalid: ${result.stats.invalid}`)
-  console.log(`  ${chalk.yellow('⏱')} Temporary: ${result.stats.temporary}`)
+  console.log(`  ${chalk.green("✓")} Valid: ${result.stats.valid}`)
+  console.log(`  ${chalk.red("✗")} Invalid: ${result.stats.invalid}`)
+  console.log(`  ${chalk.yellow("⏱")} Temporary: ${result.stats.temporary}`)
   if (result.stats.expired > 0) {
-    console.log(`  ${chalk.red('⏰')} Expired: ${result.stats.expired}`)
+    console.log(`  ${chalk.red("⏰")} Expired: ${result.stats.expired}`)
   }
   console.log()
 
@@ -272,26 +258,22 @@ async function main() {
       console.log(chalk.red(`    Location: ${violation.location}\n`))
     }
 
-    console.log(chalk.red.bold('\n🚫 COMMIT BLOCKED\n'))
-    console.log(chalk.yellow('Fix violations before committing:\n'))
-    console.log(chalk.cyan('  1. Move to allowed location (docs/, .cursor/docs/, .temp-docs/)'))
-    console.log(
-      chalk.cyan(
-        '  2. Rename with proper prefix (DOC-XXXX, hash, or version)',
-      ),
-    )
-    console.log(chalk.cyan('  3. Or delete if unnecessary\n'))
-    console.log(chalk.yellow('See .cursor/rules/022_documentation-governance.mdc for details\n'))
+    console.log(chalk.red.bold("\n🚫 COMMIT BLOCKED\n"))
+    console.log(chalk.yellow("Fix violations before committing:\n"))
+    console.log(chalk.cyan("  1. Move to allowed location (docs/, .cursor/docs/, .temp-docs/)"))
+    console.log(chalk.cyan("  2. Rename with proper prefix (DOC-XXXX, hash, or version)"))
+    console.log(chalk.cyan("  3. Or delete if unnecessary\n"))
+    console.log(chalk.yellow("See .cursor/rules/022_documentation-governance.mdc for details\n"))
 
     process.exit(1)
   }
 
-  console.log(chalk.green.bold('✅ All documentation complies with naming rules\n'))
-  console.log(chalk.green('✓ Commit allowed\n'))
+  console.log(chalk.green.bold("✅ All documentation complies with naming rules\n"))
+  console.log(chalk.green("✓ Commit allowed\n"))
   process.exit(0)
 }
 
 main().catch((error) => {
-  console.error(chalk.red('\n❌ Validation failed:'), error)
+  console.error(chalk.red("\n❌ Validation failed:"), error)
   process.exit(1)
 })

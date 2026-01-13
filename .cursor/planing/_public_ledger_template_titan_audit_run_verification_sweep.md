@@ -1,14 +1,17 @@
 # 🧾 Public Ledger Template — `TITAN_AUDIT_RUN` (Verification Sweep)
 
-**Purpose:** Record a Titan verification sweep as an append-only, hash-chained ledger entry.  
+**Purpose:** Record a Titan verification sweep as an append-only, hash-chained
+ledger entry.  
 **Entry Type:** `TITAN_AUDIT_RUN`  
-**Applies To:** Enforcement verification for `TITAN-CI-AXIS01` and related AXIS design authority checks.
+**Applies To:** Enforcement verification for `TITAN-CI-AXIS01` and related AXIS
+design authority checks.
 
 ---
 
 ## 1) Canonicalization Notes (for `entry_hash`)
 
 **Canonicalize the JSON envelope before hashing/signing:**
+
 - UTF-8
 - LF line endings (`\n`)
 - Stable JSON serialization (deterministic key ordering)
@@ -16,6 +19,7 @@
 - Arrays remain in declared order
 
 **Hash rule:**
+
 - Compute `entry_hash = sha256(canonical_json_bytes)`
 - Store as `sha256:<hex>`
 
@@ -24,6 +28,7 @@
 ## 2) Ready-to-Append Ledger Envelope (JSON)
 
 > **Fill at append time:**
+>
 > - `entry_id` (UUID)
 > - `timestamp`
 > - `actor.identity` (fingerprint: `fp:sha256:<hex>`)
@@ -61,10 +66,7 @@
     "run_reason": "Post-ratification integrity verification",
     "targets": {
       "surface_inventory_ref": "axis:surfaces:index@sha256:<FILL>",
-      "execution_context": [
-        "CI",
-        "runtime_validator"
-      ]
+      "execution_context": ["CI", "runtime_validator"]
     },
     "results": {
       "status": "PASS|WARN|FAIL",
@@ -134,7 +136,8 @@
    - Visual Constitution baseline hashes are available
 
 2. **Generate surface inventory**
-   - Produce a canonical list of active AXIS surfaces (IDs + locations + build refs)
+   - Produce a canonical list of active AXIS surfaces (IDs + locations + build
+     refs)
    - Hash it and set `surface_inventory_ref`
 
 3. **Execute sweep**
@@ -160,4 +163,3 @@
 - Inventory size + failure counts
 - Actionable findings with surface references and remediation
 - Evidence hashes for audit replay
-

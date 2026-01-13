@@ -1,13 +1,13 @@
 # Nextra 4: Requirements & Configuration Verification
 
-**Date**: 2025-01-27
-**Status**: ✅ **VERIFIED** - All requirements met
+**Date**: 2025-01-27 **Status**: ✅ **VERIFIED** - All requirements met
 
 ---
 
 ## 🎯 Overview
 
-This document verifies compliance with Nextra 4 requirements, including Next.js version, TypeScript configuration, and API changes.
+This document verifies compliance with Nextra 4 requirements, including Next.js
+version, TypeScript configuration, and API changes.
 
 ---
 
@@ -41,7 +41,8 @@ This document verifies compliance with Nextra 4 requirements, including Next.js 
 
 **Nextra 4 requires**: `moduleResolution: "bundler"` in `tsconfig.json`
 
-**Reason**: `typesVersions` fields from Nextra packages were removed. TypeScript needs `bundler` resolution to find Nextra types correctly.
+**Reason**: `typesVersions` fields from Nextra packages were removed. TypeScript
+needs `bundler` resolution to find Nextra types correctly.
 
 ### Current Status
 
@@ -62,6 +63,7 @@ This document verifies compliance with Nextra 4 requirements, including Next.js 
 ### Migration Note
 
 If you had `moduleResolution: "node"`, you would see:
+
 ```
 Type error: Cannot find module 'nextra/components' or its corresponding type declarations.
 ```
@@ -77,6 +79,7 @@ Type error: Cannot find module 'nextra/components' or its corresponding type dec
 ### What Changed
 
 **Nextra 4**: All external Markdown links in MDX files now:
+
 - Open in new tab automatically (`target="_blank"`)
 - Include `rel="noreferrer"` attribute
 - Display visual ↗ suffix icon
@@ -84,11 +87,13 @@ Type error: Cannot find module 'nextra/components' or its corresponding type dec
 ### Example
 
 **MDX File**:
+
 ```mdx
 [dimaMachina](https://github.com/dimaMachina)
 ```
 
 **Compiled HTML**:
+
 ```html
 <a href="https://github.com/dimaMachina" target="_blank" rel="noreferrer">
   dimaMachina&thinsp;
@@ -110,7 +115,8 @@ Type error: Cannot find module 'nextra/components' or its corresponding type dec
 
 ### What Changed
 
-**Nextra 4**: `::selection` styles now use primary color from `color` prop on `<Head>` component.
+**Nextra 4**: `::selection` styles now use primary color from `color` prop on
+`<Head>` component.
 
 ### Current Implementation
 
@@ -119,17 +125,19 @@ Type error: Cannot find module 'nextra/components' or its corresponding type dec
 **Status**: ⚠️ **NOT CONFIGURED** - Using default selection color
 
 **Current**:
+
 ```tsx
-<Head backgroundColor={{ dark: '#0f172a', light: '#fefce8' }} />
+<Head backgroundColor={{ dark: "#0f172a", light: "#fefce8" }} />
 ```
 
 **Optional Enhancement**: Can add `color` prop:
+
 ```tsx
 <Head
-  backgroundColor={{ dark: '#0f172a', light: '#fefce8' }}
+  backgroundColor={{ dark: "#0f172a", light: "#fefce8" }}
   color={{
     hue: { dark: 120, light: 0 },
-    saturation: { dark: 100, light: 100 }
+    saturation: { dark: 100, light: 100 },
   }}
 />
 ```
@@ -142,15 +150,17 @@ Type error: Cannot find module 'nextra/components' or its corresponding type dec
 
 ### What Changed
 
-**Nextra 4**: `<Th>`, `<Tr>`, and `<Td>` components removed and attached to `<Table>`.
+**Nextra 4**: `<Th>`, `<Tr>`, and `<Td>` components removed and attached to
+`<Table>`.
 
 ### Migration Required
 
 **Before (Nextra 3)**:
-```tsx
-import { Table, Th, Tr, Td } from 'nextra/components'
 
-<Table>
+```tsx
+import { Table, Th, Tr, Td } from "nextra/components"
+
+;<Table>
   <thead>
     <Tr>
       <Th>Items</Th>
@@ -160,10 +170,11 @@ import { Table, Th, Tr, Td } from 'nextra/components'
 ```
 
 **After (Nextra 4)**:
-```tsx
-import { Table } from 'nextra/components'
 
-<Table>
+```tsx
+import { Table } from "nextra/components"
+
+;<Table>
   <thead>
     <Table.Tr>
       <Table.Th>Items</Table.Th>
@@ -196,16 +207,19 @@ export const Table = {
 
 ### What Changed
 
-**Nextra 4**: `compileMdx` now returns `Promise<string>` instead of `Promise<object>`.
+**Nextra 4**: `compileMdx` now returns `Promise<string>` instead of
+`Promise<object>`.
 
 ### Migration Required
 
 **Before (Nextra 3)**:
+
 ```tsx
 const { result: rawJs } = await compileMdx(rawMdx)
 ```
 
 **After (Nextra 4)**:
+
 ```tsx
 const rawJs = await compileMdx(rawMdx)
 ```
@@ -229,6 +243,7 @@ const rawJs = await compileMdx(data, { filePath })
 ### What Changed
 
 **Nextra 4**:
+
 - `<RemoteContent>` renamed to `<MDXRemote>`
 - Moved from `nextra/components` to `nextra/mdx-remote`
 - No longer need to manually pass default components
@@ -236,6 +251,7 @@ const rawJs = await compileMdx(data, { filePath })
 ### Migration Required
 
 **Before (Nextra 3)**:
+
 ```tsx
 import { RemoteContent } from 'nextra/components'
 
@@ -246,6 +262,7 @@ import { RemoteContent } from 'nextra/components'
 ```
 
 **After (Nextra 4)**:
+
 ```tsx
 import { MDXRemote } from 'nextra/mdx-remote'
 
@@ -262,7 +279,8 @@ import { MDXRemote } from 'nextra/mdx-remote'
 
 **Status**: ✅ **CUSTOM IMPLEMENTATION** - Uses `next-mdx-remote` directly
 
-**Note**: Custom implementation is fine. Remote docs use `evaluate()` which is correct.
+**Note**: Custom implementation is fine. Remote docs use `evaluate()` which is
+correct.
 
 **File**: `content/guides/index.mdx`
 
@@ -285,7 +303,9 @@ import { MDXRemote } from 'nextra/mdx-remote'
 
 ### What Changed
 
-**Nextra 4**: Imports from `nextra/components`, `nextra-theme-docs`, and `nextra-theme-blog` are now optimized internally with Next.js' `optimizePackageImports` option.
+**Nextra 4**: Imports from `nextra/components`, `nextra-theme-docs`, and
+`nextra-theme-blog` are now optimized internally with Next.js'
+`optimizePackageImports` option.
 
 ### Benefits
 
@@ -305,18 +325,21 @@ import { MDXRemote } from 'nextra/mdx-remote'
 
 ### What Changed
 
-**Nextra 4**: Nextra's `useRouter` hook removed. Use Next.js' `useRouter` instead.
+**Nextra 4**: Nextra's `useRouter` hook removed. Use Next.js' `useRouter`
+instead.
 
 ### Migration Required
 
 **Before (Nextra 3)**:
+
 ```tsx
-import { useRouter } from 'nextra/hooks'
+import { useRouter } from "nextra/hooks"
 ```
 
 **After (Nextra 4)**:
+
 ```tsx
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
 ```
 
 ### Current Implementation
@@ -331,8 +354,8 @@ import { useRouter } from 'next/navigation'
 
 ## 📊 Verification Summary
 
-| Requirement                     | Status          | Notes                              |
-| ------------------------------- | --------------- | ---------------------------------- |
+| Requirement                     | Status           | Notes                              |
+| ------------------------------- | ---------------- | ---------------------------------- |
 | **Next.js >= 14**               | ✅ **COMPLIANT** | Using Next.js 16.1.1               |
 | **moduleResolution: "bundler"** | ✅ **COMPLIANT** | Already configured                 |
 | **Markdown Links**              | ✅ **AUTOMATIC** | Works automatically                |
@@ -392,5 +415,5 @@ import { useRouter } from 'next/navigation'
 
 ---
 
-**Last Updated**: 2025-01-27
-**Status**: ✅ **FULLY COMPLIANT** - All Nextra 4 requirements met
+**Last Updated**: 2025-01-27 **Status**: ✅ **FULLY COMPLIANT** - All Nextra 4
+requirements met

@@ -2,7 +2,8 @@
 
 ## Quick Setup with Neon
 
-Neon is a serverless PostgreSQL database. This guide shows how to configure The Apex MVP to use your Neon database.
+Neon is a serverless PostgreSQL database. This guide shows how to configure The
+Apex MVP to use your Neon database.
 
 ---
 
@@ -22,7 +23,8 @@ Edit `.env` and add your Neon connection string:
 DATABASE_URL=postgresql://neondb_owner:npg_1wpavUmJIdV8@ep-hidden-mountain-a1ckcj1m-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 ```
 
-**Important**: 
+**Important**:
+
 - Keep your connection string secure (don't commit to git)
 - Neon requires SSL (`sslmode=require`)
 - The connection string includes authentication credentials
@@ -38,6 +40,7 @@ pnpm db:setup
 ```
 
 This will:
+
 - ✅ Connect to your Neon database
 - ✅ Check if schema exists
 - ✅ List current tables
@@ -73,6 +76,7 @@ pnpm db:push
 ```
 
 This creates all tables in your Neon database:
+
 - `users`
 - `proposals`
 - `proposal_stencils`
@@ -134,6 +138,7 @@ The application will connect to your Neon database automatically.
 Neon provides two connection modes:
 
 1. **Direct Connection** (for migrations):
+
    ```
    postgresql://user:pass@ep-xxx-xxx.region.aws.neon.tech/dbname
    ```
@@ -148,12 +153,14 @@ Your connection string uses the pooler, which is perfect for applications.
 ### SSL Requirements
 
 Neon requires SSL connections. The connection string includes:
+
 - `sslmode=require` - Enforces SSL
 - `channel_binding=require` - Additional security
 
 ### Database Name
 
-Your database is named `neondb`. Make sure your connection string points to this database.
+Your database is named `neondb`. Make sure your connection string points to this
+database.
 
 ---
 
@@ -166,13 +173,15 @@ Your database is named `neondb`. Make sure your connection string points to this
 ### Issue: "Connection timeout"
 
 **Solutions**:
+
 1. Check your Neon project is active
 2. Verify connection string is correct
 3. Check firewall/network settings
 
 ### Issue: "Database does not exist"
 
-**Solution**: 
+**Solution**:
+
 1. Log into Neon dashboard
 2. Verify database name is `neondb`
 3. Check connection string matches
@@ -180,6 +189,7 @@ Your database is named `neondb`. Make sure your connection string points to this
 ### Issue: "Authentication failed"
 
 **Solutions**:
+
 1. Verify username/password in connection string
 2. Check if credentials were rotated in Neon dashboard
 3. Regenerate connection string if needed
@@ -189,7 +199,8 @@ Your database is named `neondb`. Make sure your connection string points to this
 ## Security Best Practices
 
 1. **Never commit `.env` file** - Already in `.gitignore`
-2. **Rotate credentials** - If connection string is exposed, rotate in Neon dashboard
+2. **Rotate credentials** - If connection string is exposed, rotate in Neon
+   dashboard
 3. **Use environment variables** - Don't hardcode connection strings
 4. **Limit access** - Use Neon's IP allowlist if possible
 
@@ -205,5 +216,4 @@ Once database is configured:
 
 ---
 
-**Status**: ✅ Neon Configuration Complete
-**Last Updated**: 2026-01-10
+**Status**: ✅ Neon Configuration Complete **Last Updated**: 2026-01-10

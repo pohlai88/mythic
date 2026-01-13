@@ -5,16 +5,16 @@
  * Following Next.js Server Actions pattern
  */
 
-'use server'
+"use server"
 
-import { db } from '@/src/db'
-import { proposals, thanosEvents } from '@/src/db/schema'
-import { eq, and } from 'drizzle-orm'
-import { revalidatePath } from 'next/cache'
-import type { Proposal, ProposalStatus } from '@mythic/shared-types/boardroom'
-import { transformProposalToShared } from '@/src/db/utils/transform'
-import { selectProposalSchema } from '@/src/db/schema/proposals'
-import { createVarianceBudget } from './variance'
+import { db } from "@/src/db"
+import { proposals, thanosEvents } from "@/src/db/schema"
+import { eq, and } from "drizzle-orm"
+import { revalidatePath } from "next/cache"
+import type { Proposal, ProposalStatus } from "@mythic/shared-types/boardroom"
+import { transformProposalToShared } from "@/src/db/utils/transform"
+import { selectProposalSchema } from "@/src/db/schema/proposals"
+import { createVarianceBudget } from "./variance"
 import {
   createProposalResponseSchema,
   approveProposalResponseSchema,
@@ -24,14 +24,14 @@ import {
   type CreateProposalResponse,
   type ApproveProposalResponse,
   type VetoProposalResponse,
-} from '@/src/lib/zod/action-responses'
+} from "@/src/lib/zod/action-responses"
 import {
   proposalQuerySchema,
   parseProposalQuery,
   getDefaultProposalQuery,
   getPaginationOffset,
   type ProposalQuery,
-} from '@/src/lib/api-schemas/queries'
+} from "@/src/lib/api-schemas/queries"
 import {
   createProposalInputSchema,
   approveProposalInputSchema,
@@ -41,8 +41,8 @@ import {
   type ApproveProposalInput,
   type VetoProposalInput,
   type GetProposalInput,
-} from '@/src/lib/api-schemas/proposals'
-import { validateActionInput } from '@/src/lib/actions/validate-action'
+} from "@/src/lib/api-schemas/proposals"
+import { validateActionInput } from "@/src/lib/actions/validate-action"
 
 /**
  * Create a new proposal
@@ -65,13 +65,13 @@ export async function createProposal(data: {
         stencilId: data.stencilId,
         circleId: data.circleId,
         submittedBy: data.submittedBy,
-        status: 'DRAFT',
+        status: "DRAFT",
         data: data.data,
       })
       .returning()
 
     if (!proposal) {
-      return { success: false, error: 'Failed to create proposal' }
+      return { success: false, error: "Failed to create proposal" }
     }
 
     // Validate with Zod schema
@@ -81,17 +81,17 @@ export async function createProposal(data: {
     await db.insert(thanosEvents).values({
       proposalId: proposal.id,
       who: data.submittedBy,
-      what: 'CREATED',
-      where: 'web',
-      how: 'UI',
-      why: 'New proposal submitted',
+      what: "CREATED",
+      where: "web",
+      how: "UI",
+      why: "New proposal submitted",
     })
 
     // Move to LISTENING status
     await db
       .update(proposals)
       .set({
-        status: 'LISTENING',
+        status: "LISTENING",
         updatedAt: new Date(),
       })
       .where(eq(proposals.id, proposal.id))
@@ -100,29 +100,29 @@ export async function createProposal(data: {
     await db.insert(thanosEvents).values({
       proposalId: proposal.id,
       who: data.submittedBy,
-      what: 'STATUS_CHANGED',
-      where: 'web',
-      how: 'UI',
-      why: 'Proposal moved to LISTENING',
-      metadata: { from: 'DRAFT', to: 'LISTENING' },
+      what: "STATUS_CHANGED",
+      where: "web",
+      how: "UI",
+      why: "Proposal moved to LISTENING",
+      metadata: { from: "DRAFT", to: "LISTENING" },
     })
 
-    revalidatePath('/boardroom')
+    revalidatePath("/boardroom")
 
     // Validate response with Zod schema
     const response: CreateProposalResponse = { success: true, proposalId: proposal.id }
     const responseResult = createProposalResponseSchema.safeParse(response)
     if (!responseResult.success) {
-      console.error('Invalid response schema:', responseResult.error)
-      return { success: false, error: 'Internal validation error' }
+      console.error("Invalid response schema:", responseResult.error)
+      return { success: false, error: "Internal validation error" }
     }
     return responseResult.data
   } catch (error) {
-    console.error('Error creating proposal:', error)
-    const response: CreateProposalResponse = { success: false, error: 'Failed to create proposal' }
+    console.error("Error creating proposal:", error)
+    const response: CreateProposalResponse = { success: false, error: "Failed to create proposal" }
     const responseResult = createProposalResponseSchema.safeParse(response)
     if (!responseResult.success) {
-      return { success: false, error: 'Internal validation error' }
+      return { success: false, error: "Internal validation error" }
     }
     return responseResult.data
   }
@@ -141,7 +141,7 @@ export async function approveProposal(
   if (!inputResult.success) {
     const response: ApproveProposalResponse = {
       success: false,
-      error: inputResult.error || 'Invalid input parameters',
+      error: inputResult.error || "Invalid input parameters",
     }
     return approveProposalResponseSchema.parse(response)
   }
@@ -159,21 +159,21 @@ export async function approveProposal(
     })
 
     if (!proposal) {
-      return { success: false, error: 'Proposal not found' }
+      return { success: false, error: "Proposal not found" }
     }
 
     // Validate with Zod schema
     const validatedProposal = selectProposalSchema.parse(proposal)
 
-    if (validatedProposal.status !== 'LISTENING') {
-      return { success: false, error: 'Proposal is not in LISTENING state' }
+    if (validatedProposal.status !== "LISTENING") {
+      return { success: false, error: "Proposal is not in LISTENING state" }
     }
 
     // Update proposal status
     await db
       .update(proposals)
       .set({
-        status: 'APPROVED',
+        status: "APPROVED",
         approvedBy,
         approvedAt: new Date(),
         updatedAt: new Date(),
@@ -184,19 +184,19 @@ export async function approveProposal(
     await db.insert(thanosEvents).values({
       proposalId,
       who: approvedBy,
-      what: 'APPROVED',
-      where: 'web',
-      how: 'UI',
-      why: 'Proposal approved by sovereign',
+      what: "APPROVED",
+      where: "web",
+      how: "UI",
+      why: "Proposal approved by sovereign",
     })
 
     // Create variance budget if proposal data contains budget information
     // Extract budgeted amount from proposal data
-    if (typeof validatedProposal.data === 'object' && validatedProposal.data !== null) {
+    if (typeof validatedProposal.data === "object" && validatedProposal.data !== null) {
       const proposalData = validatedProposal.data as Record<string, unknown>
       const budgetedAmount = proposalData.amount || proposalData.budgeted || proposalData.total
 
-      if (typeof budgetedAmount === 'number' && budgetedAmount > 0) {
+      if (typeof budgetedAmount === "number" && budgetedAmount > 0) {
         // Extract budgeted breakdown if available
         const budgetedBreakdown = proposalData.breakdown || proposalData.budgetedBreakdown
 
@@ -207,27 +207,31 @@ export async function approveProposal(
             caseNumber: validatedProposal.caseNumber,
             stencilId: validatedProposal.stencilId,
             budgetedTotal: budgetedAmount,
-            budgetedBreakdown: typeof budgetedBreakdown === 'object' && budgetedBreakdown !== null
-              ? (budgetedBreakdown as Record<string, unknown>)
-              : undefined,
+            budgetedBreakdown:
+              typeof budgetedBreakdown === "object" && budgetedBreakdown !== null
+                ? (budgetedBreakdown as Record<string, unknown>)
+                : undefined,
             budgetedBy: validatedProposal.submittedBy,
           })
         } catch (varianceError) {
           // Log error but don't fail proposal approval
-          console.error('Failed to create variance budget on approval:', varianceError)
+          console.error("Failed to create variance budget on approval:", varianceError)
         }
       }
     }
 
-    revalidatePath('/boardroom')
+    revalidatePath("/boardroom")
 
     // Validate response with Zod schema
     const response: ApproveProposalResponse = { success: true }
     const validated = approveProposalResponseSchema.parse(response)
     return validated
   } catch (error) {
-    console.error('Error approving proposal:', error)
-    const response: ApproveProposalResponse = { success: false, error: 'Failed to approve proposal' }
+    console.error("Error approving proposal:", error)
+    const response: ApproveProposalResponse = {
+      success: false,
+      error: "Failed to approve proposal",
+    }
     const validated = approveProposalResponseSchema.parse(response)
     return validated
   }
@@ -238,15 +242,13 @@ export async function approveProposal(
  *
  * Validates input with Zod schema before processing.
  */
-export async function vetoProposal(
-  input: unknown
-): Promise<{ success: boolean; error?: string }> {
+export async function vetoProposal(input: unknown): Promise<{ success: boolean; error?: string }> {
   // Validate input
   const inputResult = validateActionInput(input, vetoProposalInputSchema)
   if (!inputResult.success) {
     const response: VetoProposalResponse = {
       success: false,
-      error: inputResult.error || 'Invalid input parameters',
+      error: inputResult.error || "Invalid input parameters",
     }
     return vetoProposalResponseSchema.parse(response)
   }
@@ -264,21 +266,21 @@ export async function vetoProposal(
     })
 
     if (!proposal) {
-      return { success: false, error: 'Proposal not found' }
+      return { success: false, error: "Proposal not found" }
     }
 
     // Validate with Zod schema
     const validatedProposal = selectProposalSchema.parse(proposal)
 
-    if (validatedProposal.status !== 'LISTENING') {
-      return { success: false, error: 'Proposal is not in LISTENING state' }
+    if (validatedProposal.status !== "LISTENING") {
+      return { success: false, error: "Proposal is not in LISTENING state" }
     }
 
     // Update proposal status
     await db
       .update(proposals)
       .set({
-        status: 'VETOED',
+        status: "VETOED",
         vetoedBy,
         vetoReason: reason,
         vetoedAt: new Date(),
@@ -290,21 +292,21 @@ export async function vetoProposal(
     await db.insert(thanosEvents).values({
       proposalId,
       who: vetoedBy,
-      what: 'VETOED',
-      where: 'web',
-      how: 'UI',
+      what: "VETOED",
+      where: "web",
+      how: "UI",
       why: reason,
     })
 
-    revalidatePath('/boardroom')
+    revalidatePath("/boardroom")
 
     // Validate response with Zod schema
     const response: VetoProposalResponse = { success: true }
     const validated = vetoProposalResponseSchema.parse(response)
     return validated
   } catch (error) {
-    console.error('Error vetoing proposal:', error)
-    const response: VetoProposalResponse = { success: false, error: 'Failed to veto proposal' }
+    console.error("Error vetoing proposal:", error)
+    const response: VetoProposalResponse = { success: false, error: "Failed to veto proposal" }
     const validated = vetoProposalResponseSchema.parse(response)
     return validated
   }
@@ -313,15 +315,13 @@ export async function vetoProposal(
 /**
  * Get proposals list with validated query parameters
  */
-export async function getProposals(
-  filters?: Partial<ProposalQuery>
-): Promise<Proposal[]> {
+export async function getProposals(filters?: Partial<ProposalQuery>): Promise<Proposal[]> {
   try {
     // Validate and parse query parameters
     const queryResult = parseProposalQuery(filters ?? {})
 
     if (!queryResult.success) {
-      console.error('Invalid query parameters:', queryResult.error.issues)
+      console.error("Invalid query parameters:", queryResult.error.issues)
       // Return empty array for invalid queries (could also throw error)
       return []
     }
@@ -367,9 +367,7 @@ export async function getProposals(
 
     // Build query
     const query = db.select().from(proposals)
-    const results = conditions.length > 0
-      ? await query.where(and(...conditions))
-      : await query
+    const results = conditions.length > 0 ? await query.where(and(...conditions)) : await query
 
     // Apply pagination (if needed in future)
     // const offset = getPaginationOffset(validatedFilters.page, validatedFilters.limit)
@@ -388,20 +386,20 @@ export async function getProposals(
     // Check if it's a database connection error
     const isConnectionError =
       error instanceof Error &&
-      (error.message.includes('ECONNREFUSED') ||
-       error.message.includes('Failed query') ||
-       error.message.includes('connection') ||
-       error.message.includes('timeout') ||
-       (error.cause instanceof Error &&
-        (error.cause.message?.includes('ECONNREFUSED') ||
-         error.cause.message?.includes('connection'))))
+      (error.message.includes("ECONNREFUSED") ||
+        error.message.includes("Failed query") ||
+        error.message.includes("connection") ||
+        error.message.includes("timeout") ||
+        (error.cause instanceof Error &&
+          (error.cause.message?.includes("ECONNREFUSED") ||
+            error.cause.message?.includes("connection"))))
 
     // Check if it's a configuration error
     const isConfigError =
       error instanceof Error &&
-      (error.message.includes('DATABASE_URL') ||
-       error.message.includes('Database configuration') ||
-       error.message.includes('required'))
+      (error.message.includes("DATABASE_URL") ||
+        error.message.includes("Database configuration") ||
+        error.message.includes("required"))
 
     // Provide helpful error messages
     if (isConfigError) {
@@ -411,27 +409,27 @@ export async function getProposals(
 
     if (isConnectionError) {
       const connectionError = new Error(
-        'Database connection failed. Please check:\n\n' +
-        '1. Database is running (for local: `docker-compose up` or start PostgreSQL)\n' +
-        '2. DATABASE_URL is set correctly in your .env file\n' +
-        '   Example: DATABASE_URL=postgresql://user:password@host:port/database?sslmode=require\n' +
-        '3. Database credentials are correct\n' +
-        '4. Network/firewall allows connection\n\n' +
-        'For local development, you can use:\n' +
-        '  DB_HOST=localhost\n' +
-        '  DB_PORT=5432\n' +
-        '  DB_USER=postgres\n' +
-        '  DB_PASSWORD=your_password\n' +
-        '  DB_NAME=mythic\n' +
-        '  DB_SSL=false\n\n' +
-        'See docs/architecture/ENVIRONMENT_VARIABLES.md for more details.'
+        "Database connection failed. Please check:\n\n" +
+          "1. Database is running (for local: `docker-compose up` or start PostgreSQL)\n" +
+          "2. DATABASE_URL is set correctly in your .env file\n" +
+          "   Example: DATABASE_URL=postgresql://user:password@host:port/database?sslmode=require\n" +
+          "3. Database credentials are correct\n" +
+          "4. Network/firewall allows connection\n\n" +
+          "For local development, you can use:\n" +
+          "  DB_HOST=localhost\n" +
+          "  DB_PORT=5432\n" +
+          "  DB_USER=postgres\n" +
+          "  DB_PASSWORD=your_password\n" +
+          "  DB_NAME=mythic\n" +
+          "  DB_SSL=false\n\n" +
+          "See docs/architecture/ENVIRONMENT_VARIABLES.md for more details."
       )
       connectionError.cause = error
       throw connectionError
     }
 
     // Log other errors but don't throw (for production resilience)
-    console.error('Error fetching proposals:', error)
+    console.error("Error fetching proposals:", error)
     return []
   }
 }
@@ -441,13 +439,11 @@ export async function getProposals(
  *
  * Validates input with Zod schema before processing.
  */
-export async function getProposal(
-  input: unknown
-): Promise<Proposal | null> {
+export async function getProposal(input: unknown): Promise<Proposal | null> {
   // Validate input
   const inputResult = validateActionInput(input, getProposalInputSchema)
   if (!inputResult.success) {
-    console.error('Invalid getProposal input:', inputResult.issues)
+    console.error("Invalid getProposal input:", inputResult.issues)
     return null
   }
 
@@ -482,7 +478,7 @@ export async function getProposal(
     const response = proposalResponseSchema.parse(transformed)
     return response
   } catch (error) {
-    console.error('Error fetching proposal:', error)
+    console.error("Error fetching proposal:", error)
     return null
   }
 }
@@ -498,7 +494,7 @@ async function generateCaseNumber(): Promise<string> {
   const yearProposals = await db
     .select({ caseNumber: proposals.caseNumber })
     .from(proposals)
-    .where(eq(proposals.caseNumber, prefix + '999')) // This is a placeholder query - need proper LIKE query
+    .where(eq(proposals.caseNumber, prefix + "999")) // This is a placeholder query - need proper LIKE query
 
   // Extract sequence numbers and find the highest
   const sequences = yearProposals
@@ -509,7 +505,7 @@ async function generateCaseNumber(): Promise<string> {
     .filter((n) => !Number.isNaN(n))
 
   const maxSequence = sequences.length > 0 ? Math.max(...sequences) : 0
-  const nextSequence = (maxSequence + 1).toString().padStart(6, '0')
+  const nextSequence = (maxSequence + 1).toString().padStart(6, "0")
 
   return `${prefix}${nextSequence}`
 }

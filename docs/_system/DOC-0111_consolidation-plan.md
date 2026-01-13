@@ -10,9 +10,8 @@ tags: [documentation, consolidation, DRY, duplicates]
 
 # Documentation Consolidation Plan
 
-**Generated**: 2026-01-10
-**Status**: READY FOR EXECUTION
-**Purpose**: Execute consolidation to eliminate duplicates and enforce DRY
+**Generated**: 2026-01-10 **Status**: READY FOR EXECUTION **Purpose**: Execute
+consolidation to eliminate duplicates and enforce DRY
 
 ---
 
@@ -20,13 +19,13 @@ tags: [documentation, consolidation, DRY, duplicates]
 
 ### Priority Actions
 
-| Priority | Action | Files | Time | Risk |
-|----------|--------|-------|------|------|
-| **HIGH** | Consolidate Root Migration Summary | 2 files | 15 min | Low |
-| **MEDIUM** | Add Cross-References (Turbopack) | 2 files | 5 min | None |
-| **MEDIUM** | Add Cross-References (Getting Started) | 3 files | 10 min | None |
-| **MEDIUM** | Add Cross-References (API Docs) | 3 files | 10 min | None |
-| **LOW** | Update Frontmatter | Multiple | 30 min | None |
+| Priority   | Action                                 | Files    | Time   | Risk |
+| ---------- | -------------------------------------- | -------- | ------ | ---- |
+| **HIGH**   | Consolidate Root Migration Summary     | 2 files  | 15 min | Low  |
+| **MEDIUM** | Add Cross-References (Turbopack)       | 2 files  | 5 min  | None |
+| **MEDIUM** | Add Cross-References (Getting Started) | 3 files  | 10 min | None |
+| **MEDIUM** | Add Cross-References (API Docs)        | 3 files  | 10 min | None |
+| **LOW**    | Update Frontmatter                     | Multiple | 30 min | None |
 
 **Total Estimated Time**: 70 minutes
 
@@ -51,6 +50,7 @@ tags: [documentation, consolidation, DRY, duplicates]
 ### Content to Merge
 
 From ROOT_MIGRATION_SUMMARY.md:
+
 - Validation results section
 - Files updated section
 - Next steps section
@@ -75,13 +75,17 @@ From ROOT_MIGRATION_SUMMARY.md:
 ### Steps
 
 1. **Add to TURBOPACK_QUICK_REFERENCE.md**:
+
    ```markdown
-   > **For troubleshooting and detailed setup**, see [Turbopack Support](./TURBOPACK_SUPPORT.md)
+   > **For troubleshooting and detailed setup**, see
+   > [Turbopack Support](./TURBOPACK_SUPPORT.md)
    ```
 
 2. **Add to TURBOPACK_SUPPORT.md**:
+
    ```markdown
-   > **For quick command reference**, see [Turbopack Quick Reference](./TURBOPACK_QUICK_REFERENCE.md)
+   > **For quick command reference**, see
+   > [Turbopack Quick Reference](./TURBOPACK_QUICK_REFERENCE.md)
    ```
 
 3. **Update frontmatter** (add `related_docs` field)
@@ -105,21 +109,26 @@ From ROOT_MIGRATION_SUMMARY.md:
 ### Steps
 
 1. **Add to QUICK_START.md**:
+
    ```markdown
-   > **For detailed setup instructions**, see [Post-Clone Setup Guide](./docs/guides/POST_CLONE_SETUP.md)
-   > **For public documentation**, see [Getting Started Guide](./content/guides/getting-started.mdx)
+   > **For detailed setup instructions**, see
+   > [Post-Clone Setup Guide](./docs/guides/POST_CLONE_SETUP.md) **For public
+   > documentation**, see
+   > [Getting Started Guide](./content/guides/getting-started.mdx)
    ```
 
 2. **Add to POST_CLONE_SETUP.md**:
+
    ```markdown
-   > **For quick overview**, see [Quick Start](../QUICK_START.md)
-   > **For public documentation**, see [Getting Started Guide](../content/guides/getting-started.mdx)
+   > **For quick overview**, see [Quick Start](../QUICK_START.md) **For public
+   > documentation**, see
+   > [Getting Started Guide](../content/guides/getting-started.mdx)
    ```
 
 3. **Add to content/guides/getting-started.mdx**:
    ```markdown
-   > **For quick overview**, see [Quick Start](/QUICK_START.md)
-   > **For detailed setup**, see [Post-Clone Setup](/docs/guides/POST_CLONE_SETUP.md)
+   > **For quick overview**, see [Quick Start](/QUICK_START.md) **For detailed
+   > setup**, see [Post-Clone Setup](/docs/guides/POST_CLONE_SETUP.md)
    ```
 
 ### Expected Result
@@ -141,27 +150,36 @@ From ROOT_MIGRATION_SUMMARY.md:
 ### Steps
 
 1. **Add to API_AUTOGENERATION_STRATEGY.md**:
+
    ```markdown
    ## Next Steps
-   
-   - **Implementation**: See [API Autogeneration Implementation](./API_AUTOGENERATION_IMPLEMENTATION.md)
-   - **Quick Reference**: See [API Autogeneration Quick Reference](./API_AUTOGENERATION_QUICK_REFERENCE.md)
+
+   - **Implementation**: See
+     [API Autogeneration Implementation](./API_AUTOGENERATION_IMPLEMENTATION.md)
+   - **Quick Reference**: See
+     [API Autogeneration Quick Reference](./API_AUTOGENERATION_QUICK_REFERENCE.md)
    ```
 
 2. **Add to API_AUTOGENERATION_IMPLEMENTATION.md**:
+
    ```markdown
    ## Related Documentation
-   
-   - **Strategy**: See [API Autogeneration Strategy](./API_AUTOGENERATION_STRATEGY.md)
-   - **Quick Reference**: See [API Autogeneration Quick Reference](./API_AUTOGENERATION_QUICK_REFERENCE.md)
+
+   - **Strategy**: See
+     [API Autogeneration Strategy](./API_AUTOGENERATION_STRATEGY.md)
+   - **Quick Reference**: See
+     [API Autogeneration Quick Reference](./API_AUTOGENERATION_QUICK_REFERENCE.md)
    ```
 
 3. **Add to API_AUTOGENERATION_QUICK_REFERENCE.md**:
+
    ```markdown
    ## Related Documentation
-   
-   - **Strategy**: See [API Autogeneration Strategy](./API_AUTOGENERATION_STRATEGY.md)
-   - **Implementation**: See [API Autogeneration Implementation](./API_AUTOGENERATION_IMPLEMENTATION.md)
+
+   - **Strategy**: See
+     [API Autogeneration Strategy](./API_AUTOGENERATION_STRATEGY.md)
+   - **Implementation**: See
+     [API Autogeneration Implementation](./API_AUTOGENERATION_IMPLEMENTATION.md)
    ```
 
 ### Expected Result
@@ -187,7 +205,7 @@ source_of_truth: true
 created: YYYY-MM-DD
 modified: YYYY-MM-DD
 tags: [relevant, tags]
-related_docs:  # NEW FIELD
+related_docs: # NEW FIELD
   - path/to/related-doc-1.md
   - path/to/related-doc-2.md
 ---
@@ -277,8 +295,7 @@ git reset --hard [commit-before-consolidation]
 
 ---
 
-**Status**: Ready for Execution
-**Estimated Time**: 70 minutes
-**Risk Level**: 🟢 LOW (all changes reversible)
+**Status**: Ready for Execution **Estimated Time**: 70 minutes **Risk Level**:
+🟢 LOW (all changes reversible)
 
 **Next Step**: Execute Action 1 (Consolidate Root Migration Summary)

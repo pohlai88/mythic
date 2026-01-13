@@ -12,22 +12,24 @@ related_docs:
 
 # Diátaxis + Tailwind CSS + Nextra: Synergistic Integration Guide
 
-**Status**: ✅ **ACTIVE**
-**Version**: 1.0.0
-**Last Updated**: 2026-01-11
+**Status**: ✅ **ACTIVE** **Version**: 1.0.0 **Last Updated**: 2026-01-11
 
 ---
 
 ## Executive Summary
 
-This guide demonstrates how **Diátaxis documentation framework**, **Tailwind CSS v4**, and **Nextra 4** work together synergistically in the `apps/docs` application to achieve maximum documentation output effect.
+This guide demonstrates how **Diátaxis documentation framework**, **Tailwind CSS
+v4**, and **Nextra 4** work together synergistically in the `apps/docs`
+application to achieve maximum documentation output effect.
 
 ### The Synergy
 
-1. **Diátaxis** provides the structure (Tutorials, How-To, Reference, Explanation)
+1. **Diátaxis** provides the structure (Tutorials, How-To, Reference,
+   Explanation)
 2. **Tailwind CSS v4** provides intelligence-driven styling and design tokens
 3. **Nextra 4** provides the documentation platform and MDX rendering
-4. **Together**: Beautiful, structured, intelligent documentation that adapts to user needs
+4. **Together**: Beautiful, structured, intelligent documentation that adapts to
+   user needs
 
 ---
 
@@ -209,33 +211,35 @@ type: tutorial
 
 ## Introduction
 
-We are going to build a button component using Tailwind CSS and Diátaxis principles.
+We are going to build a button component using Tailwind CSS and Diátaxis
+principles.
 
 <TutorialSteps
   steps={[
     {
       title: "First, create the component file",
       description: "We must create the file before we can write code.",
-      code: "touch components/Button.tsx"
+      code: "touch components/Button.tsx",
     },
     {
       title: "Now, add the basic structure",
       description: "We will use Tailwind utilities for styling.",
       code: `export function Button() {
   return <button className="bg-gold text-void">Click me</button>
-}`
+}`,
     },
     {
       title: "Finally, test the component",
       description: "We should always test our components.",
-      note: "Remember: Testing ensures quality"
-    }
+      note: "Remember: Testing ensures quality",
+    },
   ]}
 />
 
 ## What We Built
 
-You have built a secure, three-layer component using Tailwind CSS and Diátaxis principles.
+You have built a secure, three-layer component using Tailwind CSS and Diátaxis
+principles.
 ```
 
 ### Example 2: How-To Guide
@@ -259,7 +263,7 @@ type: how-to
     {
       title: "Import intelligence utilities",
       description: "Import the utilities from shared-utils",
-      code: `import { intelligentRiskStyles } from '@mythic/shared-utils'`
+      code: `import { intelligentRiskStyles } from '@mythic/nextjs-shared-utils'`,
     },
     {
       title: "Apply styles based on data",
@@ -267,8 +271,8 @@ type: how-to
       code: `<div className={intelligentRiskStyles(15.5, 'future')}>
   Variance: +15.5%
 </div>`,
-      warning: "Always validate your data before applying styles"
-    }
+      warning: "Always validate your data before applying styles",
+    },
   ]}
 />
 ```
@@ -294,19 +298,19 @@ type: reference
   columns={[
     { header: "Token", accessor: "token" },
     { header: "Value", accessor: "value" },
-    { header: "Usage", accessor: "usage" }
+    { header: "Usage", accessor: "usage" },
   ]}
   data={[
     {
       token: "--color-void",
       value: "240 10% 4%",
-      usage: "bg-void"
+      usage: "bg-void",
     },
     {
       token: "--color-gold",
       value: "40 45% 55%",
-      usage: "bg-gold"
-    }
+      usage: "bg-gold",
+    },
   ]}
 />
 ```
@@ -332,8 +336,8 @@ type: explanation
 
 <ExplanationBox type="rationale" title="Why This Approach">
   The CSS-first approach allows us to define all design tokens in CSS files
-  using the @theme directive, which is then processed by PostCSS. This creates
-  a single source of truth for all design tokens.
+  using the @theme directive, which is then processed by PostCSS. This creates a
+  single source of truth for all design tokens.
 </ExplanationBox>
 ```
 
@@ -439,7 +443,5 @@ Use Diátaxis utilities with intelligence utilities:
 
 ---
 
-**Status**: ✅ Production Ready
-**Version**: 1.0.0
-**Last Updated**: 2026-01-11
+**Status**: ✅ Production Ready **Version**: 1.0.0 **Last Updated**: 2026-01-11
 **Maintained By**: Architecture Team
