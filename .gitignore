@@ -2,6 +2,7 @@
 node_modules
 # Environment variables - ONLY root .env is allowed
 # All other .env files are forbidden
+.env
 .env.local
 .env*.local
 .env.fixed
